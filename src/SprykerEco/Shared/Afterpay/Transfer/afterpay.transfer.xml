@@ -76,6 +76,10 @@
         <property name="installmentPlans" type="AfterpayInstallmentPlan[]" singular="installmentPlan" />
     </transfer>
 
+    <transfer name="Totals">
+        <property name="priceToPay" type="int"/>
+    </transfer>
+
     <transfer name="AfterpayInstallmentPlan">
         <property name="basketAmount" type="int" />
         <property name="numberOfInstallments" type="int" />

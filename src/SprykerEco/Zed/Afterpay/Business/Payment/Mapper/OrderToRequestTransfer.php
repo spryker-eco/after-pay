@@ -181,6 +181,8 @@ class OrderToRequestTransfer implements OrderToRequestTransferInterface
             );
         }
 
+        $this->addGiftcardItems($orderWithPaymentTransfer, $orderRequestTransfer);
+
         return $orderRequestTransfer;
     }
 
@@ -320,5 +322,47 @@ class OrderToRequestTransfer implements OrderToRequestTransferInterface
         $itemUnitNetAmount = $itemUnitGrossPriceAmount - $itemUnitTaxAmount;
 
         return (string)$this->money->convertIntegerToDecimal($itemUnitNetAmount);
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\OrderTransfer $orderWithPaymentTransfer
+     * @param  \Generated\Shared\Transfer\AfterpayRequestOrderTransfer $orderRequestTransfer
+     *
+     * @return void
+     */
+    protected function addGiftcardItems(OrderTransfer $orderWithPaymentTransfer, AfterpayRequestOrderTransfer $orderRequestTransfer)
+    {
+        foreach ($this->getGiftcards($orderWithPaymentTransfer) as $index => $paymentTransfer) {
+
+            $orderItemRequestTransfer = new AfterpayRequestOrderItemTransfer();
+            $amount = (string)$this->money->convertIntegerToDecimal($paymentTransfer->getAmount());
+
+            $orderItemRequestTransfer
+                ->setProductId('GiftCard' . $index)
+                ->setDescription('GiftCard' . $index)
+                ->setGrossUnitPrice(-$amount)
+                ->setQuantity(1);
+
+            $orderRequestTransfer->addItem($orderItemRequestTransfer);
+        }
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\OrderTransfer $orderWithPaymentTransfer
+     *
+     * @return \Generated\Shared\Transfer\PaymentTransfer[]
+     */
+    protected function getGiftcards(OrderTransfer $orderWithPaymentTransfer)
+    {
+        $giftCardPayments = [];
+        foreach ($orderWithPaymentTransfer->getPayments() as $paymentTransfer) {
+            if ($paymentTransfer->getPaymentMethod() !== 'GiftCard') {
+                continue;
+            }
+
+            $giftCardPayments[] = $paymentTransfer;
+        }
+
+        return $giftCardPayments;
     }
 }
