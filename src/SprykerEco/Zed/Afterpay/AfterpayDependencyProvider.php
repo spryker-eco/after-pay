@@ -12,6 +12,7 @@ use Spryker\Zed\Kernel\AbstractBundleDependencyProvider;
 use Spryker\Zed\Kernel\Container;
 use SprykerEco\Zed\Afterpay\Dependency\Facade\AfterpayToCustomerBridge;
 use SprykerEco\Zed\Afterpay\Dependency\Facade\AfterpayToMoneyBridge;
+use SprykerEco\Zed\Afterpay\Dependency\Facade\AfterpayToPaymentBridge;
 use SprykerEco\Zed\Afterpay\Dependency\Facade\AfterpayToSalesBridge;
 use SprykerEco\Zed\Afterpay\Dependency\Service\AfterpayToUtilEncodingBridge;
 use SprykerEco\Zed\Afterpay\Dependency\Service\AfterpayToUtilTextBridge;
@@ -22,6 +23,7 @@ class AfterpayDependencyProvider extends AbstractBundleDependencyProvider
     const FACADE_MONEY = 'money facade';
     const FACADE_SALES = 'sales facade';
     const FACADE_CUSTOMER = 'customer facade';
+    const FACADE_PAYMENT = 'payment';
 
     const SERVICE_UTIL_ENCODING = 'util encoding service';
     const SERVICE_UTIL_TEXT = 'util text service';
@@ -53,6 +55,10 @@ class AfterpayDependencyProvider extends AbstractBundleDependencyProvider
 
         $container[static::SERVICE_UTIL_TEXT] = function (Container $container) {
             return new AfterpayToUtilTextBridge($container->getLocator()->utilText()->service());
+        };
+
+        $container[static::FACADE_PAYMENT] = function (Container $container) {
+            return new AfterpayToPaymentBridge($container->getLocator()->payment()->facade());
         };
 
         $container[static::CURRENT_STORE] = function (Container $container) {

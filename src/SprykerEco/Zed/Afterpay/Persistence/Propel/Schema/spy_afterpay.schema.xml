@@ -10,6 +10,7 @@
     <table name="spy_payment_afterpay" phpName="SpyPaymentAfterpay">
         <column name="id_payment_afterpay" required="true" type="INTEGER" autoIncrement="true" primaryKey="true"/>
         <column name="fk_sales_order" required="true" type="INTEGER"/>
+        <column name="fk_sales_payment" required="false" type="INTEGER"/>
 
         <column name="id_checkout" required="false" type="VARCHAR"/>
         <column name="id_reservation" required="false" type="VARCHAR"/>
@@ -26,6 +27,10 @@
 
         <foreign-key name="spy_payment_afterpay-fk_sales_order" foreignTable="spy_sales_order" phpName="SpySalesOrder">
             <reference foreign="id_sales_order" local="fk_sales_order"/>
+        </foreign-key>
+
+        <foreign-key name="spy_payment_afterpay-fk_sales_payment" foreignTable="spy_sales_payment" phpName="SpySalesPayment">
+            <reference foreign="id_sales_payment" local="fk_sales_payment"/>
         </foreign-key>
 
         <behavior name="timestampable"/>
