@@ -17,6 +17,10 @@ class AfterpayCustomerLookupPlugin extends AbstractPlugin implements CustomerLoo
 {
 
     /**
+     * {@inheritdoc}
+     *
+     * @api
+     *
      * @param \Generated\Shared\Transfer\AfterpayCustomerLookupRequestTransfer $customerLookupRequestTransfer
      *
      * @return \Generated\Shared\Transfer\AfterpayCustomerLookupResponseTransfer

@@ -14,9 +14,9 @@ class AfterpayConfig extends AbstractBundleConfig
 {
 
     /**
-     * @return string
+     * @return array
      */
-    public function getSubformToPaymentMethodMapping()
+    public function getSubFormToPaymentMethodMapping()
     {
         return $this->get(AfterpayConstants::AFTERPAY_RISK_CHECK_CONFIGURATION);
     }

@@ -20,7 +20,7 @@ interface AfterpayAuthorizeWorkflowInterface
     public function expandQuoteBeforePaymentStep(QuoteTransfer $quoteTransfer);
 
     /**
-     * @param \Spryker\Yves\StepEngine\Dependency\Form\SubFormInterface[]
+     * @param \Spryker\Yves\StepEngine\Dependency\Form\SubFormInterface[] $paymentSubforms
      *
      * @return \Spryker\Yves\StepEngine\Dependency\Form\SubFormInterface[]
      */
@@ -32,12 +32,5 @@ interface AfterpayAuthorizeWorkflowInterface
      * @return \Generated\Shared\Transfer\QuoteTransfer
      */
     public function addPaymentDataToQuote(QuoteTransfer $quoteTransfer);
-
-    /**
-     * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
-     *
-     * @return \Generated\Shared\Transfer\QuoteTransfer
-     */
-    public function expandQuoteAfterPaymentStep(QuoteTransfer $quoteTransfer);
 
 }

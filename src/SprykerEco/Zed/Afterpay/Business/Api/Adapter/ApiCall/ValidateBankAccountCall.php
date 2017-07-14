@@ -52,7 +52,6 @@ class ValidateBankAccountCall extends AbstractApiCall implements ValidateBankAcc
         $this->transferConverter = $transferConverter;
     }
 
-
     /**
      * @param \Generated\Shared\Transfer\AfterpayValidateBankAccountRequestTransfer $validateBankAccountRequestTransfer
      *

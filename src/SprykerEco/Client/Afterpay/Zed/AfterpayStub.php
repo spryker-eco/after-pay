@@ -8,6 +8,7 @@
 namespace SprykerEco\Client\Afterpay\Zed;
 
 use Generated\Shared\Transfer\AfterpayCustomerLookupRequestTransfer;
+use Generated\Shared\Transfer\AfterpayInstallmentPlansRequestTransfer;
 use Generated\Shared\Transfer\AfterpayValidateBankAccountRequestTransfer;
 use Generated\Shared\Transfer\AfterpayValidateCustomerRequestTransfer;
 use Generated\Shared\Transfer\QuoteTransfer;
@@ -20,6 +21,7 @@ class AfterpayStub extends ZedRequestStub implements AfterpayStubInterface
     const ZED_VALIDATE_CUSTOMER_ADDRESS = '/afterpay/gateway/validate-customer-address';
     const ZED_VALIDATE_BANK_ACCOUNT = '/afterpay/gateway/validate-bank-account';
     const ZED_LOOKUP_CUSTOMER = '/afterpay/gateway/lookup-customer';
+    const ZED_INSTALLMENT_PLANS = '/afterpay/gateway/lookup-installment-plans';
 
     /**
      * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
@@ -57,6 +59,19 @@ class AfterpayStub extends ZedRequestStub implements AfterpayStubInterface
         return $this->zedStub->call(
             static::ZED_LOOKUP_CUSTOMER,
             $customerLookupRequestTransfer
+        );
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\AfterpayInstallmentPlansRequestTransfer $installmentPlansRequestTransfer
+     *
+     * @return \Spryker\Shared\Kernel\Transfer\TransferInterface|\Generated\Shared\Transfer\AfterpayInstallmentPlansResponseTransfer
+     */
+    public function getAvailableInstallmentPlans(AfterpayInstallmentPlansRequestTransfer $installmentPlansRequestTransfer)
+    {
+        return $this->zedStub->call(
+            static::ZED_INSTALLMENT_PLANS,
+            $installmentPlansRequestTransfer
         );
     }
 

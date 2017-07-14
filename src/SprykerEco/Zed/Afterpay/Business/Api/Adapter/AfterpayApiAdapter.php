@@ -9,8 +9,10 @@ namespace SprykerEco\Zed\Afterpay\Business\Api\Adapter;
 
 use Generated\Shared\Transfer\AfterpayAuthorizeRequestTransfer;
 use Generated\Shared\Transfer\AfterpayAvailablePaymentMethodsRequestTransfer;
+use Generated\Shared\Transfer\AfterpayCancelRequestTransfer;
 use Generated\Shared\Transfer\AfterpayCaptureRequestTransfer;
 use Generated\Shared\Transfer\AfterpayCustomerLookupRequestTransfer;
+use Generated\Shared\Transfer\AfterpayInstallmentPlansRequestTransfer;
 use Generated\Shared\Transfer\AfterpayValidateBankAccountRequestTransfer;
 use Generated\Shared\Transfer\AfterpayValidateCustomerRequestTransfer;
 
@@ -101,6 +103,20 @@ class AfterpayApiAdapter implements AdapterInterface
     }
 
     /**
+     * @param \Generated\Shared\Transfer\AfterpayInstallmentPlansRequestTransfer $installmentPlansRequestTransfer
+     *
+     * @return \Generated\Shared\Transfer\AfterpayInstallmentPlansResponseTransfer
+     */
+    public function sendLookupInstallmentPlansRequest(
+        AfterpayInstallmentPlansRequestTransfer $installmentPlansRequestTransfer
+    ) {
+        return $this
+            ->adapterFactory
+            ->createLookupInstallmentPlansCall()
+            ->execute($installmentPlansRequestTransfer);
+    }
+
+    /**
      * @param \Generated\Shared\Transfer\AfterpayCaptureRequestTransfer $captureRequestTransfer
      *
      * @return \Generated\Shared\Transfer\AfterpayCaptureResponseTransfer
@@ -110,8 +126,22 @@ class AfterpayApiAdapter implements AdapterInterface
     ) {
         return $this
             ->adapterFactory
-            ->createFullCaptureCall()
+            ->createCaptureCall()
             ->execute($captureRequestTransfer);
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\AfterpayCancelRequestTransfer $cancelRequestTransfer
+     *
+     * @return \Generated\Shared\Transfer\AfterpayCancelResponseTransfer
+     */
+    public function sendCancelRequest(
+        AfterpayCancelRequestTransfer $cancelRequestTransfer
+    ) {
+        return $this
+            ->adapterFactory
+            ->createCancelCall()
+            ->execute($cancelRequestTransfer);
     }
 
     /**

@@ -11,7 +11,7 @@ use Spryker\Yves\Kernel\AbstractFactory;
 use SprykerEco\Shared\Afterpay\AfterpayConstants;
 use SprykerEco\Yves\Afterpay\AuthorizeWorkflow\OneStepAuthorizeWorkflow;
 use SprykerEco\Yves\Afterpay\AuthorizeWorkflow\Steps\AvailablePaymentMethodsStep;
-use SprykerEco\Yves\Afterpay\AuthorizeWorkflow\Steps\PaymentSubformsFilter;
+use SprykerEco\Yves\Afterpay\AuthorizeWorkflow\Steps\PaymentSubformsFilterStep;
 use SprykerEco\Yves\Afterpay\AuthorizeWorkflow\TwoStepsAuthorizeWorkflow;
 use SprykerEco\Yves\Afterpay\Form\DataProvider\InvoiceDataProvider;
 use SprykerEco\Yves\Afterpay\Form\InvoiceSubForm;
@@ -22,16 +22,6 @@ use SprykerEco\Yves\Afterpay\Handler\AfterpayHandler;
  */
 class AfterpayFactory extends AbstractFactory
 {
-
-    /**
-     * @return \SprykerEco\Yves\Afterpay\Handler\AfterpayHandlerInterface
-     */
-    public function createAfterpayHandler()
-    {
-        return new AfterpayHandler(
-            $this->getAfterpayClient()
-        );
-    }
 
     /**
      * @return \Spryker\Yves\StepEngine\Dependency\Form\SubFormInterface
@@ -54,7 +44,7 @@ class AfterpayFactory extends AbstractFactory
      */
     public function createAfterpayAuthorizeWorkflow()
     {
-        $authorizeWorkflow = $this->getYvesConfig()->getAfterpayAuthorizeWorkflow();
+        $authorizeWorkflow = $this->getConfig()->getAfterpayAuthorizeWorkflow();
 
         switch ($authorizeWorkflow) {
             case AfterpayConstants::AFTERPAY_AUTHORIZE_WORKFLOW_ONE_STEP:
@@ -67,19 +57,11 @@ class AfterpayFactory extends AbstractFactory
     }
 
     /**
-     * @return \SprykerEco\Client\Afterpay\AfterpayClientInterface
+     * @return \Spryker\Client\Kernel\AbstractClient|\SprykerEco\Client\Afterpay\AfterpayClientInterface
      */
     public function getAfterpayClient()
     {
-        return $this->getProvidedDependency(AfterpayDependencyProvider::CLIENT_AFTERPAY);
-    }
-
-    /**
-     * @return \SprykerEco\Yves\Afterpay\AfterpayConfig
-     */
-    public function getYvesConfig()
-    {
-        return $this->getConfig();
+        return $this->getClient();
     }
 
     /**
@@ -112,12 +94,12 @@ class AfterpayFactory extends AbstractFactory
     }
 
     /**
-     * @return \SprykerEco\Yves\Afterpay\AuthorizeWorkflow\Steps\PaymentSubformsFilterInterface
+     * @return \SprykerEco\Yves\Afterpay\AuthorizeWorkflow\Steps\PaymentSubformsFilterStepInterface
      */
     protected function createPaymentSubformsFilter()
     {
-        return new PaymentSubformsFilter(
-            $this->getYvesConfig(),
+        return new PaymentSubformsFilterStep(
+            $this->getConfig(),
             $this->getAfterpayClient()
         );
     }

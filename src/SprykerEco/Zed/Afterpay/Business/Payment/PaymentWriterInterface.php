@@ -26,7 +26,6 @@ interface PaymentWriterInterface
      */
     public function setAuthorizedTotalByIdSalesOrder($authorizedTotal, $idSalesOrder);
 
-
     /**
      * @param int $amountToAdd
      * @param int $idSalesOrder
@@ -34,5 +33,13 @@ interface PaymentWriterInterface
      * @return void
      */
     public function increaseTotalCapturedAmountByIdSalesOrder($amountToAdd, $idSalesOrder);
+
+    /**
+     * @param int $amountToAdd
+     * @param int $idSalesOrder
+     *
+     * @return void
+     */
+    public function increaseTotalCancelledAmountByIdSalesOrder($amountToAdd, $idSalesOrder);
 
 }

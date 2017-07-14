@@ -70,4 +70,5 @@ class CaptureTransaction implements CaptureTransactionInterface
             $captureResponseTransfer->getApiResponse()
         );
     }
+
 }

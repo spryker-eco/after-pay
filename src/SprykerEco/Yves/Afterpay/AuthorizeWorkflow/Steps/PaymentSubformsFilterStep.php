@@ -11,7 +11,7 @@ use Spryker\Yves\StepEngine\Dependency\Form\SubFormInterface;
 use SprykerEco\Client\Afterpay\AfterpayClientInterface;
 use SprykerEco\Yves\Afterpay\AfterpayConfig;
 
-class PaymentSubformsFilter implements PaymentSubformsFilterInterface
+class PaymentSubformsFilterStep implements PaymentSubformsFilterStepInterface
 {
 
     /**
@@ -26,6 +26,7 @@ class PaymentSubformsFilter implements PaymentSubformsFilterInterface
 
     /**
      * @param \SprykerEco\Yves\Afterpay\AfterpayConfig $config
+     * @param \SprykerEco\Client\Afterpay\AfterpayClientInterface $afterpayClient
      */
     public function __construct(AfterpayConfig $config, AfterpayClientInterface $afterpayClient)
     {
@@ -89,7 +90,7 @@ class PaymentSubformsFilter implements PaymentSubformsFilterInterface
      */
     protected function getSubformPaymentMethod(SubFormInterface $subform)
     {
-        $subformNameToPaymentMethodMapping = $this->config->getSubformToPaymentMethodMapping();
+        $subformNameToPaymentMethodMapping = $this->config->getSubFormToPaymentMethodMapping();
         $subformName = $subform->getName();
 
         return $subformNameToPaymentMethodMapping[$subformName] ?? null;

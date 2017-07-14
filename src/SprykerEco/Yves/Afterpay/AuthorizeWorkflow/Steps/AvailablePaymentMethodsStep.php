@@ -33,7 +33,7 @@ class AvailablePaymentMethodsStep implements AvailablePaymentMethodsStepInterfac
      */
     public function getAvailablePaymentMethods(QuoteTransfer $quoteTransfer)
     {
-        $this->setAvailablePaymentMethodsInQuote($quoteTransfer);
+        $this->setAvailablePaymentMethodsToQuote($quoteTransfer);
 
         return $quoteTransfer->getAfterpayAvailablePaymentMethods();
     }
@@ -43,7 +43,7 @@ class AvailablePaymentMethodsStep implements AvailablePaymentMethodsStepInterfac
      *
      * @return void
      */
-    protected function setAvailablePaymentMethodsInQuote(QuoteTransfer $quoteTransfer)
+    protected function setAvailablePaymentMethodsToQuote(QuoteTransfer $quoteTransfer)
     {
         $availablePaymentMethods = $this->afterpayClient->getAvailablePaymentMethods($quoteTransfer);
         $quoteTransfer->setAfterpayAvailablePaymentMethods($availablePaymentMethods);

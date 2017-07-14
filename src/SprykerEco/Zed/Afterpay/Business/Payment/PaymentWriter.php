@@ -72,6 +72,22 @@ class PaymentWriter implements PaymentWriterInterface
             ->save();
     }
 
+    /**
+     * @param int $amountToAdd
+     * @param int $idSalesOrder
+     *
+     * @return void
+     */
+    public function increaseTotalCancelledAmountByIdSalesOrder($amountToAdd, $idSalesOrder)
+    {
+        $afterpayPaymentEntity = $this->getPaymentEntityByIdSalesOrder($idSalesOrder);
+
+        $afterpayPaymentEntity
+            ->setCancelledTotal(
+                $afterpayPaymentEntity->getCancelledTotal() + $amountToAdd
+            )
+            ->save();
+    }
 
     /**
      * @param int $idSalesOrder

@@ -21,7 +21,7 @@ use SprykerEco\Shared\Afterpay\AfterpayConstants;
 class IsCaptureCompletedPlugin extends AbstractPlugin implements ConditionInterface
 {
 
-    const FULL_CAPTURE_TRANSACTION_ACCEPTED = AfterpayConstants::API_TRANSACTION_OUTCOME_ACCEPTED;
+    const CAPTURE_TRANSACTION_ACCEPTED = AfterpayConstants::API_TRANSACTION_OUTCOME_ACCEPTED;
 
     /**
      * @api
@@ -32,7 +32,7 @@ class IsCaptureCompletedPlugin extends AbstractPlugin implements ConditionInterf
      */
     public function check(SpySalesOrderItem $orderItem)
     {
-        return $this->isFullCaptureTransactionSuccessful($orderItem->getFkSalesOrder());
+        return $this->isCaptureTransactionSuccessful($orderItem->getFkSalesOrder());
     }
 
     /**
@@ -40,14 +40,14 @@ class IsCaptureCompletedPlugin extends AbstractPlugin implements ConditionInterf
      *
      * @return bool
      */
-    protected function isFullCaptureTransactionSuccessful($idSalesOrder)
+    protected function isCaptureTransactionSuccessful($idSalesOrder)
     {
-        $fullCaptureTransactionLog = $this->getFullCaptureTransactionLogEntry($idSalesOrder);
-        if ($fullCaptureTransactionLog === null) {
+        $captureTransactionLog = $this->getFullCaptureTransactionLogEntry($idSalesOrder);
+        if ($captureTransactionLog === null) {
             return false;
         }
 
-        return $this->isTransactionSuccessful($fullCaptureTransactionLog);
+        return $this->isTransactionSuccessful($captureTransactionLog);
     }
 
     /**
@@ -57,19 +57,19 @@ class IsCaptureCompletedPlugin extends AbstractPlugin implements ConditionInterf
      */
     protected function getFullCaptureTransactionLogEntry($idSalesOrder)
     {
-        $transactionLogQuery = $this->getQueryContainer()->queryAuthorizeTransactionLog($idSalesOrder);
+        $transactionLogQuery = $this->getQueryContainer()->queryCaptureTransactionLog($idSalesOrder);
 
         return $transactionLogQuery->findOne();
     }
 
     /**
-     * @param \Orm\Zed\Afterpay\Persistence\SpyPaymentAfterpayTransactionLog $fullCaptureTransactionLog
+     * @param \Orm\Zed\Afterpay\Persistence\SpyPaymentAfterpayTransactionLog $captureTransactionLog
      *
      * @return bool
      */
-    protected function isTransactionSuccessful(SpyPaymentAfterpayTransactionLog $fullCaptureTransactionLog)
+    protected function isTransactionSuccessful(SpyPaymentAfterpayTransactionLog $captureTransactionLog)
     {
-        return $fullCaptureTransactionLog->getOutcome() === static::FULL_CAPTURE_TRANSACTION_ACCEPTED;
+        return $captureTransactionLog->getOutcome() === static::CAPTURE_TRANSACTION_ACCEPTED;
     }
 
 }

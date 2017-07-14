@@ -11,16 +11,16 @@ class AfterpayToQuoteBridge implements AfterpayToQuoteInterface
 {
 
     /**
-     * @var \Spryker\Client\Quote\Session\QuoteSessionInterface
+     * @var \Spryker\Client\Quote\QuoteClientInterface
      */
-    protected $quoteSession;
+    protected $quoteClient;
 
     /**
-     * @param \Spryker\Client\Quote\Session\QuoteSessionInterface $quoteSession
+     * @param \Spryker\Client\Quote\QuoteClientInterface $quoteClient
      */
-    public function __construct($quoteSession)
+    public function __construct($quoteClient)
     {
-        $this->quoteSession = $quoteSession;
+        $this->quoteClient = $quoteClient;
     }
 
     /**
@@ -28,7 +28,7 @@ class AfterpayToQuoteBridge implements AfterpayToQuoteInterface
      */
     public function getQuote()
     {
-        return $this->quoteSession->getQuote();
+        return $this->quoteClient->getQuote();
     }
 
 }

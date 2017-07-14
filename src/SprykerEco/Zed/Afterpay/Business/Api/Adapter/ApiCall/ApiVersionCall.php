@@ -7,13 +7,10 @@
 
 namespace SprykerEco\Zed\Afterpay\Business\Api\Adapter\ApiCall;
 
-use Generated\Shared\Transfer\AfterpayApiResponseTransfer;
-use Generated\Shared\Transfer\AfterpayAuthorizeRequestTransfer;
 use Spryker\Shared\Log\LoggerTrait;
-use SprykerEco\Shared\Afterpay\AfterpayConstants;
+use SprykerEco\Shared\Afterpay\AfterpayApiConstants;
 use SprykerEco\Zed\Afterpay\AfterpayConfig;
 use SprykerEco\Zed\Afterpay\Business\Api\Adapter\Client\ClientInterface;
-use SprykerEco\Zed\Afterpay\Business\Api\Adapter\Converter\TransferToCamelCaseArrayConverterInterface;
 use SprykerEco\Zed\Afterpay\Business\Exception\ApiHttpRequestException;
 use SprykerEco\Zed\Afterpay\Dependency\Service\AfterpayToUtilEncodingInterface;
 
@@ -79,14 +76,17 @@ class ApiVersionCall implements ApiVersionCallInterface
     {
         $jsonResponseArray = $this->utilEncoding->decodeJson($jsonResponse, true);
 
-        if (is_array($jsonResponseArray) && isset($jsonResponseArray['version'])) {
-            return $jsonResponseArray['version'];
+        if (is_array($jsonResponseArray) && isset($jsonResponseArray[AfterpayApiConstants::API_VERSION])) {
+            return $jsonResponseArray[AfterpayApiConstants::API_VERSION];
         }
 
         return "";
     }
 
     /**
+     *
+     * @todo extract logging to custom logger trait
+     *
      * @param \SprykerEco\Zed\Afterpay\Business\Exception\ApiHttpRequestException $apiHttpRequestException
      *
      * @return void

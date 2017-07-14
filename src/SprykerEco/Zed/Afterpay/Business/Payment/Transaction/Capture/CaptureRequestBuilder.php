@@ -133,6 +133,8 @@ class CaptureRequestBuilder implements CaptureRequestBuilderInterface
     /**
      * @param \Generated\Shared\Transfer\AfterpayRequestOrderItemTransfer $orderItemRequestTransfer
      * @param \Generated\Shared\Transfer\AfterpayCaptureRequestTransfer $captureRequestTransfer
+     *
+     * @return void
      */
     protected function increaseTotalNetAmount(
         AfterpayRequestOrderItemTransfer $orderItemRequestTransfer,
@@ -150,6 +152,8 @@ class CaptureRequestBuilder implements CaptureRequestBuilderInterface
     /**
      * @param \Generated\Shared\Transfer\AfterpayRequestOrderItemTransfer $orderItemRequestTransfer
      * @param \Generated\Shared\Transfer\AfterpayCaptureRequestTransfer $captureRequestTransfer
+     *
+     * @return void
      */
     protected function increaseTotalGrossAmount(
         AfterpayRequestOrderItemTransfer $orderItemRequestTransfer,
@@ -165,7 +169,7 @@ class CaptureRequestBuilder implements CaptureRequestBuilderInterface
     }
 
     /**
-     * @param string $decimalValue
+     * @param float $decimalValue
      *
      * @return int
      */

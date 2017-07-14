@@ -18,8 +18,13 @@ use Spryker\Shared\Kernel\Store;
 use SprykerEco\Shared\Afterpay\AfterpayConstants;
 use SprykerEco\Zed\Afterpay\Dependency\Facade\AfterpayToMoneyInterface;
 
+
+//@todo extract shared behaviour between quote and order transfers if possible
+
 class QuoteToRequestTransfer implements QuoteToRequestTransferInterface
 {
+    const NEGATIVE_MULTIPLIER = -1;
+    const GIFT_CARD_PROVIDER = 'GiftCard';
 
     /**
      * @var \SprykerEco\Zed\Afterpay\Dependency\Facade\AfterpayToMoneyInterface
@@ -103,6 +108,8 @@ class QuoteToRequestTransfer implements QuoteToRequestTransferInterface
             );
         }
 
+        $this->addGiftcardItems($quoteTransfer, $orderRequestTransfer);
+
         return $orderRequestTransfer;
     }
 
@@ -161,6 +168,9 @@ class QuoteToRequestTransfer implements QuoteToRequestTransferInterface
     protected function getStringDecimalQuoteGrossTotal(QuoteTransfer $quoteTransfer)
     {
         $quoteTotal = $quoteTransfer->getTotals()->getGrandTotal();
+        if ($quoteTransfer->getTotals()->getPriceToPay()) {
+            $quoteTotal = $quoteTransfer->getTotals()->getPriceToPay();
+        }
 
         return (string)$this->money->convertIntegerToDecimal($quoteTotal);
     }
@@ -203,6 +213,48 @@ class QuoteToRequestTransfer implements QuoteToRequestTransferInterface
         $itemUnitNetAmount = $itemUnitGrossPriceAmount - $itemUnitTaxAmount;
 
         return (string)$this->money->convertIntegerToDecimal($itemUnitNetAmount);
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
+     * @param  \Generated\Shared\Transfer\AfterpayRequestOrderTransfer $orderRequestTransfer
+     *
+     * @return void
+     */
+    protected function addGiftcardItems(QuoteTransfer $quoteTransfer, AfterpayRequestOrderTransfer $orderRequestTransfer)
+    {
+        foreach ($this->getGiftcards($quoteTransfer) as $index => $paymentTransfer) {
+
+            $orderItemRequestTransfer = new AfterpayRequestOrderItemTransfer();
+            $amount = (string)$this->money->convertIntegerToDecimal($paymentTransfer->getAmount());
+
+            $orderItemRequestTransfer
+                ->setProductId(static::GIFT_CARD_PROVIDER . $index)
+                ->setDescription(static::GIFT_CARD_PROVIDER . $index)
+                ->setGrossUnitPrice(static::NEGATIVE_MULTIPLIER * $amount)
+                ->setQuantity(1);
+
+            $orderRequestTransfer->addItem($orderItemRequestTransfer);
+        }
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
+     *
+     * @return \Generated\Shared\Transfer\PaymentTransfer[]
+     */
+    protected function getGiftcards(QuoteTransfer $quoteTransfer)
+    {
+        $giftCardPayments = [];
+        foreach ($quoteTransfer->getPayments() as $paymentTransfer) {
+            if ($paymentTransfer->getPaymentMethod() !== static::GIFT_CARD_PROVIDER) {
+                continue;
+            }
+
+            $giftCardPayments[] = $paymentTransfer;
+        }
+
+        return $giftCardPayments;
     }
 
 }

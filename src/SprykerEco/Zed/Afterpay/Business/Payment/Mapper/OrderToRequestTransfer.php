@@ -8,6 +8,7 @@
 namespace SprykerEco\Zed\Afterpay\Business\Payment\Mapper;
 
 use Generated\Shared\Transfer\AfterpayAuthorizeRequestTransfer;
+use Generated\Shared\Transfer\AfterpayCancelRequestTransfer;
 use Generated\Shared\Transfer\AfterpayCaptureRequestTransfer;
 use Generated\Shared\Transfer\AfterpayRequestAddressTransfer;
 use Generated\Shared\Transfer\AfterpayRequestCustomerTransfer;
@@ -18,10 +19,13 @@ use Generated\Shared\Transfer\ItemTransfer;
 use Generated\Shared\Transfer\OrderTransfer;
 use Spryker\Shared\Kernel\Store;
 use SprykerEco\Shared\Afterpay\AfterpayConstants;
+use SprykerEco\Zed\Afterpay\Business\Payment\Transaction\PriceToPayProviderInterface;
 use SprykerEco\Zed\Afterpay\Dependency\Facade\AfterpayToMoneyInterface;
 
 class OrderToRequestTransfer implements OrderToRequestTransferInterface
 {
+    const NEGATIVE_MULTIPLIER = -1;
+    const GIFT_CARD_PROVIDER = 'GiftCard';
 
     /**
      * @var \SprykerEco\Zed\Afterpay\Dependency\Facade\AfterpayToMoneyInterface
@@ -41,16 +45,29 @@ class OrderToRequestTransfer implements OrderToRequestTransferInterface
     ];
 
     /**
+     * @var \SprykerEco\Zed\Afterpay\Business\Payment\Transaction\PriceToPayProviderInterface
+     */
+    protected $priceToPayProvider;
+
+    /**
      * @param \SprykerEco\Zed\Afterpay\Dependency\Facade\AfterpayToMoneyInterface $money
      * @param \Spryker\Shared\Kernel\Store $store
+     * @param \SprykerEco\Zed\Afterpay\Business\Payment\Transaction\PriceToPayProviderInterface $priceToPayProvider
      */
-    public function __construct(AfterpayToMoneyInterface $money, Store $store)
+    public function __construct(
+        AfterpayToMoneyInterface $money,
+        Store $store,
+        PriceToPayProviderInterface $priceToPayProvider
+    )
     {
         $this->money = $money;
         $this->store = $store;
+        $this->priceToPayProvider = $priceToPayProvider;
     }
 
     /**
+     * @todo consider to split this class into separate one-s, like orderToAuthorizeRequest, orderToCaptureRequest, etc.
+     *
      * @param \Generated\Shared\Transfer\OrderTransfer $orderWithPaymentTransfer
      *
      * @return \Generated\Shared\Transfer\AfterpayAuthorizeRequestTransfer
@@ -88,6 +105,26 @@ class OrderToRequestTransfer implements OrderToRequestTransferInterface
         $requestTransfer
             ->setIdSalesOrder($orderTransfer->getIdSalesOrder())
             ->setOrderDetails(
+                $this->buildOrderRequestTransfer($orderTransfer)
+                    ->setTotalGrossAmount(0)
+                    ->setTotalNetAmount(0)
+            );
+
+        return $requestTransfer;
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
+     *
+     * @return \Generated\Shared\Transfer\AfterpayCancelRequestTransfer
+     */
+    public function orderToBaseCancelRequest(OrderTransfer $orderTransfer)
+    {
+        $requestTransfer = new AfterpayCancelRequestTransfer();
+
+        $requestTransfer
+            ->setIdSalesOrder($orderTransfer->getIdSalesOrder())
+            ->setCancellationDetails(
                 $this->buildOrderRequestTransfer($orderTransfer)
                     ->setTotalGrossAmount(0)
                     ->setTotalNetAmount(0)
@@ -146,20 +183,25 @@ class OrderToRequestTransfer implements OrderToRequestTransferInterface
             );
         }
 
+        $this->addGiftcardItems($orderWithPaymentTransfer, $orderRequestTransfer);
+
         return $orderRequestTransfer;
     }
 
     /**
      * @param \Generated\Shared\Transfer\OrderTransfer $orderWithPaymentTransfer
+     *
      * @return \Generated\Shared\Transfer\AfterpayRequestOrderTransfer
      */
     protected function buildOrderRequestTransfer(OrderTransfer $orderWithPaymentTransfer)
     {
+        $priceToPay = $this->priceToPayProvider->getPriceToPayForOrder($orderWithPaymentTransfer);
+
         $orderRequestTransfer = new AfterpayRequestOrderTransfer();
         $orderRequestTransfer
             ->setNumber($orderWithPaymentTransfer->getOrderReference())
-            ->setTotalGrossAmount($this->getStringDecimalOrderGrossTotal($orderWithPaymentTransfer))
-            ->setTotalNetAmount($this->getStringDecimalOrderNetTotal($orderWithPaymentTransfer));
+            ->setTotalGrossAmount($this->getStringDecimalOrderGrossTotal($priceToPay))
+            ->setTotalNetAmount($this->getStringDecimalOrderNetTotal($orderWithPaymentTransfer, $priceToPay));
 
         return $orderRequestTransfer;
     }
@@ -227,27 +269,33 @@ class OrderToRequestTransfer implements OrderToRequestTransferInterface
     }
 
     /**
-     * @param \Generated\Shared\Transfer\OrderTransfer $orderWithPaymentTransfer
+     * @todo think about moving such int-to-decimal and back operations to the Api layer. Do all the operations
+     * in integers, on the business side, and translate ints to decimal-strings right before building json requests.
+     * ! Make sure to pass the right request payload to the transaction logs (with floats, not ints) !
+     * To do this, it may be necessary to duplicate all request transfer objects:
+     * "business" one-s will contain totals as ints
+     * "api" one-s will contain totals as strings
+     * Like this it will be easier to see, what's happening with the data.
+     *
+     * @param int $priceToPay
      *
      * @return string
      */
-    protected function getStringDecimalOrderGrossTotal(OrderTransfer $orderWithPaymentTransfer)
+    protected function getStringDecimalOrderGrossTotal($priceToPay)
     {
-        $orderGrossTotal = $orderWithPaymentTransfer->getTotals()->getGrandTotal();
-
-        return (string)$this->money->convertIntegerToDecimal($orderGrossTotal);
+        return (string)$this->money->convertIntegerToDecimal($priceToPay);
     }
 
     /**
      * @param \Generated\Shared\Transfer\OrderTransfer $orderWithPaymentTransfer
+     * @param int $priceToPay
      *
      * @return float
      */
-    protected function getStringDecimalOrderNetTotal(OrderTransfer $orderWithPaymentTransfer)
+    protected function getStringDecimalOrderNetTotal(OrderTransfer $orderWithPaymentTransfer, $priceToPay)
     {
-        $orderGrossTotal = $orderWithPaymentTransfer->getTotals()->getGrandTotal();
         $orderTaxTotal = $orderWithPaymentTransfer->getTotals()->getTaxTotal()->getAmount();
-        $orderNetTotal = $orderGrossTotal - $orderTaxTotal;
+        $orderNetTotal = $priceToPay - $orderTaxTotal;
 
         return (string)$this->money->convertIntegerToDecimal($orderNetTotal);
     }
@@ -278,4 +326,45 @@ class OrderToRequestTransfer implements OrderToRequestTransferInterface
         return (string)$this->money->convertIntegerToDecimal($itemUnitNetAmount);
     }
 
+    /**
+     * @param \Generated\Shared\Transfer\OrderTransfer $orderWithPaymentTransfer
+     * @param  \Generated\Shared\Transfer\AfterpayRequestOrderTransfer $orderRequestTransfer
+     *
+     * @return void
+     */
+    protected function addGiftcardItems(OrderTransfer $orderWithPaymentTransfer, AfterpayRequestOrderTransfer $orderRequestTransfer)
+    {
+        foreach ($this->getGiftcards($orderWithPaymentTransfer) as $index => $paymentTransfer) {
+
+            $orderItemRequestTransfer = new AfterpayRequestOrderItemTransfer();
+            $amount = (string)$this->money->convertIntegerToDecimal($paymentTransfer->getAmount());
+
+            $orderItemRequestTransfer
+                ->setProductId(static::GIFT_CARD_PROVIDER . $index)
+                ->setDescription(static::GIFT_CARD_PROVIDER . $index)
+                ->setGrossUnitPrice(static::NEGATIVE_MULTIPLIER * $amount)
+                ->setQuantity(1);
+
+            $orderRequestTransfer->addItem($orderItemRequestTransfer);
+        }
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\OrderTransfer $orderWithPaymentTransfer
+     *
+     * @return \Generated\Shared\Transfer\PaymentTransfer[]
+     */
+    protected function getGiftcards(OrderTransfer $orderWithPaymentTransfer)
+    {
+        $giftCardPayments = [];
+        foreach ($orderWithPaymentTransfer->getPayments() as $paymentTransfer) {
+            if ($paymentTransfer->getPaymentMethod() !== static::GIFT_CARD_PROVIDER) {
+                continue;
+            }
+
+            $giftCardPayments[] = $paymentTransfer;
+        }
+
+        return $giftCardPayments;
+    }
 }

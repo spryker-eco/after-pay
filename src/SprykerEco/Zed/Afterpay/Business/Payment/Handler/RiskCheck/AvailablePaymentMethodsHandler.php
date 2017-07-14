@@ -105,9 +105,10 @@ class AvailablePaymentMethodsHandler implements AvailablePaymentMethodsHandlerIn
     {
         $availablePaymentMethodNames = [];
         foreach ($apiResponseTransfer->getPaymentMethods() as $paymentMethodArray) {
-            if (isset($paymentMethodArray['type'])) {
-                $availablePaymentMethodNames[] = $paymentMethodArray['type'];
+            if (!isset($paymentMethodArray['type'])) {
+                continue;
             }
+            $availablePaymentMethodNames[] = $paymentMethodArray['type'];
         }
 
         return array_unique($availablePaymentMethodNames);

@@ -13,6 +13,12 @@ interface CustomerLookupPluginInterface
 {
 
     /**
+     * Specification:
+     *  - Makes "customer-lookup" call to the afterpay API, to find customer based on social security number or mobile number.
+     *  Response contains customer's account with list of addresses
+     *
+     * @api
+     *
      * @param \Generated\Shared\Transfer\AfterpayCustomerLookupRequestTransfer $customerLookupRequestTransfer
      *
      * @return \Generated\Shared\Transfer\AfterpayCustomerLookupResponseTransfer

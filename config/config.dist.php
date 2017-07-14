@@ -8,12 +8,12 @@
  * Copy over the following configs to your config
  */
 
+use Spryker\Shared\Application\ApplicationConstants;
 use Spryker\Shared\Kernel\KernelConstants;
 use Spryker\Shared\Oms\OmsConstants;
 use Spryker\Shared\Sales\SalesConstants;
 use Spryker\Zed\Oms\OmsConfig;
 use SprykerEco\Shared\Afterpay\AfterpayConstants;
-use Spryker\Shared\Application\ApplicationConstants;
 
 // Afterpay configuration
 
@@ -58,7 +58,6 @@ $config[AfterpayConstants::HOST_SSL_YVES] = $config[ApplicationConstants::HOST_S
 $config[AfterpayConstants::HOST_YVES] = $config[ApplicationConstants::HOST_YVES];
 
 $config[AfterpayConstants::AFTERPAY_YVES_AUTHORIZE_PAYMENT_FAILED_URL] = 'http://' . $config[AfterpayConstants::HOST_YVES] . '/checkout/payment';
-
 
 $config[AfterpayConstants::AFTERPAY_AUTHORIZE_WORKFLOW] = AfterpayConstants::AFTERPAY_AUTHORIZE_WORKFLOW_TWO_STEPS;
 

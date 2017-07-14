@@ -8,7 +8,6 @@
 namespace SprykerEco\Zed\Afterpay\Communication\Plugin\Checkout\Oms\Command;
 
 use Generated\Shared\Transfer\ItemTransfer;
-use Generated\Shared\Transfer\OrderTransfer;
 use Orm\Zed\Sales\Persistence\SpySalesOrder;
 use Orm\Zed\Sales\Persistence\SpySalesOrderItem;
 use Spryker\Zed\Kernel\Communication\AbstractPlugin;

@@ -31,6 +31,7 @@ class TwoStepsAuthorizeRequestBuilder implements AuthorizeRequestBuilderInterfac
 
     /**
      * TwoStepsAuthorizeRequestBuilder constructor.
+     *
      * @param \SprykerEco\Zed\Afterpay\Business\Payment\Mapper\OrderToRequestTransferInterface $orderToRequestMapper
      */
     public function __construct(OrderToRequestTransferInterface $orderToRequestMapper)
@@ -54,9 +55,7 @@ class TwoStepsAuthorizeRequestBuilder implements AuthorizeRequestBuilderInterfac
                 $orderWithPaymentTransfer->getIdSalesOrder()
             );
 
-//        $this->addOrderNumber($authorizeRequestTransfer, $orderWithPaymentTransfer);
         $this->addCheckoutId($authorizeRequestTransfer, $orderWithPaymentTransfer);
-//        $this->addPaymentDetails($authorizeRequestTransfer, $orderWithPaymentTransfer);
 
         return $authorizeRequestTransfer;
     }

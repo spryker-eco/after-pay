@@ -7,7 +7,7 @@
 
 namespace SprykerEco\Yves\Afterpay\AuthorizeWorkflow\Steps;
 
-interface PaymentSubformsFilterInterface
+interface PaymentSubformsFilterStepInterface
 {
 
     /**

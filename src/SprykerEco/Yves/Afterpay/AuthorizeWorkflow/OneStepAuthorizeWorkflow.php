@@ -23,23 +23,13 @@ class OneStepAuthorizeWorkflow extends AbstractAfterpayAuthorizeWorkflow impleme
     }
 
     /**
-     * @param \Spryker\Yves\StepEngine\Dependency\Form\SubFormInterface[]
+     * @param \Spryker\Yves\StepEngine\Dependency\Form\SubFormInterface[] $paymentSubforms
      *
      * @return \Spryker\Yves\StepEngine\Dependency\Form\SubFormInterface[]
      */
     public function filterAvailablePaymentMethods(array $paymentSubforms)
     {
         return $paymentSubforms;
-    }
-
-    /**
-     * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
-     *
-     * @return \Generated\Shared\Transfer\QuoteTransfer
-     */
-    public function expandQuoteAfterPaymentStep(QuoteTransfer $quoteTransfer)
-    {
-        return $quoteTransfer;
     }
 
 }

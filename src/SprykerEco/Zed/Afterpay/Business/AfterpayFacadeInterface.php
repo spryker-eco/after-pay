@@ -8,6 +8,7 @@
 namespace SprykerEco\Zed\Afterpay\Business;
 
 use Generated\Shared\Transfer\AfterpayCustomerLookupRequestTransfer;
+use Generated\Shared\Transfer\AfterpayInstallmentPlansRequestTransfer;
 use Generated\Shared\Transfer\AfterpayValidateBankAccountRequestTransfer;
 use Generated\Shared\Transfer\AfterpayValidateCustomerRequestTransfer;
 use Generated\Shared\Transfer\CheckoutResponseTransfer;
@@ -79,6 +80,19 @@ interface AfterpayFacadeInterface
 
     /**
      * Specification:
+     *  - Makes "lookup/installment-plans" call to the afterpay API, to get the available installment plans for the specific
+     *  product/basket value. Returns monthly installment amount, interest and fees.
+     *
+     * @param \Generated\Shared\Transfer\AfterpayInstallmentPlansRequestTransfer $installmentPlansRequestTransfer
+     *
+     * @return \Generated\Shared\Transfer\AfterpayInstallmentPlansResponseTransfer
+     */
+    public function lookupInstallmentPlans(
+        AfterpayInstallmentPlansRequestTransfer $installmentPlansRequestTransfer
+    );
+
+    /**
+     * Specification:
      * - Sends payment authorize request to Afterpay gateway.
      * - Saves the transaction result in DB for future recognition
      *
@@ -104,6 +118,21 @@ interface AfterpayFacadeInterface
      * @return \Generated\Shared\Transfer\AfterpayResponseTransfer
      */
     public function capturePayment(ItemTransfer $itemTransfer, OrderTransfer $orderTransfer);
+
+    /**
+     * Specification:
+     * - Sends "void" request to Afterpay gateway, to cancel payment for a specific order item, before payment is captured
+     * - If it is the last item cancellation request for given order, cancels also full expense amount.
+     * - Saves the transaction result in DB and updates payment with new total cancelled amount.
+     *
+     * @api
+     *
+     * @param \Generated\Shared\Transfer\ItemTransfer $itemTransfer
+     * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
+     *
+     * @return \Generated\Shared\Transfer\AfterpayResponseTransfer
+     */
+    public function cancelPayment(ItemTransfer $itemTransfer, OrderTransfer $orderTransfer);
 
     /**
      * Specification:

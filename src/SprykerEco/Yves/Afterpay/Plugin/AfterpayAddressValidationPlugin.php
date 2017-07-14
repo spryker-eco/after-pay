@@ -17,6 +17,10 @@ class AfterpayAddressValidationPlugin extends AbstractPlugin implements AddressV
 {
 
     /**
+     * {@inheritdoc}
+     *
+     * @api
+     *
      * @param \Generated\Shared\Transfer\AfterpayValidateCustomerRequestTransfer $validateCustomerRequestTransfer
      *
      * @return \Generated\Shared\Transfer\AfterpayValidateCustomerResponseTransfer

@@ -8,6 +8,7 @@
 namespace SprykerEco\Zed\Afterpay\Business;
 
 use Generated\Shared\Transfer\AfterpayCustomerLookupRequestTransfer;
+use Generated\Shared\Transfer\AfterpayInstallmentPlansRequestTransfer;
 use Generated\Shared\Transfer\AfterpayValidateBankAccountRequestTransfer;
 use Generated\Shared\Transfer\AfterpayValidateCustomerRequestTransfer;
 use Generated\Shared\Transfer\CheckoutResponseTransfer;
@@ -94,6 +95,23 @@ class AfterpayFacade extends AbstractFacade implements AfterpayFacadeInterface
      *
      * @api
      *
+     * @param \Generated\Shared\Transfer\AfterpayInstallmentPlansRequestTransfer $installmentPlansRequestTransfer
+     *
+     * @return \Generated\Shared\Transfer\AfterpayInstallmentPlansResponseTransfer
+     */
+    public function lookupInstallmentPlans(
+        AfterpayInstallmentPlansRequestTransfer $installmentPlansRequestTransfer
+    ) {
+        return $this->getFactory()
+            ->createLookupInstallmentPlansHandler()
+            ->lookupInstallmentPlans($installmentPlansRequestTransfer);
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @api
+     *
      * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
      * @param \Generated\Shared\Transfer\CheckoutResponseTransfer $checkoutResponseTransfer
      *
@@ -161,6 +179,23 @@ class AfterpayFacade extends AbstractFacade implements AfterpayFacadeInterface
      *
      * @api
      *
+     * @param \Generated\Shared\Transfer\ItemTransfer $itemTransfer
+     * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
+     *
+     * @return \Generated\Shared\Transfer\AfterpayResponseTransfer
+     */
+    public function cancelPayment(ItemTransfer $itemTransfer, OrderTransfer $orderTransfer)
+    {
+        $this->getFactory()
+            ->createCancelTransactionHandler()
+            ->cancel($itemTransfer, $orderTransfer);
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @api
+     *
      * @param int $idSalesOrder
      *
      * @return \Generated\Shared\Transfer\AfterpayPaymentTransfer
@@ -199,4 +234,5 @@ class AfterpayFacade extends AbstractFacade implements AfterpayFacadeInterface
             ->createApiAdapter()
             ->getApiStatus();
     }
+
 }

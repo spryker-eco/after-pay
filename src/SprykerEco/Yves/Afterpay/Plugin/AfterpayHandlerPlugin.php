@@ -23,6 +23,10 @@ class AfterpayHandlerPlugin extends AbstractPlugin implements
 {
 
     /**
+     * {@inheritdoc}
+     *
+     * @api
+     *
      * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
      *
      * @return \Generated\Shared\Transfer\QuoteTransfer
@@ -36,6 +40,10 @@ class AfterpayHandlerPlugin extends AbstractPlugin implements
     }
 
     /**
+     * {@inheritdoc}
+     *
+     * @api
+     *
      * @param \Spryker\Yves\StepEngine\Dependency\Form\SubFormInterface[] $paymentSubforms
      *
      * @return \Spryker\Yves\StepEngine\Dependency\Form\SubFormInterface[]
@@ -49,6 +57,10 @@ class AfterpayHandlerPlugin extends AbstractPlugin implements
     }
 
     /**
+     * {@inheritdoc}
+     *
+     * @api
+     *
      * @param \Symfony\Component\HttpFoundation\Request $request
      * @param \Spryker\Shared\Kernel\Transfer\AbstractTransfer|\Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
      *

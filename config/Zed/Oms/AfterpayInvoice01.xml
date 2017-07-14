@@ -7,6 +7,7 @@
     <process name="AfterpayInvoice01" main="true">
         <subprocesses>
             <process>Authorization</process>
+            <process>Cancellation</process>
             <process>Shipment</process>
             <process>Capture</process>
         </subprocesses>
@@ -52,6 +53,7 @@
     </process>
 
     <process name="Authorization" file="AfterpaySubprocesses/Authorization.xml"/>
+    <process name="Cancellation" file="AfterpaySubprocesses/Cancellation.xml"/>
     <process name="Shipment" file="AfterpaySubprocesses/Shipment.xml"/>
     <process name="Capture" file="AfterpaySubprocesses/Capture.xml"/>
 
