@@ -23,6 +23,8 @@ use SprykerEco\Zed\Afterpay\Dependency\Facade\AfterpayToMoneyInterface;
 
 class QuoteToRequestTransfer implements QuoteToRequestTransferInterface
 {
+    const NEGATIVE_MULTIPLIER = -1;
+    const GIFT_CARD_PROVIDER = 'GiftCard';
 
     /**
      * @var \SprykerEco\Zed\Afterpay\Dependency\Facade\AfterpayToMoneyInterface
@@ -227,9 +229,9 @@ class QuoteToRequestTransfer implements QuoteToRequestTransferInterface
             $amount = (string)$this->money->convertIntegerToDecimal($paymentTransfer->getAmount());
 
             $orderItemRequestTransfer
-                ->setProductId('GiftCard' . $index)
-                ->setDescription('GiftCard' . $index)
-                ->setGrossUnitPrice(-$amount)
+                ->setProductId(static::GIFT_CARD_PROVIDER . $index)
+                ->setDescription(static::GIFT_CARD_PROVIDER . $index)
+                ->setGrossUnitPrice(static::NEGATIVE_MULTIPLIER * $amount)
                 ->setQuantity(1);
 
             $orderRequestTransfer->addItem($orderItemRequestTransfer);
@@ -245,7 +247,7 @@ class QuoteToRequestTransfer implements QuoteToRequestTransferInterface
     {
         $giftCardPayments = [];
         foreach ($quoteTransfer->getPayments() as $paymentTransfer) {
-            if ($paymentTransfer->getPaymentMethod() !== 'GiftCard') {
+            if ($paymentTransfer->getPaymentMethod() !== static::GIFT_CARD_PROVIDER) {
                 continue;
             }
 
