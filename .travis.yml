@@ -32,7 +32,7 @@ env:
     - APPLICATION_STORE=DE
     - MODULE_DIR=module
     - SHOP_DIR=current
-    - MODULE_NAME=heidelpay
+    - MODULE_NAME=after-pay
 
 cache:
   directories:
