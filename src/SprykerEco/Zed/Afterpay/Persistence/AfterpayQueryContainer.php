@@ -18,6 +18,7 @@ class AfterpayQueryContainer extends AbstractQueryContainer implements AfterpayQ
     const TRANSACTION_TYPE_AUTHORIZE = AfterpayConstants::TRANSACTION_TYPE_AUTHORIZE;
     const TRANSACTION_TYPE_CAPTURE = AfterpayConstants::TRANSACTION_TYPE_CAPTURE;
     const TRANSACTION_TYPE_CANCEL = AfterpayConstants::TRANSACTION_TYPE_CANCEL;
+    const TRANSACTION_TYPE_REFUND = AfterpayConstants::TRANSACTION_TYPE_REFUND;
 
     /**
      * @api
@@ -69,6 +70,21 @@ class AfterpayQueryContainer extends AbstractQueryContainer implements AfterpayQ
      *
      * @param int $idSalesOrder
      *
+     * @return \Orm\Zed\Afterpay\Persistence\SpyPaymentAfterpayTransactionLogQuery
+     */
+    public function queryRefundTransactionLog($idSalesOrder)
+    {
+        return $this->getFactory()
+            ->createPaymentAfterpayTransactionLogQuery()
+            ->filterByFkSalesOrder($idSalesOrder)
+            ->filterByTransactionType(static::TRANSACTION_TYPE_REFUND);
+    }
+
+    /**
+     * @api
+     *
+     * @param int $idSalesOrder
+     *
      * @return \Orm\Zed\Afterpay\Persistence\SpyPaymentAfterpayQuery
      */
     public function queryPaymentByIdSalesOrder($idSalesOrder)
@@ -77,6 +93,23 @@ class AfterpayQueryContainer extends AbstractQueryContainer implements AfterpayQ
             ->getFactory()
             ->createPaymentAfterpayQuery()
             ->filterByFkSalesOrder($idSalesOrder);
+    }
+
+    /**
+     * @api
+     *
+     * @param int $idSalesOrderItem
+     * @param int $idPayment
+     *
+     * @return \Orm\Zed\Afterpay\Persistence\SpyPaymentAfterpayOrderItemQuery
+     */
+    public function queryPaymentOrderItemByIdSalesOrderAndIdPayment($idSalesOrderItem, $idPayment)
+    {
+        return $this
+            ->getFactory()
+            ->createPaymentAfterpayOrderItemQuery()
+            ->filterByFkSalesOrderItem($idSalesOrderItem)
+            ->filterByFkPaymentAfterpay($idPayment);
     }
 
     /**

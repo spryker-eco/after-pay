@@ -15,4 +15,12 @@ interface PaymentReaderInterface
      * @return \Generated\Shared\Transfer\AfterpayPaymentTransfer
      */
     public function getPaymentByIdSalesOrder($idSalesOrder);
+
+    /**
+     * @param int $idSalesOrderItem
+     * @param int $idPayment
+     *
+     * @return \Generated\Shared\Transfer\AfterpayPaymentOrderItemTransfer
+     */
+    public function getPaymentOrderItemByIdSalesOrderItemAndIdPayment($idSalesOrderItem, $idPayment);
 }

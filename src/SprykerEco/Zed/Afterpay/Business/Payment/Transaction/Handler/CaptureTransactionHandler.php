@@ -68,16 +68,47 @@ class CaptureTransactionHandler implements CaptureTransactionHandlerInterface
         $captureRequestTransfer = $this->buildCaptureRequestForOrderItem($itemTransfer, $afterpayCallTransfer);
         $paymentTransfer = $this->getPaymentTransferForItem($itemTransfer);
 
-        if ($this->isFirstItemToCapture($paymentTransfer)) {
-            $this->addExpensesToCaptureRequest($paymentTransfer->getExpenseTotal(), $captureRequestTransfer);
-        }
-
+        $this->processExpensesCapture($paymentTransfer, $orderTransfer);
         $captureResponseTransfer = $this->transaction->executeTransaction($captureRequestTransfer);
 
-        $this->updateOrderPayment(
+        $this->updateOrderPayment($captureResponseTransfer, $orderTransfer->getIdSalesOrder());
+        $this->updatePaymentOrderItem(
             $captureResponseTransfer,
-            $itemTransfer->getFkSalesOrder()
+            $itemTransfer,
+            $paymentTransfer
         );
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\AfterpayPaymentTransfer $paymentTransfer
+     * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
+     *
+     * @return void
+     */
+    protected function processExpensesCapture(AfterpayPaymentTransfer $paymentTransfer, OrderTransfer $orderTransfer)
+    {
+        if (!$this->isFirstItemToCapture($paymentTransfer)) {
+            return;
+        }
+        $shipmentCaptureRequestTransfer = $this->buildExpensesCaptureRequest($paymentTransfer, $orderTransfer);
+        $shipmentCaptureResponseTransfer = $this->transaction->executeTransaction($shipmentCaptureRequestTransfer);
+        $this->updateOrderPayment($shipmentCaptureResponseTransfer, $orderTransfer->getIdSalesOrder());
+        $this->updatePaymentWithExpensesCaptureNumber($shipmentCaptureResponseTransfer, $orderTransfer->getIdSalesOrder());
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\AfterpayPaymentTransfer $paymentTransfer
+     * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
+     *
+     * @return \Generated\Shared\Transfer\AfterpayCaptureRequestTransfer
+     */
+    protected function buildExpensesCaptureRequest(AfterpayPaymentTransfer $paymentTransfer, OrderTransfer $orderTransfer)
+    {
+        $baseCaptureRequest = $this->captureRequestBuilder
+            ->buildBaseCaptureRequestForOrder($orderTransfer);
+        $this->addExpensesToCaptureRequest($paymentTransfer->getExpenseTotal(), $baseCaptureRequest);
+
+        return $baseCaptureRequest;
     }
 
     /**
@@ -109,7 +140,7 @@ class CaptureTransactionHandler implements CaptureTransactionHandlerInterface
      */
     protected function isFirstItemToCapture(AfterpayPaymentTransfer $paymentTransfer)
     {
-        return $paymentTransfer->getCapturedTotal() === null;
+        return $paymentTransfer->getCapturedTotal() + $paymentTransfer->getRefundedTotal() === 0;
     }
 
     /**
@@ -157,6 +188,45 @@ class CaptureTransactionHandler implements CaptureTransactionHandlerInterface
         $this->paymentWriter->increaseTotalCapturedAmountByIdSalesOrder(
             $capturedResponseTransfer->getCapturedAmount(),
             $idSalesOrder
+        );
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\AfterpayCaptureResponseTransfer $capturedResponseTransfer
+     * @param int $idSalesOrder
+     *
+     * @return void
+     */
+    protected function updatePaymentWithExpensesCaptureNumber(
+        AfterpayCaptureResponseTransfer $capturedResponseTransfer,
+        $idSalesOrder
+    ) {
+        if (!$capturedResponseTransfer->getCaptureNumber()) {
+            return;
+        }
+
+        $this->paymentWriter->updateExpensesCaptureNumber(
+            $capturedResponseTransfer->getCaptureNumber(),
+            $idSalesOrder
+        );
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\AfterpayCaptureResponseTransfer $captureResponseTransfer
+     * @param \Generated\Shared\Transfer\ItemTransfer $itemTransfer
+     * @param \Generated\Shared\Transfer\AfterpayPaymentTransfer $paymentTransfer
+     *
+     * @return void
+     */
+    protected function updatePaymentOrderItem(
+        $captureResponseTransfer,
+        $itemTransfer,
+        $paymentTransfer
+    ) {
+        $this->paymentWriter->setCaptureNumberByIdSalesOrderItemAndIdPayment(
+            $captureResponseTransfer->getCaptureNumber(),
+            $itemTransfer->getIdSalesOrderItem(),
+            $paymentTransfer->getIdPaymentAfterpay()
         );
     }
 }

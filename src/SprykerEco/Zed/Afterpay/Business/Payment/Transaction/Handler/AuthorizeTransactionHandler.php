@@ -67,4 +67,33 @@ class AuthorizeTransactionHandler implements AuthorizeTransactionHandlerInterfac
 
         return $authorizeRequestTransfer;
     }
+
+    /**
+     * @param \Generated\Shared\Transfer\AfterpayAuthorizeRequestTransfer $authorizeRequestTransfer
+     * @param \Generated\Shared\Transfer\AfterpayApiResponseTransfer $authorizeResponseTransfer
+     *
+     * @return void
+     */
+    protected function setPaymentReservationId(
+        AfterpayAuthorizeRequestTransfer $authorizeRequestTransfer,
+        AfterpayApiResponseTransfer $authorizeResponseTransfer
+    ) {
+        $this->paymentWriter->setIdReservationByIdSalesOrder(
+            $authorizeResponseTransfer->getReservationId(),
+            $authorizeRequestTransfer->getIdSalesOrder()
+        );
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
+     *
+     * @return void
+     */
+    protected function setPaymentTotalAuthorizedAmount(OrderTransfer $orderTransfer)
+    {
+        $this->paymentWriter->setAuthorizedTotalByIdSalesOrder(
+            $orderTransfer->getTotals()->getGrandTotal(),
+            $orderTransfer->getIdSalesOrder()
+        );
+    }
 }

@@ -72,6 +72,61 @@ class PaymentWriter implements PaymentWriterInterface
     }
 
     /**
+     * @param string $captureNumber
+     * @param int $idSalesOrder
+     *
+     * @return void
+     */
+    public function updateExpensesCaptureNumber($captureNumber, $idSalesOrder)
+    {
+        $afterpayPaymentEntity = $this->getPaymentEntityByIdSalesOrder($idSalesOrder);
+        $afterpayPaymentEntity
+            ->setExpensesCaptureNumber(
+                $captureNumber
+            )
+            ->save();
+    }
+
+    /**
+     * @param int $refundedAmount
+     * @param int $idSalesOrder
+     *
+     * @return void
+     */
+    public function increaseRefundedTotalByIdSalesOrder($refundedAmount, $idSalesOrder)
+    {
+        $afterpayPaymentEntity = $this->getPaymentEntityByIdSalesOrder($idSalesOrder);
+
+        $refundedTotal = $afterpayPaymentEntity->getRefundedTotal();
+
+        $afterpayPaymentEntity
+            ->setRefundedTotal(
+                $refundedTotal + $refundedAmount
+            )
+            ->save();
+    }
+
+    /**
+     * @param int $captureNumber
+     * @param int $idSalesOrderItem
+     * @param int $idPayment
+     *
+     * @return void
+     */
+    public function setCaptureNumberByIdSalesOrderItemAndIdPayment(
+        $captureNumber,
+        $idSalesOrderItem,
+        $idPayment
+    ) {
+        $afterpayPaymentOrderItemEntity = $this->getPaymentOrderItemEntityByIdSalesOrderItemAndIdPayment(
+            $idSalesOrderItem,
+            $idPayment
+        );
+
+        $afterpayPaymentOrderItemEntity->setCaptureNumber($captureNumber)->save();
+    }
+
+    /**
      * @param int $amountToAdd
      * @param int $idSalesOrder
      *
@@ -100,5 +155,20 @@ class PaymentWriter implements PaymentWriterInterface
             ->findOne();
 
         return $afterpayPaymentEntity;
+    }
+
+    /**
+     * @param int $idSalesOrderItem
+     * @param int $idPayment
+     *
+     * @return \Orm\Zed\Afterpay\Persistence\SpyPaymentAfterpayOrderItem
+     */
+    protected function getPaymentOrderItemEntityByIdSalesOrderItemAndIdPayment($idSalesOrderItem, $idPayment)
+    {
+        $afterpayPaymentOrderItemEntity = $this->afterpayQueryContainer
+            ->queryPaymentOrderItemByIdSalesOrderAndIdPayment($idSalesOrderItem, $idPayment)
+            ->findOne();
+
+        return $afterpayPaymentOrderItemEntity;
     }
 }

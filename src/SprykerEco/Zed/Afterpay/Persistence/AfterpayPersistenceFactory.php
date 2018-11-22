@@ -8,6 +8,7 @@
 namespace SprykerEco\Zed\Afterpay\Persistence;
 
 use Orm\Zed\Afterpay\Persistence\SpyPaymentAfterpayAuthorizationQuery;
+use Orm\Zed\Afterpay\Persistence\SpyPaymentAfterpayOrderItemQuery;
 use Orm\Zed\Afterpay\Persistence\SpyPaymentAfterpayQuery;
 use Orm\Zed\Afterpay\Persistence\SpyPaymentAfterpayTransactionLogQuery;
 use Spryker\Zed\Kernel\Persistence\AbstractPersistenceFactory;
@@ -24,6 +25,14 @@ class AfterpayPersistenceFactory extends AbstractPersistenceFactory
     public function createPaymentAfterpayQuery()
     {
         return SpyPaymentAfterpayQuery::create();
+    }
+
+    /**
+     * @return \Orm\Zed\Afterpay\Persistence\SpyPaymentAfterpayOrderItemQuery
+     */
+    public function createPaymentAfterpayOrderItemQuery()
+    {
+        return SpyPaymentAfterpayOrderItemQuery::create();
     }
 
     /**

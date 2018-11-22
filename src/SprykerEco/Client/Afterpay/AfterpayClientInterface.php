@@ -59,6 +59,8 @@ interface AfterpayClientInterface
      *  - Makes "lookup/installment-plans" call to the afterpay API, to get the available installment plans for the specific
      *  product/basket value. Returns monthly installment amount, interest and fees.
      *
+     * @api
+     *
      * @param \Generated\Shared\Transfer\AfterpayInstallmentPlansRequestTransfer $installmentPlansRequestTransfer
      *
      * @return \Generated\Shared\Transfer\AfterpayInstallmentPlansResponseTransfer

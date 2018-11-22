@@ -7,6 +7,7 @@
 
 namespace SprykerEco\Zed\Afterpay\Business\Payment;
 
+use Generated\Shared\Transfer\AfterpayPaymentOrderItemTransfer;
 use Generated\Shared\Transfer\AfterpayPaymentTransfer;
 use SprykerEco\Zed\Afterpay\Persistence\AfterpayQueryContainerInterface;
 
@@ -41,6 +42,25 @@ class PaymentReader implements PaymentReaderInterface
     }
 
     /**
+     * @param int $idSalesOrderItem
+     * @param int $idPayment
+     *
+     * @return \Generated\Shared\Transfer\AfterpayPaymentOrderItemTransfer
+     */
+    public function getPaymentOrderItemByIdSalesOrderItemAndIdPayment($idSalesOrderItem, $idPayment)
+    {
+        $afterpayPaymentOrderItemEntity = $this->getPaymentOrderItemEntityByIdSalesOrderItemAndIdPayment(
+            $idSalesOrderItem,
+            $idPayment
+        );
+
+        $paymentOrderItemTransfer = new AfterpayPaymentOrderItemTransfer();
+        $paymentOrderItemTransfer->fromArray($afterpayPaymentOrderItemEntity->toArray(), true);
+
+        return $paymentOrderItemTransfer;
+    }
+
+    /**
      * @param int $idSalesOrder
      *
      * @return \Orm\Zed\Afterpay\Persistence\SpyPaymentAfterpay
@@ -52,5 +72,21 @@ class PaymentReader implements PaymentReaderInterface
             ->findOne();
 
         return $afterpayPaymentEntity;
+    }
+
+    /**
+     * @param int $idSalesOrderItem
+     * @param int $idPayment
+     *
+     * @return \Orm\Zed\Afterpay\Persistence\SpyPaymentAfterpayOrderItem
+     */
+    protected function getPaymentOrderItemEntityByIdSalesOrderItemAndIdPayment(
+        $idSalesOrderItem,
+        $idPayment
+    ) {
+        $afterpayPaymentOrderItemEntity = $this->afterpayQueryContainer
+            ->queryPaymentOrderItemByIdSalesOrderAndIdPayment($idSalesOrderItem, $idPayment)
+            ->findOne();
+        return $afterpayPaymentOrderItemEntity;
     }
 }

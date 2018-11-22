@@ -23,6 +23,16 @@ interface AfterpayQueryContainerInterface extends QueryContainerInterface
     /**
      * @api
      *
+     * @param int $idSalesOrderItem
+     * @param int $idPayment
+     *
+     * @return \Orm\Zed\Afterpay\Persistence\SpyPaymentAfterpayOrderItemQuery
+     */
+    public function queryPaymentOrderItemByIdSalesOrderAndIdPayment($idSalesOrderItem, $idPayment);
+
+    /**
+     * @api
+     *
      * @param string $orderReference
      * @param string $transactionType
      *
@@ -63,4 +73,13 @@ interface AfterpayQueryContainerInterface extends QueryContainerInterface
      * @return \Orm\Zed\Afterpay\Persistence\SpyPaymentAfterpayTransactionLogQuery
      */
     public function queryCancelTransactionLog($orderReference);
+
+    /**
+     * @api
+     *
+     * @param int $idSalesOrder
+     *
+     * @return \Orm\Zed\Afterpay\Persistence\SpyPaymentAfterpayTransactionLogQuery
+     */
+    public function queryAuthorizeTransactionLog($idSalesOrder);
 }

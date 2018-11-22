@@ -127,7 +127,9 @@ class CancelTransactionHandler implements CancelTransactionHandlerInterface
 
         $expenseTotal = $paymentTransfer->getExpenseTotal();
 
-        return $amountToCancelInt + $amountCancelled + $expenseTotal === $amountAuthorized;
+        $refundedTotal = $paymentTransfer->getExpenseTotal();
+
+        return $amountToCancelInt + $amountCancelled + $expenseTotal + $refundedTotal === $amountAuthorized;
     }
 
     /**

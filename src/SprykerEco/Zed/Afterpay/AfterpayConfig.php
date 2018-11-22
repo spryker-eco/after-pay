@@ -29,6 +29,18 @@ class AfterpayConfig extends AbstractBundleConfig
      *
      * @return string
      */
+    public function getRefundApiEndpointUrl($orderNumber)
+    {
+        return $this->getApiEndpointUrl(
+            sprintf(AfterpayConstants::API_ENDPOINT_REFUND_PATH, $orderNumber)
+        );
+    }
+
+    /**
+     * @param string $orderNumber
+     *
+     * @return string
+     */
     public function getCancelApiEndpointUrl($orderNumber)
     {
         return $this->getApiEndpointUrl(

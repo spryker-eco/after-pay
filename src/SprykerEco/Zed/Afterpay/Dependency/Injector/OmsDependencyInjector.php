@@ -15,9 +15,11 @@ use Spryker\Zed\Oms\OmsDependencyProvider;
 use SprykerEco\Zed\Afterpay\Communication\Plugin\Checkout\Oms\Command\AuthorizePlugin;
 use SprykerEco\Zed\Afterpay\Communication\Plugin\Checkout\Oms\Command\CancelPlugin;
 use SprykerEco\Zed\Afterpay\Communication\Plugin\Checkout\Oms\Command\CapturePlugin;
+use SprykerEco\Zed\Afterpay\Communication\Plugin\Checkout\Oms\Command\RefundPlugin;
 use SprykerEco\Zed\Afterpay\Communication\Plugin\Checkout\Oms\Condition\IsAuthorizationCompletedPlugin;
 use SprykerEco\Zed\Afterpay\Communication\Plugin\Checkout\Oms\Condition\IsCancellationCompletedPlugin;
 use SprykerEco\Zed\Afterpay\Communication\Plugin\Checkout\Oms\Condition\IsCaptureCompletedPlugin;
+use SprykerEco\Zed\Afterpay\Communication\Plugin\Checkout\Oms\Condition\IsRefundCompletedPlugin;
 
 class OmsDependencyInjector extends AbstractDependencyInjector
 {
@@ -45,7 +47,8 @@ class OmsDependencyInjector extends AbstractDependencyInjector
             $commandCollection
                 ->add(new AuthorizePlugin(), 'Afterpay/Authorize')
                 ->add(new CapturePlugin(), 'Afterpay/Capture')
-                ->add(new CancelPlugin(), 'Afterpay/Cancel');
+                ->add(new CancelPlugin(), 'Afterpay/Cancel')
+                ->add(new RefundPlugin(), 'Afterpay/Refund');
 
             return $commandCollection;
         });
@@ -64,7 +67,8 @@ class OmsDependencyInjector extends AbstractDependencyInjector
             $conditionCollection
                 ->add(new IsAuthorizationCompletedPlugin(), 'Afterpay/IsAuthorizationCompleted')
                 ->add(new IsCaptureCompletedPlugin(), 'Afterpay/IsCaptureCompleted')
-                ->add(new IsCancellationCompletedPlugin(), 'Afterpay/IsCancellationCompleted');
+                ->add(new IsCancellationCompletedPlugin(), 'Afterpay/IsCancellationCompleted')
+                ->add(new IsRefundCompletedPlugin(), 'Afterpay/IsRefundCompleted');
 
             return $conditionCollection;
         });

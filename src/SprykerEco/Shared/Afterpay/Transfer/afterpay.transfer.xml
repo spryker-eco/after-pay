@@ -4,15 +4,24 @@
            xsi:schemaLocation="spryker:transfer-01 http://static.spryker.com/transfer-01.xsd">
 
     <transfer name="AfterpayPayment">
+        <property name="idPaymentAfterpay" type="int" />
         <property name="fkSalesOrder" type="int" />
         <property name="paymentMethod" type="string" />
         <property name="idCheckout" type="string" />
         <property name="customerNumber" type="string" />
         <property name="idReservation" type="string" />
         <property name="capturedTotal" type="int" />
+        <property name="expensesCaptureNumber" type="string" />
         <property name="authorizedTotal" type="int" />
         <property name="cancelledTotal" type="int" />
+        <property name="refundedTotal" type="int" />
         <property name="expenseTotal" type="int" />
+    </transfer>
+
+    <transfer name="AfterpayPaymentOrderItem">
+        <property name="fkSalesOrderItem" type="int" />
+        <property name="fkPaymentAfterpay" type="int" />
+        <property name="captureNumber" type="string" />
     </transfer>
 
     <transfer name="AfterpayTransactionLog">
@@ -151,6 +160,26 @@
         <property name="apiResponse" type="AfterpayApiResponse" />
         <property name="totalAuthorizedAmount" type="int" />
         <property name="totalCapturedAmount" type="int" />
+    </transfer>
+
+    <transfer name="AfterpayRefundRequest">
+        <property name="idSalesOrder" type="int" />
+        <property name="fkPayment" type="int" />
+        <property name="orderNumber" type="int" />
+        <property name="captureNumber" type="string" />
+        <property name="orderItems" type="AfterpayRequestOrderItem[]"  singular="orderItem" />
+    </transfer>
+
+    <transfer name="AfterpayRefundResponse">
+        <property name="idSalesOrder" type="int" />
+        <property name="apiResponse" type="AfterpayApiResponse" />
+        <property name="totalAuthorizedAmount" type="int" />
+        <property name="totalCapturedAmount" type="int" />
+        <property name="numbers" type="RefundNumber[]" singular="number" />
+    </transfer>
+
+    <transfer name="RefundNumber">
+        <property name="number" type="string" />
     </transfer>
 
     <transfer name="AfterpayRequestPayment">

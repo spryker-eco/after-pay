@@ -13,6 +13,7 @@ use Generated\Shared\Transfer\AfterpayCancelRequestTransfer;
 use Generated\Shared\Transfer\AfterpayCaptureRequestTransfer;
 use Generated\Shared\Transfer\AfterpayCustomerLookupRequestTransfer;
 use Generated\Shared\Transfer\AfterpayInstallmentPlansRequestTransfer;
+use Generated\Shared\Transfer\AfterpayRefundRequestTransfer;
 use Generated\Shared\Transfer\AfterpayValidateBankAccountRequestTransfer;
 use Generated\Shared\Transfer\AfterpayValidateCustomerRequestTransfer;
 
@@ -141,6 +142,20 @@ class AfterpayApiAdapter implements AdapterInterface
             ->adapterFactory
             ->createCancelCall()
             ->execute($cancelRequestTransfer);
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\AfterpayRefundRequestTransfer $refundRequestTransfer
+     *
+     * @return \Generated\Shared\Transfer\AfterpayRefundResponseTransfer
+     */
+    public function sendRefundRequest(
+        AfterpayRefundRequestTransfer $refundRequestTransfer
+    ) {
+        return $this
+            ->adapterFactory
+            ->createRefundCall()
+            ->execute($refundRequestTransfer);
     }
 
     /**
