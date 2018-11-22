@@ -24,23 +24,6 @@ $config[AfterpayConstants::API_ENDPOINT_BASE_URL] = 'https://sandboxapi.horizona
 $config[AfterpayConstants::API_CREDENTIALS_AUTH_KEY] = '';
 $config[AfterpayConstants::PAYMENT_INVOICE_CHANNEL_ID] = '';
 
-// OMS and payment
-
-$config[KernelConstants::DEPENDENCY_INJECTOR_YVES] = [
-    'Checkout' => [
-        'Afterpay',
-    ],
-];
-
-$config[KernelConstants::DEPENDENCY_INJECTOR_ZED] = [
-    'Payment' => [
-        'Afterpay',
-    ],
-    'Oms' => [
-        'Afterpay',
-    ],
-];
-
 $config[OmsConstants::PROCESS_LOCATION] = [
     OmsConfig::DEFAULT_PROCESS_LOCATION,
     $config[AfterpayConstants::VENDOR_ROOT] . '/after-pay/config/Zed/Oms',
