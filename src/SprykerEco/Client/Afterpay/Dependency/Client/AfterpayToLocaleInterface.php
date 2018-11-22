@@ -9,10 +9,8 @@ namespace SprykerEco\Client\Afterpay\Dependency\Client;
 
 interface AfterpayToLocaleInterface
 {
-
     /**
      * @return string
      */
     public function getCurrentLocale();
-
 }

@@ -21,7 +21,6 @@ class AfterpayHandlerPlugin extends AbstractPlugin implements
     PaymentSubFormFilterPluginInterface,
     PrePaymentQuoteExpanderPluginInterface
 {
-
     /**
      * {@inheritdoc}
      *
@@ -73,5 +72,4 @@ class AfterpayHandlerPlugin extends AbstractPlugin implements
             ->createAfterpayAuthorizeWorkflow()
             ->addPaymentDataToQuote($quoteTransfer);
     }
-
 }

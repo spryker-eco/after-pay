@@ -9,10 +9,8 @@ namespace SprykerEco\Client\Afterpay\Dependency\Client;
 
 interface AfterpayToQuoteInterface
 {
-
     /**
      * @return \Generated\Shared\Transfer\QuoteTransfer
      */
     public function getQuote();
-
 }

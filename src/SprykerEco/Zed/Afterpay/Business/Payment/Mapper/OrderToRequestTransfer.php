@@ -8,8 +8,10 @@
 namespace SprykerEco\Zed\Afterpay\Business\Payment\Mapper;
 
 use Generated\Shared\Transfer\AfterpayAuthorizeRequestTransfer;
+use Generated\Shared\Transfer\AfterpayCallTransfer;
 use Generated\Shared\Transfer\AfterpayCancelRequestTransfer;
 use Generated\Shared\Transfer\AfterpayCaptureRequestTransfer;
+use Generated\Shared\Transfer\AfterpayRefundRequestTransfer;
 use Generated\Shared\Transfer\AfterpayRequestAddressTransfer;
 use Generated\Shared\Transfer\AfterpayRequestCustomerTransfer;
 use Generated\Shared\Transfer\AfterpayRequestOrderItemTransfer;
@@ -17,22 +19,21 @@ use Generated\Shared\Transfer\AfterpayRequestOrderTransfer;
 use Generated\Shared\Transfer\AfterpayRequestPaymentTransfer;
 use Generated\Shared\Transfer\ItemTransfer;
 use Generated\Shared\Transfer\OrderTransfer;
-use Spryker\Shared\Kernel\Store;
 use SprykerEco\Shared\Afterpay\AfterpayConstants;
 use SprykerEco\Zed\Afterpay\Dependency\Facade\AfterpayToMoneyInterface;
+use SprykerEco\Zed\Afterpay\Dependency\Facade\AfterpayToStoreInterface;
 
 class OrderToRequestTransfer implements OrderToRequestTransferInterface
 {
-
     /**
      * @var \SprykerEco\Zed\Afterpay\Dependency\Facade\AfterpayToMoneyInterface
      */
-    protected $money;
+    protected $moneyFacade;
 
     /**
-     * @var \Spryker\Shared\Kernel\Store
+     * @var \SprykerEco\Zed\Afterpay\Dependency\Facade\AfterpayToStoreInterface
      */
-    protected $store;
+    protected $storeFacade;
 
     /**
      * @var array
@@ -42,56 +43,71 @@ class OrderToRequestTransfer implements OrderToRequestTransferInterface
     ];
 
     /**
-     * @param \SprykerEco\Zed\Afterpay\Dependency\Facade\AfterpayToMoneyInterface $money
-     * @param \Spryker\Shared\Kernel\Store $store
+     * @param \SprykerEco\Zed\Afterpay\Dependency\Facade\AfterpayToMoneyInterface $moneyFacade
+     * @param \SprykerEco\Zed\Afterpay\Dependency\Facade\AfterpayToStoreInterface $storeFacade
      */
-    public function __construct(AfterpayToMoneyInterface $money, Store $store)
+    public function __construct(AfterpayToMoneyInterface $moneyFacade, AfterpayToStoreInterface $storeFacade)
     {
-        $this->money = $money;
-        $this->store = $store;
+        $this->moneyFacade = $moneyFacade;
+        $this->storeFacade = $storeFacade;
     }
 
     /**
      * @todo consider to split this class into separate one-s, like orderToAuthorizeRequest, orderToCaptureRequest, etc.
      *
-     * @param \Generated\Shared\Transfer\OrderTransfer $orderWithPaymentTransfer
+     * @param \Generated\Shared\Transfer\AfterpayCallTransfer $afterpayCallTransfer
      *
      * @return \Generated\Shared\Transfer\AfterpayAuthorizeRequestTransfer
      */
-    public function orderToAuthorizeRequest(OrderTransfer $orderWithPaymentTransfer)
+    public function orderToAuthorizeRequest(AfterpayCallTransfer $afterpayCallTransfer)
     {
         $requestTransfer = new AfterpayAuthorizeRequestTransfer();
 
         $requestTransfer
-            ->setIdSalesOrder(
-                $orderWithPaymentTransfer->getIdSalesOrder()
-            )
             ->setPayment(
-                $this->buildPaymentRequestTransfer($orderWithPaymentTransfer)
+                $this->buildPaymentRequestTransfer($afterpayCallTransfer)
             )
             ->setCustomer(
-                $this->buildCustomerRequestTransfer($orderWithPaymentTransfer)
+                $this->buildCustomerRequestTransfer($afterpayCallTransfer)
             )
             ->setOrder(
-                $this->buildOrderWithItemsRequestTransfer($orderWithPaymentTransfer)
+                $this->buildOrderWithItemsRequestTransfer($afterpayCallTransfer)
             );
 
         return $requestTransfer;
     }
 
     /**
-     * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
+     * @param \Generated\Shared\Transfer\AfterpayCallTransfer $afterpayCallTransfer
      *
      * @return \Generated\Shared\Transfer\AfterpayCaptureRequestTransfer
      */
-    public function orderToBaseCaptureRequest(OrderTransfer $orderTransfer)
+    public function orderToBaseCaptureRequest(AfterpayCallTransfer $afterpayCallTransfer)
     {
         $requestTransfer = new AfterpayCaptureRequestTransfer();
 
         $requestTransfer
-            ->setIdSalesOrder($orderTransfer->getIdSalesOrder())
             ->setOrderDetails(
-                $this->buildOrderRequestTransfer($orderTransfer)
+                $this->buildOrderRequestTransfer($afterpayCallTransfer)
+                    ->setTotalGrossAmount(0)
+                    ->setTotalNetAmount(0)
+            );
+
+        return $requestTransfer;
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\AfterpayCallTransfer $afterpayCallTransfer
+     *
+     * @return \Generated\Shared\Transfer\AfterpayCancelRequestTransfer
+     */
+    public function orderToBaseCancelRequest(AfterpayCallTransfer $afterpayCallTransfer)
+    {
+        $requestTransfer = new AfterpayCancelRequestTransfer();
+
+        $requestTransfer
+            ->setCancellationDetails(
+                $this->buildOrderRequestTransfer($afterpayCallTransfer)
                     ->setTotalGrossAmount(0)
                     ->setTotalNetAmount(0)
             );
@@ -102,21 +118,17 @@ class OrderToRequestTransfer implements OrderToRequestTransferInterface
     /**
      * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
      *
-     * @return \Generated\Shared\Transfer\AfterpayCancelRequestTransfer
+     * @return \Generated\Shared\Transfer\AfterpayRefundRequestTransfer
      */
-    public function orderToBaseCancelRequest(OrderTransfer $orderTransfer)
+    public function orderToBaseRefundRequest(OrderTransfer $orderTransfer)
     {
-        $requestTransfer = new AfterpayCancelRequestTransfer();
+        $refundRequestTransfer = new AfterpayRefundRequestTransfer();
 
-        $requestTransfer
+        $refundRequestTransfer
             ->setIdSalesOrder($orderTransfer->getIdSalesOrder())
-            ->setCancellationDetails(
-                $this->buildOrderRequestTransfer($orderTransfer)
-                    ->setTotalGrossAmount(0)
-                    ->setTotalNetAmount(0)
-            );
+            ->setOrderNumber($orderTransfer->getOrderReference());
 
-        return $requestTransfer;
+        return $refundRequestTransfer;
     }
 
     /**
@@ -130,13 +142,13 @@ class OrderToRequestTransfer implements OrderToRequestTransferInterface
     }
 
     /**
-     * @param \Generated\Shared\Transfer\OrderTransfer $orderWithPaymentTransfer
+     * @param \Generated\Shared\Transfer\AfterpayCallTransfer $afterpayCallTransfer
      *
      * @return \Generated\Shared\Transfer\AfterpayRequestCustomerTransfer
      */
-    protected function buildCustomerRequestTransfer(OrderTransfer $orderWithPaymentTransfer)
+    protected function buildCustomerRequestTransfer(AfterpayCallTransfer $afterpayCallTransfer)
     {
-        $billingAddressTransfer = $orderWithPaymentTransfer->getBillingAddress();
+        $billingAddressTransfer = $afterpayCallTransfer->getBillingAddress();
         $customerRequestTransfer = new AfterpayRequestCustomerTransfer();
 
         $customerRequestTransfer
@@ -145,25 +157,25 @@ class OrderToRequestTransfer implements OrderToRequestTransferInterface
             ->setConversationalLanguage($this->getStoreCountryIso2())
             ->setCustomerCategory(AfterpayConstants::API_CUSTOMER_CATEGORY_PERSON)
             ->setSalutation($billingAddressTransfer->getSalutation())
-            ->setEmail($orderWithPaymentTransfer->getEmail());
+            ->setEmail($afterpayCallTransfer->getEmail());
 
         $customerRequestTransfer->setAddress(
-            $this->buildCustomerBillingAddressRequestTransfer($orderWithPaymentTransfer)
+            $this->buildCustomerBillingAddressRequestTransfer($afterpayCallTransfer)
         );
 
         return $customerRequestTransfer;
     }
 
     /**
-     * @param \Generated\Shared\Transfer\OrderTransfer $orderWithPaymentTransfer
+     * @param \Generated\Shared\Transfer\AfterpayCallTransfer $afterpayCallTransfer
      *
      * @return \Generated\Shared\Transfer\AfterpayRequestOrderTransfer
      */
-    protected function buildOrderWithItemsRequestTransfer(OrderTransfer $orderWithPaymentTransfer)
+    protected function buildOrderWithItemsRequestTransfer(AfterpayCallTransfer $afterpayCallTransfer)
     {
-        $orderRequestTransfer = $this->buildOrderRequestTransfer($orderWithPaymentTransfer);
+        $orderRequestTransfer = $this->buildOrderRequestTransfer($afterpayCallTransfer);
 
-        foreach ($orderWithPaymentTransfer->getItems() as $itemTransfer) {
+        foreach ($afterpayCallTransfer->getItems() as $itemTransfer) {
             $orderRequestTransfer->addItem(
                 $this->buildOrderItemRequestTransfer($itemTransfer)
             );
@@ -173,29 +185,29 @@ class OrderToRequestTransfer implements OrderToRequestTransferInterface
     }
 
     /**
-     * @param \Generated\Shared\Transfer\OrderTransfer $orderWithPaymentTransfer
+     * @param \Generated\Shared\Transfer\AfterpayCallTransfer $afterpayCallTransfer
      *
      * @return \Generated\Shared\Transfer\AfterpayRequestOrderTransfer
      */
-    protected function buildOrderRequestTransfer(OrderTransfer $orderWithPaymentTransfer)
+    protected function buildOrderRequestTransfer(AfterpayCallTransfer $afterpayCallTransfer)
     {
         $orderRequestTransfer = new AfterpayRequestOrderTransfer();
         $orderRequestTransfer
-            ->setNumber($orderWithPaymentTransfer->getOrderReference())
-            ->setTotalGrossAmount($this->getStringDecimalOrderGrossTotal($orderWithPaymentTransfer))
-            ->setTotalNetAmount($this->getStringDecimalOrderNetTotal($orderWithPaymentTransfer));
+            ->setNumber($afterpayCallTransfer->getOrderReference())
+            ->setTotalGrossAmount($this->getStringDecimalOrderGrossTotal($afterpayCallTransfer))
+            ->setTotalNetAmount($this->getStringDecimalOrderNetTotal($afterpayCallTransfer));
 
         return $orderRequestTransfer;
     }
 
     /**
-     * @param \Generated\Shared\Transfer\OrderTransfer $orderWithPaymentTransfer
+     * @param \Generated\Shared\Transfer\AfterpayCallTransfer $afterpayCallTransfer
      *
      * @return \Generated\Shared\Transfer\AfterpayRequestPaymentTransfer
      */
-    protected function buildPaymentRequestTransfer(OrderTransfer $orderWithPaymentTransfer)
+    protected function buildPaymentRequestTransfer(AfterpayCallTransfer $afterpayCallTransfer)
     {
-        $paymentMethod = $orderWithPaymentTransfer->getAfterpayPayment()->getPaymentMethod();
+        $paymentMethod = $afterpayCallTransfer->getPaymentMethod();
 
         $requestPaymentTransfer = new AfterpayRequestPaymentTransfer();
         $requestPaymentTransfer->setType(static::$paymentMethods[$paymentMethod]);
@@ -223,13 +235,13 @@ class OrderToRequestTransfer implements OrderToRequestTransferInterface
     }
 
     /**
-     * @param \Generated\Shared\Transfer\OrderTransfer $orderWithPaymentTransfer
+     * @param \Generated\Shared\Transfer\AfterpayCallTransfer $afterpayCallTransfer
      *
      * @return \Generated\Shared\Transfer\AfterpayRequestAddressTransfer
      */
-    protected function buildCustomerBillingAddressRequestTransfer(OrderTransfer $orderWithPaymentTransfer)
+    protected function buildCustomerBillingAddressRequestTransfer(AfterpayCallTransfer $afterpayCallTransfer)
     {
-        $customerAddressTransfer = $orderWithPaymentTransfer->getBillingAddress();
+        $customerAddressTransfer = $afterpayCallTransfer->getBillingAddress();
         $customerAddressRequestTransfer = new AfterpayRequestAddressTransfer();
 
         $customerAddressRequestTransfer
@@ -247,7 +259,7 @@ class OrderToRequestTransfer implements OrderToRequestTransferInterface
      */
     protected function getStoreCountryIso2()
     {
-        return $this->store->getCurrentCountry();
+        return $this->storeFacade->getCurrentStore()->getName();
     }
 
     /**
@@ -259,29 +271,29 @@ class OrderToRequestTransfer implements OrderToRequestTransferInterface
      * "api" one-s will contain totals as strings
      * Like this it will be easier to see, what's happening with the data.
      *
-     * @param \Generated\Shared\Transfer\OrderTransfer $orderWithPaymentTransfer
+     * @param \Generated\Shared\Transfer\AfterpayCallTransfer $afterpayCallTransfer
      *
      * @return string
      */
-    protected function getStringDecimalOrderGrossTotal(OrderTransfer $orderWithPaymentTransfer)
+    protected function getStringDecimalOrderGrossTotal(AfterpayCallTransfer $afterpayCallTransfer)
     {
-        $orderGrossTotal = $orderWithPaymentTransfer->getTotals()->getGrandTotal();
+        $orderGrossTotal = (int)$afterpayCallTransfer->getTotals()->getGrandTotal();
 
-        return (string)$this->money->convertIntegerToDecimal($orderGrossTotal);
+        return (string)$this->moneyFacade->convertIntegerToDecimal($orderGrossTotal);
     }
 
     /**
-     * @param \Generated\Shared\Transfer\OrderTransfer $orderWithPaymentTransfer
+     * @param \Generated\Shared\Transfer\AfterpayCallTransfer $afterpayCallTransfer
      *
      * @return float
      */
-    protected function getStringDecimalOrderNetTotal(OrderTransfer $orderWithPaymentTransfer)
+    protected function getStringDecimalOrderNetTotal(AfterpayCallTransfer $afterpayCallTransfer)
     {
-        $orderGrossTotal = $orderWithPaymentTransfer->getTotals()->getGrandTotal();
-        $orderTaxTotal = $orderWithPaymentTransfer->getTotals()->getTaxTotal()->getAmount();
-        $orderNetTotal = $orderGrossTotal - $orderTaxTotal;
+        $orderGrossTotal = (int)$afterpayCallTransfer->getTotals()->getGrandTotal();
+        $orderTaxTotal = (int)$afterpayCallTransfer->getTotals()->getTaxTotal()->getAmount();
+        $orderNetTotal = (int)$orderGrossTotal - $orderTaxTotal;
 
-        return (string)$this->money->convertIntegerToDecimal($orderNetTotal);
+        return (string)$this->moneyFacade->convertIntegerToDecimal($orderNetTotal);
     }
 
     /**
@@ -291,9 +303,9 @@ class OrderToRequestTransfer implements OrderToRequestTransferInterface
      */
     protected function getStringDecimalItemGrossUnitPrice(ItemTransfer $itemTransfer)
     {
-        $itemUnitGrossPrice = $itemTransfer->getUnitPriceToPayAggregation();
+        $itemUnitGrossPrice = (int)$itemTransfer->getUnitPriceToPayAggregation();
 
-        return (string)$this->money->convertIntegerToDecimal($itemUnitGrossPrice);
+        return (string)$this->moneyFacade->convertIntegerToDecimal($itemUnitGrossPrice);
     }
 
     /**
@@ -303,11 +315,10 @@ class OrderToRequestTransfer implements OrderToRequestTransferInterface
      */
     protected function getStringDecimalItemNetUnitPrice(ItemTransfer $itemTransfer)
     {
-        $itemUnitGrossPriceAmount = $itemTransfer->getUnitPriceToPayAggregation();
-        $itemUnitTaxAmount = $itemTransfer->getUnitTaxAmountFullAggregation();
+        $itemUnitGrossPriceAmount = (int)$itemTransfer->getUnitPriceToPayAggregation();
+        $itemUnitTaxAmount = (int)$itemTransfer->getUnitTaxAmountFullAggregation();
         $itemUnitNetAmount = $itemUnitGrossPriceAmount - $itemUnitTaxAmount;
 
-        return (string)$this->money->convertIntegerToDecimal($itemUnitNetAmount);
+        return (string)$this->moneyFacade->convertIntegerToDecimal($itemUnitNetAmount);
     }
-
 }

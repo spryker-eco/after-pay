@@ -13,7 +13,6 @@ use SprykerEco\Zed\Afterpay\Business\Payment\Transaction\TransactionLogReaderInt
 
 class PostSaveHook implements PostSaveHookInterface
 {
-
     /**
      * @var \SprykerEco\Zed\Afterpay\Business\Payment\Transaction\TransactionLogReaderInterface
      */
@@ -83,5 +82,4 @@ class PostSaveHook implements PostSaveHookInterface
             ->setIsExternalRedirect(true)
             ->setRedirectUrl($paymentFailedUrl);
     }
-
 }

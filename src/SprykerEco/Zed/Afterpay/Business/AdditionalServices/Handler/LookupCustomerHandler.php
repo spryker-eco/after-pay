@@ -12,7 +12,6 @@ use SprykerEco\Zed\Afterpay\Business\Api\Adapter\AdapterInterface;
 
 class LookupCustomerHandler implements LookupCustomerHandlerInterface
 {
-
     /**
      * @var \SprykerEco\Zed\Afterpay\Business\Api\Adapter\AdapterInterface
      */
@@ -35,5 +34,4 @@ class LookupCustomerHandler implements LookupCustomerHandlerInterface
     {
         return $this->apiAdapter->sendLookupCustomerRequest($customerLookupRequestTransfer);
     }
-
 }

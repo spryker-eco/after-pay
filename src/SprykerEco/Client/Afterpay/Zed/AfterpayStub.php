@@ -16,7 +16,6 @@ use Spryker\Client\ZedRequest\Stub\ZedRequestStub;
 
 class AfterpayStub extends ZedRequestStub implements AfterpayStubInterface
 {
-
     const ZED_GET_AVAILABLE_PAYMENT_METHODS = '/afterpay/gateway/get-available-payment-methods';
     const ZED_VALIDATE_CUSTOMER_ADDRESS = '/afterpay/gateway/validate-customer-address';
     const ZED_VALIDATE_BANK_ACCOUNT = '/afterpay/gateway/validate-bank-account';
@@ -87,5 +86,4 @@ class AfterpayStub extends ZedRequestStub implements AfterpayStubInterface
             $bankAccountValidationRequestTransfer
         );
     }
-
 }

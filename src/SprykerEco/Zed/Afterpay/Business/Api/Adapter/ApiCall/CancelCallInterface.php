@@ -11,12 +11,10 @@ use Generated\Shared\Transfer\AfterpayCancelRequestTransfer;
 
 interface CancelCallInterface
 {
-
     /**
      * @param \Generated\Shared\Transfer\AfterpayCancelRequestTransfer $requestTransfer
      *
      * @return \Generated\Shared\Transfer\AfterpayCancelResponseTransfer
      */
     public function execute(AfterpayCancelRequestTransfer $requestTransfer);
-
 }

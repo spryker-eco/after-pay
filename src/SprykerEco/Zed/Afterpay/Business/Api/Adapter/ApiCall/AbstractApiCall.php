@@ -13,7 +13,6 @@ use SprykerEco\Zed\Afterpay\Business\Exception\ApiHttpRequestException;
 
 class AbstractApiCall
 {
-
     use LoggerTrait;
 
     /**
@@ -49,5 +48,4 @@ class AbstractApiCall
             ['exception' => $apiHttpRequestException]
         );
     }
-
 }

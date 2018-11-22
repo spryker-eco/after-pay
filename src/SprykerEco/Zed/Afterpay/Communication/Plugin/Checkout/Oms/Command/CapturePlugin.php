@@ -21,7 +21,6 @@ use Spryker\Zed\Oms\Dependency\Plugin\Command\CommandByOrderInterface;
  */
 class CapturePlugin extends AbstractPlugin implements CommandByOrderInterface
 {
-
     /**
      * @param \Orm\Zed\Sales\Persistence\SpySalesOrderItem[] $orderItems
      * @param \Orm\Zed\Sales\Persistence\SpySalesOrder $orderEntity
@@ -32,10 +31,13 @@ class CapturePlugin extends AbstractPlugin implements CommandByOrderInterface
     public function run(array $orderItems, SpySalesOrder $orderEntity, ReadOnlyArrayObject $data)
     {
         $orderTransfer = $this->getOrderTransfer($orderEntity);
+        $afterpayCallTransfer = $this->getFactory()
+            ->createOrderToCallConverter()
+            ->convert($orderTransfer);
 
         foreach ($orderItems as $orderItem) {
             $itemTransfer = $this->getOrderItemTransfer($orderItem);
-            $this->getFacade()->capturePayment($itemTransfer, $orderTransfer);
+            $this->getFacade()->capturePayment($itemTransfer, $afterpayCallTransfer);
         }
 
         return [];
@@ -76,5 +78,4 @@ class CapturePlugin extends AbstractPlugin implements CommandByOrderInterface
 
         return $orderTransfer;
     }
-
 }

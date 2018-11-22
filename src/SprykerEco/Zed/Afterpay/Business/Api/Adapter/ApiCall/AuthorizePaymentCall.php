@@ -19,7 +19,6 @@ use SprykerEco\Zed\Afterpay\Dependency\Service\AfterpayToUtilEncodingInterface;
 
 class AuthorizePaymentCall extends AbstractApiCall implements AuthorizePaymentCallInterface
 {
-
     /**
      * @var \SprykerEco\Zed\Afterpay\Business\Api\Adapter\Client\ClientInterface
      */
@@ -89,5 +88,4 @@ class AuthorizePaymentCall extends AbstractApiCall implements AuthorizePaymentCa
 
         return $responseTransfer;
     }
-
 }

@@ -11,7 +11,6 @@ use Generated\Shared\Transfer\QuoteTransfer;
 
 class OneStepAuthorizeWorkflow extends AbstractAfterpayAuthorizeWorkflow implements AfterpayAuthorizeWorkflowInterface
 {
-
     /**
      * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
      *
@@ -31,5 +30,4 @@ class OneStepAuthorizeWorkflow extends AbstractAfterpayAuthorizeWorkflow impleme
     {
         return $paymentSubforms;
     }
-
 }

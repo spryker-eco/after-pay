@@ -20,7 +20,6 @@ use SprykerEco\Shared\Afterpay\AfterpayConstants;
  */
 class IsCaptureCompletedPlugin extends AbstractPlugin implements ConditionInterface
 {
-
     const CAPTURE_TRANSACTION_ACCEPTED = AfterpayConstants::API_TRANSACTION_OUTCOME_ACCEPTED;
 
     /**
@@ -71,5 +70,4 @@ class IsCaptureCompletedPlugin extends AbstractPlugin implements ConditionInterf
     {
         return $captureTransactionLog->getOutcome() === static::CAPTURE_TRANSACTION_ACCEPTED;
     }
-
 }

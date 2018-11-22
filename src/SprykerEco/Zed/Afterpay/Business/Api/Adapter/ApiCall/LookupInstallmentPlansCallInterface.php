@@ -11,12 +11,10 @@ use Generated\Shared\Transfer\AfterpayInstallmentPlansRequestTransfer;
 
 interface LookupInstallmentPlansCallInterface
 {
-
     /**
      * @param \Generated\Shared\Transfer\AfterpayInstallmentPlansRequestTransfer $installmentPlansRequestTransfer
      *
      * @return \Generated\Shared\Transfer\AfterpayInstallmentPlansResponseTransfer
      */
     public function execute(AfterpayInstallmentPlansRequestTransfer $installmentPlansRequestTransfer);
-
 }

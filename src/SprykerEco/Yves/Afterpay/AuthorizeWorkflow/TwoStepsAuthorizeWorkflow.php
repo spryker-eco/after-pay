@@ -13,7 +13,6 @@ use SprykerEco\Yves\Afterpay\AuthorizeWorkflow\Steps\PaymentSubformsFilterStepIn
 
 class TwoStepsAuthorizeWorkflow extends AbstractAfterpayAuthorizeWorkflow implements AfterpayAuthorizeWorkflowInterface
 {
-
     /**
      * @var \SprykerEco\Yves\Afterpay\AuthorizeWorkflow\Steps\AvailablePaymentMethodsStepInterface
      */
@@ -95,5 +94,4 @@ class TwoStepsAuthorizeWorkflow extends AbstractAfterpayAuthorizeWorkflow implem
             ->setAfterpayCheckoutId($availablePaymentMethodsTransfer->getCheckoutId())
             ->setAfterpayCustomerNumber($availablePaymentMethodsTransfer->getCustomerNumber());
     }
-
 }

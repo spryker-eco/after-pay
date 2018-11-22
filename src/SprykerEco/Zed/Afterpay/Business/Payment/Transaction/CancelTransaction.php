@@ -15,7 +15,6 @@ use SprykerEco\Zed\Afterpay\Business\Payment\Transaction\Logger\TransactionLogge
 
 class CancelTransaction implements CancelTransactionInterface
 {
-
     const TRANSACTION_TYPE = AfterpayConstants::TRANSACTION_TYPE_CANCEL;
 
     /**
@@ -70,5 +69,4 @@ class CancelTransaction implements CancelTransactionInterface
             $cancelResponseTransfer->getApiResponse()
         );
     }
-
 }

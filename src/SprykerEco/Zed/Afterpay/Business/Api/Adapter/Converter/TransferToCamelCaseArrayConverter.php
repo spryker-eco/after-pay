@@ -7,13 +7,12 @@
 
 namespace SprykerEco\Zed\Afterpay\Business\Api\Adapter\Converter;
 
-use \ArrayObject;
+use ArrayObject;
 use Spryker\Shared\Kernel\Transfer\AbstractTransfer;
 use SprykerEco\Zed\Afterpay\Dependency\Service\AfterpayToUtilTextInterface;
 
 class TransferToCamelCaseArrayConverter implements TransferToCamelCaseArrayConverterInterface
 {
-
     /**
      * @var \SprykerEco\Zed\Afterpay\Dependency\Service\AfterpayToUtilTextInterface
      */
@@ -78,5 +77,4 @@ class TransferToCamelCaseArrayConverter implements TransferToCamelCaseArrayConve
     {
         return $this->utilTextService->separatorToCamelCase($string, '_');
     }
-
 }

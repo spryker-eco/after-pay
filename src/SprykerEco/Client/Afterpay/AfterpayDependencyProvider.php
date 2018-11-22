@@ -14,7 +14,6 @@ use SprykerEco\Client\Afterpay\Dependency\Client\AfterpayToQuoteBridge;
 
 class AfterpayDependencyProvider extends AbstractDependencyProvider
 {
-
     const CLIENT_LOCALE = 'client locale';
     const CLIENT_SESSION = 'client session';
     const CLIENT_ZED_REQUEST = 'zed request client';
@@ -41,5 +40,4 @@ class AfterpayDependencyProvider extends AbstractDependencyProvider
 
         return $container;
     }
-
 }

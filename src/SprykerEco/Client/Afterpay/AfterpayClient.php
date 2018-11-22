@@ -19,7 +19,6 @@ use Spryker\Client\Kernel\AbstractClient;
  */
 class AfterpayClient extends AbstractClient implements AfterpayClientInterface
 {
-
     /**
      * {@inheritdoc}
      *
@@ -113,5 +112,4 @@ class AfterpayClient extends AbstractClient implements AfterpayClientInterface
             ->createZedStub()
             ->validateBankAccount($bankAccountValidationRequestTransfer);
     }
-
 }

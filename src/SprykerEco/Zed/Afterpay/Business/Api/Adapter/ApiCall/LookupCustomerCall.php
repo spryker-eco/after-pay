@@ -20,7 +20,6 @@ use SprykerEco\Zed\Afterpay\Dependency\Service\AfterpayToUtilEncodingInterface;
 
 class LookupCustomerCall extends AbstractApiCall implements LookupCustomerCallInterface
 {
-
     /**
      * @var \SprykerEco\Zed\Afterpay\Business\Api\Adapter\Client\ClientInterface
      */
@@ -153,5 +152,4 @@ class LookupCustomerCall extends AbstractApiCall implements LookupCustomerCallIn
 
         return $lookupAddressTransfer;
     }
-
 }

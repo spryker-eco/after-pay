@@ -12,7 +12,6 @@ use SprykerEco\Zed\Afterpay\Business\Api\Adapter\AdapterInterface;
 
 class ValidateBankAccountHandler implements ValidateBankAccountHandlerInterface
 {
-
     /**
      * @var \SprykerEco\Zed\Afterpay\Business\Api\Adapter\AdapterInterface
      */
@@ -40,5 +39,4 @@ class ValidateBankAccountHandler implements ValidateBankAccountHandlerInterface
     {
         return $this->apiAdapter->sendValidateBankAccountRequest($validateBankAccountRequestTransfer);
     }
-
 }

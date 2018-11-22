@@ -18,7 +18,6 @@ use SprykerEco\Zed\Afterpay\Dependency\Service\AfterpayToUtilEncodingInterface;
 
 class ValidateBankAccountCall extends AbstractApiCall implements ValidateBankAccountCallInterface
 {
-
     /**
      * @var \SprykerEco\Zed\Afterpay\Business\Api\Adapter\Client\ClientInterface
      */
@@ -88,5 +87,4 @@ class ValidateBankAccountCall extends AbstractApiCall implements ValidateBankAcc
 
         return $responseTransfer;
     }
-
 }

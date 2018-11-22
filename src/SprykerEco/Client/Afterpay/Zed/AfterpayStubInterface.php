@@ -15,7 +15,6 @@ use Generated\Shared\Transfer\QuoteTransfer;
 
 interface AfterpayStubInterface
 {
-
     /**
      * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
      *
@@ -50,5 +49,4 @@ interface AfterpayStubInterface
      * @return \Generated\Shared\Transfer\AfterpayValidateBankAccountResponseTransfer
      */
     public function validateBankAccount(AfterpayValidateBankAccountRequestTransfer $bankAccountValidationRequestTransfer);
-
 }

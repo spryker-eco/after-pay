@@ -11,7 +11,6 @@ use Generated\Shared\Transfer\QuoteTransfer;
 
 interface PrePaymentQuoteExpanderPluginInterface
 {
-
     /**
      * Specification:
      *  - Expands quote with some information before the payment step is displayed. In case of
@@ -24,5 +23,4 @@ interface PrePaymentQuoteExpanderPluginInterface
      * @return \Generated\Shared\Transfer\QuoteTransfer
      */
     public function expandQuote(QuoteTransfer $quoteTransfer);
-
 }

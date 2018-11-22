@@ -14,34 +14,34 @@ use Generated\Shared\Transfer\AfterpayRequestOrderItemTransfer;
 use Generated\Shared\Transfer\AfterpayRequestOrderTransfer;
 use Generated\Shared\Transfer\ItemTransfer;
 use Generated\Shared\Transfer\QuoteTransfer;
-use Spryker\Shared\Kernel\Store;
 use SprykerEco\Shared\Afterpay\AfterpayConstants;
 use SprykerEco\Zed\Afterpay\Dependency\Facade\AfterpayToMoneyInterface;
-
+use SprykerEco\Zed\Afterpay\Dependency\Facade\AfterpayToStoreInterface;
 
 //@todo extract shared behaviour between quote and order transfers if possible
 
 class QuoteToRequestTransfer implements QuoteToRequestTransferInterface
 {
-
     /**
      * @var \SprykerEco\Zed\Afterpay\Dependency\Facade\AfterpayToMoneyInterface
      */
-    protected $money;
+    protected $moneyFacade;
 
     /**
-     * @var \Spryker\Shared\Kernel\Store
+     * @var \SprykerEco\Zed\Afterpay\Dependency\Facade\AfterpayToSalesInterface
      */
-    protected $store;
+    protected $storeFacade;
 
     /**
-     * @param \SprykerEco\Zed\Afterpay\Dependency\Facade\AfterpayToMoneyInterface $money
-     * @param \Spryker\Shared\Kernel\Store $store
+     * @param \SprykerEco\Zed\Afterpay\Dependency\Facade\AfterpayToMoneyInterface $moneyFacade
+     * @param \SprykerEco\Zed\Afterpay\Dependency\Facade\AfterpayToSalesInterface $storeFacade
      */
-    public function __construct(AfterpayToMoneyInterface $money, Store $store)
-    {
-        $this->money = $money;
-        $this->store = $store;
+    public function __construct(
+        AfterpayToMoneyInterface $moneyFacade,
+        AfterpayToStoreInterface $storeFacade
+    ) {
+        $this->moneyFacade = $moneyFacade;
+        $this->storeFacade = $storeFacade;
     }
 
     /**
@@ -153,7 +153,7 @@ class QuoteToRequestTransfer implements QuoteToRequestTransferInterface
      */
     protected function getStoreCountryIso2()
     {
-        return $this->store->getCurrentCountry();
+        return $this->storeFacade->getCurrentStore()->getName();
     }
 
     /**
@@ -165,7 +165,7 @@ class QuoteToRequestTransfer implements QuoteToRequestTransferInterface
     {
         $quoteTotal = $quoteTransfer->getTotals()->getGrandTotal();
 
-        return (string)$this->money->convertIntegerToDecimal($quoteTotal);
+        return (string)$this->moneyFacade->convertIntegerToDecimal($quoteTotal);
     }
 
     /**
@@ -179,7 +179,7 @@ class QuoteToRequestTransfer implements QuoteToRequestTransferInterface
         $quoteTaxTotal = $quoteTransfer->getTotals()->getTaxTotal()->getAmount();
         $quoteNetTotal = $quoteGrossTotal - $quoteTaxTotal;
 
-        return (string)$this->money->convertIntegerToDecimal($quoteNetTotal);
+        return (string)$this->moneyFacade->convertIntegerToDecimal($quoteNetTotal);
     }
 
     /**
@@ -191,7 +191,7 @@ class QuoteToRequestTransfer implements QuoteToRequestTransferInterface
     {
         $itemUnitGrossPrice = $itemTransfer->getUnitPriceToPayAggregation();
 
-        return (string)$this->money->convertIntegerToDecimal($itemUnitGrossPrice);
+        return (string)$this->moneyFacade->convertIntegerToDecimal($itemUnitGrossPrice);
     }
 
     /**
@@ -205,7 +205,6 @@ class QuoteToRequestTransfer implements QuoteToRequestTransferInterface
         $itemUnitTaxAmount = $itemTransfer->getUnitTaxAmountFullAggregation();
         $itemUnitNetAmount = $itemUnitGrossPriceAmount - $itemUnitTaxAmount;
 
-        return (string)$this->money->convertIntegerToDecimal($itemUnitNetAmount);
+        return (string)$this->moneyFacade->convertIntegerToDecimal($itemUnitNetAmount);
     }
-
 }

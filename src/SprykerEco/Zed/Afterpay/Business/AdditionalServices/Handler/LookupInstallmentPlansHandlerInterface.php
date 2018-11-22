@@ -11,7 +11,6 @@ use Generated\Shared\Transfer\AfterpayInstallmentPlansRequestTransfer;
 
 interface LookupInstallmentPlansHandlerInterface
 {
-
     /**
      * @param \Generated\Shared\Transfer\AfterpayInstallmentPlansRequestTransfer $installmentPlansRequestTransfer
      *
@@ -20,5 +19,4 @@ interface LookupInstallmentPlansHandlerInterface
     public function lookupInstallmentPlans(
         AfterpayInstallmentPlansRequestTransfer $installmentPlansRequestTransfer
     );
-
 }

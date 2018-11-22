@@ -15,7 +15,6 @@ use SprykerEco\Zed\Afterpay\Business\Payment\Transaction\Logger\TransactionLogge
 
 class CaptureTransaction implements CaptureTransactionInterface
 {
-
     const TRANSACTION_TYPE = AfterpayConstants::TRANSACTION_TYPE_CAPTURE;
 
     /**
@@ -70,5 +69,4 @@ class CaptureTransaction implements CaptureTransactionInterface
             $captureResponseTransfer->getApiResponse()
         );
     }
-
 }

@@ -14,7 +14,6 @@ use SprykerEco\Zed\Afterpay\Business\Exception\ApiHttpRequestException;
 
 class ApiStatusCall implements ApiStatusCallInterface
 {
-
     const RESPONSE_STATUS_NOT_AVAILABLE = 503;
 
     use LoggerTrait;
@@ -70,5 +69,4 @@ class ApiStatusCall implements ApiStatusCallInterface
             ['exception' => $apiHttpRequestException]
         );
     }
-
 }

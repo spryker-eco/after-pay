@@ -12,7 +12,6 @@ use SprykerEco\Shared\Afterpay\AfterpayConstants;
 
 class AfterpayConfig extends AbstractBundleConfig
 {
-
     /**
      * @param string $orderNumber
      *
@@ -22,6 +21,18 @@ class AfterpayConfig extends AbstractBundleConfig
     {
         return $this->getApiEndpointUrl(
             sprintf(AfterpayConstants::API_ENDPOINT_CAPTURE_PATH, $orderNumber)
+        );
+    }
+
+    /**
+     * @param string $orderNumber
+     *
+     * @return string
+     */
+    public function getRefundApiEndpointUrl($orderNumber)
+    {
+        return $this->getApiEndpointUrl(
+            sprintf(AfterpayConstants::API_ENDPOINT_REFUND_PATH, $orderNumber)
         );
     }
 
@@ -165,5 +176,4 @@ class AfterpayConfig extends AbstractBundleConfig
     {
         return $this->get(AfterpayConstants::API_ENDPOINT_BASE_URL) . $endpointPath;
     }
-
 }

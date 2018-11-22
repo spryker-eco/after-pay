@@ -21,7 +21,6 @@ use SprykerEco\Zed\Afterpay\Dependency\Service\AfterpayToUtilEncodingInterface;
 
 class CaptureCall extends AbstractApiCall implements CaptureCallInterface
 {
-
     /**
      * @var \SprykerEco\Zed\Afterpay\Business\Api\Adapter\Client\ClientInterface
      */
@@ -163,5 +162,4 @@ class CaptureCall extends AbstractApiCall implements CaptureCallInterface
 
         return $apiResponseTransfer;
     }
-
 }

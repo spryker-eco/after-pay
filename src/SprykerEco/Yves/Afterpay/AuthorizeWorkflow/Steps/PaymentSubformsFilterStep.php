@@ -13,7 +13,6 @@ use SprykerEco\Yves\Afterpay\AfterpayConfig;
 
 class PaymentSubformsFilterStep implements PaymentSubformsFilterStepInterface
 {
-
     /**
      * @var \SprykerEco\Yves\Afterpay\AfterpayConfig
      */
@@ -45,7 +44,6 @@ class PaymentSubformsFilterStep implements PaymentSubformsFilterStepInterface
             if (!$this->isSubformPluginAllowed($subform)) {
                 unset($paymentSubforms[$key]);
             }
-
         }
         return $paymentSubforms;
     }
@@ -95,5 +93,4 @@ class PaymentSubformsFilterStep implements PaymentSubformsFilterStepInterface
 
         return $subformNameToPaymentMethodMapping[$subformName] ?? null;
     }
-
 }

@@ -11,8 +11,6 @@
         <column name="id_payment_afterpay" required="true" type="INTEGER" autoIncrement="true" primaryKey="true"/>
         <column name="fk_sales_order" required="true" type="INTEGER"/>
 
-        <column name="id_checkout" required="false" type="VARCHAR"/>
-        <column name="id_reservation" required="false" type="VARCHAR"/>
         <column name="id_channel" required="false" type="VARCHAR"/>
         <column name="infoscore_customer_number" required="false" type="VARCHAR"/>
 
@@ -23,6 +21,9 @@
         <column name="authorized_total" required="false" type="INTEGER"/>
         <column name="captured_total" required="false" type="INTEGER"/>
         <column name="cancelled_total" required="false" type="INTEGER"/>
+        <column name="refunded_total" required="false" type="INTEGER" />
+
+        <column name="expenses_capture_number" required="false" type="VARCHAR" />
 
         <foreign-key name="spy_payment_afterpay-fk_sales_order" foreignTable="spy_sales_order" phpName="SpySalesOrder">
             <reference foreign="id_sales_order" local="fk_sales_order"/>
@@ -35,6 +36,7 @@
     <table name="spy_payment_afterpay_order_item">
         <column name="fk_payment_afterpay" type="INTEGER" primaryKey="true"/>
         <column name="fk_sales_order_item" type="INTEGER" primaryKey="true"/>
+        <column name="capture_number" required="false" type="VARCHAR" />
         <behavior name="timestampable">
             <parameter name="disable_updated_at" value="true"/>
         </behavior>
@@ -48,20 +50,31 @@
 
     <table name="spy_payment_afterpay_transaction_log">
         <column name="id_payment_afterpay_transaction_log" type="INTEGER" primaryKey="true" autoIncrement="true"/>
-        <column name="fk_sales_order" required="true" type="INTEGER"/>
+        <column name="order_reference" required="true" type="VARCHAR"/>
         <column name="transaction_type" required="false" type="VARCHAR"/>
         <column name="outcome" required="true" type="VARCHAR"/>
         <column name="request_payload" required="false" type="LONGVARCHAR"/>
         <column name="response_payload" required="true" type="LONGVARCHAR"/>
 
-        <foreign-key name="spy_afterpay_transaction_log-fk_sales_order" foreignTable="spy_sales_order">
-            <reference foreign="id_sales_order" local="fk_sales_order"/>
-        </foreign-key>
+        <unique name="spy_payment_afterpay_transaction_log-order_reference">
+            <unique-column name="order_reference"/>
+        </unique>
         <behavior name="timestampable"/>
         <id-method-parameter value="spy_payment_afterpay_transaction_log_pk_seq"/>
         <index name="spy_payment_afterpay_transaction_log-transaction_type">
             <index-column name="transaction_type"/>
         </index>
+    </table>
+
+    <table name="spy_payment_afterpay_authorization">
+        <column name="id_payment_afterpay_authorization" type="INTEGER" primaryKey="true" autoIncrement="true" />
+        <column name="order_reference" required="true" type="VARCHAR" />
+        <column name="id_checkout" required="false" type="VARCHAR"/>
+        <column name="id_reservation" required="false" type="VARCHAR"/>
+        <unique name="spy_payment_afterpay_authorization-order_reference">
+            <unique-column name="order_reference"/>
+        </unique>
+        <id-method-parameter value="id_payment_afterpay_authorization_pk_seq"/>
     </table>
 
 </database>

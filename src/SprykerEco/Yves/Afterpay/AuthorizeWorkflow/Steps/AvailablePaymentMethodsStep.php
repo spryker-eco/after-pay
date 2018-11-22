@@ -12,7 +12,6 @@ use SprykerEco\Client\Afterpay\AfterpayClientInterface;
 
 class AvailablePaymentMethodsStep implements AvailablePaymentMethodsStepInterface
 {
-
     /**
      * @var \SprykerEco\Client\Afterpay\AfterpayClientInterface
      */
@@ -48,5 +47,4 @@ class AvailablePaymentMethodsStep implements AvailablePaymentMethodsStepInterfac
         $availablePaymentMethods = $this->afterpayClient->getAvailablePaymentMethods($quoteTransfer);
         $quoteTransfer->setAfterpayAvailablePaymentMethods($availablePaymentMethods);
     }
-
 }

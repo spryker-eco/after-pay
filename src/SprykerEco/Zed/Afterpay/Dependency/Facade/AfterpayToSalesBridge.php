@@ -9,7 +9,6 @@ namespace SprykerEco\Zed\Afterpay\Dependency\Facade;
 
 class AfterpayToSalesBridge implements AfterpayToSalesInterface
 {
-
     /**
      * @var \Spryker\Zed\Sales\Business\SalesFacadeInterface
      */
@@ -32,5 +31,4 @@ class AfterpayToSalesBridge implements AfterpayToSalesInterface
     {
         return $this->salesFacade->getOrderByIdSalesOrder($idSalesOrder);
     }
-
 }

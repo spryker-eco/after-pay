@@ -9,7 +9,6 @@ namespace SprykerEco\Client\Afterpay\Dependency\Client;
 
 class AfterpayToQuoteBridge implements AfterpayToQuoteInterface
 {
-
     /**
      * @var \Spryker\Client\Quote\QuoteClientInterface
      */
@@ -30,5 +29,4 @@ class AfterpayToQuoteBridge implements AfterpayToQuoteInterface
     {
         return $this->quoteClient->getQuote();
     }
-
 }
