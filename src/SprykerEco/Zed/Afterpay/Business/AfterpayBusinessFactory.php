@@ -23,6 +23,7 @@ use SprykerEco\Zed\Afterpay\Business\Payment\Mapper\OrderToRequestTransfer;
 use SprykerEco\Zed\Afterpay\Business\Payment\Mapper\QuoteToRequestTransfer;
 use SprykerEco\Zed\Afterpay\Business\Payment\PaymentReader;
 use SprykerEco\Zed\Afterpay\Business\Payment\PaymentWriter;
+use SprykerEco\Zed\Afterpay\Business\Payment\Transaction\Authorize\PaymentAuthorizeWriter;
 use SprykerEco\Zed\Afterpay\Business\Payment\Transaction\Authorize\RequestBuilder\OneStepAuthorizeRequestBuilder;
 use SprykerEco\Zed\Afterpay\Business\Payment\Transaction\Authorize\RequestBuilder\TwoStepsAuthorizeRequestBuilder;
 use SprykerEco\Zed\Afterpay\Business\Payment\Transaction\AuthorizeTransaction;
@@ -231,7 +232,8 @@ class AfterpayBusinessFactory extends AbstractBusinessFactory
     {
         return new AuthorizeTransaction(
             $this->createTransactionLogger(),
-            $this->createApiAdapter()
+            $this->createApiAdapter(),
+            $this->createPaymentAuthorizeWriter()
         );
     }
 
@@ -263,6 +265,16 @@ class AfterpayBusinessFactory extends AbstractBusinessFactory
     {
         return new AfterpayApiAdapter(
             $this->createAdapterFactory()
+        );
+    }
+
+    /**
+     * @return
+     */
+    protected function createPaymentAuthorizeWriter()
+    {
+        return new PaymentAuthorizeWriter(
+            $this->getQueryContainer()
         );
     }
 

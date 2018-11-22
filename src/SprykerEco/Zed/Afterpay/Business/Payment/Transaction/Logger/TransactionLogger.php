@@ -29,7 +29,7 @@ class TransactionLogger implements TransactionLoggerInterface
 
     /**
      * @param string $transactionType
-     * @param int $idSalesOrder
+     * @param string $orderReference
      * @param \Spryker\Shared\Kernel\Transfer\AbstractTransfer $transactionRequest
      * @param \Generated\Shared\Transfer\AfterpayApiResponseTransfer $transactionResponse
      *
@@ -37,13 +37,13 @@ class TransactionLogger implements TransactionLoggerInterface
      */
     public function logTransaction(
         $transactionType,
-        $idSalesOrder,
+        $orderReference,
         AbstractTransfer $transactionRequest,
         AfterpayApiResponseTransfer $transactionResponse
     ) {
         $transactionLog = new SpyPaymentAfterpayTransactionLog();
         $transactionLog
-            ->setFkSalesOrder($idSalesOrder)
+            ->setOrderReference($orderReference)
             ->setTransactionType($transactionType)
             ->setOutcome($transactionResponse->getOutcome())
             ->setRequestPayload($this->getRequestTransferEncoded($transactionRequest))

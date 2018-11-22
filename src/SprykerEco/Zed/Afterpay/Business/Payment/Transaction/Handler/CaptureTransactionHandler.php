@@ -7,11 +7,11 @@
 
 namespace SprykerEco\Zed\Afterpay\Business\Payment\Transaction\Handler;
 
+use Generated\Shared\Transfer\AfterpayCallTransfer;
 use Generated\Shared\Transfer\AfterpayCaptureRequestTransfer;
 use Generated\Shared\Transfer\AfterpayCaptureResponseTransfer;
 use Generated\Shared\Transfer\AfterpayPaymentTransfer;
 use Generated\Shared\Transfer\ItemTransfer;
-use Generated\Shared\Transfer\OrderTransfer;
 use SprykerEco\Zed\Afterpay\Business\Payment\PaymentReaderInterface;
 use SprykerEco\Zed\Afterpay\Business\Payment\PaymentWriterInterface;
 use SprykerEco\Zed\Afterpay\Business\Payment\Transaction\Capture\CaptureRequestBuilderInterface;
@@ -59,13 +59,13 @@ class CaptureTransactionHandler implements CaptureTransactionHandlerInterface
 
     /**
      * @param \Generated\Shared\Transfer\ItemTransfer $itemTransfer
-     * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
+     * @param \Generated\Shared\Transfer\AfterpayCallTransfer $afterpayCallTransfer
      *
      * @return void
      */
-    public function capture(ItemTransfer $itemTransfer, OrderTransfer $orderTransfer)
+    public function capture(ItemTransfer $itemTransfer, AfterpayCallTransfer $afterpayCallTransfer)
     {
-        $captureRequestTransfer = $this->buildCaptureRequestForOrderItem($itemTransfer, $orderTransfer);
+        $captureRequestTransfer = $this->buildCaptureRequestForOrderItem($itemTransfer, $afterpayCallTransfer);
         $paymentTransfer = $this->getPaymentTransferForItem($itemTransfer);
 
         $this->processExpensesCapture($paymentTransfer, $orderTransfer);
@@ -113,14 +113,16 @@ class CaptureTransactionHandler implements CaptureTransactionHandlerInterface
 
     /**
      * @param \Generated\Shared\Transfer\ItemTransfer $itemTransfer
-     * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
+     * @param \Generated\Shared\Transfer\AfterpayCallTransfer $afterpayCallTransfer
      *
      * @return \Generated\Shared\Transfer\AfterpayCaptureRequestTransfer
      */
-    protected function buildCaptureRequestForOrderItem(ItemTransfer $itemTransfer, OrderTransfer $orderTransfer)
-    {
+    protected function buildCaptureRequestForOrderItem(
+        ItemTransfer $itemTransfer,
+        AfterpayCallTransfer $afterpayCallTransfer
+    ) {
         $captureRequestTransfer = $this->captureRequestBuilder
-            ->buildBaseCaptureRequestForOrder($orderTransfer);
+            ->buildBaseCaptureRequestForOrder($afterpayCallTransfer);
 
         $this->captureRequestBuilder
             ->addOrderItemToCaptureRequest(

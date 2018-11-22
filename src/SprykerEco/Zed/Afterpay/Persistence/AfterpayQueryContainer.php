@@ -23,45 +23,45 @@ class AfterpayQueryContainer extends AbstractQueryContainer implements AfterpayQ
     /**
      * @api
      *
-     * @param int $idSalesOrder
+     * @param string $orderReference
      *
      * @return \Orm\Zed\Afterpay\Persistence\SpyPaymentAfterpayTransactionLogQuery
      */
-    public function queryAuthorizeTransactionLog($idSalesOrder)
+    public function queryAuthorizeTransactionLog($orderReference)
     {
         return $this->getFactory()
             ->createPaymentAfterpayTransactionLogQuery()
-            ->filterByFkSalesOrder($idSalesOrder)
+            ->filterByOrderReference($orderReference)
             ->filterByTransactionType(static::TRANSACTION_TYPE_AUTHORIZE);
     }
 
     /**
      * @api
      *
-     * @param int $idSalesOrder
+     * @param string $orderReference
      *
      * @return \Orm\Zed\Afterpay\Persistence\SpyPaymentAfterpayTransactionLogQuery
      */
-    public function queryCaptureTransactionLog($idSalesOrder)
+    public function queryCaptureTransactionLog($orderReference)
     {
         return $this->getFactory()
             ->createPaymentAfterpayTransactionLogQuery()
-            ->filterByFkSalesOrder($idSalesOrder)
+            ->filterByOrderReference($orderReference)
             ->filterByTransactionType(static::TRANSACTION_TYPE_CAPTURE);
     }
 
     /**
      * @api
      *
-     * @param int $idSalesOrder
+     * @param string $orderReference
      *
      * @return \Orm\Zed\Afterpay\Persistence\SpyPaymentAfterpayTransactionLogQuery
      */
-    public function queryCancelTransactionLog($idSalesOrder)
+    public function queryCancelTransactionLog($orderReference)
     {
         return $this->getFactory()
             ->createPaymentAfterpayTransactionLogQuery()
-            ->filterByFkSalesOrder($idSalesOrder)
+            ->filterByOrderReference($orderReference)
             ->filterByTransactionType(static::TRANSACTION_TYPE_CANCEL);
     }
 
@@ -115,16 +115,28 @@ class AfterpayQueryContainer extends AbstractQueryContainer implements AfterpayQ
     /**
      * @api
      *
-     * @param int $idSalesOrder
+     * @param string $orderReference
      * @param string $transactionType
      *
      * @return \Orm\Zed\Afterpay\Persistence\SpyPaymentAfterpayTransactionLogQuery
      */
-    public function queryTransactionByIdSalesOrderAndType($idSalesOrder, $transactionType)
+    public function queryTransactionByIdSalesOrderAndType($orderReference, $transactionType)
     {
         return $this->getFactory()
             ->createPaymentAfterpayTransactionLogQuery()
-            ->filterByFkSalesOrder($idSalesOrder)
+            ->filterByOrderReference($orderReference)
             ->filterByTransactionType($transactionType);
+    }
+
+    /**
+     * @param string $orderReference
+     *
+     * @return \Orm\Zed\Afterpay\Persistence\SpyPaymentAfterpayAuthorizationQuery
+     */
+    public function queryAuthorizationByOrderReference($orderReference)
+    {
+        return $this->getFactory()
+            ->createPaymentAfterpayAuthorizationQuery()
+            ->filterByOrderReference($orderReference);
     }
 }

@@ -9,6 +9,8 @@ namespace SprykerEco\Zed\Afterpay\Communication;
 
 use Spryker\Zed\Kernel\Communication\AbstractCommunicationFactory;
 use SprykerEco\Zed\Afterpay\AfterpayDependencyProvider;
+use SprykerEco\Zed\Afterpay\Communication\Converter\OrderToCallConverter;
+use SprykerEco\Zed\Afterpay\Communication\Converter\QuoteToCallConverter;
 
 /**
  * @method \SprykerEco\Zed\Afterpay\Persistence\AfterpayQueryContainerInterface getQueryContainer()
@@ -30,5 +32,20 @@ class AfterpayCommunicationFactory extends AbstractCommunicationFactory
     public function getRefundFacade()
     {
         return $this->getProvidedDependency(AfterpayDependencyProvider::FACADE_REFUND);
+    }
+    /**
+     * @return \SprykerEco\Zed\Afterpay\Communication\Converter\QuoteToCallConverter
+     */
+    public function createQuoteToCallConverter()
+    {
+        return new QuoteToCallConverter();
+    }
+
+    /**
+     * @return \SprykerEco\Zed\Afterpay\Communication\Converter\OrderToCallConverter
+     */
+    public function createOrderToCallConverter()
+    {
+        return new OrderToCallConverter();
     }
 }

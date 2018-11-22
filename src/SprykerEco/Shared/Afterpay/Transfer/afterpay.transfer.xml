@@ -31,9 +31,6 @@
     </transfer>
 
     <transfer name="AfterpayAuthorizeRequest">
-        <property name="idSalesOrder" type="int" />
-        <property name="fkPayment" type="int" />
-        <property name="checkoutId" type="string" />
         <property name="payment" type="AfterpayRequestPayment" />
         <property name="customer" type="AfterpayRequestCustomer" />
         <property name="order" type="AfterpayRequestOrder" />
@@ -268,8 +265,19 @@
         <property name="quoteHash" type="string" />
     </transfer>
 
+    <transfer name="AfterpayCall">
+        <property name="shippingAddress" type="Address" />
+        <property name="billingAddress" type="Address" />
+        <property name="orderReference" type="string" />
+        <property name="paymentMethod" type="string" />
+        <property name="email" type="string" />
+        <property name="items" type="Item[]" singular="Item"/>
+        <property name="totals" type="Totals" />
+    </transfer>
+
     <transfer name="Quote">
         <property name="afterpayAvailablePaymentMethods" type="AfterpayAvailablePaymentMethods" />
+        <property name="afterpayPaymentReservationId" type="string" />
     </transfer>
 
     <transfer name="Payment">

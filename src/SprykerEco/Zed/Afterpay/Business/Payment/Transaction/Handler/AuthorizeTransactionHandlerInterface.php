@@ -7,14 +7,14 @@
 
 namespace SprykerEco\Zed\Afterpay\Business\Payment\Transaction\Handler;
 
-use Generated\Shared\Transfer\OrderTransfer;
+use Generated\Shared\Transfer\AfterpayCallTransfer;
 
 interface AuthorizeTransactionHandlerInterface
 {
     /**
-     * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
+     * @param \Generated\Shared\Transfer\AfterpayCallTransfer $orderTransfer
      *
      * @return void
      */
-    public function authorize(OrderTransfer $orderTransfer);
+    public function authorize(AfterpayCallTransfer $orderTransfer);
 }

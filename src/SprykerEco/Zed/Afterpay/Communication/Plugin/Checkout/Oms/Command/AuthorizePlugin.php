@@ -29,10 +29,23 @@ class AuthorizePlugin extends AbstractPlugin implements CommandByOrderInterface
      */
     public function run(array $orderItems, SpySalesOrder $orderEntity, ReadOnlyArrayObject $data)
     {
-        $orderTransfer = $this->getOrderWithPaymentTransfer($orderEntity->getIdSalesOrder());
-        $this->getFacade()->authorizePayment($orderTransfer);
+        $afterpayCallTransfer = $this->createAuthorizeCallTransfer($orderEntity);
+        $this->getFacade()->authorizePayment($afterpayCallTransfer);
 
         return [];
+    }
+
+    /**
+     * @param \Orm\Zed\Sales\Persistence\SpySalesOrder $orderEntity
+     *
+     * @return \Generated\Shared\Transfer\AfterpayCallTransfer
+     */
+    protected function createAuthorizeCallTransfer(SpySalesOrder $orderEntity)
+    {
+        $orderTransfer = $this->getOrderWithPaymentTransfer($orderEntity->getIdSalesOrder());
+        return $this->getFactory()
+            ->createOrderToCallConverter()
+            ->convert($orderTransfer);
     }
 
     /**

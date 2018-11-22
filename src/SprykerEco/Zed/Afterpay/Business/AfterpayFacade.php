@@ -7,13 +7,13 @@
 
 namespace SprykerEco\Zed\Afterpay\Business;
 
+use Generated\Shared\Transfer\AfterpayCallTransfer;
 use Generated\Shared\Transfer\AfterpayCustomerLookupRequestTransfer;
 use Generated\Shared\Transfer\AfterpayInstallmentPlansRequestTransfer;
 use Generated\Shared\Transfer\AfterpayValidateBankAccountRequestTransfer;
 use Generated\Shared\Transfer\AfterpayValidateCustomerRequestTransfer;
 use Generated\Shared\Transfer\CheckoutResponseTransfer;
 use Generated\Shared\Transfer\ItemTransfer;
-use Generated\Shared\Transfer\OrderTransfer;
 use Generated\Shared\Transfer\QuoteTransfer;
 use Spryker\Zed\Kernel\Business\AbstractFacade;
 
@@ -145,15 +145,15 @@ class AfterpayFacade extends AbstractFacade implements AfterpayFacadeInterface
      *
      * @api
      *
-     * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
+     * @param \Generated\Shared\Transfer\AfterpayCallTransfer $orderTransfer
      *
-     * @return \Generated\Shared\Transfer\AfterpayResponseTransfer
+     * @return \Generated\Shared\Transfer\AfterpayCallTransfer
      */
-    public function authorizePayment(OrderTransfer $orderTransfer)
+    public function authorizePayment(AfterpayCallTransfer $afterpayCallTransfer)
     {
-        $this->getFactory()
+        return $this->getFactory()
             ->createAuthorizeTransactionHandler()
-            ->authorize($orderTransfer);
+            ->authorize($afterpayCallTransfer);
     }
 
     /**
@@ -162,15 +162,15 @@ class AfterpayFacade extends AbstractFacade implements AfterpayFacadeInterface
      * @api
      *
      * @param \Generated\Shared\Transfer\ItemTransfer $itemTransfer
-     * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
+     * @param \Generated\Shared\Transfer\AfterpayCallTransfer $afterpayCallTransfer
      *
      * @return \Generated\Shared\Transfer\AfterpayResponseTransfer
      */
-    public function capturePayment(ItemTransfer $itemTransfer, OrderTransfer $orderTransfer)
+    public function capturePayment(ItemTransfer $itemTransfer, AfterpayCallTransfer $afterpayCallTransfer)
     {
         $this->getFactory()
             ->createCaptureTransactionHandler()
-            ->capture($itemTransfer, $orderTransfer);
+            ->capture($itemTransfer, $afterpayCallTransfer);
     }
 
     /**
@@ -196,15 +196,15 @@ class AfterpayFacade extends AbstractFacade implements AfterpayFacadeInterface
      * @api
      *
      * @param \Generated\Shared\Transfer\ItemTransfer $itemTransfer
-     * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
+     * @param \Generated\Shared\Transfer\AfterpayCallTransfer $afterpayCallTransfer
      *
      * @return \Generated\Shared\Transfer\AfterpayResponseTransfer
      */
-    public function cancelPayment(ItemTransfer $itemTransfer, OrderTransfer $orderTransfer)
+    public function cancelPayment(ItemTransfer $itemTransfer, AfterpayCallTransfer $afterpayCallTransfer)
     {
         $this->getFactory()
             ->createCancelTransactionHandler()
-            ->cancel($itemTransfer, $orderTransfer);
+            ->cancel($itemTransfer, $afterpayCallTransfer);
     }
 
     /**
