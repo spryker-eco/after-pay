@@ -99,6 +99,10 @@
         <property name="readMore" type="string" />
     </transfer>
 
+    <transfer name="Totals">
+        <property name="priceToPay" type="int"/>
+    </transfer>
+
     <transfer name="AfterpayUserProfile">
         <property name="firstName" type="string" />
         <property name="lastName" type="string" />

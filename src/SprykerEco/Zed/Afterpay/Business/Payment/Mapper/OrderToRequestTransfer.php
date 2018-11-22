@@ -19,12 +19,17 @@ use Generated\Shared\Transfer\AfterpayRequestOrderTransfer;
 use Generated\Shared\Transfer\AfterpayRequestPaymentTransfer;
 use Generated\Shared\Transfer\ItemTransfer;
 use Generated\Shared\Transfer\OrderTransfer;
+use Spryker\Shared\Kernel\Store;
 use SprykerEco\Shared\Afterpay\AfterpayConstants;
+use SprykerEco\Zed\Afterpay\Business\Payment\Transaction\PriceToPayProviderInterface;
 use SprykerEco\Zed\Afterpay\Dependency\Facade\AfterpayToMoneyInterface;
 use SprykerEco\Zed\Afterpay\Dependency\Facade\AfterpayToStoreInterface;
 
 class OrderToRequestTransfer implements OrderToRequestTransferInterface
 {
+    const NEGATIVE_MULTIPLIER = -1;
+    const GIFT_CARD_PROVIDER = 'GiftCard';
+
     /**
      * @var \SprykerEco\Zed\Afterpay\Dependency\Facade\AfterpayToMoneyInterface
      */
@@ -43,13 +48,23 @@ class OrderToRequestTransfer implements OrderToRequestTransferInterface
     ];
 
     /**
+     * @var \SprykerEco\Zed\Afterpay\Business\Payment\Transaction\PriceToPayProviderInterface
+     */
+    protected $priceToPayProvider;
+
+    /**
      * @param \SprykerEco\Zed\Afterpay\Dependency\Facade\AfterpayToMoneyInterface $moneyFacade
      * @param \SprykerEco\Zed\Afterpay\Dependency\Facade\AfterpayToStoreInterface $storeFacade
+     * @param \SprykerEco\Zed\Afterpay\Business\Payment\Transaction\PriceToPayProviderInterface $priceToPayProvider
      */
-    public function __construct(AfterpayToMoneyInterface $moneyFacade, AfterpayToStoreInterface $storeFacade)
-    {
+    public function __construct(
+        AfterpayToMoneyInterface $moneyFacade,
+        AfterpayToStoreInterface $storeFacade,
+        PriceToPayProviderInterface $priceToPayProvider
+    ) {
         $this->moneyFacade = $moneyFacade;
         $this->storeFacade = $storeFacade;
+        $this->priceToPayProvider = $priceToPayProvider;
     }
 
     /**
@@ -320,5 +335,47 @@ class OrderToRequestTransfer implements OrderToRequestTransferInterface
         $itemUnitNetAmount = $itemUnitGrossPriceAmount - $itemUnitTaxAmount;
 
         return (string)$this->moneyFacade->convertIntegerToDecimal($itemUnitNetAmount);
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\OrderTransfer $orderWithPaymentTransfer
+     * @param  \Generated\Shared\Transfer\AfterpayRequestOrderTransfer $orderRequestTransfer
+     *
+     * @return void
+     */
+    protected function addGiftcardItems(OrderTransfer $orderWithPaymentTransfer, AfterpayRequestOrderTransfer $orderRequestTransfer)
+    {
+        foreach ($this->getGiftcards($orderWithPaymentTransfer) as $index => $paymentTransfer) {
+
+            $orderItemRequestTransfer = new AfterpayRequestOrderItemTransfer();
+            $amount = (string)$this->money->convertIntegerToDecimal(static::NEGATIVE_MULTIPLIER * $paymentTransfer->getAmount());
+
+            $orderItemRequestTransfer
+                ->setProductId(static::GIFT_CARD_PROVIDER . $index)
+                ->setDescription(static::GIFT_CARD_PROVIDER . $index)
+                ->setGrossUnitPrice($amount)
+                ->setQuantity(1);
+
+            $orderRequestTransfer->addItem($orderItemRequestTransfer);
+        }
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\OrderTransfer $orderWithPaymentTransfer
+     *
+     * @return \Generated\Shared\Transfer\PaymentTransfer[]
+     */
+    protected function getGiftcards(OrderTransfer $orderWithPaymentTransfer)
+    {
+        $giftCardPayments = [];
+        foreach ($orderWithPaymentTransfer->getPayments() as $paymentTransfer) {
+            if ($paymentTransfer->getPaymentMethod() !== static::GIFT_CARD_PROVIDER) {
+                continue;
+            }
+
+            $giftCardPayments[] = $paymentTransfer;
+        }
+
+        return $giftCardPayments;
     }
 }

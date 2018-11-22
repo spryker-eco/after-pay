@@ -11,6 +11,8 @@ use Generated\Shared\Transfer\AfterpayCallTransfer;
 use SprykerEco\Zed\Afterpay\Business\Payment\PaymentWriterInterface;
 use SprykerEco\Zed\Afterpay\Business\Payment\Transaction\Authorize\RequestBuilder\AuthorizeRequestBuilderInterface;
 use SprykerEco\Zed\Afterpay\Business\Payment\Transaction\AuthorizeTransactionInterface;
+use SprykerEco\Zed\Afterpay\Business\Payment\Transaction\PriceToPayProviderInterface;
+use SprykerEco\Zed\Afterpay\Dependency\Facade\AfterpayToPaymentInterface;
 
 class AuthorizeTransactionHandler implements AuthorizeTransactionHandlerInterface
 {
@@ -30,18 +32,26 @@ class AuthorizeTransactionHandler implements AuthorizeTransactionHandlerInterfac
     protected $paymentWriter;
 
     /**
+     * @var \SprykerEco\Zed\Afterpay\Business\Payment\Transaction\PriceToPayProviderInterface
+     */
+    protected $priceToPayProvider;
+
+    /**
      * @param \SprykerEco\Zed\Afterpay\Business\Payment\Transaction\AuthorizeTransactionInterface $transaction
      * @param \SprykerEco\Zed\Afterpay\Business\Payment\Transaction\Authorize\RequestBuilder\AuthorizeRequestBuilderInterface $requestBuilder
      * @param \SprykerEco\Zed\Afterpay\Business\Payment\PaymentWriterInterface $paymentWriter
+     * @param \SprykerEco\Zed\Afterpay\Business\Payment\Transaction\PriceToPayProviderInterface $priceToPayProvider
      */
     public function __construct(
         AuthorizeTransactionInterface $transaction,
         AuthorizeRequestBuilderInterface $requestBuilder,
-        PaymentWriterInterface $paymentWriter
+        PaymentWriterInterface $paymentWriter,
+        PriceToPayProviderInterface $priceToPayProvider
     ) {
         $this->transaction = $transaction;
         $this->requestBuilder = $requestBuilder;
         $this->paymentWriter = $paymentWriter;
+        $this->priceToPayProvider = $priceToPayProvider;
     }
 
     /**
@@ -92,7 +102,7 @@ class AuthorizeTransactionHandler implements AuthorizeTransactionHandlerInterfac
     protected function setPaymentTotalAuthorizedAmount(OrderTransfer $orderTransfer)
     {
         $this->paymentWriter->setAuthorizedTotalByIdSalesOrder(
-            $orderTransfer->getTotals()->getGrandTotal(),
+            $this->priceToPayProvider->getPriceToPayForOrder($orderTransfer),
             $orderTransfer->getIdSalesOrder()
         );
     }
