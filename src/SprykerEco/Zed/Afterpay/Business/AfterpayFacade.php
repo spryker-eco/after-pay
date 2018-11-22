@@ -147,7 +147,7 @@ class AfterpayFacade extends AbstractFacade implements AfterpayFacadeInterface
      *
      * @param \Generated\Shared\Transfer\AfterpayCallTransfer $orderTransfer
      *
-     * @return \Generated\Shared\Transfer\AfterpayCallTransfer
+     * @return \Generated\Shared\Transfer\AfterpayApiResponseTransfer
      */
     public function authorizePayment(AfterpayCallTransfer $afterpayCallTransfer)
     {
@@ -164,7 +164,7 @@ class AfterpayFacade extends AbstractFacade implements AfterpayFacadeInterface
      * @param \Generated\Shared\Transfer\ItemTransfer $itemTransfer
      * @param \Generated\Shared\Transfer\AfterpayCallTransfer $afterpayCallTransfer
      *
-     * @return \Generated\Shared\Transfer\AfterpayResponseTransfer
+     * @return void
      */
     public function capturePayment(ItemTransfer $itemTransfer, AfterpayCallTransfer $afterpayCallTransfer)
     {

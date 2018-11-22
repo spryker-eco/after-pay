@@ -47,12 +47,13 @@ class AuthorizeTransactionHandler implements AuthorizeTransactionHandlerInterfac
     /**
      * @param \Generated\Shared\Transfer\AfterpayCallTransfer $afterpayCallTransfer
      *
-     * @return void
+     * @return \Generated\Shared\Transfer\AfterpayApiResponseTransfer
      */
     public function authorize(AfterpayCallTransfer $afterpayCallTransfer)
     {
         $authorizeRequestTransfer = $this->buildAuthorizeRequest($afterpayCallTransfer);
-        $this->transaction->executeTransaction($authorizeRequestTransfer);
+
+        return $this->transaction->executeTransaction($authorizeRequestTransfer);
     }
 
     /**

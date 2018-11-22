@@ -14,7 +14,7 @@ interface AuthorizeTransactionHandlerInterface
     /**
      * @param \Generated\Shared\Transfer\AfterpayCallTransfer $orderTransfer
      *
-     * @return void
+     * @return \Generated\Shared\Transfer\AfterpayApiResponseTransfer
      */
     public function authorize(AfterpayCallTransfer $orderTransfer);
 }
