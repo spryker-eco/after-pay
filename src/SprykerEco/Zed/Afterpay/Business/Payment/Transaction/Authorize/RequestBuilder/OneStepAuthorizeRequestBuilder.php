@@ -7,12 +7,11 @@
 
 namespace SprykerEco\Zed\Afterpay\Business\Payment\Transaction\Authorize\RequestBuilder;
 
-use Generated\Shared\Transfer\OrderTransfer;
+use Generated\Shared\Transfer\AfterpayCallTransfer;
 use SprykerEco\Zed\Afterpay\Business\Payment\Mapper\OrderToRequestTransferInterface;
 
 class OneStepAuthorizeRequestBuilder implements AuthorizeRequestBuilderInterface
 {
-
     /**
      * @var \SprykerEco\Zed\Afterpay\Business\Payment\Mapper\OrderToRequestTransferInterface
      */
@@ -27,15 +26,14 @@ class OneStepAuthorizeRequestBuilder implements AuthorizeRequestBuilderInterface
     }
 
     /**
-     * @param \Generated\Shared\Transfer\OrderTransfer $orderWithPaymentTransfer
+     * @param \Generated\Shared\Transfer\AfterpayCallTransfer $afterpayCallTransfer
      *
      * @return \Generated\Shared\Transfer\AfterpayAuthorizeRequestTransfer
      */
-    public function buildAuthorizeRequest(OrderTransfer $orderWithPaymentTransfer)
+    public function buildAuthorizeRequest(AfterpayCallTransfer $afterpayCallTransfer)
     {
         return $this
             ->orderToRequestTransferMapper
-            ->orderToAuthorizeRequest($orderWithPaymentTransfer);
+            ->orderToAuthorizeRequest($afterpayCallTransfer);
     }
-
 }

@@ -11,12 +11,10 @@ use Generated\Shared\Transfer\AfterpayCaptureRequestTransfer;
 
 interface CaptureTransactionInterface
 {
-
     /**
      * @param \Generated\Shared\Transfer\AfterpayCaptureRequestTransfer $captureRequestTransfer
      *
      * @return \Generated\Shared\Transfer\AfterpayCaptureResponseTransfer
      */
     public function executeTransaction(AfterpayCaptureRequestTransfer $captureRequestTransfer);
-
 }

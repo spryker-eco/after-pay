@@ -7,6 +7,7 @@
 
 namespace SprykerEco\Zed\Afterpay\Business\Api\Adapter\Client\Http;
 
+use Generated\Shared\Transfer\AfterpayApiResponseErrorTransfer;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Psr7\Request;
@@ -16,7 +17,6 @@ use SprykerEco\Zed\Afterpay\Business\Exception\ApiHttpRequestException;
 
 class Guzzle implements ClientInterface
 {
-
     const REQUEST_METHOD_POST = 'POST';
     const REQUEST_METHOD_GET = 'GET';
 
@@ -97,7 +97,29 @@ class Guzzle implements ClientInterface
         try {
             return $this->client->send($request, $options);
         } catch (RequestException $requestException) {
-            throw new ApiHttpRequestException($requestException->getMessage());
+            $apiHttpRequestException = new ApiHttpRequestException($requestException->getMessage());
+
+            $content = $requestException->getResponse()->getBody()->getContents();
+            if (!empty($content)) {
+                $errorResponseData = \GuzzleHttp\json_decode(
+                    $content, true
+                );
+                if (isset($errorResponseData[0])) {
+                    $errorDetails = $errorResponseData[0];
+                    $apiErrorTransfer = new AfterpayApiResponseErrorTransfer();
+                    $apiErrorTransfer
+                        ->setActionCode($errorDetails['actionCode'])
+                        ->setCode($errorDetails['code'])
+                        ->setType($errorDetails['type'])
+                        ->setMessage($errorDetails['message'])
+                        ->setIsSuccess(false);
+                    $apiHttpRequestException->setError($apiErrorTransfer);
+                    $apiHttpRequestException->setDetailedMessage($content);
+                }
+            }
+
+
+            throw $apiHttpRequestException;
         }
     }
 
@@ -136,5 +158,4 @@ class Guzzle implements ClientInterface
             ]
         );
     }
-
 }

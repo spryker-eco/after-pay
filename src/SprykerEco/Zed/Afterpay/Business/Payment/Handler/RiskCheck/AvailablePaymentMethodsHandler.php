@@ -16,7 +16,6 @@ use SprykerEco\Zed\Afterpay\Business\Payment\Mapper\QuoteToRequestTransferInterf
 
 class AvailablePaymentMethodsHandler implements AvailablePaymentMethodsHandlerInterface
 {
-
     /**
      * @var \SprykerEco\Zed\Afterpay\Business\Api\Adapter\AdapterInterface
      */
@@ -105,12 +104,12 @@ class AvailablePaymentMethodsHandler implements AvailablePaymentMethodsHandlerIn
     {
         $availablePaymentMethodNames = [];
         foreach ($apiResponseTransfer->getPaymentMethods() as $paymentMethodArray) {
-            if (isset($paymentMethodArray['type'])) {
-                $availablePaymentMethodNames[] = $paymentMethodArray['type'];
+            if (!isset($paymentMethodArray['type'])) {
+                continue;
             }
+            $availablePaymentMethodNames[] = $paymentMethodArray['type'];
         }
 
         return array_unique($availablePaymentMethodNames);
     }
-
 }

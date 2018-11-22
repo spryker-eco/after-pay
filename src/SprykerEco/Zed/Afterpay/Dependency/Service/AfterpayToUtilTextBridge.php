@@ -9,7 +9,6 @@ namespace SprykerEco\Zed\Afterpay\Dependency\Service;
 
 class AfterpayToUtilTextBridge implements AfterpayToUtilTextInterface
 {
-
     /**
      * @var \Spryker\Service\UtilText\UtilTextServiceInterface
      */
@@ -45,5 +44,4 @@ class AfterpayToUtilTextBridge implements AfterpayToUtilTextInterface
     {
         return $this->utilTextService->camelCaseToSeparator($string, $separator);
     }
-
 }

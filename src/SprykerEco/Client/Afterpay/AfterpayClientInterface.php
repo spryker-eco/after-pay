@@ -8,13 +8,13 @@
 namespace SprykerEco\Client\Afterpay;
 
 use Generated\Shared\Transfer\AfterpayCustomerLookupRequestTransfer;
+use Generated\Shared\Transfer\AfterpayInstallmentPlansRequestTransfer;
 use Generated\Shared\Transfer\AfterpayValidateBankAccountRequestTransfer;
 use Generated\Shared\Transfer\AfterpayValidateCustomerRequestTransfer;
 use Generated\Shared\Transfer\QuoteTransfer;
 
 interface AfterpayClientInterface
 {
-
     /**
      * Specification:
      *  - Makes "payment-methods" call to the afterpay API, in order to get list of available
@@ -56,6 +56,19 @@ interface AfterpayClientInterface
 
     /**
      * Specification:
+     *  - Makes "lookup/installment-plans" call to the afterpay API, to get the available installment plans for the specific
+     *  product/basket value. Returns monthly installment amount, interest and fees.
+     *
+     * @api
+     *
+     * @param \Generated\Shared\Transfer\AfterpayInstallmentPlansRequestTransfer $installmentPlansRequestTransfer
+     *
+     * @return \Generated\Shared\Transfer\AfterpayInstallmentPlansResponseTransfer
+     */
+    public function getAvailableInstallmentPlans(AfterpayInstallmentPlansRequestTransfer $installmentPlansRequestTransfer);
+
+    /**
+     * Specification:
      *  - Makes "validate bank-account" call to the afterpay API, to validate and evaluates the account and bank details
      *  in the context of direct debit payment. It is possible to transfer either the combination of BankCode and AccountNumber or IBAN and BIC
      *  Response contains validation result and list of risk-check messages
@@ -77,5 +90,4 @@ interface AfterpayClientInterface
      * @return \Generated\Shared\Transfer\QuoteTransfer
      */
     public function getQuoteFromSession();
-
 }

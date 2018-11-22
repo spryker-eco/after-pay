@@ -11,12 +11,10 @@ use Spryker\Shared\Kernel\Transfer\AbstractTransfer;
 
 interface TransferToCamelCaseArrayConverterInterface
 {
-
     /**
      * @param \Spryker\Shared\Kernel\Transfer\AbstractTransfer $transfer
      *
      * @return mixed
      */
     public function convert(AbstractTransfer $transfer);
-
 }

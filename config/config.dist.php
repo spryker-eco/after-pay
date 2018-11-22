@@ -8,12 +8,11 @@
  * Copy over the following configs to your config
  */
 
-use Spryker\Shared\Kernel\KernelConstants;
+use Spryker\Shared\Application\ApplicationConstants;
 use Spryker\Shared\Oms\OmsConstants;
 use Spryker\Shared\Sales\SalesConstants;
 use Spryker\Zed\Oms\OmsConfig;
 use SprykerEco\Shared\Afterpay\AfterpayConstants;
-use Spryker\Shared\Application\ApplicationConstants;
 
 // Afterpay configuration
 
@@ -23,23 +22,6 @@ $config[AfterpayConstants::VENDOR_ROOT] = APPLICATION_ROOT_DIR . '/vendor/spryke
 $config[AfterpayConstants::API_ENDPOINT_BASE_URL] = 'https://sandboxapi.horizonafs.com/eCommerceServicesWebApi/api/v3/';
 $config[AfterpayConstants::API_CREDENTIALS_AUTH_KEY] = '';
 $config[AfterpayConstants::PAYMENT_INVOICE_CHANNEL_ID] = '';
-
-// OMS and payment
-
-$config[KernelConstants::DEPENDENCY_INJECTOR_YVES] = [
-    'Checkout' => [
-        'Afterpay',
-    ],
-];
-
-$config[KernelConstants::DEPENDENCY_INJECTOR_ZED] = [
-    'Payment' => [
-        'Afterpay',
-    ],
-    'Oms' => [
-        'Afterpay',
-    ],
-];
 
 $config[OmsConstants::PROCESS_LOCATION] = [
     OmsConfig::DEFAULT_PROCESS_LOCATION,
@@ -58,7 +40,6 @@ $config[AfterpayConstants::HOST_SSL_YVES] = $config[ApplicationConstants::HOST_S
 $config[AfterpayConstants::HOST_YVES] = $config[ApplicationConstants::HOST_YVES];
 
 $config[AfterpayConstants::AFTERPAY_YVES_AUTHORIZE_PAYMENT_FAILED_URL] = 'http://' . $config[AfterpayConstants::HOST_YVES] . '/checkout/payment';
-
 
 $config[AfterpayConstants::AFTERPAY_AUTHORIZE_WORKFLOW] = AfterpayConstants::AFTERPAY_AUTHORIZE_WORKFLOW_TWO_STEPS;
 

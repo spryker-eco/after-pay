@@ -8,7 +8,6 @@ namespace SprykerEco\Zed\Afterpay\Dependency\Service;
 
 class AfterpayToUtilEncodingBridge implements AfterpayToUtilEncodingInterface
 {
-
     /**
      * @var \Spryker\Service\UtilEncoding\UtilEncodingServiceInterface
      */
@@ -46,5 +45,4 @@ class AfterpayToUtilEncodingBridge implements AfterpayToUtilEncodingInterface
     {
         return $this->utilEncodingService->decodeJson($jsonValue, $assoc, $depth, $options);
     }
-
 }

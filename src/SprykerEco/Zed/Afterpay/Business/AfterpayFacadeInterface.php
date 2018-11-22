@@ -7,17 +7,17 @@
 
 namespace SprykerEco\Zed\Afterpay\Business;
 
+use Generated\Shared\Transfer\AfterpayCallTransfer;
 use Generated\Shared\Transfer\AfterpayCustomerLookupRequestTransfer;
+use Generated\Shared\Transfer\AfterpayInstallmentPlansRequestTransfer;
 use Generated\Shared\Transfer\AfterpayValidateBankAccountRequestTransfer;
 use Generated\Shared\Transfer\AfterpayValidateCustomerRequestTransfer;
 use Generated\Shared\Transfer\CheckoutResponseTransfer;
 use Generated\Shared\Transfer\ItemTransfer;
-use Generated\Shared\Transfer\OrderTransfer;
 use Generated\Shared\Transfer\QuoteTransfer;
 
 interface AfterpayFacadeInterface
 {
-
     /**
      * Specification:
      * - Makes a call to the "payment-methods" API endpoint, to get a list of payment methods,
@@ -79,16 +79,29 @@ interface AfterpayFacadeInterface
 
     /**
      * Specification:
+     *  - Makes "lookup/installment-plans" call to the afterpay API, to get the available installment plans for the specific
+     *  product/basket value. Returns monthly installment amount, interest and fees.
+     *
+     * @param \Generated\Shared\Transfer\AfterpayInstallmentPlansRequestTransfer $installmentPlansRequestTransfer
+     *
+     * @return \Generated\Shared\Transfer\AfterpayInstallmentPlansResponseTransfer
+     */
+    public function lookupInstallmentPlans(
+        AfterpayInstallmentPlansRequestTransfer $installmentPlansRequestTransfer
+    );
+
+    /**
+     * Specification:
      * - Sends payment authorize request to Afterpay gateway.
-     * - Saves the transaction result in DB for future recognition
+     * - Saves the transaction result in Quote for future recognition
      *
      * @api
      *
-     * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
+     * @param \Generated\Shared\Transfer\AfterpayCallTransfer $afterpayCallTransfer
      *
-     * @return \Generated\Shared\Transfer\AfterpayResponseTransfer
+     * @return \Generated\Shared\Transfer\AfterpayCallTransfer
      */
-    public function authorizePayment(OrderTransfer $orderTransfer);
+    public function authorizePayment(AfterpayCallTransfer $afterpayCallTransfer);
 
     /**
      * Specification:
@@ -99,11 +112,39 @@ interface AfterpayFacadeInterface
      * @api
      *
      * @param \Generated\Shared\Transfer\ItemTransfer $itemTransfer
+     * @param \Generated\Shared\Transfer\AfterpayCallTransfer $afterpayCallTransfer
+     *
+     * @return void
+     */
+    public function capturePayment(ItemTransfer $itemTransfer, AfterpayCallTransfer $afterpayCallTransfer);
+
+    /**
+     * Specification:
+     * - Sends "refund" request to Afterpay gateway, to refund payment for a specific order item.
+     *
+     * @api
+     *
+     * @param \Generated\Shared\Transfer\ItemTransfer $itemTransfer
      * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
      *
      * @return \Generated\Shared\Transfer\AfterpayResponseTransfer
      */
-    public function capturePayment(ItemTransfer $itemTransfer, OrderTransfer $orderTransfer);
+    public function refundPayment(ItemTransfer $itemTransfer, OrderTransfer $orderTransfer);
+
+    /**
+     * Specification:
+     * - Sends "void" request to Afterpay gateway, to cancel payment for a specific order item, before payment is captured
+     * - If it is the last item cancellation request for given order, cancels also full expense amount.
+     * - Saves the transaction result in DB and updates payment with new total cancelled amount.
+     *
+     * @api
+     *
+     * @param \Generated\Shared\Transfer\ItemTransfer $itemTransfer
+     * @param \Generated\Shared\Transfer\AfterpayCallTransfer $afterpayCallTransfer
+     *
+     * @return \Generated\Shared\Transfer\AfterpayResponseTransfer
+     */
+    public function cancelPayment(ItemTransfer $itemTransfer, AfterpayCallTransfer $afterpayCallTransfer);
 
     /**
      * Specification:
@@ -151,5 +192,4 @@ interface AfterpayFacadeInterface
      * @return int
      */
     public function getApiStatus();
-
 }

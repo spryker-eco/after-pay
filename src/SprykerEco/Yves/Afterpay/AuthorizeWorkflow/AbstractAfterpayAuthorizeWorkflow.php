@@ -12,7 +12,6 @@ use SprykerEco\Shared\Afterpay\AfterpayConstants;
 
 class AbstractAfterpayAuthorizeWorkflow
 {
-
     const PAYMENT_PROVIDER = AfterpayConstants::PROVIDER_NAME;
 
     /**
@@ -37,5 +36,4 @@ class AbstractAfterpayAuthorizeWorkflow
 
         return $quoteTransfer;
     }
-
 }

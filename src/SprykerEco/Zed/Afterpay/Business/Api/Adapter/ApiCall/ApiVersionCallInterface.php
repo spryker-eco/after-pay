@@ -9,10 +9,8 @@ namespace SprykerEco\Zed\Afterpay\Business\Api\Adapter\ApiCall;
 
 interface ApiVersionCallInterface
 {
-
     /**
      * @return string
      */
     public function execute();
-
 }

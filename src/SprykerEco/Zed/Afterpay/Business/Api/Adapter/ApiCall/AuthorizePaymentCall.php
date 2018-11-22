@@ -19,11 +19,11 @@ use SprykerEco\Zed\Afterpay\Dependency\Service\AfterpayToUtilEncodingInterface;
 
 class AuthorizePaymentCall extends AbstractApiCall implements AuthorizePaymentCallInterface
 {
-
     /**
      * @var \SprykerEco\Zed\Afterpay\Business\Api\Adapter\Client\ClientInterface
      */
     protected $client;
+
     /**
      * @var \SprykerEco\Zed\Afterpay\AfterpayConfig
      */
@@ -81,12 +81,11 @@ class AuthorizePaymentCall extends AbstractApiCall implements AuthorizePaymentCa
         $responseTransfer = new AfterpayApiResponseTransfer();
 
         $responseTransfer
-            ->setOutcome($jsonResponseArray['outcome'] ?? AfterpayConstants::API_TRANSACTION_OUTCOME_REJECTED)
-            ->setReservationId($jsonResponseArray['reservationId'] ?? null)
-            ->setCheckoutId($jsonResponseArray['checkoutId'] ?? null)
+            ->setOutcome($jsonResponseArray[AfterpayApiConstants::TRANSACTION_OUTCOME] ?? AfterpayConstants::API_TRANSACTION_OUTCOME_REJECTED)
+            ->setReservationId($jsonResponseArray[AfterpayApiConstants::TRANSACTION_RESERVATION_ID] ?? null)
+            ->setCheckoutId($jsonResponseArray[AfterpayApiConstants::TRANSACTION_CHECKOUT_ID] ?? null)
             ->setResponsePayload($jsonResponse);
 
         return $responseTransfer;
     }
-
 }

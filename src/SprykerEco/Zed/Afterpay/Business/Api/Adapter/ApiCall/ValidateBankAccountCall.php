@@ -18,7 +18,6 @@ use SprykerEco\Zed\Afterpay\Dependency\Service\AfterpayToUtilEncodingInterface;
 
 class ValidateBankAccountCall extends AbstractApiCall implements ValidateBankAccountCallInterface
 {
-
     /**
      * @var \SprykerEco\Zed\Afterpay\Business\Api\Adapter\Client\ClientInterface
      */
@@ -51,7 +50,6 @@ class ValidateBankAccountCall extends AbstractApiCall implements ValidateBankAcc
         $this->config = $config;
         $this->transferConverter = $transferConverter;
     }
-
 
     /**
      * @param \Generated\Shared\Transfer\AfterpayValidateBankAccountRequestTransfer $validateBankAccountRequestTransfer
@@ -89,5 +87,4 @@ class ValidateBankAccountCall extends AbstractApiCall implements ValidateBankAcc
 
         return $responseTransfer;
     }
-
 }

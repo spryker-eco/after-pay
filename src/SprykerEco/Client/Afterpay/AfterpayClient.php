@@ -8,6 +8,7 @@
 namespace SprykerEco\Client\Afterpay;
 
 use Generated\Shared\Transfer\AfterpayCustomerLookupRequestTransfer;
+use Generated\Shared\Transfer\AfterpayInstallmentPlansRequestTransfer;
 use Generated\Shared\Transfer\AfterpayValidateBankAccountRequestTransfer;
 use Generated\Shared\Transfer\AfterpayValidateCustomerRequestTransfer;
 use Generated\Shared\Transfer\QuoteTransfer;
@@ -18,7 +19,6 @@ use Spryker\Client\Kernel\AbstractClient;
  */
 class AfterpayClient extends AbstractClient implements AfterpayClientInterface
 {
-
     /**
      * {@inheritdoc}
      *
@@ -63,6 +63,22 @@ class AfterpayClient extends AbstractClient implements AfterpayClientInterface
         return $this->getFactory()
             ->createZedStub()
             ->validateCustomerAddress($validateCustomerRequestTransfer);
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @api
+     *
+     * @param \Generated\Shared\Transfer\AfterpayInstallmentPlansRequestTransfer $installmentPlansRequestTransfer
+     *
+     * @return \Generated\Shared\Transfer\AfterpayInstallmentPlansResponseTransfer
+     */
+    public function getAvailableInstallmentPlans(AfterpayInstallmentPlansRequestTransfer $installmentPlansRequestTransfer)
+    {
+        return $this->getFactory()
+            ->createZedStub()
+            ->getAvailableInstallmentPlans($installmentPlansRequestTransfer);
     }
 
     /**

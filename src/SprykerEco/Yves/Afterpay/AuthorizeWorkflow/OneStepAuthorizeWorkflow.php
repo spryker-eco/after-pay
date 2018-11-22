@@ -11,7 +11,6 @@ use Generated\Shared\Transfer\QuoteTransfer;
 
 class OneStepAuthorizeWorkflow extends AbstractAfterpayAuthorizeWorkflow implements AfterpayAuthorizeWorkflowInterface
 {
-
     /**
      * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
      *
@@ -23,7 +22,7 @@ class OneStepAuthorizeWorkflow extends AbstractAfterpayAuthorizeWorkflow impleme
     }
 
     /**
-     * @param \Spryker\Yves\StepEngine\Dependency\Form\SubFormInterface[]
+     * @param \Spryker\Yves\StepEngine\Dependency\Form\SubFormInterface[] $paymentSubforms
      *
      * @return \Spryker\Yves\StepEngine\Dependency\Form\SubFormInterface[]
      */
@@ -31,15 +30,4 @@ class OneStepAuthorizeWorkflow extends AbstractAfterpayAuthorizeWorkflow impleme
     {
         return $paymentSubforms;
     }
-
-    /**
-     * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
-     *
-     * @return \Generated\Shared\Transfer\QuoteTransfer
-     */
-    public function expandQuoteAfterPaymentStep(QuoteTransfer $quoteTransfer)
-    {
-        return $quoteTransfer;
-    }
-
 }

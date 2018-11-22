@@ -11,12 +11,10 @@ use Generated\Shared\Transfer\AfterpayValidateBankAccountRequestTransfer;
 
 interface ValidateBankAccountCallInterface
 {
-
     /**
      * @param \Generated\Shared\Transfer\AfterpayValidateBankAccountRequestTransfer $validateBankAccountRequestTransfer
      *
      * @return \Generated\Shared\Transfer\AfterpayValidateBankAccountResponseTransfer
      */
     public function execute(AfterpayValidateBankAccountRequestTransfer $validateBankAccountRequestTransfer);
-
 }

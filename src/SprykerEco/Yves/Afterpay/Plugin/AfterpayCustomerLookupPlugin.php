@@ -15,8 +15,11 @@ use Spryker\Yves\Kernel\AbstractPlugin;
  */
 class AfterpayCustomerLookupPlugin extends AbstractPlugin implements CustomerLookupPluginInterface
 {
-
     /**
+     * {@inheritdoc}
+     *
+     * @api
+     *
      * @param \Generated\Shared\Transfer\AfterpayCustomerLookupRequestTransfer $customerLookupRequestTransfer
      *
      * @return \Generated\Shared\Transfer\AfterpayCustomerLookupResponseTransfer
@@ -28,5 +31,4 @@ class AfterpayCustomerLookupPlugin extends AbstractPlugin implements CustomerLoo
             ->getAfterpayClient()
             ->lookupCustomer($customerLookupRequestTransfer);
     }
-
 }

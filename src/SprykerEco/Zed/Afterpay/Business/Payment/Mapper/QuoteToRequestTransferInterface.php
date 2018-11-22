@@ -11,12 +11,10 @@ use Generated\Shared\Transfer\QuoteTransfer;
 
 interface QuoteToRequestTransferInterface
 {
-
     /**
      * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
      *
      * @return \Generated\Shared\Transfer\AfterpayAvailablePaymentMethodsRequestTransfer
      */
     public function quoteToAvailablePaymentMethods(QuoteTransfer $quoteTransfer);
-
 }
