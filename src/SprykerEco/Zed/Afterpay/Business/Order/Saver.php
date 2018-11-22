@@ -18,7 +18,6 @@ use SprykerEco\Zed\Afterpay\AfterpayConfig;
 
 class Saver implements SaverInterface
 {
-
     use DatabaseTransactionHandlerTrait;
 
     /**
@@ -141,5 +140,4 @@ class Saver implements SaverInterface
     {
         return $this->config->getPaymentChannelId($paymentMethod);
     }
-
 }

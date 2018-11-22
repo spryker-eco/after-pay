@@ -7,24 +7,23 @@
 
 namespace SprykerEco\Zed\Afterpay\Business\Api\Adapter\Converter;
 
-use \ArrayObject;
+use ArrayObject;
 use Spryker\Shared\Kernel\Transfer\AbstractTransfer;
 use SprykerEco\Zed\Afterpay\Dependency\Service\AfterpayToUtilTextInterface;
 
 class TransferToCamelCaseArrayConverter implements TransferToCamelCaseArrayConverterInterface
 {
-
     /**
      * @var \SprykerEco\Zed\Afterpay\Dependency\Service\AfterpayToUtilTextInterface
      */
-    protected $utilText;
+    protected $utilTextService;
 
     /**
-     * @param \SprykerEco\Zed\Afterpay\Dependency\Service\AfterpayToUtilTextInterface $utilText
+     * @param \SprykerEco\Zed\Afterpay\Dependency\Service\AfterpayToUtilTextInterface $utilTextService
      */
-    public function __construct(AfterpayToUtilTextInterface $utilText)
+    public function __construct(AfterpayToUtilTextInterface $utilTextService)
     {
-        $this->utilText = $utilText;
+        $this->utilTextService = $utilTextService;
     }
 
     /**
@@ -76,7 +75,6 @@ class TransferToCamelCaseArrayConverter implements TransferToCamelCaseArrayConve
      */
     protected function underscoreToCamelCase($string)
     {
-        return $this->utilText->separatorToCamelCase($string, '_');
+        return $this->utilTextService->separatorToCamelCase($string, '_');
     }
-
 }

@@ -9,18 +9,17 @@ namespace SprykerEco\Client\Afterpay\Dependency\Client;
 
 class AfterpayToQuoteBridge implements AfterpayToQuoteInterface
 {
+    /**
+     * @var \Spryker\Client\Quote\QuoteClientInterface
+     */
+    protected $quoteClient;
 
     /**
-     * @var \Spryker\Client\Quote\Session\QuoteSessionInterface
+     * @param \Spryker\Client\Quote\QuoteClientInterface $quoteClient
      */
-    protected $quoteSession;
-
-    /**
-     * @param \Spryker\Client\Quote\Session\QuoteSessionInterface $quoteSession
-     */
-    public function __construct($quoteSession)
+    public function __construct($quoteClient)
     {
-        $this->quoteSession = $quoteSession;
+        $this->quoteClient = $quoteClient;
     }
 
     /**
@@ -28,7 +27,6 @@ class AfterpayToQuoteBridge implements AfterpayToQuoteInterface
      */
     public function getQuote()
     {
-        return $this->quoteSession->getQuote();
+        return $this->quoteClient->getQuote();
     }
-
 }

@@ -7,15 +7,11 @@
 
 namespace SprykerEco\Zed\Afterpay\Business\AdditionalServices\Handler;
 
-use Generated\Shared\Transfer\AddressTransfer;
 use Generated\Shared\Transfer\AfterpayValidateBankAccountRequestTransfer;
-use Generated\Shared\Transfer\AfterpayValidateCustomerRequestTransfer;
 use SprykerEco\Zed\Afterpay\Business\Api\Adapter\AdapterInterface;
-use SprykerEco\Zed\Afterpay\Dependency\Facade\AfterpayToCustomerInterface;
 
 class ValidateBankAccountHandler implements ValidateBankAccountHandlerInterface
 {
-
     /**
      * @var \SprykerEco\Zed\Afterpay\Business\Api\Adapter\AdapterInterface
      */
@@ -43,5 +39,4 @@ class ValidateBankAccountHandler implements ValidateBankAccountHandlerInterface
     {
         return $this->apiAdapter->sendValidateBankAccountRequest($validateBankAccountRequestTransfer);
     }
-
 }

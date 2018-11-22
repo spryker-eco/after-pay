@@ -7,19 +7,13 @@
 
 namespace SprykerEco\Zed\Afterpay\Business\Api\Adapter\ApiCall;
 
-use Generated\Shared\Transfer\AfterpayApiResponseTransfer;
-use Generated\Shared\Transfer\AfterpayAuthorizeRequestTransfer;
 use Spryker\Shared\Log\LoggerTrait;
-use SprykerEco\Shared\Afterpay\AfterpayConstants;
 use SprykerEco\Zed\Afterpay\AfterpayConfig;
 use SprykerEco\Zed\Afterpay\Business\Api\Adapter\Client\ClientInterface;
-use SprykerEco\Zed\Afterpay\Business\Api\Adapter\Converter\TransferToCamelCaseArrayConverterInterface;
 use SprykerEco\Zed\Afterpay\Business\Exception\ApiHttpRequestException;
-use SprykerEco\Zed\Afterpay\Dependency\Service\AfterpayToUtilEncodingInterface;
 
 class ApiStatusCall implements ApiStatusCallInterface
 {
-
     const RESPONSE_STATUS_NOT_AVAILABLE = 503;
 
     use LoggerTrait;
@@ -75,5 +69,4 @@ class ApiStatusCall implements ApiStatusCallInterface
             ['exception' => $apiHttpRequestException]
         );
     }
-
 }

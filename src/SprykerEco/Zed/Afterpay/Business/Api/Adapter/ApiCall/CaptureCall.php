@@ -21,7 +21,6 @@ use SprykerEco\Zed\Afterpay\Dependency\Service\AfterpayToUtilEncodingInterface;
 
 class CaptureCall extends AbstractApiCall implements CaptureCallInterface
 {
-
     /**
      * @var \SprykerEco\Zed\Afterpay\Business\Api\Adapter\Client\ClientInterface
      */
@@ -61,9 +60,9 @@ class CaptureCall extends AbstractApiCall implements CaptureCallInterface
     /**
      * @param \Generated\Shared\Transfer\AfterpayCaptureRequestTransfer $requestTransfer
      *
-     * @return \Generated\Shared\Transfer\AfterpayCaptureResponseTransfer
-     *
      * @throws \SprykerEco\Zed\Afterpay\Business\Exception\ApiHttpRequestException
+     *
+     * @return \Generated\Shared\Transfer\AfterpayCaptureResponseTransfer
      */
     public function execute(AfterpayCaptureRequestTransfer $requestTransfer)
     {
@@ -100,10 +99,8 @@ class CaptureCall extends AbstractApiCall implements CaptureCallInterface
      */
     protected function buildResponseTransfer($jsonResponse)
     {
-        $jsonResponseArray = $this->utilEncoding->decodeJson($jsonResponse, true);
-
-        $apiResponseTransfer = $this->buildApiResponseTransfer($jsonResponse, $jsonResponseArray);
-        $captureResponseTransfer = $this->buildCaptureResponseTransfer($jsonResponseArray);
+        $apiResponseTransfer = $this->buildApiResponseTransfer($jsonResponse);
+        $captureResponseTransfer = $this->buildCaptureResponseTransfer($jsonResponse);
 
         $captureResponseTransfer->setApiResponse($apiResponseTransfer);
 
@@ -111,12 +108,14 @@ class CaptureCall extends AbstractApiCall implements CaptureCallInterface
     }
 
     /**
-     * @param array $jsonResponseArray
+     * @param string $jsonResponse
      *
      * @return \Generated\Shared\Transfer\AfterpayCaptureResponseTransfer
      */
-    protected function buildCaptureResponseTransfer(array $jsonResponseArray)
+    protected function buildCaptureResponseTransfer($jsonResponse)
     {
+        $jsonResponseArray = $this->utilEncoding->decodeJson($jsonResponse, true);
+
         $captureResponseTransfer = new AfterpayCaptureResponseTransfer();
 
         $captureResponseTransfer
@@ -143,12 +142,14 @@ class CaptureCall extends AbstractApiCall implements CaptureCallInterface
     }
 
     /**
-     * @param $jsonResponse
-     * @param $jsonResponseArray
+     * @param string $jsonResponse
+     *
      * @return \Generated\Shared\Transfer\AfterpayApiResponseTransfer
      */
-    protected function buildApiResponseTransfer($jsonResponse, $jsonResponseArray)
+    protected function buildApiResponseTransfer($jsonResponse)
     {
+        $jsonResponseArray = $this->utilEncoding->decodeJson($jsonResponse, true);
+
         $apiResponseTransfer = new AfterpayApiResponseTransfer();
 
         $outcome = $jsonResponseArray[AfterpayApiConstants::CAPTURE_CAPTURE_NUMBER]
@@ -161,5 +162,4 @@ class CaptureCall extends AbstractApiCall implements CaptureCallInterface
 
         return $apiResponseTransfer;
     }
-
 }

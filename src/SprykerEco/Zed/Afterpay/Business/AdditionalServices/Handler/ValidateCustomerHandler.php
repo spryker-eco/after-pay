@@ -14,7 +14,6 @@ use SprykerEco\Zed\Afterpay\Dependency\Facade\AfterpayToCustomerInterface;
 
 class ValidateCustomerHandler implements ValidateCustomerHandlerInterface
 {
-
     /**
      * @var \SprykerEco\Zed\Afterpay\Business\Api\Adapter\AdapterInterface
      */
@@ -113,5 +112,4 @@ class ValidateCustomerHandler implements ValidateCustomerHandlerInterface
 
         return $customerAddress;
     }
-
 }

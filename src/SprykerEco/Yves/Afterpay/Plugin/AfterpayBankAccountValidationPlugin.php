@@ -7,9 +7,7 @@
 
 namespace SprykerEco\Yves\Afterpay\Plugin;
 
-use Generated\Shared\Transfer\AfterpayCustomerLookupRequestTransfer;
 use Generated\Shared\Transfer\AfterpayValidateBankAccountRequestTransfer;
-use Generated\Shared\Transfer\AfterpayValidateCustomerRequestTransfer;
 use Spryker\Yves\Kernel\AbstractPlugin;
 
 /**
@@ -17,8 +15,11 @@ use Spryker\Yves\Kernel\AbstractPlugin;
  */
 class AfterpayBankAccountValidationPlugin extends AbstractPlugin implements BankAccountValidationPluginInterface
 {
-
     /**
+     * {@inheritdoc}
+     *
+     * @api
+     *
      * @param \Generated\Shared\Transfer\AfterpayValidateBankAccountRequestTransfer $validateBankAccountRequestTransfer
      *
      * @return \Generated\Shared\Transfer\AfterpayValidateBankAccountResponseTransfer
@@ -30,5 +31,4 @@ class AfterpayBankAccountValidationPlugin extends AbstractPlugin implements Bank
             ->getAfterpayClient()
             ->validateBankAccount($validateBankAccountRequestTransfer);
     }
-
 }

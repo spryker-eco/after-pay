@@ -11,12 +11,10 @@ use Generated\Shared\Transfer\AfterpayCustomerLookupRequestTransfer;
 
 interface LookupCustomerHandlerInterface
 {
-
     /**
      * @param \Generated\Shared\Transfer\AfterpayCustomerLookupRequestTransfer $customerLookupRequestTransfer
      *
      * @return \Generated\Shared\Transfer\AfterpayCustomerLookupResponseTransfer
      */
     public function lookupCustomer(AfterpayCustomerLookupRequestTransfer $customerLookupRequestTransfer);
-
 }

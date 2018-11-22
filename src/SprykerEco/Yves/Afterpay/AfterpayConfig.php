@@ -12,11 +12,10 @@ use SprykerEco\Shared\Afterpay\AfterpayConstants;
 
 class AfterpayConfig extends AbstractBundleConfig
 {
-
     /**
-     * @return string
+     * @return array
      */
-    public function getSubformToPaymentMethodMapping()
+    public function getSubFormToPaymentMethodMapping()
     {
         return $this->get(AfterpayConstants::AFTERPAY_RISK_CHECK_CONFIGURATION);
     }
@@ -28,5 +27,4 @@ class AfterpayConfig extends AbstractBundleConfig
     {
         return $this->get(AfterpayConstants::AFTERPAY_AUTHORIZE_WORKFLOW);
     }
-
 }

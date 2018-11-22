@@ -14,7 +14,6 @@ use SprykerEco\Zed\Afterpay\Persistence\AfterpayQueryContainerInterface;
 
 class TransactionLogReader implements TransactionLogReaderInterface
 {
-
     const TRANSACTION_TYPE_AUTHORIZE = AfterpayConstants::TRANSACTION_TYPE_AUTHORIZE;
 
     /**
@@ -76,5 +75,4 @@ class TransactionLogReader implements TransactionLogReaderInterface
 
         return $transactionLogTransfer;
     }
-
 }

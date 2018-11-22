@@ -9,10 +9,8 @@ namespace SprykerEco\Zed\Afterpay\Business\Api\Adapter\ApiCall;
 
 interface ApiStatusCallInterface
 {
-
     /**
      * @return string
      */
     public function execute();
-
 }

@@ -9,7 +9,6 @@ namespace SprykerEco\Client\Afterpay\Dependency\Client;
 
 class AfterpayToLocaleBridge implements AfterpayToLocaleInterface
 {
-
     /**
      * @var \Spryker\Client\Locale\LocaleClientInterface
      */
@@ -30,5 +29,4 @@ class AfterpayToLocaleBridge implements AfterpayToLocaleInterface
     {
         return $this->localeClient->getCurrentLocale();
     }
-
 }

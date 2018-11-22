@@ -12,10 +12,9 @@ use Spryker\Shared\Kernel\Transfer\AbstractTransfer;
 
 interface TransactionLoggerInterface
 {
-
     /**
      * @param string $transactionType
-     * @param int $idSalesOrder
+     * @param string $orderReference
      * @param \Spryker\Shared\Kernel\Transfer\AbstractTransfer|\Generated\Shared\Transfer\AfterpayAuthorizeRequestTransfer $transactionRequest
      * @param \Generated\Shared\Transfer\AfterpayApiResponseTransfer $transactionResponse
      *
@@ -23,9 +22,8 @@ interface TransactionLoggerInterface
      */
     public function logTransaction(
         $transactionType,
-        $idSalesOrder,
+        $orderReference,
         AbstractTransfer $transactionRequest,
         AfterpayApiResponseTransfer $transactionResponse
     );
-
 }

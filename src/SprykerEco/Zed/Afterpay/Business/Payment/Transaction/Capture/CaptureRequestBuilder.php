@@ -7,17 +7,16 @@
 
 namespace SprykerEco\Zed\Afterpay\Business\Payment\Transaction\Capture;
 
+use Generated\Shared\Transfer\AfterpayCallTransfer;
 use Generated\Shared\Transfer\AfterpayCaptureRequestTransfer;
 use Generated\Shared\Transfer\AfterpayRequestOrderItemTransfer;
 use Generated\Shared\Transfer\ItemTransfer;
-use Generated\Shared\Transfer\OrderTransfer;
 use SprykerEco\Shared\Afterpay\AfterpayConstants;
 use SprykerEco\Zed\Afterpay\Business\Payment\Mapper\OrderToRequestTransferInterface;
 use SprykerEco\Zed\Afterpay\Dependency\Facade\AfterpayToMoneyInterface;
 
 class CaptureRequestBuilder implements CaptureRequestBuilderInterface
 {
-
     /**
      * @var \SprykerEco\Zed\Afterpay\Business\Payment\Mapper\OrderToRequestTransferInterface
      */
@@ -41,14 +40,14 @@ class CaptureRequestBuilder implements CaptureRequestBuilderInterface
     }
 
     /**
-     * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
+     * @param \Generated\Shared\Transfer\AfterpayCallTransfer $afterpayCallTransfer
      *
      * @return \Generated\Shared\Transfer\AfterpayCaptureRequestTransfer
      */
-    public function buildBaseCaptureRequestForOrder(OrderTransfer $orderTransfer)
+    public function buildBaseCaptureRequestForOrder(AfterpayCallTransfer $afterpayCallTransfer)
     {
         $captureRequestTransfer = $this->orderToRequestMapper
-            ->orderToBaseCaptureRequest($orderTransfer);
+            ->orderToBaseCaptureRequest($afterpayCallTransfer);
 
         return $captureRequestTransfer;
     }
@@ -133,6 +132,8 @@ class CaptureRequestBuilder implements CaptureRequestBuilderInterface
     /**
      * @param \Generated\Shared\Transfer\AfterpayRequestOrderItemTransfer $orderItemRequestTransfer
      * @param \Generated\Shared\Transfer\AfterpayCaptureRequestTransfer $captureRequestTransfer
+     *
+     * @return void
      */
     protected function increaseTotalNetAmount(
         AfterpayRequestOrderItemTransfer $orderItemRequestTransfer,
@@ -150,6 +151,8 @@ class CaptureRequestBuilder implements CaptureRequestBuilderInterface
     /**
      * @param \Generated\Shared\Transfer\AfterpayRequestOrderItemTransfer $orderItemRequestTransfer
      * @param \Generated\Shared\Transfer\AfterpayCaptureRequestTransfer $captureRequestTransfer
+     *
+     * @return void
      */
     protected function increaseTotalGrossAmount(
         AfterpayRequestOrderItemTransfer $orderItemRequestTransfer,
@@ -165,7 +168,7 @@ class CaptureRequestBuilder implements CaptureRequestBuilderInterface
     }
 
     /**
-     * @param string $decimalValue
+     * @param float $decimalValue
      *
      * @return int
      */
@@ -183,5 +186,4 @@ class CaptureRequestBuilder implements CaptureRequestBuilderInterface
     {
         return (string)$this->money->convertIntegerToDecimal($intValue);
     }
-
 }

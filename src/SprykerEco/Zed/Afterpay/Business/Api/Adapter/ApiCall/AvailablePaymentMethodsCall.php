@@ -9,6 +9,7 @@ namespace SprykerEco\Zed\Afterpay\Business\Api\Adapter\ApiCall;
 
 use Generated\Shared\Transfer\AfterpayAvailablePaymentMethodsRequestTransfer;
 use Generated\Shared\Transfer\AfterpayAvailablePaymentMethodsResponseTransfer;
+use SprykerEco\Shared\Afterpay\AfterpayApiConstants;
 use SprykerEco\Zed\Afterpay\AfterpayConfig;
 use SprykerEco\Zed\Afterpay\Business\Api\Adapter\Client\ClientInterface;
 use SprykerEco\Zed\Afterpay\Business\Api\Adapter\Converter\TransferToCamelCaseArrayConverterInterface;
@@ -17,11 +18,11 @@ use SprykerEco\Zed\Afterpay\Dependency\Service\AfterpayToUtilEncodingInterface;
 
 class AvailablePaymentMethodsCall extends AbstractApiCall implements AvailablePaymentMethodsCallInterface
 {
-
     /**
      * @var \SprykerEco\Zed\Afterpay\Business\Api\Adapter\Client\ClientInterface
      */
     protected $client;
+
     /**
      * @var \SprykerEco\Zed\Afterpay\AfterpayConfig
      */
@@ -60,6 +61,8 @@ class AvailablePaymentMethodsCall extends AbstractApiCall implements AvailablePa
                 $jsonRequest
             );
         } catch (ApiHttpRequestException $apiHttpRequestException) {
+            // @todo do a proper error handling. Afterpay cam provide some more details about business errors
+            // Make sure to get these messages, parse them into transfer objects and assign to API response transfer.
             $this->logApiException($apiHttpRequestException);
             $jsonResponse = '[]';
         }
@@ -82,11 +85,11 @@ class AvailablePaymentMethodsCall extends AbstractApiCall implements AvailablePa
         $customerNumber = $this->extractCustomerNumber($jsonResponseArray);
 
         $responseTransfer
-            ->setCheckoutId($jsonResponseArray['checkoutId'] ?? null)
-            ->setOutcome($jsonResponseArray['outcome'] ?? null)
-            ->setCustomer($jsonResponseArray['customer'] ?? [])
+            ->setCheckoutId($jsonResponseArray[AfterpayApiConstants::TRANSACTION_CHECKOUT_ID] ?? null)
+            ->setOutcome($jsonResponseArray[AfterpayApiConstants::TRANSACTION_OUTCOME] ?? null)
+            ->setCustomer($jsonResponseArray[AfterpayApiConstants::CUSTOMER] ?? [])
             ->setCustomerNumber($customerNumber)
-            ->setPaymentMethods($jsonResponseArray['paymentMethods'] ?? [])
+            ->setPaymentMethods($jsonResponseArray[AfterpayApiConstants::PAYMENT_METHODS] ?? [])
             ->setRiskCheckResultCode($riskCheckResultCode);
 
         return $responseTransfer;
@@ -99,18 +102,17 @@ class AvailablePaymentMethodsCall extends AbstractApiCall implements AvailablePa
      */
     protected function extractRiskCheckCode($jsonResponseArray)
     {
-        $riskCheckResultCode = null;
-
-        if (isset(
-            $jsonResponseArray['additionalResponseInfo'],
-            $jsonResponseArray['additionalResponseInfo']['rsS_RiskCheck_ResultCode']
+        if (!isset(
+            $jsonResponseArray[AfterpayApiConstants::ADDITIONAL_RESPONSE_INFO],
+            $jsonResponseArray[AfterpayApiConstants::ADDITIONAL_RESPONSE_INFO][AfterpayApiConstants::RISK_CHECK_CODE]
         )
         ) {
-            $riskCheckResultCode = $jsonResponseArray['additionalResponseInfo']['rsS_RiskCheck_ResultCode'];
+            return null;
         }
 
-        return $riskCheckResultCode;
+        return $jsonResponseArray[AfterpayApiConstants::ADDITIONAL_RESPONSE_INFO][AfterpayApiConstants::RISK_CHECK_CODE];
     }
+
     /**
      * @param array $jsonResponseArray
      *
@@ -121,14 +123,13 @@ class AvailablePaymentMethodsCall extends AbstractApiCall implements AvailablePa
         $customerNumber = null;
 
         if (isset(
-            $jsonResponseArray['customer'],
-            $jsonResponseArray['customer']['customerNumber']
+            $jsonResponseArray[AfterpayApiConstants::CUSTOMER],
+            $jsonResponseArray[AfterpayApiConstants::CUSTOMER][AfterpayApiConstants::CUSTOMER_NUMBER]
         )
         ) {
-            $customerNumber = $jsonResponseArray['customer']['customerNumber'];
+            $customerNumber = $jsonResponseArray[AfterpayApiConstants::CUSTOMER][AfterpayApiConstants::CUSTOMER_NUMBER];
         }
 
         return $customerNumber;
     }
-
 }

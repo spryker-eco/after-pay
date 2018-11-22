@@ -11,7 +11,6 @@ use Generated\Shared\Transfer\AddressTransfer;
 
 class AfterpayToCustomerBridge implements AfterpayToCustomerInterface
 {
-
     /**
      * @var \Spryker\Zed\Customer\Business\CustomerFacadeInterface
      */
@@ -34,5 +33,4 @@ class AfterpayToCustomerBridge implements AfterpayToCustomerInterface
     {
         return $this->customerFacade->getAddress($addressTransfer);
     }
-
 }

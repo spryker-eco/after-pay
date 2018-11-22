@@ -7,9 +7,7 @@
 
 namespace SprykerEco\Zed\Afterpay\Business\Payment\Transaction\Handler;
 
-use Generated\Shared\Transfer\AfterpayApiResponseTransfer;
-use Generated\Shared\Transfer\AfterpayAuthorizeRequestTransfer;
-use Generated\Shared\Transfer\OrderTransfer;
+use Generated\Shared\Transfer\AfterpayCallTransfer;
 use SprykerEco\Zed\Afterpay\Business\Payment\PaymentWriterInterface;
 use SprykerEco\Zed\Afterpay\Business\Payment\Transaction\Authorize\RequestBuilder\AuthorizeRequestBuilderInterface;
 use SprykerEco\Zed\Afterpay\Business\Payment\Transaction\AuthorizeTransactionInterface;
@@ -18,7 +16,6 @@ use SprykerEco\Zed\Afterpay\Dependency\Facade\AfterpayToPaymentInterface;
 
 class AuthorizeTransactionHandler implements AuthorizeTransactionHandlerInterface
 {
-
     /**
      * @var \SprykerEco\Zed\Afterpay\Business\Payment\Transaction\AuthorizeTransactionInterface
      */
@@ -58,27 +55,25 @@ class AuthorizeTransactionHandler implements AuthorizeTransactionHandlerInterfac
     }
 
     /**
-     * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
+     * @param \Generated\Shared\Transfer\AfterpayCallTransfer $afterpayCallTransfer
      *
-     * @return void
+     * @return \Generated\Shared\Transfer\AfterpayApiResponseTransfer
      */
-    public function authorize(OrderTransfer $orderTransfer)
+    public function authorize(AfterpayCallTransfer $afterpayCallTransfer)
     {
-        $authorizeRequestTransfer = $this->buildAuthorizeRequest($orderTransfer);
-        $authorizeResponseTransfer = $this->transaction->executeTransaction($authorizeRequestTransfer);
+        $authorizeRequestTransfer = $this->buildAuthorizeRequest($afterpayCallTransfer);
 
-        $this->setPaymentReservationId($authorizeRequestTransfer, $authorizeResponseTransfer);
-        $this->setPaymentTotalAuthorizedAmount($orderTransfer);
+        return $this->transaction->executeTransaction($authorizeRequestTransfer);
     }
 
     /**
-     * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
+     * @param \Generated\Shared\Transfer\AfterpayCallTransfer $afterpayCallTransfer
      *
      * @return \Generated\Shared\Transfer\AfterpayAuthorizeRequestTransfer
      */
-    protected function buildAuthorizeRequest(OrderTransfer $orderTransfer)
+    protected function buildAuthorizeRequest(AfterpayCallTransfer $afterpayCallTransfer)
     {
-        $authorizeRequestTransfer = $this->requestBuilder->buildAuthorizeRequest($orderTransfer);
+        $authorizeRequestTransfer = $this->requestBuilder->buildAuthorizeRequest($afterpayCallTransfer);
 
         return $authorizeRequestTransfer;
     }
@@ -111,5 +106,4 @@ class AuthorizeTransactionHandler implements AuthorizeTransactionHandlerInterfac
             $orderTransfer->getIdSalesOrder()
         );
     }
-
 }
