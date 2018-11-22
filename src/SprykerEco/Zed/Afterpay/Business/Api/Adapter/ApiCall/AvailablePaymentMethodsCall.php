@@ -18,7 +18,6 @@ use SprykerEco\Zed\Afterpay\Dependency\Service\AfterpayToUtilEncodingInterface;
 
 class AvailablePaymentMethodsCall extends AbstractApiCall implements AvailablePaymentMethodsCallInterface
 {
-
     /**
      * @var \SprykerEco\Zed\Afterpay\Business\Api\Adapter\Client\ClientInterface
      */
@@ -133,5 +132,4 @@ class AvailablePaymentMethodsCall extends AbstractApiCall implements AvailablePa
 
         return $customerNumber;
     }
-
 }

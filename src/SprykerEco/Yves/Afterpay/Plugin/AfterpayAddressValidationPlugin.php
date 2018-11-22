@@ -15,7 +15,6 @@ use Spryker\Yves\Kernel\AbstractPlugin;
  */
 class AfterpayAddressValidationPlugin extends AbstractPlugin implements AddressValidationPluginInterface
 {
-
     /**
      * {@inheritdoc}
      *
@@ -32,5 +31,4 @@ class AfterpayAddressValidationPlugin extends AbstractPlugin implements AddressV
             ->getAfterpayClient()
             ->validateCustomerAddress($validateCustomerRequestTransfer);
     }
-
 }

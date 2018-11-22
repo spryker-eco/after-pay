@@ -20,7 +20,6 @@ use SprykerEco\Shared\Afterpay\AfterpayConstants;
  */
 class IsCancellationCompletedPlugin extends AbstractPlugin implements ConditionInterface
 {
-
     const CANCEL_TRANSACTION_ACCEPTED = AfterpayConstants::API_TRANSACTION_OUTCOME_ACCEPTED;
 
     /**
@@ -71,5 +70,4 @@ class IsCancellationCompletedPlugin extends AbstractPlugin implements ConditionI
     {
         return $fullCancelTransactionLog->getOutcome() === static::CANCEL_TRANSACTION_ACCEPTED;
     }
-
 }

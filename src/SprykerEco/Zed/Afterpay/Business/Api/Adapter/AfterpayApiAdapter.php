@@ -13,12 +13,12 @@ use Generated\Shared\Transfer\AfterpayCancelRequestTransfer;
 use Generated\Shared\Transfer\AfterpayCaptureRequestTransfer;
 use Generated\Shared\Transfer\AfterpayCustomerLookupRequestTransfer;
 use Generated\Shared\Transfer\AfterpayInstallmentPlansRequestTransfer;
+use Generated\Shared\Transfer\AfterpayRefundRequestTransfer;
 use Generated\Shared\Transfer\AfterpayValidateBankAccountRequestTransfer;
 use Generated\Shared\Transfer\AfterpayValidateCustomerRequestTransfer;
 
 class AfterpayApiAdapter implements AdapterInterface
 {
-
     /**
      * @var \SprykerEco\Zed\Afterpay\Business\Api\Adapter\AdapterFactoryInterface
      */
@@ -145,6 +145,20 @@ class AfterpayApiAdapter implements AdapterInterface
     }
 
     /**
+     * @param \Generated\Shared\Transfer\AfterpayRefundRequestTransfer $refundRequestTransfer
+     *
+     * @return \Generated\Shared\Transfer\AfterpayRefundResponseTransfer
+     */
+    public function sendRefundRequest(
+        AfterpayRefundRequestTransfer $refundRequestTransfer
+    ) {
+        return $this
+            ->adapterFactory
+            ->createRefundCall()
+            ->execute($refundRequestTransfer);
+    }
+
+    /**
      * @return string
      */
     public function getApiVersion()
@@ -156,7 +170,7 @@ class AfterpayApiAdapter implements AdapterInterface
     }
 
     /**
-     * @return string
+     * @return int
      */
     public function getApiStatus()
     {

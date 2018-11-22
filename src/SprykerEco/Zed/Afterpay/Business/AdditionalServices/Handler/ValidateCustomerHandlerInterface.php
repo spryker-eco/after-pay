@@ -11,12 +11,10 @@ use Generated\Shared\Transfer\AfterpayValidateCustomerRequestTransfer;
 
 interface ValidateCustomerHandlerInterface
 {
-
     /**
      * @param \Generated\Shared\Transfer\AfterpayValidateCustomerRequestTransfer $validateCustomerRequestTransfer
      *
      * @return \Generated\Shared\Transfer\AfterpayValidateCustomerResponseTransfer
      */
     public function validateCustomer(AfterpayValidateCustomerRequestTransfer $validateCustomerRequestTransfer);
-
 }

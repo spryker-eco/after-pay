@@ -11,7 +11,6 @@ use Generated\Shared\Transfer\AfterpayInstallmentPlansRequestTransfer;
 
 interface InstallmentPlansPluginInterface
 {
-
     /**
      * Specification:
      *  - Makes "validate bank-account" call to the afterpay API, to validate and evaluates the account and bank details
@@ -27,5 +26,4 @@ interface InstallmentPlansPluginInterface
     public function getAvailableInstallmentPlans(
         AfterpayInstallmentPlansRequestTransfer $installmentPlansRequestTransfer
     );
-
 }

@@ -13,11 +13,11 @@ use Generated\Shared\Transfer\QuoteTransfer;
 use Orm\Zed\Afterpay\Persistence\SpyPaymentAfterpay;
 use Orm\Zed\Afterpay\Persistence\SpyPaymentAfterpayOrderItem;
 use Spryker\Zed\PropelOrm\Business\Transaction\DatabaseTransactionHandlerTrait;
+use SprykerEco\Shared\Afterpay\AfterpayConstants;
 use SprykerEco\Zed\Afterpay\AfterpayConfig;
 
 class Saver implements SaverInterface
 {
-
     use DatabaseTransactionHandlerTrait;
 
     /**
@@ -98,15 +98,37 @@ class Saver implements SaverInterface
         $paymentTransfer = $quoteTransfer->getPayment();
 
         $paymentEntity
+            ->setFkSalesPayment($paymentTransfer->getIdSalesPayment())
             ->setPaymentMethod($paymentTransfer->getPaymentMethod())
             ->setFkSalesOrder($checkoutResponseTransfer->getSaveOrder()->getIdSalesOrder())
             ->setIdCheckout($paymentTransfer->getAfterpayCheckoutId())
             ->setIdChannel($this->getIdChannel($paymentTransfer->getPaymentMethod()))
             ->setInfoscoreCustomerNumber($paymentTransfer->getAfterpayCustomerNumber())
             ->setExpenseTotal($quoteTransfer->getTotals()->getExpenseTotal())
-            ->setGrandTotal($quoteTransfer->getTotals()->getGrandTotal());
+            ->setGrandTotal($this->getPaymentPriceToPay($quoteTransfer));
 
         return $paymentEntity;
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
+     *
+     * @return int
+     */
+    protected function getPaymentPriceToPay(QuoteTransfer $quoteTransfer)
+    {
+        if ($quoteTransfer->getPayment() && $quoteTransfer->getPayment()->getAmount()) {
+            return $quoteTransfer->getPayment()->getAmount();
+        }
+
+        foreach ($quoteTransfer->getPayments() as $paymentTransfer) {
+            if ($paymentTransfer->getPaymentMethod() !== AfterpayConstants::PROVIDER_NAME || !$paymentTransfer->getAmount()) {
+                continue;
+            }
+            return $paymentTransfer->getAmount();
+        }
+
+        return $quoteTransfer->getTotals()->getGrandTotal();
     }
 
     /**
@@ -118,5 +140,4 @@ class Saver implements SaverInterface
     {
         return $this->config->getPaymentChannelId($paymentMethod);
     }
-
 }

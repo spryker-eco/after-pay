@@ -11,7 +11,6 @@ use Generated\Shared\Transfer\AfterpayValidateBankAccountRequestTransfer;
 
 interface BankAccountValidationPluginInterface
 {
-
     /**
      * Specification:
      *  - Makes "validate bank-account" call to the afterpay API, to validate and evaluates the account and bank details
@@ -25,5 +24,4 @@ interface BankAccountValidationPluginInterface
      * @return \Generated\Shared\Transfer\AfterpayValidateBankAccountResponseTransfer
      */
     public function validateBankAccount(AfterpayValidateBankAccountRequestTransfer $validateBankAccountRequestTransfer);
-
 }

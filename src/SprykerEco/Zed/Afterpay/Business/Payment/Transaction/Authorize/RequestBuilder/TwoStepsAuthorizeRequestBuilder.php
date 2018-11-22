@@ -16,7 +16,6 @@ use SprykerEco\Zed\Afterpay\Business\Payment\Mapper\OrderToRequestTransferInterf
 
 class TwoStepsAuthorizeRequestBuilder implements AuthorizeRequestBuilderInterface
 {
-
     /**
      * @var array
      */
@@ -107,5 +106,4 @@ class TwoStepsAuthorizeRequestBuilder implements AuthorizeRequestBuilderInterfac
 
         $authorizeRequestTransfer->setPayment($requestPaymentTransfer);
     }
-
 }

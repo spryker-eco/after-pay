@@ -9,7 +9,6 @@ namespace SprykerEco\Zed\Afterpay\Dependency\Service;
 
 interface AfterpayToUtilTextInterface
 {
-
     /**
      * @param string $string
      * @param string $separator
@@ -26,5 +25,4 @@ interface AfterpayToUtilTextInterface
      * @return string
      */
     public function camelCaseToSeparator($string, $separator = '-');
-
 }

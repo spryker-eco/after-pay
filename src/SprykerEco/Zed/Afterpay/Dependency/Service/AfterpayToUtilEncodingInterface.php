@@ -9,7 +9,6 @@ namespace SprykerEco\Zed\Afterpay\Dependency\Service;
 
 interface AfterpayToUtilEncodingInterface
 {
-
     /**
      * @param string $value
      * @param int|null $options
@@ -28,5 +27,4 @@ interface AfterpayToUtilEncodingInterface
      * @return array
      */
     public function decodeJson($jsonValue, $assoc = false, $depth = null, $options = null);
-
 }

@@ -9,7 +9,6 @@ namespace SprykerEco\Shared\Afterpay;
 
 interface AfterpayConstants
 {
-
     const PROVIDER_NAME = 'afterpay';
 
     const AFTERPAY_AUTHORIZE_WORKFLOW = 'AFTERPAY_AUTHORIZE_WORKFLOW';
@@ -28,6 +27,7 @@ interface AfterpayConstants
 
     const TRANSACTION_TYPE_AUTHORIZE = 'authorize';
     const TRANSACTION_TYPE_CAPTURE = 'capture';
+    const TRANSACTION_TYPE_REFUND = 'refund';
     const TRANSACTION_TYPE_CANCEL = 'cancel';
 
     const AFTERPAY_RISK_CHECK_CONFIGURATION = 'AFTERPAY_RISK_CHECK_CONFIGURATION';
@@ -37,6 +37,7 @@ interface AfterpayConstants
     const API_ENDPOINT_AVAILABLE_PAYMENT_METHODS_PATH = 'checkout/payment-methods';
     const API_ENDPOINT_CAPTURE_PATH = 'orders/%s/captures';
     const API_ENDPOINT_CANCEL_PATH = 'orders/%s/voids';
+    const API_ENDPOINT_REFUND_PATH = 'orders/%s/refunds';
     const API_ENDPOINT_AUTHORIZE_PATH = 'checkout/authorize';
     const API_ENDPOINT_VALIDATE_ADDRESS_PATH = 'validate/address';
     const API_ENDPOINT_LOOKUP_CUSTOMER_PATH = 'lookup/customer';
@@ -62,7 +63,9 @@ interface AfterpayConstants
     const CAPTURE_EXPENSE_SKU = 'EXPENSE';
     const CAPTURE_EXPENSE_DESCRIPTION = 'Expense total amount';
 
+    const REFUND_EXPENSE_SKU = 'REFUND_EXPENSE';
+    const REFUND_EXPENSE_DECRIPTION = 'Refund expence total amount';
+
     const CANCEL_EXPENSE_SKU = 'EXPENSE';
     const CANCEL_EXPENSE_DESCRIPTION = 'Expense total amount';
-
 }

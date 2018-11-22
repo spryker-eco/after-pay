@@ -9,7 +9,6 @@
  */
 
 use Spryker\Shared\Application\ApplicationConstants;
-use Spryker\Shared\Kernel\KernelConstants;
 use Spryker\Shared\Oms\OmsConstants;
 use Spryker\Shared\Sales\SalesConstants;
 use Spryker\Zed\Oms\OmsConfig;
@@ -23,23 +22,6 @@ $config[AfterpayConstants::VENDOR_ROOT] = APPLICATION_ROOT_DIR . '/vendor/spryke
 $config[AfterpayConstants::API_ENDPOINT_BASE_URL] = 'https://sandboxapi.horizonafs.com/eCommerceServicesWebApi/api/v3/';
 $config[AfterpayConstants::API_CREDENTIALS_AUTH_KEY] = '';
 $config[AfterpayConstants::PAYMENT_INVOICE_CHANNEL_ID] = '';
-
-// OMS and payment
-
-$config[KernelConstants::DEPENDENCY_INJECTOR_YVES] = [
-    'Checkout' => [
-        'Afterpay',
-    ],
-];
-
-$config[KernelConstants::DEPENDENCY_INJECTOR_ZED] = [
-    'Payment' => [
-        'Afterpay',
-    ],
-    'Oms' => [
-        'Afterpay',
-    ],
-];
 
 $config[OmsConstants::PROCESS_LOCATION] = [
     OmsConfig::DEFAULT_PROCESS_LOCATION,

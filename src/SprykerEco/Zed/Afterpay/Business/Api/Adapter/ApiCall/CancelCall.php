@@ -21,7 +21,6 @@ use SprykerEco\Zed\Afterpay\Dependency\Service\AfterpayToUtilEncodingInterface;
 
 class CancelCall extends AbstractApiCall implements CancelCallInterface
 {
-
     /**
      * @var \SprykerEco\Zed\Afterpay\Business\Api\Adapter\Client\ClientInterface
      */
@@ -155,5 +154,4 @@ class CancelCall extends AbstractApiCall implements CancelCallInterface
 
         return $apiResponseTransfer;
     }
-
 }

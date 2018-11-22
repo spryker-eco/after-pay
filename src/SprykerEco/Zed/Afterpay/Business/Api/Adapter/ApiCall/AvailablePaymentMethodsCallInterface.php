@@ -11,12 +11,10 @@ use Generated\Shared\Transfer\AfterpayAvailablePaymentMethodsRequestTransfer;
 
 interface AvailablePaymentMethodsCallInterface
 {
-
     /**
      * @param \Generated\Shared\Transfer\AfterpayAvailablePaymentMethodsRequestTransfer $requestTransfer
      *
      * @return \Generated\Shared\Transfer\AfterpayAvailablePaymentMethodsResponseTransfer
      */
     public function execute(AfterpayAvailablePaymentMethodsRequestTransfer $requestTransfer);
-
 }

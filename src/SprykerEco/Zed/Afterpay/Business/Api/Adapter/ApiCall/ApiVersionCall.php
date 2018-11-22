@@ -16,7 +16,6 @@ use SprykerEco\Zed\Afterpay\Dependency\Service\AfterpayToUtilEncodingInterface;
 
 class ApiVersionCall implements ApiVersionCallInterface
 {
-
     use LoggerTrait;
 
     /**
@@ -58,7 +57,6 @@ class ApiVersionCall implements ApiVersionCallInterface
             $jsonResponse = $this->client->sendGet(
                 $this->config->getVersionApiEndpointUrl()
             );
-
         } catch (ApiHttpRequestException $apiHttpRequestException) {
             $this->logApiException($apiHttpRequestException);
             $jsonResponse = '[]';
@@ -84,7 +82,6 @@ class ApiVersionCall implements ApiVersionCallInterface
     }
 
     /**
-     *
      * @todo extract logging to custom logger trait
      *
      * @param \SprykerEco\Zed\Afterpay\Business\Exception\ApiHttpRequestException $apiHttpRequestException
@@ -98,5 +95,4 @@ class ApiVersionCall implements ApiVersionCallInterface
             ['exception' => $apiHttpRequestException]
         );
     }
-
 }

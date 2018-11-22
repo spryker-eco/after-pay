@@ -9,7 +9,6 @@ namespace SprykerEco\Shared\Afterpay;
 
 interface AfterpayApiConstants
 {
-
     /** Transactional calls */
     const TRANSACTION_OUTCOME = 'outcome';
     const TRANSACTION_RESERVATION_ID = 'reservationId';
@@ -27,6 +26,9 @@ interface AfterpayApiConstants
     const CAPTURE_AUTHORIZED_AMOUNT = 'authorizedAmount';
     const CAPTURE_REMAINING_AUTHORIZED_AMOUNT = 'remainingAuthorizedAmount';
     const CAPTURE_CAPTURE_NUMBER = 'captureNumber';
+
+    const REFUND_TOTAL_CAPTURED_AMOUNT = 'totalCapturedAmount';
+    const REFUND_TOTAL_AUTHORIZE_AMOUNT = 'totalAuthorizedAmount';
 
     /** Cancellation (void) call */
     const CANCEL_CAPTURED_AMOUNT = 'totalCapturedAmount';
@@ -79,5 +81,4 @@ interface AfterpayApiConstants
 
     /** Technical calls */
     const API_VERSION = 'version';
-
 }

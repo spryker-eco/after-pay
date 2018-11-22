@@ -12,7 +12,6 @@ use SprykerEco\Shared\Afterpay\AfterpayConstants;
 
 class AfterpayConfig extends AbstractBundleConfig
 {
-
     /**
      * @return array
      */
@@ -28,5 +27,4 @@ class AfterpayConfig extends AbstractBundleConfig
     {
         return $this->get(AfterpayConstants::AFTERPAY_AUTHORIZE_WORKFLOW);
     }
-
 }

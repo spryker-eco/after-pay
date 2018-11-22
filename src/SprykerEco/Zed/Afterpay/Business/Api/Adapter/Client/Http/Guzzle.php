@@ -17,7 +17,6 @@ use SprykerEco\Zed\Afterpay\Business\Exception\ApiHttpRequestException;
 
 class Guzzle implements ClientInterface
 {
-
     const REQUEST_METHOD_POST = 'POST';
     const REQUEST_METHOD_GET = 'GET';
 
@@ -159,5 +158,4 @@ class Guzzle implements ClientInterface
             ]
         );
     }
-
 }

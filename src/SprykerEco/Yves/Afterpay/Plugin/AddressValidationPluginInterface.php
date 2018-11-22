@@ -11,7 +11,6 @@ use Generated\Shared\Transfer\AfterpayValidateCustomerRequestTransfer;
 
 interface AddressValidationPluginInterface
 {
-
     /**
      * Specification:
      *  - Makes "validate-address" call to the afterpay API, in order to validate customer address.
@@ -24,5 +23,4 @@ interface AddressValidationPluginInterface
      * @return \Generated\Shared\Transfer\AfterpayValidateCustomerResponseTransfer
      */
     public function validateCustomerAddress(AfterpayValidateCustomerRequestTransfer $validateCustomerRequestTransfer);
-
 }

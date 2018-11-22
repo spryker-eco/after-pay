@@ -20,7 +20,6 @@ use SprykerEco\Zed\Afterpay\Dependency\Service\AfterpayToUtilTextInterface;
 
 class ValidateCustomerCall extends AbstractApiCall implements ValidateCustomerCallInterface
 {
-
     /**
      * @var \SprykerEco\Zed\Afterpay\Business\Api\Adapter\Client\ClientInterface
      */
@@ -134,5 +133,4 @@ class ValidateCustomerCall extends AbstractApiCall implements ValidateCustomerCa
 
         return $addressWithUnderscoreKeys;
     }
-
 }

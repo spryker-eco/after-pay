@@ -9,7 +9,6 @@ namespace SprykerEco\Yves\Afterpay\Plugin;
 
 interface PaymentSubFormFilterPluginInterface
 {
-
     /**
      * Specification:
      *  - Filters the list of a given sub forms by specific criteria
@@ -21,5 +20,4 @@ interface PaymentSubFormFilterPluginInterface
      * @return \Spryker\Yves\StepEngine\Dependency\Form\SubFormInterface[]
      */
     public function filterPaymentSubforms(array $paymentSubforms);
-
 }

@@ -20,7 +20,6 @@ use SprykerEco\Shared\Afterpay\AfterpayConstants;
  */
 class IsAuthorizationCompletedPlugin extends AbstractPlugin implements ConditionInterface
 {
-
     const AUTHORIZE_TRANSACTION_ACCEPTED = AfterpayConstants::API_TRANSACTION_OUTCOME_ACCEPTED;
     /**
      * @api
@@ -70,5 +69,4 @@ class IsAuthorizationCompletedPlugin extends AbstractPlugin implements Condition
     {
         return $authorizeTransactionLog->getOutcome() === static::AUTHORIZE_TRANSACTION_ACCEPTED;
     }
-
 }

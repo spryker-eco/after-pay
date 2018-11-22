@@ -15,7 +15,6 @@ use Spryker\Yves\Kernel\AbstractPlugin;
  */
 class AfterpayBankAccountValidationPlugin extends AbstractPlugin implements BankAccountValidationPluginInterface
 {
-
     /**
      * {@inheritdoc}
      *
@@ -32,5 +31,4 @@ class AfterpayBankAccountValidationPlugin extends AbstractPlugin implements Bank
             ->getAfterpayClient()
             ->validateBankAccount($validateBankAccountRequestTransfer);
     }
-
 }

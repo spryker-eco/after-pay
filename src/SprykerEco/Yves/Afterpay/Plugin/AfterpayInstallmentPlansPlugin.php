@@ -15,7 +15,6 @@ use Spryker\Yves\Kernel\AbstractPlugin;
  */
 class AfterpayInstallmentPlansPlugin extends AbstractPlugin implements InstallmentPlansPluginInterface
 {
-
     /**
      * {@inheritdoc}
      *
@@ -33,5 +32,4 @@ class AfterpayInstallmentPlansPlugin extends AbstractPlugin implements Installme
             ->getAfterpayClient()
             ->getAvailableInstallmentPlans($installmentPlansRequestTransfer);
     }
-
 }

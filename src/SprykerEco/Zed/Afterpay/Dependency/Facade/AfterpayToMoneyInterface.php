@@ -9,7 +9,6 @@ namespace SprykerEco\Zed\Afterpay\Dependency\Facade;
 
 interface AfterpayToMoneyInterface
 {
-
     /**
      * @param int $value
      *
@@ -23,5 +22,4 @@ interface AfterpayToMoneyInterface
      * @return int
      */
     public function convertDecimalToInteger($value);
-
 }

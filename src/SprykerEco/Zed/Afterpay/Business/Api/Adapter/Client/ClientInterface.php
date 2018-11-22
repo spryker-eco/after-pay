@@ -9,7 +9,6 @@ namespace SprykerEco\Zed\Afterpay\Business\Api\Adapter\Client;
 
 interface ClientInterface
 {
-
     /**
      * @param string $endPointUrl
      * @param string|null $jsonBody
@@ -31,5 +30,4 @@ interface ClientInterface
      * @return string
      */
     public function getStatus($endPointUrl);
-
 }

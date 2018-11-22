@@ -21,7 +21,6 @@ use SprykerEco\Zed\Afterpay\Dependency\Service\AfterpayToUtilEncodingInterface;
 
 class LookupInstallmentPlansCall extends AbstractApiCall implements LookupInstallmentPlansCallInterface
 {
-
     /**
      * @var \SprykerEco\Zed\Afterpay\Business\Api\Adapter\Client\ClientInterface
      */
@@ -201,5 +200,4 @@ class LookupInstallmentPlansCall extends AbstractApiCall implements LookupInstal
 
         return $installmentPlanTransfer;
     }
-
 }

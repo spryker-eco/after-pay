@@ -12,7 +12,6 @@ use SprykerEco\Zed\Afterpay\Business\Api\Adapter\AdapterInterface;
 
 class LookupInstallmentPlansHandler implements LookupInstallmentPlansHandlerInterface
 {
-
     /**
      * @var \SprykerEco\Zed\Afterpay\Business\Api\Adapter\AdapterInterface
      */
@@ -36,5 +35,4 @@ class LookupInstallmentPlansHandler implements LookupInstallmentPlansHandlerInte
     ) {
         return $this->apiAdapter->sendLookupInstallmentPlansRequest($installmentPlansRequestTransfer);
     }
-
 }

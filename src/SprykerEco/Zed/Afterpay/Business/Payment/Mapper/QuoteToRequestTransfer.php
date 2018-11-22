@@ -14,34 +14,37 @@ use Generated\Shared\Transfer\AfterpayRequestOrderItemTransfer;
 use Generated\Shared\Transfer\AfterpayRequestOrderTransfer;
 use Generated\Shared\Transfer\ItemTransfer;
 use Generated\Shared\Transfer\QuoteTransfer;
-use Spryker\Shared\Kernel\Store;
 use SprykerEco\Shared\Afterpay\AfterpayConstants;
 use SprykerEco\Zed\Afterpay\Dependency\Facade\AfterpayToMoneyInterface;
-
+use SprykerEco\Zed\Afterpay\Dependency\Facade\AfterpayToStoreInterface;
 
 //@todo extract shared behaviour between quote and order transfers if possible
 
 class QuoteToRequestTransfer implements QuoteToRequestTransferInterface
 {
+    const NEGATIVE_MULTIPLIER = -1;
+    const GIFT_CARD_PROVIDER = 'GiftCard';
 
     /**
      * @var \SprykerEco\Zed\Afterpay\Dependency\Facade\AfterpayToMoneyInterface
      */
-    protected $money;
+    protected $moneyFacade;
 
     /**
-     * @var \Spryker\Shared\Kernel\Store
+     * @var \SprykerEco\Zed\Afterpay\Dependency\Facade\AfterpayToSalesInterface
      */
-    protected $store;
+    protected $storeFacade;
 
     /**
-     * @param \SprykerEco\Zed\Afterpay\Dependency\Facade\AfterpayToMoneyInterface $money
-     * @param \Spryker\Shared\Kernel\Store $store
+     * @param \SprykerEco\Zed\Afterpay\Dependency\Facade\AfterpayToMoneyInterface $moneyFacade
+     * @param \SprykerEco\Zed\Afterpay\Dependency\Facade\AfterpayToSalesInterface $storeFacade
      */
-    public function __construct(AfterpayToMoneyInterface $money, Store $store)
-    {
-        $this->money = $money;
-        $this->store = $store;
+    public function __construct(
+        AfterpayToMoneyInterface $moneyFacade,
+        AfterpayToStoreInterface $storeFacade
+    ) {
+        $this->moneyFacade = $moneyFacade;
+        $this->storeFacade = $storeFacade;
     }
 
     /**
@@ -106,6 +109,8 @@ class QuoteToRequestTransfer implements QuoteToRequestTransferInterface
             );
         }
 
+        $this->addGiftcardItems($quoteTransfer, $orderRequestTransfer);
+
         return $orderRequestTransfer;
     }
 
@@ -153,7 +158,7 @@ class QuoteToRequestTransfer implements QuoteToRequestTransferInterface
      */
     protected function getStoreCountryIso2()
     {
-        return $this->store->getCurrentCountry();
+        return $this->storeFacade->getCurrentStore()->getName();
     }
 
     /**
@@ -164,8 +169,11 @@ class QuoteToRequestTransfer implements QuoteToRequestTransferInterface
     protected function getStringDecimalQuoteGrossTotal(QuoteTransfer $quoteTransfer)
     {
         $quoteTotal = $quoteTransfer->getTotals()->getGrandTotal();
+        if ($quoteTransfer->getTotals()->getPriceToPay()) {
+            $quoteTotal = $quoteTransfer->getTotals()->getPriceToPay();
+        }
 
-        return (string)$this->money->convertIntegerToDecimal($quoteTotal);
+        return (string)$this->moneyFacade->convertIntegerToDecimal($quoteTotal);
     }
 
     /**
@@ -179,7 +187,7 @@ class QuoteToRequestTransfer implements QuoteToRequestTransferInterface
         $quoteTaxTotal = $quoteTransfer->getTotals()->getTaxTotal()->getAmount();
         $quoteNetTotal = $quoteGrossTotal - $quoteTaxTotal;
 
-        return (string)$this->money->convertIntegerToDecimal($quoteNetTotal);
+        return (string)$this->moneyFacade->convertIntegerToDecimal($quoteNetTotal);
     }
 
     /**
@@ -191,7 +199,7 @@ class QuoteToRequestTransfer implements QuoteToRequestTransferInterface
     {
         $itemUnitGrossPrice = $itemTransfer->getUnitPriceToPayAggregation();
 
-        return (string)$this->money->convertIntegerToDecimal($itemUnitGrossPrice);
+        return (string)$this->moneyFacade->convertIntegerToDecimal($itemUnitGrossPrice);
     }
 
     /**
@@ -205,7 +213,49 @@ class QuoteToRequestTransfer implements QuoteToRequestTransferInterface
         $itemUnitTaxAmount = $itemTransfer->getUnitTaxAmountFullAggregation();
         $itemUnitNetAmount = $itemUnitGrossPriceAmount - $itemUnitTaxAmount;
 
-        return (string)$this->money->convertIntegerToDecimal($itemUnitNetAmount);
+        return (string)$this->moneyFacade->convertIntegerToDecimal($itemUnitNetAmount);
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
+     * @param  \Generated\Shared\Transfer\AfterpayRequestOrderTransfer $orderRequestTransfer
+     *
+     * @return void
+     */
+    protected function addGiftcardItems(QuoteTransfer $quoteTransfer, AfterpayRequestOrderTransfer $orderRequestTransfer)
+    {
+        foreach ($this->getGiftcards($quoteTransfer) as $index => $paymentTransfer) {
+
+            $orderItemRequestTransfer = new AfterpayRequestOrderItemTransfer();
+            $amount = (string)$this->moneyFacade->convertIntegerToDecimal(static::NEGATIVE_MULTIPLIER * $paymentTransfer->getAmount());
+
+            $orderItemRequestTransfer
+                ->setProductId(static::GIFT_CARD_PROVIDER . $index)
+                ->setDescription(static::GIFT_CARD_PROVIDER . $index)
+                ->setGrossUnitPrice($amount)
+                ->setQuantity(1);
+
+            $orderRequestTransfer->addItem($orderItemRequestTransfer);
+        }
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
+     *
+     * @return \Generated\Shared\Transfer\PaymentTransfer[]
+     */
+    protected function getGiftcards(QuoteTransfer $quoteTransfer)
+    {
+        $giftCardPayments = [];
+        foreach ($quoteTransfer->getPayments() as $paymentTransfer) {
+            if ($paymentTransfer->getPaymentMethod() !== static::GIFT_CARD_PROVIDER) {
+                continue;
+            }
+
+            $giftCardPayments[] = $paymentTransfer;
+        }
+
+        return $giftCardPayments;
     }
 
 }

@@ -11,7 +11,6 @@ use Generated\Shared\Transfer\QuoteTransfer;
 
 interface AfterpayAuthorizeWorkflowInterface
 {
-
     /**
      * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
      *
@@ -32,5 +31,4 @@ interface AfterpayAuthorizeWorkflowInterface
      * @return \Generated\Shared\Transfer\QuoteTransfer
      */
     public function addPaymentDataToQuote(QuoteTransfer $quoteTransfer);
-
 }

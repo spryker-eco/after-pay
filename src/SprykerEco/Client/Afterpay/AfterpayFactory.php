@@ -14,7 +14,6 @@ use SprykerEco\Client\Afterpay\Zed\AfterpayStub;
 
 class AfterpayFactory extends AbstractFactory
 {
-
     use SessionClientFactoryTrait;
     use ZedRequestClientFactoryTrait;
 
@@ -41,5 +40,4 @@ class AfterpayFactory extends AbstractFactory
     {
         return new AfterpayStub($this->getZedRequestClient());
     }
-
 }
