@@ -96,7 +96,7 @@ class CaptureRequestBuilder implements CaptureRequestBuilderInterface
         AfterpayRequestOrderItemTransfer $orderItemRequestTransfer,
         AfterpayCaptureRequestTransfer $captureRequestTransfer
     ) {
-        $captureRequestTransfer->getOrderDetails()->addItem($orderItemRequestTransfer);
+        $captureRequestTransfer->getOrderDetails()->addItem($orderItemRequestTransfer->setGrossUnitPrice(1900));
     }
 
     /**

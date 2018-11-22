@@ -195,6 +195,7 @@
         <property name="reservationId" type="string" />
         <property name="checkoutId" type="string" />
         <property name="responsePayload" type="string" />
+        <property name="error" type="AfterpayApiResponseError" />
     </transfer>
 
     <transfer name="AfterpayAvailablePaymentMethodsRequest">
@@ -259,6 +260,14 @@
         <property name="payload" type="string"/>
         <property name="resultCode" type="string"/>
         <property name="customerRedirectUrl" type="string"/>
+    </transfer>
+
+    <transfer name="AfterpayApiResponseError">
+        <property name="type" type="string" />
+        <property name="code" type="string" />
+        <property name="message" type="string" />
+        <property name="actionCode" type="string" />
+        <property name="isSuccess" type="bool" />
     </transfer>
 
     <transfer name="AfterpayAvailablePaymentMethods">
