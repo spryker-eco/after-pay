@@ -2,12 +2,13 @@
 
 /**
  * MIT License
- * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
+ * For full license information, please view the LICENSE file that was distributed with this source code.
  */
 
 namespace SprykerEco\Yves\Afterpay\Plugin;
 
 use Generated\Shared\Transfer\AfterpayValidateBankAccountRequestTransfer;
+use Generated\Shared\Transfer\AfterpayValidateBankAccountResponseTransfer;
 use Spryker\Yves\Kernel\AbstractPlugin;
 
 /**
@@ -24,7 +25,7 @@ class AfterpayBankAccountValidationPlugin extends AbstractPlugin implements Bank
      *
      * @return \Generated\Shared\Transfer\AfterpayValidateBankAccountResponseTransfer
      */
-    public function validateBankAccount(AfterpayValidateBankAccountRequestTransfer $validateBankAccountRequestTransfer)
+    public function validateBankAccount(AfterpayValidateBankAccountRequestTransfer $validateBankAccountRequestTransfer): AfterpayValidateBankAccountResponseTransfer
     {
         return $this
             ->getFactory()

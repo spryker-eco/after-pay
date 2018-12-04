@@ -2,20 +2,21 @@
 
 /**
  * MIT License
- * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
+ * For full license information, please view the LICENSE file that was distributed with this source code.
  */
 
 namespace SprykerEco\Zed\Afterpay\Business\Payment\Transaction;
 
 use Generated\Shared\Transfer\AfterpayCancelRequestTransfer;
 use Generated\Shared\Transfer\AfterpayCancelResponseTransfer;
+use SprykerEco\Shared\Afterpay\AfterpayConfig;
 use SprykerEco\Shared\Afterpay\AfterpayConstants;
 use SprykerEco\Zed\Afterpay\Business\Api\Adapter\AdapterInterface;
 use SprykerEco\Zed\Afterpay\Business\Payment\Transaction\Logger\TransactionLoggerInterface;
 
 class CancelTransaction implements CancelTransactionInterface
 {
-    const TRANSACTION_TYPE = AfterpayConstants::TRANSACTION_TYPE_CANCEL;
+    public const TRANSACTION_TYPE = AfterpayConfig::TRANSACTION_TYPE_CANCEL;
 
     /**
      * @var \SprykerEco\Zed\Afterpay\Business\Payment\Transaction\Logger\TransactionLoggerInterface
@@ -44,7 +45,7 @@ class CancelTransaction implements CancelTransactionInterface
      *
      * @return \Generated\Shared\Transfer\AfterpayCancelResponseTransfer
      */
-    public function executeTransaction(AfterpayCancelRequestTransfer $cancelRequestTransfer)
+    public function executeTransaction(AfterpayCancelRequestTransfer $cancelRequestTransfer): AfterpayCancelResponseTransfer
     {
         $cancelResponseTransfer = $this->apiAdapter->sendCancelRequest($cancelRequestTransfer);
         $this->logTransaction($cancelRequestTransfer, $cancelResponseTransfer);
@@ -61,7 +62,7 @@ class CancelTransaction implements CancelTransactionInterface
     protected function logTransaction(
         AfterpayCancelRequestTransfer $cancelRequestTransfer,
         AfterpayCancelResponseTransfer $cancelResponseTransfer
-    ) {
+    ): void {
         $this->transactionLogger->logTransaction(
             static::TRANSACTION_TYPE,
             $cancelRequestTransfer->getIdSalesOrder(),

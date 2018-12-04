@@ -2,19 +2,20 @@
 
 /**
  * MIT License
- * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
+ * For full license information, please view the LICENSE file that was distributed with this source code.
  */
 
 namespace SprykerEco\Zed\Afterpay\Business\Payment\Transaction;
 
 use Generated\Shared\Transfer\AfterpayTransactionLogTransfer;
 use Orm\Zed\Afterpay\Persistence\SpyPaymentAfterpayTransactionLog;
+use SprykerEco\Shared\Afterpay\AfterpayConfig;
 use SprykerEco\Shared\Afterpay\AfterpayConstants;
 use SprykerEco\Zed\Afterpay\Persistence\AfterpayQueryContainerInterface;
 
 class TransactionLogReader implements TransactionLogReaderInterface
 {
-    const TRANSACTION_TYPE_AUTHORIZE = AfterpayConstants::TRANSACTION_TYPE_AUTHORIZE;
+    public const TRANSACTION_TYPE_AUTHORIZE = AfterpayConfig::TRANSACTION_TYPE_AUTHORIZE;
 
     /**
      * @var \SprykerEco\Zed\Afterpay\Persistence\AfterpayQueryContainerInterface
@@ -34,7 +35,7 @@ class TransactionLogReader implements TransactionLogReaderInterface
      *
      * @return \Generated\Shared\Transfer\AfterpayTransactionLogTransfer|null
      */
-    public function findOrderAuthorizeTransactionLogByIdSalesOrder($idSalesOrder)
+    public function findOrderAuthorizeTransactionLogByIdSalesOrder(int $idSalesOrder): ?AfterpayTransactionLogTransfer
     {
         $spyTransactionLog = $this->findOrderAuthorizeTransactionEntity($idSalesOrder);
 
@@ -50,7 +51,7 @@ class TransactionLogReader implements TransactionLogReaderInterface
      *
      * @return \Orm\Zed\Afterpay\Persistence\SpyPaymentAfterpayTransactionLog|null
      */
-    protected function findOrderAuthorizeTransactionEntity($idSalesOrder)
+    protected function findOrderAuthorizeTransactionEntity(int $idSalesOrder): ?SpyPaymentAfterpayTransactionLog
     {
         $transactionLogEntity = $this
             ->queryContainer
@@ -68,7 +69,7 @@ class TransactionLogReader implements TransactionLogReaderInterface
      *
      * @return \Generated\Shared\Transfer\AfterpayTransactionLogTransfer
      */
-    protected function buildTransactionTransfer(SpyPaymentAfterpayTransactionLog $transactionLogEntry)
+    protected function buildTransactionTransfer(SpyPaymentAfterpayTransactionLog $transactionLogEntry): AfterpayTransactionLogTransfer
     {
         $transactionLogTransfer = new AfterpayTransactionLogTransfer();
         $transactionLogTransfer->fromArray($transactionLogEntry->toArray(), true);

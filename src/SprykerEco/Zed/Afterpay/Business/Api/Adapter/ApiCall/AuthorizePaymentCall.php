@@ -2,14 +2,15 @@
 
 /**
  * MIT License
- * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
+ * For full license information, please view the LICENSE file that was distributed with this source code.
  */
 
 namespace SprykerEco\Zed\Afterpay\Business\Api\Adapter\ApiCall;
 
 use Generated\Shared\Transfer\AfterpayApiResponseTransfer;
 use Generated\Shared\Transfer\AfterpayAuthorizeRequestTransfer;
-use SprykerEco\Shared\Afterpay\AfterpayApiConstants;
+use SprykerEco\Shared\Afterpay\AfterpayApiRequestConfig;
+use SprykerEco\Shared\Afterpay\AfterpayConfig as AfterpayConfig1;
 use SprykerEco\Shared\Afterpay\AfterpayConstants;
 use SprykerEco\Zed\Afterpay\AfterpayConfig;
 use SprykerEco\Zed\Afterpay\Business\Api\Adapter\Client\ClientInterface;
@@ -52,7 +53,7 @@ class AuthorizePaymentCall extends AbstractApiCall implements AuthorizePaymentCa
      *
      * @return \Generated\Shared\Transfer\AfterpayApiResponseTransfer
      */
-    public function execute(AfterpayAuthorizeRequestTransfer $requestTransfer)
+    public function execute(AfterpayAuthorizeRequestTransfer $requestTransfer): AfterpayApiResponseTransfer
     {
         $jsonRequest = $this->buildJsonRequestFromTransferObject($requestTransfer);
 
@@ -74,16 +75,16 @@ class AuthorizePaymentCall extends AbstractApiCall implements AuthorizePaymentCa
      *
      * @return \Generated\Shared\Transfer\AfterpayApiResponseTransfer
      */
-    protected function buildAuthorizeResponseTransfer($jsonResponse)
+    protected function buildAuthorizeResponseTransfer(string $jsonResponse): AfterpayApiResponseTransfer
     {
         $jsonResponseArray = $this->utilEncoding->decodeJson($jsonResponse, true);
 
         $responseTransfer = new AfterpayApiResponseTransfer();
 
         $responseTransfer
-            ->setOutcome($jsonResponseArray[AfterpayApiConstants::TRANSACTION_OUTCOME] ?? AfterpayConstants::API_TRANSACTION_OUTCOME_REJECTED)
-            ->setReservationId($jsonResponseArray[AfterpayApiConstants::TRANSACTION_RESERVATION_ID] ?? null)
-            ->setCheckoutId($jsonResponseArray[AfterpayApiConstants::TRANSACTION_CHECKOUT_ID] ?? null)
+            ->setOutcome($jsonResponseArray[AfterpayApiRequestConfig::TRANSACTION_OUTCOME] ?? AfterpayConfig1::API_TRANSACTION_OUTCOME_REJECTED)
+            ->setReservationId($jsonResponseArray[AfterpayApiRequestConfig::TRANSACTION_RESERVATION_ID] ?? null)
+            ->setCheckoutId($jsonResponseArray[AfterpayApiRequestConfig::TRANSACTION_CHECKOUT_ID] ?? null)
             ->setResponsePayload($jsonResponse);
 
         return $responseTransfer;

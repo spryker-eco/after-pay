@@ -2,7 +2,7 @@
 
 /**
  * MIT License
- * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
+ * For full license information, please view the LICENSE file that was distributed with this source code.
  */
 
 namespace SprykerEco\Zed\Afterpay\Business\Payment\Transaction\Handler;
@@ -72,7 +72,7 @@ class CancelTransactionHandler implements CancelTransactionHandlerInterface
      *
      * @return void
      */
-    public function cancel(ItemTransfer $itemTransfer, AfterpayCallTransfer $afterpayCallTransfer)
+    public function cancel(ItemTransfer $itemTransfer, AfterpayCallTransfer $afterpayCallTransfer): void
     {
         $cancelRequestTransfer = $this->buildCancelRequestForOrderItem($itemTransfer, $afterpayCallTransfer);
         $paymentTransfer = $this->getPaymentTransferForItem($itemTransfer);
@@ -95,8 +95,10 @@ class CancelTransactionHandler implements CancelTransactionHandlerInterface
      *
      * @return \Generated\Shared\Transfer\AfterpayCancelRequestTransfer
      */
-    protected function buildCancelRequestForOrderItem(ItemTransfer $itemTransfer, AfterpayCallTransfer $afterpayCallTransfer)
-    {
+    protected function buildCancelRequestForOrderItem(
+        ItemTransfer $itemTransfer,
+        AfterpayCallTransfer $afterpayCallTransfer
+    ): AfterpayCancelRequestTransfer {
         $cancelRequestTransfer = $this->cancelRequestBuilder
             ->buildBaseCancelRequestForOrder($afterpayCallTransfer);
 
@@ -118,7 +120,7 @@ class CancelTransactionHandler implements CancelTransactionHandlerInterface
     protected function isExpenseShouldBeCancelled(
         AfterpayCancelRequestTransfer $cancelRequestTransfer,
         AfterpayPaymentTransfer $paymentTransfer
-    ) {
+    ): bool {
         $amountToCancelDecimal = $cancelRequestTransfer->getCancellationDetails()->getTotalGrossAmount();
         $amountToCancelInt = $this->money->convertDecimalToInteger((float)$amountToCancelDecimal);
 
@@ -141,7 +143,7 @@ class CancelTransactionHandler implements CancelTransactionHandlerInterface
     protected function addExpensesToCancelRequest(
         $expenseTotal,
         AfterpayCancelRequestTransfer $cancelRequestTransfer
-    ) {
+    ): void {
         $this->cancelRequestBuilder
             ->addOrderExpenseToCancelRequest(
                 $expenseTotal,
@@ -154,12 +156,9 @@ class CancelTransactionHandler implements CancelTransactionHandlerInterface
      *
      * @return \Generated\Shared\Transfer\AfterpayPaymentTransfer
      */
-    protected function getPaymentTransferForItem(ItemTransfer $itemTransfer)
+    protected function getPaymentTransferForItem(ItemTransfer $itemTransfer): AfterpayPaymentTransfer
     {
-        return $this->paymentReader
-            ->getPaymentByIdSalesOrder(
-                $itemTransfer->getFkSalesOrder()
-            );
+        return $this->paymentReader->getPaymentByIdSalesOrder($itemTransfer->getFkSalesOrder());
     }
 
     /**
@@ -171,7 +170,7 @@ class CancelTransactionHandler implements CancelTransactionHandlerInterface
     protected function updateOrderPayment(
         AfterpayCancelRequestTransfer $cancelRequestTransfer,
         AfterpayCancelResponseTransfer $cancelResponseTransfer
-    ) {
+    ): void {
         if (!$cancelResponseTransfer->getTotalAuthorizedAmount()) {
             return;
         }

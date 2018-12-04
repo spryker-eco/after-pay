@@ -2,19 +2,28 @@
 
 /**
  * MIT License
- * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
+ * For full license information, please view the LICENSE file that was distributed with this source code.
  */
 
 namespace SprykerEco\Zed\Afterpay\Business;
 
+use Generated\Shared\Transfer\AfterpayApiResponseTransfer;
+use Generated\Shared\Transfer\AfterpayAvailablePaymentMethodsTransfer;
 use Generated\Shared\Transfer\AfterpayCallTransfer;
 use Generated\Shared\Transfer\AfterpayCustomerLookupRequestTransfer;
+use Generated\Shared\Transfer\AfterpayCustomerLookupResponseTransfer;
 use Generated\Shared\Transfer\AfterpayInstallmentPlansRequestTransfer;
+use Generated\Shared\Transfer\AfterpayInstallmentPlansResponseTransfer;
+use Generated\Shared\Transfer\AfterpayPaymentTransfer;
 use Generated\Shared\Transfer\AfterpayValidateBankAccountRequestTransfer;
+use Generated\Shared\Transfer\AfterpayValidateBankAccountResponseTransfer;
 use Generated\Shared\Transfer\AfterpayValidateCustomerRequestTransfer;
+use Generated\Shared\Transfer\AfterpayValidateCustomerResponseTransfer;
 use Generated\Shared\Transfer\CheckoutResponseTransfer;
 use Generated\Shared\Transfer\ItemTransfer;
+use Generated\Shared\Transfer\OrderTransfer;
 use Generated\Shared\Transfer\QuoteTransfer;
+use Generated\Shared\Transfer\SaveOrderTransfer;
 
 interface AfterpayFacadeInterface
 {
@@ -29,7 +38,7 @@ interface AfterpayFacadeInterface
      *
      * @return \Generated\Shared\Transfer\AfterpayAvailablePaymentMethodsTransfer
      */
-    public function getAvailablePaymentMethods(QuoteTransfer $quoteTransfer);
+    public function getAvailablePaymentMethods(QuoteTransfer $quoteTransfer): AfterpayAvailablePaymentMethodsTransfer;
 
     /**
      * Specification:
@@ -42,9 +51,7 @@ interface AfterpayFacadeInterface
      *
      * @return \Generated\Shared\Transfer\AfterpayValidateCustomerResponseTransfer
      */
-    public function validateCustomerAddress(
-        AfterpayValidateCustomerRequestTransfer $validateCustomerRequestTransfer
-    );
+    public function validateCustomerAddress(AfterpayValidateCustomerRequestTransfer $validateCustomerRequestTransfer): AfterpayValidateCustomerResponseTransfer;
 
     /**
      * Specification:
@@ -58,9 +65,7 @@ interface AfterpayFacadeInterface
      *
      * @return \Generated\Shared\Transfer\AfterpayValidateBankAccountResponseTransfer
      */
-    public function validateBankAccount(
-        AfterpayValidateBankAccountRequestTransfer $validateBankAccountRequestTransfer
-    );
+    public function validateBankAccount(AfterpayValidateBankAccountRequestTransfer $validateBankAccountRequestTransfer): AfterpayValidateBankAccountResponseTransfer;
 
     /**
      * Specification:
@@ -73,22 +78,20 @@ interface AfterpayFacadeInterface
      *
      * @return \Generated\Shared\Transfer\AfterpayCustomerLookupResponseTransfer
      */
-    public function lookupCustomer(
-        AfterpayCustomerLookupRequestTransfer $customerLookupRequestTransfer
-    );
+    public function lookupCustomer(AfterpayCustomerLookupRequestTransfer $customerLookupRequestTransfer): AfterpayCustomerLookupResponseTransfer;
 
     /**
      * Specification:
      *  - Makes "lookup/installment-plans" call to the afterpay API, to get the available installment plans for the specific
      *  product/basket value. Returns monthly installment amount, interest and fees.
      *
+     * @api
+     *
      * @param \Generated\Shared\Transfer\AfterpayInstallmentPlansRequestTransfer $installmentPlansRequestTransfer
      *
      * @return \Generated\Shared\Transfer\AfterpayInstallmentPlansResponseTransfer
      */
-    public function lookupInstallmentPlans(
-        AfterpayInstallmentPlansRequestTransfer $installmentPlansRequestTransfer
-    );
+    public function lookupInstallmentPlans(AfterpayInstallmentPlansRequestTransfer $installmentPlansRequestTransfer): AfterpayInstallmentPlansResponseTransfer;
 
     /**
      * Specification:
@@ -99,9 +102,9 @@ interface AfterpayFacadeInterface
      *
      * @param \Generated\Shared\Transfer\AfterpayCallTransfer $afterpayCallTransfer
      *
-     * @return \Generated\Shared\Transfer\AfterpayCallTransfer
+     * @return \Generated\Shared\Transfer\AfterpayApiResponseTransfer
      */
-    public function authorizePayment(AfterpayCallTransfer $afterpayCallTransfer);
+    public function authorizePayment(AfterpayCallTransfer $afterpayCallTransfer): AfterpayApiResponseTransfer;
 
     /**
      * Specification:
@@ -116,7 +119,7 @@ interface AfterpayFacadeInterface
      *
      * @return void
      */
-    public function capturePayment(ItemTransfer $itemTransfer, AfterpayCallTransfer $afterpayCallTransfer);
+    public function capturePayment(ItemTransfer $itemTransfer, AfterpayCallTransfer $afterpayCallTransfer): void;
 
     /**
      * Specification:
@@ -127,9 +130,9 @@ interface AfterpayFacadeInterface
      * @param \Generated\Shared\Transfer\ItemTransfer $itemTransfer
      * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
      *
-     * @return \Generated\Shared\Transfer\AfterpayResponseTransfer
+     * @return void
      */
-    public function refundPayment(ItemTransfer $itemTransfer, OrderTransfer $orderTransfer);
+    public function refundPayment(ItemTransfer $itemTransfer, OrderTransfer $orderTransfer): void;
 
     /**
      * Specification:
@@ -142,9 +145,9 @@ interface AfterpayFacadeInterface
      * @param \Generated\Shared\Transfer\ItemTransfer $itemTransfer
      * @param \Generated\Shared\Transfer\AfterpayCallTransfer $afterpayCallTransfer
      *
-     * @return \Generated\Shared\Transfer\AfterpayResponseTransfer
+     * @return void
      */
-    public function cancelPayment(ItemTransfer $itemTransfer, AfterpayCallTransfer $afterpayCallTransfer);
+    public function cancelPayment(ItemTransfer $itemTransfer, AfterpayCallTransfer $afterpayCallTransfer): void;
 
     /**
      * Specification:
@@ -153,11 +156,11 @@ interface AfterpayFacadeInterface
      * @api
      *
      * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
-     * @param \Generated\Shared\Transfer\CheckoutResponseTransfer $checkoutResponseTransfer
+     * @param \Generated\Shared\Transfer\SaveOrderTransfer $saveOrderTransfer
      *
      * @return void
      */
-    public function saveOrderPayment(QuoteTransfer $quoteTransfer, CheckoutResponseTransfer $checkoutResponseTransfer);
+    public function saveOrderPayment(QuoteTransfer $quoteTransfer, SaveOrderTransfer $saveOrderTransfer): void;
 
     /**
      * Specification:
@@ -171,7 +174,18 @@ interface AfterpayFacadeInterface
      *
      * @return \Generated\Shared\Transfer\CheckoutResponseTransfer
      */
-    public function postSaveHook(QuoteTransfer $quoteTransfer, CheckoutResponseTransfer $checkoutResponseTransfer);
+    public function postSaveHook(QuoteTransfer $quoteTransfer, CheckoutResponseTransfer $checkoutResponseTransfer): CheckoutResponseTransfer;
+
+    /**
+     * {@inheritdoc}
+     *
+     * @api
+     *
+     * @param int $idSalesOrder
+     *
+     * @return \Generated\Shared\Transfer\AfterpayPaymentTransfer
+     */
+    public function getPaymentByIdSalesOrder(int $idSalesOrder): AfterpayPaymentTransfer;
 
     /**
      * Specification:
@@ -181,7 +195,7 @@ interface AfterpayFacadeInterface
      *
      * @return string
      */
-    public function getApiVersion();
+    public function getApiVersion(): string;
 
     /**
      * Specification:
@@ -191,5 +205,5 @@ interface AfterpayFacadeInterface
      *
      * @return int
      */
-    public function getApiStatus();
+    public function getApiStatus(): int;
 }

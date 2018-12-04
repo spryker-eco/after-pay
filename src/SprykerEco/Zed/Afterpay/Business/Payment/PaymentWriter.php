@@ -2,11 +2,13 @@
 
 /**
  * MIT License
- * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
+ * For full license information, please view the LICENSE file that was distributed with this source code.
  */
 
 namespace SprykerEco\Zed\Afterpay\Business\Payment;
 
+use Orm\Zed\Afterpay\Persistence\SpyPaymentAfterpay;
+use Orm\Zed\Afterpay\Persistence\SpyPaymentAfterpayOrderItem;
 use SprykerEco\Zed\Afterpay\Persistence\AfterpayQueryContainerInterface;
 
 class PaymentWriter implements PaymentWriterInterface
@@ -30,10 +32,9 @@ class PaymentWriter implements PaymentWriterInterface
      *
      * @return void
      */
-    public function setIdReservationByIdSalesOrder($idReservation, $idSalesOrder)
+    public function setIdReservationByIdSalesOrder(string $idReservation, int $idSalesOrder): void
     {
         $afterpayPaymentEntity = $this->getPaymentEntityByIdSalesOrder($idSalesOrder);
-
         $afterpayPaymentEntity
             ->setIdReservation($idReservation)
             ->save();
@@ -45,10 +46,9 @@ class PaymentWriter implements PaymentWriterInterface
      *
      * @return void
      */
-    public function setAuthorizedTotalByIdSalesOrder($authorizedTotal, $idSalesOrder)
+    public function setAuthorizedTotalByIdSalesOrder(int $authorizedTotal, int $idSalesOrder): void
     {
         $afterpayPaymentEntity = $this->getPaymentEntityByIdSalesOrder($idSalesOrder);
-
         $afterpayPaymentEntity
             ->setAuthorizedTotal($authorizedTotal)
             ->save();
@@ -60,14 +60,11 @@ class PaymentWriter implements PaymentWriterInterface
      *
      * @return void
      */
-    public function increaseTotalCapturedAmountByIdSalesOrder($amountToAdd, $idSalesOrder)
+    public function increaseTotalCapturedAmountByIdSalesOrder(int $amountToAdd, int $idSalesOrder): void
     {
         $afterpayPaymentEntity = $this->getPaymentEntityByIdSalesOrder($idSalesOrder);
-
         $afterpayPaymentEntity
-            ->setCapturedTotal(
-                $afterpayPaymentEntity->getCapturedTotal() + $amountToAdd
-            )
+            ->setCapturedTotal($afterpayPaymentEntity->getCapturedTotal() + $amountToAdd)
             ->save();
     }
 
@@ -77,13 +74,11 @@ class PaymentWriter implements PaymentWriterInterface
      *
      * @return void
      */
-    public function updateExpensesCaptureNumber($captureNumber, $idSalesOrder)
+    public function updateExpensesCaptureNumber(string $captureNumber, int $idSalesOrder): void
     {
         $afterpayPaymentEntity = $this->getPaymentEntityByIdSalesOrder($idSalesOrder);
         $afterpayPaymentEntity
-            ->setExpensesCaptureNumber(
-                $captureNumber
-            )
+            ->setExpensesCaptureNumber($captureNumber)
             ->save();
     }
 
@@ -93,16 +88,12 @@ class PaymentWriter implements PaymentWriterInterface
      *
      * @return void
      */
-    public function increaseRefundedTotalByIdSalesOrder($refundedAmount, $idSalesOrder)
+    public function increaseRefundedTotalByIdSalesOrder(int $refundedAmount, int $idSalesOrder): void
     {
         $afterpayPaymentEntity = $this->getPaymentEntityByIdSalesOrder($idSalesOrder);
-
         $refundedTotal = $afterpayPaymentEntity->getRefundedTotal();
-
         $afterpayPaymentEntity
-            ->setRefundedTotal(
-                $refundedTotal + $refundedAmount
-            )
+            ->setRefundedTotal($refundedTotal + $refundedAmount)
             ->save();
     }
 
@@ -114,16 +105,17 @@ class PaymentWriter implements PaymentWriterInterface
      * @return void
      */
     public function setCaptureNumberByIdSalesOrderItemAndIdPayment(
-        $captureNumber,
-        $idSalesOrderItem,
-        $idPayment
-    ) {
+        int $captureNumber,
+        int $idSalesOrderItem,
+        int $idPayment
+    ): void {
         $afterpayPaymentOrderItemEntity = $this->getPaymentOrderItemEntityByIdSalesOrderItemAndIdPayment(
             $idSalesOrderItem,
             $idPayment
         );
-
-        $afterpayPaymentOrderItemEntity->setCaptureNumber($captureNumber)->save();
+        $afterpayPaymentOrderItemEntity
+            ->setCaptureNumber($captureNumber)
+            ->save();
     }
 
     /**
@@ -132,23 +124,20 @@ class PaymentWriter implements PaymentWriterInterface
      *
      * @return void
      */
-    public function increaseTotalCancelledAmountByIdSalesOrder($amountToAdd, $idSalesOrder)
+    public function increaseTotalCancelledAmountByIdSalesOrder(int $amountToAdd, int $idSalesOrder): void
     {
         $afterpayPaymentEntity = $this->getPaymentEntityByIdSalesOrder($idSalesOrder);
-
         $afterpayPaymentEntity
-            ->setCancelledTotal(
-                $afterpayPaymentEntity->getCancelledTotal() + $amountToAdd
-            )
+            ->setCancelledTotal($afterpayPaymentEntity->getCancelledTotal() + $amountToAdd)
             ->save();
     }
 
     /**
      * @param int $idSalesOrder
      *
-     * @return \Orm\Zed\Afterpay\Persistence\SpyPaymentAfterpay
+     * @return \Orm\Zed\Afterpay\Persistence\SpyPaymentAfterpay|null
      */
-    protected function getPaymentEntityByIdSalesOrder($idSalesOrder)
+    protected function getPaymentEntityByIdSalesOrder(int $idSalesOrder): ?SpyPaymentAfterpay
     {
         $afterpayPaymentEntity = $this->afterpayQueryContainer
             ->queryPaymentByIdSalesOrder($idSalesOrder)
@@ -163,7 +152,7 @@ class PaymentWriter implements PaymentWriterInterface
      *
      * @return \Orm\Zed\Afterpay\Persistence\SpyPaymentAfterpayOrderItem
      */
-    protected function getPaymentOrderItemEntityByIdSalesOrderItemAndIdPayment($idSalesOrderItem, $idPayment)
+    protected function getPaymentOrderItemEntityByIdSalesOrderItemAndIdPayment(int $idSalesOrderItem, int $idPayment): ?SpyPaymentAfterpayOrderItem
     {
         $afterpayPaymentOrderItemEntity = $this->afterpayQueryContainer
             ->queryPaymentOrderItemByIdSalesOrderAndIdPayment($idSalesOrderItem, $idPayment)

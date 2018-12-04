@@ -2,18 +2,17 @@
 
 /**
  * MIT License
- * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
+ * For full license information, please view the LICENSE file that was distributed with this source code.
  */
 
 namespace SprykerEco\Zed\Afterpay;
 
-use Spryker\Shared\Kernel\Store;
 use Spryker\Zed\Kernel\AbstractBundleDependencyProvider;
 use Spryker\Zed\Kernel\Container;
 use SprykerEco\Zed\Afterpay\Dependency\Facade\AfterpayToCustomerBridge;
 use SprykerEco\Zed\Afterpay\Dependency\Facade\AfterpayToMoneyBridge;
-use SprykerEco\Zed\Afterpay\Dependency\Facade\AfterpayToRefundBridge;
 use SprykerEco\Zed\Afterpay\Dependency\Facade\AfterpayToPaymentBridge;
+use SprykerEco\Zed\Afterpay\Dependency\Facade\AfterpayToRefundBridge;
 use SprykerEco\Zed\Afterpay\Dependency\Facade\AfterpayToSalesBridge;
 use SprykerEco\Zed\Afterpay\Dependency\Facade\AfterpayToStoreBridge;
 use SprykerEco\Zed\Afterpay\Dependency\Service\AfterpayToUtilEncodingBridge;
@@ -21,47 +20,111 @@ use SprykerEco\Zed\Afterpay\Dependency\Service\AfterpayToUtilTextBridge;
 
 class AfterpayDependencyProvider extends AbstractBundleDependencyProvider
 {
-    const FACADE_MONEY = 'money facade';
-    const FACADE_SALES = 'sales facade';
-    const FACADE_CUSTOMER = 'customer facade';
-    const FACADE_PAYMENT = 'payment';
-    const FACADE_REFUND = 'refund facade';
-    const FACADE_STORE = 'store facade';
+    public const FACADE_MONEY = 'FACADE_MONEY';
+    public const FACADE_SALES = 'FACADE_SALES';
+    public const FACADE_CUSTOMER = 'FACADE_CUSTOMER';
+    public const FACADE_PAYMENT = 'FACADE_PAYMENT';
+    public const FACADE_REFUND = 'FACADE_REFUND';
+    public const FACADE_STORE = 'FACADE_STORE';
 
-    const SERVICE_UTIL_ENCODING = 'util encoding service';
-    const SERVICE_UTIL_TEXT = 'util text service';
+    public const SERVICE_UTIL_ENCODING = 'SERVICE_UTIL_ENCODING';
+    public const SERVICE_UTIL_TEXT = 'SERVICE_UTIL_TEXT';
 
     /**
      * @param \Spryker\Zed\Kernel\Container $container
      *
      * @return \Spryker\Zed\Kernel\Container
      */
-    public function provideBusinessLayerDependencies(Container $container)
+    public function provideBusinessLayerDependencies(Container $container): Container
+    {
+        $container = parent::provideBusinessLayerDependencies($container);
+        $container = $this->addMoneyFacade($container);
+        $container = $this->addStoreFacade($container);
+        $container = $this->addCustomerFacade($container);
+        $container = $this->addPaymentFacade($container);
+        $container = $this->addUtilEncodingService($container);
+        $container = $this->addUtilTextService($container);
+
+        return $container;
+    }
+
+    /**
+     * @param \Spryker\Zed\Kernel\Container $container
+     *
+     * @return \Spryker\Zed\Kernel\Container
+     */
+    public function provideCommunicationLayerDependencies(Container $container): Container
+    {
+        $container = parent::provideCommunicationLayerDependencies($container);
+        $container = $this->addSalesFacade($container);
+        $container = $this->addRefundFacade($container);
+
+        return $container;
+    }
+
+    /**
+     * @param \Spryker\Zed\Kernel\Container $container
+     *
+     * @return \Spryker\Zed\Kernel\Container
+     */
+    protected function addMoneyFacade(Container $container): Container
     {
         $container[static::FACADE_MONEY] = function (Container $container) {
             return new AfterpayToMoneyBridge($container->getLocator()->money()->facade());
         };
 
+        return $container;
+    }
+
+    /**
+     * @param \Spryker\Zed\Kernel\Container $container
+     *
+     * @return \Spryker\Zed\Kernel\Container
+     */
+    protected function addSalesFacade(Container $container): Container
+    {
         $container[static::FACADE_SALES] = function (Container $container) {
             return new AfterpayToSalesBridge($container->getLocator()->sales()->facade());
         };
 
+        return $container;
+    }
+
+    /**
+     * @param \Spryker\Zed\Kernel\Container $container
+     *
+     * @return \Spryker\Zed\Kernel\Container
+     */
+    protected function addStoreFacade(Container $container): Container
+    {
         $container[static::FACADE_STORE] = function (Container $container) {
             return new AfterpayToStoreBridge($container->getLocator()->store()->facade());
         };
 
+        return $container;
+    }
+
+    /**
+     * @param \Spryker\Zed\Kernel\Container $container
+     *
+     * @return \Spryker\Zed\Kernel\Container
+     */
+    protected function addCustomerFacade(Container $container): Container
+    {
         $container[static::FACADE_CUSTOMER] = function (Container $container) {
             return new AfterpayToCustomerBridge($container->getLocator()->customer()->facade());
         };
 
-        $container[static::SERVICE_UTIL_ENCODING] = function (Container $container) {
-            return new AfterpayToUtilEncodingBridge($container->getLocator()->utilEncoding()->service());
-        };
+        return $container;
+    }
 
-        $container[static::SERVICE_UTIL_TEXT] = function (Container $container) {
-            return new AfterpayToUtilTextBridge($container->getLocator()->utilText()->service());
-        };
-
+    /**
+     * @param \Spryker\Zed\Kernel\Container $container
+     *
+     * @return \Spryker\Zed\Kernel\Container
+     */
+    protected function addPaymentFacade(Container $container): Container
+    {
         $container[static::FACADE_PAYMENT] = function (Container $container) {
             return new AfterpayToPaymentBridge($container->getLocator()->payment()->facade());
         };
@@ -74,14 +137,38 @@ class AfterpayDependencyProvider extends AbstractBundleDependencyProvider
      *
      * @return \Spryker\Zed\Kernel\Container
      */
-    public function provideCommunicationLayerDependencies(Container $container)
+    protected function addRefundFacade(Container $container): Container
     {
-        $container[static::FACADE_SALES] = function (Container $container) {
-            return new AfterpayToSalesBridge($container->getLocator()->sales()->facade());
-        };
-
         $container[static::FACADE_REFUND] = function (Container $container) {
             return new AfterpayToRefundBridge($container->getLocator()->refund()->facade());
+        };
+
+        return $container;
+    }
+
+    /**
+     * @param \Spryker\Zed\Kernel\Container $container
+     *
+     * @return \Spryker\Zed\Kernel\Container
+     */
+    protected function addUtilEncodingService(Container $container): Container
+    {
+        $container[static::SERVICE_UTIL_ENCODING] = function (Container $container) {
+            return new AfterpayToUtilEncodingBridge($container->getLocator()->utilEncoding()->service());
+        };
+
+        return $container;
+    }
+
+    /**
+     * @param \Spryker\Zed\Kernel\Container $container
+     *
+     * @return \Spryker\Zed\Kernel\Container
+     */
+    protected function addUtilTextService(Container $container): Container
+    {
+        $container[static::SERVICE_UTIL_TEXT] = function (Container $container) {
+            return new AfterpayToUtilTextBridge($container->getLocator()->utilText()->service());
         };
 
         return $container;

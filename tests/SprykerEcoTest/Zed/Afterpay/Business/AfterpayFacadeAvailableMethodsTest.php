@@ -2,13 +2,14 @@
 
 /**
  * MIT License
- * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
+ * For full license information, please view the LICENSE file that was distributed with this source code.
  */
 
 namespace SprykerEcoTest\Zed\Afterpay\Business;
 
 use Generated\Shared\Transfer\AfterpayAvailablePaymentMethodsTransfer;
 use Generated\Shared\Transfer\QuoteTransfer;
+use SprykerEco\Shared\Afterpay\AfterpayConfig;
 use SprykerEco\Shared\Afterpay\AfterpayConstants;
 
 class AfterpayFacadeAvailableMethodsTest extends AfterpayFacadeAbstractTest
@@ -42,7 +43,7 @@ class AfterpayFacadeAvailableMethodsTest extends AfterpayFacadeAbstractTest
     {
         $methodNames = $output->getAvailablePaymentMethodNames();
 
-        $this->assertEquals($methodNames, [AfterpayConstants::RISK_CHECK_METHOD_INVOICE]);
+        $this->assertEquals($methodNames, [AfterpayConfig::RISK_CHECK_METHOD_INVOICE]);
         $this->assertNotEmpty($output->getRiskCheckCode());
         $this->assertNotEmpty($output->getCheckoutId());
         $this->assertNotEmpty($output->getQuoteHash());

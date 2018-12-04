@@ -2,23 +2,24 @@
 
 /**
  * MIT License
- * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
+ * For full license information, please view the LICENSE file that was distributed with this source code.
  */
 
 namespace SprykerEco\Zed\Afterpay\Business\Order;
 
-use Generated\Shared\Transfer\CheckoutResponseTransfer;
 use Generated\Shared\Transfer\ItemTransfer;
 use Generated\Shared\Transfer\QuoteTransfer;
+use Generated\Shared\Transfer\SaveOrderTransfer;
 use Orm\Zed\Afterpay\Persistence\SpyPaymentAfterpay;
 use Orm\Zed\Afterpay\Persistence\SpyPaymentAfterpayOrderItem;
-use Spryker\Zed\PropelOrm\Business\Transaction\DatabaseTransactionHandlerTrait;
+use Spryker\Zed\Kernel\Persistence\EntityManager\TransactionTrait;
+use SprykerEco\Shared\Afterpay\AfterpayConfig as AfterpayConfig1;
 use SprykerEco\Shared\Afterpay\AfterpayConstants;
 use SprykerEco\Zed\Afterpay\AfterpayConfig;
 
 class Saver implements SaverInterface
 {
-    use DatabaseTransactionHandlerTrait;
+    use TransactionTrait;
 
     /**
      * @var \SprykerEco\Zed\Afterpay\AfterpayConfig
@@ -35,34 +36,34 @@ class Saver implements SaverInterface
 
     /**
      * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
-     * @param \Generated\Shared\Transfer\CheckoutResponseTransfer $checkoutResponseTransfer
+     * @param \Generated\Shared\Transfer\SaveOrderTransfer $saveOrderTransfer
      *
      * @return void
      */
-    public function saveOrderPayment(QuoteTransfer $quoteTransfer, CheckoutResponseTransfer $checkoutResponseTransfer)
+    public function saveOrderPayment(QuoteTransfer $quoteTransfer, SaveOrderTransfer $saveOrderTransfer): void
     {
-        $this->handleDatabaseTransaction(function () use ($quoteTransfer, $checkoutResponseTransfer) {
-            $this->executeSavePaymentForOrderAndItemsTransaction($quoteTransfer, $checkoutResponseTransfer);
+        $this->getTransactionHandler()->handleTransaction(function () use ($quoteTransfer, $saveOrderTransfer) {
+            $this->executeSavePaymentForOrderAndItemsTransaction($quoteTransfer, $saveOrderTransfer);
         });
     }
 
     /**
      * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
-     * @param \Generated\Shared\Transfer\CheckoutResponseTransfer $checkoutResponseTransfer
+     * @param \Generated\Shared\Transfer\SaveOrderTransfer $saveOrderTransfer
      *
      * @return void
      */
     protected function executeSavePaymentForOrderAndItemsTransaction(
         QuoteTransfer $quoteTransfer,
-        CheckoutResponseTransfer $checkoutResponseTransfer
-    ) {
+        SaveOrderTransfer $saveOrderTransfer
+    ): void {
 
-        $paymentEntity = $this->buildPaymentEntity($quoteTransfer, $checkoutResponseTransfer);
+        $paymentEntity = $this->buildPaymentEntity($quoteTransfer, $saveOrderTransfer);
         $paymentEntity->save();
 
         $idPayment = $paymentEntity->getIdPaymentAfterpay();
 
-        foreach ($checkoutResponseTransfer->getSaveOrder()->getOrderItems() as $orderItem) {
+        foreach ($saveOrderTransfer->getOrderItems() as $orderItem) {
             $this->savePaymentForOrderItem($orderItem, $idPayment);
         }
     }
@@ -73,7 +74,7 @@ class Saver implements SaverInterface
      *
      * @return void
      */
-    protected function savePaymentForOrderItem(ItemTransfer $orderItemTransfer, $idPayment)
+    protected function savePaymentForOrderItem(ItemTransfer $orderItemTransfer, int $idPayment): void
     {
         $paymentOrderItemEntity = new SpyPaymentAfterpayOrderItem();
         $paymentOrderItemEntity
@@ -85,14 +86,14 @@ class Saver implements SaverInterface
 
     /**
      * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
-     * @param \Generated\Shared\Transfer\CheckoutResponseTransfer $checkoutResponseTransfer
+     * @param \Generated\Shared\Transfer\SaveOrderTransfer $saveOrderTransfer
      *
      * @return \Orm\Zed\Afterpay\Persistence\SpyPaymentAfterpay
      */
     protected function buildPaymentEntity(
         QuoteTransfer $quoteTransfer,
-        CheckoutResponseTransfer $checkoutResponseTransfer
-    ) {
+        SaveOrderTransfer $saveOrderTransfer
+    ): SpyPaymentAfterpay {
         $paymentEntity = new SpyPaymentAfterpay();
 
         $paymentTransfer = $quoteTransfer->getPayment();
@@ -100,7 +101,7 @@ class Saver implements SaverInterface
         $paymentEntity
             ->setFkSalesPayment($paymentTransfer->getIdSalesPayment())
             ->setPaymentMethod($paymentTransfer->getPaymentMethod())
-            ->setFkSalesOrder($checkoutResponseTransfer->getSaveOrder()->getIdSalesOrder())
+            ->setFkSalesOrder($saveOrderTransfer->getIdSalesOrder())
             ->setIdCheckout($paymentTransfer->getAfterpayCheckoutId())
             ->setIdChannel($this->getIdChannel($paymentTransfer->getPaymentMethod()))
             ->setInfoscoreCustomerNumber($paymentTransfer->getAfterpayCustomerNumber())
@@ -115,14 +116,14 @@ class Saver implements SaverInterface
      *
      * @return int
      */
-    protected function getPaymentPriceToPay(QuoteTransfer $quoteTransfer)
+    protected function getPaymentPriceToPay(QuoteTransfer $quoteTransfer): int
     {
         if ($quoteTransfer->getPayment() && $quoteTransfer->getPayment()->getAmount()) {
             return $quoteTransfer->getPayment()->getAmount();
         }
 
         foreach ($quoteTransfer->getPayments() as $paymentTransfer) {
-            if ($paymentTransfer->getPaymentMethod() !== AfterpayConstants::PROVIDER_NAME || !$paymentTransfer->getAmount()) {
+            if ($paymentTransfer->getPaymentMethod() !== AfterpayConfig1::PROVIDER_NAME || !$paymentTransfer->getAmount()) {
                 continue;
             }
             return $paymentTransfer->getAmount();
@@ -136,7 +137,7 @@ class Saver implements SaverInterface
      *
      * @return string
      */
-    protected function getIdChannel($paymentMethod)
+    protected function getIdChannel(string $paymentMethod): string
     {
         return $this->config->getPaymentChannelId($paymentMethod);
     }

@@ -1,12 +1,15 @@
 <?php
+
 /**
  * MIT License
- * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
+ * For full license information, please view the LICENSE file that was distributed with this source code.
  */
+
 namespace SprykerEco\Zed\Afterpay\Business\Hook;
 
 use Generated\Shared\Transfer\CheckoutResponseTransfer;
 use Generated\Shared\Transfer\QuoteTransfer;
+use SprykerEco\Shared\Afterpay\AfterpayConfig as AfterpayConfig1;
 use SprykerEco\Shared\Afterpay\AfterpayConstants;
 use SprykerEco\Zed\Afterpay\AfterpayConfig;
 use SprykerEco\Zed\Afterpay\Business\Payment\Transaction\TransactionLogReaderInterface;
@@ -27,8 +30,10 @@ class PostSaveHook implements PostSaveHookInterface
      * @param \SprykerEco\Zed\Afterpay\Business\Payment\Transaction\TransactionLogReaderInterface $transactionLogReader
      * @param \SprykerEco\Zed\Afterpay\AfterpayConfig $config
      */
-    public function __construct(TransactionLogReaderInterface $transactionLogReader, AfterpayConfig $config)
-    {
+    public function __construct(
+        TransactionLogReaderInterface $transactionLogReader,
+        AfterpayConfig $config
+    ) {
         $this->transactionLogReader = $transactionLogReader;
         $this->config = $config;
     }
@@ -39,7 +44,7 @@ class PostSaveHook implements PostSaveHookInterface
      *
      * @return \Generated\Shared\Transfer\CheckoutResponseTransfer
      */
-    public function execute(QuoteTransfer $quoteTransfer, CheckoutResponseTransfer $checkoutResponseTransfer)
+    public function execute(QuoteTransfer $quoteTransfer, CheckoutResponseTransfer $checkoutResponseTransfer): CheckoutResponseTransfer
     {
         $idSalesOrder = $checkoutResponseTransfer->getSaveOrder()->getIdSalesOrder();
 
@@ -57,7 +62,7 @@ class PostSaveHook implements PostSaveHookInterface
      *
      * @return bool
      */
-    protected function isPaymentAuthorizationSuccessful($idSalesOrder)
+    protected function isPaymentAuthorizationSuccessful(int $idSalesOrder): bool
     {
         $transactionLogTransfer = $this->transactionLogReader
             ->findOrderAuthorizeTransactionLogByIdSalesOrder($idSalesOrder);
@@ -66,7 +71,7 @@ class PostSaveHook implements PostSaveHookInterface
             return false;
         }
 
-        return $transactionLogTransfer->getOutcome() === AfterpayConstants::API_TRANSACTION_OUTCOME_ACCEPTED;
+        return $transactionLogTransfer->getOutcome() === AfterpayConfig1::API_TRANSACTION_OUTCOME_ACCEPTED;
     }
 
     /**
@@ -74,7 +79,7 @@ class PostSaveHook implements PostSaveHookInterface
      *
      * @return void
      */
-    protected function setPaymentFailedRedirect(CheckoutResponseTransfer $checkoutResponseTransfer)
+    protected function setPaymentFailedRedirect(CheckoutResponseTransfer $checkoutResponseTransfer): void
     {
         $paymentFailedUrl = $this->config->getPaymentAuthorizationFailedUrl();
 

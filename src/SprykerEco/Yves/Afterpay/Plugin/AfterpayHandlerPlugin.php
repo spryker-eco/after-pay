@@ -2,7 +2,7 @@
 
 /**
  * MIT License
- * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
+ * For full license information, please view the LICENSE file that was distributed with this source code.
  */
 
 namespace SprykerEco\Yves\Afterpay\Plugin;
@@ -30,7 +30,7 @@ class AfterpayHandlerPlugin extends AbstractPlugin implements
      *
      * @return \Generated\Shared\Transfer\QuoteTransfer
      */
-    public function expandQuote(QuoteTransfer $quoteTransfer)
+    public function expandQuote(QuoteTransfer $quoteTransfer): QuoteTransfer
     {
         return $this
             ->getFactory()
@@ -43,16 +43,16 @@ class AfterpayHandlerPlugin extends AbstractPlugin implements
      *
      * @api
      *
-     * @param \Spryker\Yves\StepEngine\Dependency\Form\SubFormInterface[] $paymentSubforms
+     * @param \Spryker\Yves\StepEngine\Dependency\Form\SubFormInterface[] $paymentSubForms
      *
      * @return \Spryker\Yves\StepEngine\Dependency\Form\SubFormInterface[]
      */
-    public function filterPaymentSubforms(array $paymentSubforms)
+    public function filterPaymentSubForms(array $paymentSubForms): array
     {
         return $this
             ->getFactory()
             ->createAfterpayAuthorizeWorkflow()
-            ->filterAvailablePaymentMethods($paymentSubforms);
+            ->filterAvailablePaymentMethods($paymentSubForms);
     }
 
     /**
@@ -61,11 +61,11 @@ class AfterpayHandlerPlugin extends AbstractPlugin implements
      * @api
      *
      * @param \Symfony\Component\HttpFoundation\Request $request
-     * @param \Spryker\Shared\Kernel\Transfer\AbstractTransfer|\Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
+     * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
      *
-     * @return \Spryker\Shared\Kernel\Transfer\AbstractTransfer
+     * @return \Generated\Shared\Transfer\QuoteTransfer
      */
-    public function addToDataClass(Request $request, AbstractTransfer $quoteTransfer)
+    public function addToDataClass(Request $request, AbstractTransfer $quoteTransfer): QuoteTransfer
     {
         return $this
             ->getFactory()

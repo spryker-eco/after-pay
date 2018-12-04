@@ -2,17 +2,25 @@
 
 /**
  * MIT License
- * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
+ * For full license information, please view the LICENSE file that was distributed with this source code.
  */
 
 namespace SprykerEco\Yves\Afterpay;
 
 use Spryker\Yves\Kernel\AbstractFactory;
+use Spryker\Yves\StepEngine\Dependency\Form\StepEngineFormDataProviderInterface;
+use Spryker\Yves\StepEngine\Dependency\Form\SubFormInterface;
+use SprykerEco\Client\Afterpay\AfterpayClientInterface;
+use SprykerEco\Shared\Afterpay\AfterpayConfig;
 use SprykerEco\Shared\Afterpay\AfterpayConstants;
+use SprykerEco\Yves\Afterpay\AuthorizeWorkflow\AfterpayAuthorizeWorkflowInterface;
 use SprykerEco\Yves\Afterpay\AuthorizeWorkflow\OneStepAuthorizeWorkflow;
 use SprykerEco\Yves\Afterpay\AuthorizeWorkflow\Steps\AvailablePaymentMethodsStep;
-use SprykerEco\Yves\Afterpay\AuthorizeWorkflow\Steps\PaymentSubformsFilterStep;
+use SprykerEco\Yves\Afterpay\AuthorizeWorkflow\Steps\AvailablePaymentMethodsStepInterface;
+use SprykerEco\Yves\Afterpay\AuthorizeWorkflow\Steps\PaymentSubFormsFilterStep;
+use SprykerEco\Yves\Afterpay\AuthorizeWorkflow\Steps\PaymentSubFormsFilterStepInterface;
 use SprykerEco\Yves\Afterpay\AuthorizeWorkflow\TwoStepsAuthorizeWorkflow;
+use SprykerEco\Yves\Afterpay\Dependency\Client\AfterpayToQuoteClientInterface;
 use SprykerEco\Yves\Afterpay\Form\DataProvider\InvoiceDataProvider;
 use SprykerEco\Yves\Afterpay\Form\InvoiceSubForm;
 
@@ -24,7 +32,7 @@ class AfterpayFactory extends AbstractFactory
     /**
      * @return \Spryker\Yves\StepEngine\Dependency\Form\SubFormInterface
      */
-    public function createInvoiceForm()
+    public function createInvoiceForm(): SubFormInterface
     {
         return new InvoiceSubForm();
     }
@@ -32,7 +40,7 @@ class AfterpayFactory extends AbstractFactory
     /**
      * @return \Spryker\Yves\StepEngine\Dependency\Form\StepEngineFormDataProviderInterface
      */
-    public function createInvoiceFormDataProvider()
+    public function createInvoiceFormDataProvider(): StepEngineFormDataProviderInterface
     {
         return new InvoiceDataProvider();
     }
@@ -45,9 +53,9 @@ class AfterpayFactory extends AbstractFactory
         $authorizeWorkflow = $this->getConfig()->getAfterpayAuthorizeWorkflow();
 
         switch ($authorizeWorkflow) {
-            case AfterpayConstants::AFTERPAY_AUTHORIZE_WORKFLOW_ONE_STEP:
+            case AfterpayConfig::AFTERPAY_AUTHORIZE_WORKFLOW_ONE_STEP:
                 return $this->createOneStepAuthorizeWorkflow();
-            case AfterpayConstants::AFTERPAY_AUTHORIZE_WORKFLOW_TWO_STEPS:
+            case AfterpayConfig::AFTERPAY_AUTHORIZE_WORKFLOW_TWO_STEPS:
                 return $this->createTwoStepsAuthorizeWorkflow();
             default:
                 return $this->createOneStepAuthorizeWorkflow();
@@ -55,17 +63,9 @@ class AfterpayFactory extends AbstractFactory
     }
 
     /**
-     * @return \Spryker\Client\Kernel\AbstractClient|\SprykerEco\Client\Afterpay\AfterpayClientInterface
-     */
-    public function getAfterpayClient()
-    {
-        return $this->getClient();
-    }
-
-    /**
      * @return \SprykerEco\Yves\Afterpay\AuthorizeWorkflow\AfterpayAuthorizeWorkflowInterface
      */
-    protected function createOneStepAuthorizeWorkflow()
+    public function createOneStepAuthorizeWorkflow(): AfterpayAuthorizeWorkflowInterface
     {
         return new OneStepAuthorizeWorkflow();
     }
@@ -73,7 +73,7 @@ class AfterpayFactory extends AbstractFactory
     /**
      * @return \SprykerEco\Yves\Afterpay\AuthorizeWorkflow\AfterpayAuthorizeWorkflowInterface
      */
-    protected function createTwoStepsAuthorizeWorkflow()
+    public function createTwoStepsAuthorizeWorkflow(): AfterpayAuthorizeWorkflowInterface
     {
         return new TwoStepsAuthorizeWorkflow(
             $this->createAvailablePaymentMethodsStep(),
@@ -84,21 +84,35 @@ class AfterpayFactory extends AbstractFactory
     /**
      * @return \SprykerEco\Yves\Afterpay\AuthorizeWorkflow\Steps\AvailablePaymentMethodsStepInterface
      */
-    protected function createAvailablePaymentMethodsStep()
+    public function createAvailablePaymentMethodsStep(): AvailablePaymentMethodsStepInterface
     {
-        return new AvailablePaymentMethodsStep(
-            $this->getAfterpayClient()
+        return new AvailablePaymentMethodsStep($this->getAfterpayClient());
+    }
+
+    /**
+     * @return \SprykerEco\Yves\Afterpay\AuthorizeWorkflow\Steps\PaymentSubFormsFilterStepInterface
+     */
+    public function createPaymentSubformsFilter(): PaymentSubFormsFilterStepInterface
+    {
+        return new PaymentSubFormsFilterStep(
+            $this->getConfig(),
+            $this->getQuoteClient()
         );
     }
 
     /**
-     * @return \SprykerEco\Yves\Afterpay\AuthorizeWorkflow\Steps\PaymentSubformsFilterStepInterface
+     * @return \SprykerEco\Client\Afterpay\AfterpayClientInterface
      */
-    protected function createPaymentSubformsFilter()
+    public function getAfterpayClient(): AfterpayClientInterface
     {
-        return new PaymentSubformsFilterStep(
-            $this->getConfig(),
-            $this->getAfterpayClient()
-        );
+        return $this->getProvidedDependency(AfterpayDependencyProvider::CLIENT_AFTERPAY);
+    }
+
+    /**
+     * @return \SprykerEco\Yves\Afterpay\Dependency\Client\AfterpayToQuoteClientInterface
+     */
+    public function getQuoteClient(): AfterpayToQuoteClientInterface
+    {
+        return $this->getProvidedDependency(AfterpayDependencyProvider::CLIENT_QUOTE);
     }
 }

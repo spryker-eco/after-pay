@@ -2,11 +2,12 @@
 
 /**
  * MIT License
- * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
+ * For full license information, please view the LICENSE file that was distributed with this source code.
  */
 
 namespace SprykerEco\Zed\Afterpay\Communication\Plugin\Checkout\Oms\Command;
 
+use Generated\Shared\Transfer\AfterpayCallTransfer;
 use Generated\Shared\Transfer\OrderTransfer;
 use Orm\Zed\Sales\Persistence\SpySalesOrder;
 use Spryker\Zed\Kernel\Communication\AbstractPlugin;
@@ -14,20 +15,23 @@ use Spryker\Zed\Oms\Business\Util\ReadOnlyArrayObject;
 use Spryker\Zed\Oms\Dependency\Plugin\Command\CommandByOrderInterface;
 
 /**
- * @method \SprykerEco\Zed\Afterpay\Business\AfterpayFacade getFacade()
+ * @method \SprykerEco\Zed\Afterpay\Business\AfterpayFacadeInterface getFacade()
  * @method \SprykerEco\Zed\Afterpay\Communication\AfterpayCommunicationFactory getFactory()
  * @method \SprykerEco\Zed\Afterpay\Persistence\AfterpayQueryContainer getQueryContainer()
+ * @method \SprykerEco\Zed\Afterpay\AfterpayConfig getConfig()
  */
 class AuthorizePlugin extends AbstractPlugin implements CommandByOrderInterface
 {
     /**
+     * @api
+     *
      * @param \Orm\Zed\Sales\Persistence\SpySalesOrderItem[] $orderItems
      * @param \Orm\Zed\Sales\Persistence\SpySalesOrder $orderEntity
      * @param \Spryker\Zed\Oms\Business\Util\ReadOnlyArrayObject $data
      *
      * @return array
      */
-    public function run(array $orderItems, SpySalesOrder $orderEntity, ReadOnlyArrayObject $data)
+    public function run(array $orderItems, SpySalesOrder $orderEntity, ReadOnlyArrayObject $data): array
     {
         $afterpayCallTransfer = $this->createAuthorizeCallTransfer($orderEntity);
         $this->getFacade()->authorizePayment($afterpayCallTransfer);
@@ -40,7 +44,7 @@ class AuthorizePlugin extends AbstractPlugin implements CommandByOrderInterface
      *
      * @return \Generated\Shared\Transfer\AfterpayCallTransfer
      */
-    protected function createAuthorizeCallTransfer(SpySalesOrder $orderEntity)
+    protected function createAuthorizeCallTransfer(SpySalesOrder $orderEntity): AfterpayCallTransfer
     {
         $orderTransfer = $this->getOrderWithPaymentTransfer($orderEntity->getIdSalesOrder());
         return $this->getFactory()
@@ -53,7 +57,7 @@ class AuthorizePlugin extends AbstractPlugin implements CommandByOrderInterface
      *
      * @return \Generated\Shared\Transfer\OrderTransfer
      */
-    protected function getOrderWithPaymentTransfer($idSalesOrder)
+    protected function getOrderWithPaymentTransfer(int $idSalesOrder): OrderTransfer
     {
         $orderTransfer = $this->getFactory()
             ->getSalesFacade()
@@ -69,7 +73,7 @@ class AuthorizePlugin extends AbstractPlugin implements CommandByOrderInterface
      *
      * @return \Generated\Shared\Transfer\OrderTransfer
      */
-    protected function hydrateAfterpayPayment(OrderTransfer $orderTransfer)
+    protected function hydrateAfterpayPayment(OrderTransfer $orderTransfer): OrderTransfer
     {
         $paymentTransfer = $this->getFacade()->getPaymentByIdSalesOrder($orderTransfer->getIdSalesOrder());
         $orderTransfer->setAfterpayPayment($paymentTransfer);

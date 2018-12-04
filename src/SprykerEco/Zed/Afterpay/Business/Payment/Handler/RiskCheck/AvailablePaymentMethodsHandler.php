@@ -2,7 +2,7 @@
 
 /**
  * MIT License
- * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
+ * For full license information, please view the LICENSE file that was distributed with this source code.
  */
 
 namespace SprykerEco\Zed\Afterpay\Business\Payment\Handler\RiskCheck;
@@ -30,8 +30,10 @@ class AvailablePaymentMethodsHandler implements AvailablePaymentMethodsHandlerIn
      * @param \SprykerEco\Zed\Afterpay\Business\Api\Adapter\AdapterInterface $apiAdapter
      * @param \SprykerEco\Zed\Afterpay\Business\Payment\Mapper\QuoteToRequestTransferInterface $quoteToRequestMapper
      */
-    public function __construct(AdapterInterface $apiAdapter, QuoteToRequestTransferInterface $quoteToRequestMapper)
-    {
+    public function __construct(
+        AdapterInterface $apiAdapter,
+        QuoteToRequestTransferInterface $quoteToRequestMapper
+    ) {
         $this->apiAdapter = $apiAdapter;
         $this->quoteToRequestMapper = $quoteToRequestMapper;
     }
@@ -41,7 +43,7 @@ class AvailablePaymentMethodsHandler implements AvailablePaymentMethodsHandlerIn
      *
      * @return \Generated\Shared\Transfer\AfterpayAvailablePaymentMethodsTransfer
      */
-    public function getAvailablePaymentMethods(QuoteTransfer $quoteTransfer)
+    public function getAvailablePaymentMethods(QuoteTransfer $quoteTransfer): AfterpayAvailablePaymentMethodsTransfer
     {
         $requestTransfer = $this->buildRequestTransferFromQuote($quoteTransfer);
         $responseTransfer = $this->sendRequest($requestTransfer);
@@ -60,7 +62,7 @@ class AvailablePaymentMethodsHandler implements AvailablePaymentMethodsHandlerIn
      *
      * @return \Generated\Shared\Transfer\AfterpayAvailablePaymentMethodsRequestTransfer
      */
-    protected function buildRequestTransferFromQuote(QuoteTransfer $quoteTransfer)
+    protected function buildRequestTransferFromQuote(QuoteTransfer $quoteTransfer): AfterpayAvailablePaymentMethodsRequestTransfer
     {
         return $this->quoteToRequestMapper->quoteToAvailablePaymentMethods($quoteTransfer);
     }
@@ -70,7 +72,7 @@ class AvailablePaymentMethodsHandler implements AvailablePaymentMethodsHandlerIn
      *
      * @return \Generated\Shared\Transfer\AfterpayAvailablePaymentMethodsResponseTransfer
      */
-    protected function sendRequest(AfterpayAvailablePaymentMethodsRequestTransfer $requestTransfer)
+    protected function sendRequest(AfterpayAvailablePaymentMethodsRequestTransfer $requestTransfer): AfterpayAvailablePaymentMethodsResponseTransfer
     {
         return $this->apiAdapter->sendAvailablePaymentMethodsRequest($requestTransfer);
     }
@@ -80,7 +82,7 @@ class AvailablePaymentMethodsHandler implements AvailablePaymentMethodsHandlerIn
      *
      * @return \Generated\Shared\Transfer\AfterpayAvailablePaymentMethodsTransfer
      */
-    protected function parseResponseTransfer(AfterpayAvailablePaymentMethodsResponseTransfer $apiResponseTransfer)
+    protected function parseResponseTransfer(AfterpayAvailablePaymentMethodsResponseTransfer $apiResponseTransfer): AfterpayAvailablePaymentMethodsTransfer
     {
         $availablePaymentMethodsTransfer = new AfterpayAvailablePaymentMethodsTransfer();
 

@@ -2,7 +2,7 @@
 
 /**
  * MIT License
- * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
+ * For full license information, please view the LICENSE file that was distributed with this source code.
  */
 
 namespace SprykerEco\Zed\Afterpay\Business\Payment;
@@ -15,7 +15,7 @@ interface PaymentWriterInterface
      *
      * @return void
      */
-    public function setIdReservationByIdSalesOrder($idReservation, $idSalesOrder);
+    public function setIdReservationByIdSalesOrder(string $idReservation, int $idSalesOrder): void;
 
     /**
      * @param int $authorizedTotal
@@ -23,7 +23,7 @@ interface PaymentWriterInterface
      *
      * @return void
      */
-    public function setAuthorizedTotalByIdSalesOrder($authorizedTotal, $idSalesOrder);
+    public function setAuthorizedTotalByIdSalesOrder(int $authorizedTotal, int $idSalesOrder): void;
 
     /**
      * @param int $amountToAdd
@@ -31,7 +31,7 @@ interface PaymentWriterInterface
      *
      * @return void
      */
-    public function increaseTotalCapturedAmountByIdSalesOrder($amountToAdd, $idSalesOrder);
+    public function increaseTotalCapturedAmountByIdSalesOrder(int $amountToAdd, int $idSalesOrder): void;
 
     /**
      * @param string $captureNumber
@@ -39,7 +39,7 @@ interface PaymentWriterInterface
      *
      * @return void
      */
-    public function updateExpensesCaptureNumber($captureNumber, $idSalesOrder);
+    public function updateExpensesCaptureNumber(string $captureNumber, int $idSalesOrder): void;
 
     /**
      * @param int $amountToAdd
@@ -47,7 +47,7 @@ interface PaymentWriterInterface
      *
      * @return void
      */
-    public function increaseTotalCancelledAmountByIdSalesOrder($amountToAdd, $idSalesOrder);
+    public function increaseTotalCancelledAmountByIdSalesOrder(int $amountToAdd, int $idSalesOrder): void;
 
     /**
      * @param int $refundedAmount
@@ -55,7 +55,7 @@ interface PaymentWriterInterface
      *
      * @return void
      */
-    public function increaseRefundedTotalByIdSalesOrder($refundedAmount, $idSalesOrder);
+    public function increaseRefundedTotalByIdSalesOrder(int $refundedAmount, int $idSalesOrder): void;
 
     /**
      * @param int $captureNumber
@@ -65,8 +65,8 @@ interface PaymentWriterInterface
      * @return void
      */
     public function setCaptureNumberByIdSalesOrderItemAndIdPayment(
-        $captureNumber,
-        $idSalesOrderItem,
-        $idPayment
-    );
+        int $captureNumber,
+        int $idSalesOrderItem,
+        int $idPayment
+    ): void;
 }

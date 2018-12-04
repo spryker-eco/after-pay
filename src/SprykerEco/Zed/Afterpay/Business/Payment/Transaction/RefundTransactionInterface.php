@@ -2,12 +2,13 @@
 
 /**
  * MIT License
- * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
+ * For full license information, please view the LICENSE file that was distributed with this source code.
  */
 
 namespace SprykerEco\Zed\Afterpay\Business\Payment\Transaction;
 
 use Generated\Shared\Transfer\AfterpayRefundRequestTransfer;
+use Generated\Shared\Transfer\AfterpayRefundResponseTransfer;
 
 interface RefundTransactionInterface
 {
@@ -16,5 +17,5 @@ interface RefundTransactionInterface
      *
      * @return \Generated\Shared\Transfer\AfterpayRefundResponseTransfer
      */
-    public function executeTransaction(AfterpayRefundRequestTransfer $refundRequestTransfer);
+    public function executeTransaction(AfterpayRefundRequestTransfer $refundRequestTransfer): AfterpayRefundResponseTransfer;
 }

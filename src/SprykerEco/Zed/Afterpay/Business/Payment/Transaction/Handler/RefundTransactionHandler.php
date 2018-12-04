@@ -2,11 +2,12 @@
 
 /**
  * MIT License
- * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
+ * For full license information, please view the LICENSE file that was distributed with this source code.
  */
 
 namespace SprykerEco\Zed\Afterpay\Business\Payment\Transaction\Handler;
 
+use Generated\Shared\Transfer\AfterpayPaymentOrderItemTransfer;
 use Generated\Shared\Transfer\AfterpayPaymentTransfer;
 use Generated\Shared\Transfer\AfterpayRefundRequestTransfer;
 use Generated\Shared\Transfer\AfterpayRefundResponseTransfer;
@@ -72,7 +73,7 @@ class RefundTransactionHandler implements RefundTransactionHandlerInterface
      *
      * @return void
      */
-    public function refund(ItemTransfer $itemTransfer, OrderTransfer $orderTransfer)
+    public function refund(ItemTransfer $itemTransfer, OrderTransfer $orderTransfer): void
     {
         $refundRequestTransfer = $this->buildRefundRequestForOrderItem($itemTransfer, $orderTransfer);
         $paymentTransfer = $this->getPaymentTransferForItem($itemTransfer);
@@ -95,8 +96,11 @@ class RefundTransactionHandler implements RefundTransactionHandlerInterface
      *
      * @return void
      */
-    protected function processExpensesRefund(ItemTransfer $itemTransfer, AfterpayPaymentTransfer $paymentTransfer, OrderTransfer $orderTransfer)
-    {
+    protected function processExpensesRefund(
+        ItemTransfer $itemTransfer,
+        AfterpayPaymentTransfer $paymentTransfer,
+        OrderTransfer $orderTransfer
+    ): void {
         if (!$this->isLastItemToRefund($itemTransfer, $paymentTransfer)) {
             return;
         }
@@ -114,8 +118,10 @@ class RefundTransactionHandler implements RefundTransactionHandlerInterface
      *
      * @return \Generated\Shared\Transfer\AfterpayRefundRequestTransfer
      */
-    protected function buildRefundRequestForOrderItem(ItemTransfer $itemTransfer, OrderTransfer $orderTransfer)
-    {
+    protected function buildRefundRequestForOrderItem(
+        ItemTransfer $itemTransfer,
+        OrderTransfer $orderTransfer
+    ): AfterpayRefundRequestTransfer {
         $refundRequestTransfer = $this->refundRequestBuilder
             ->buildBaseRefundRequestForOrder($orderTransfer);
         $this->refundRequestBuilder
@@ -135,14 +141,10 @@ class RefundTransactionHandler implements RefundTransactionHandlerInterface
      * @return void
      */
     protected function addExpensesToRefundRequest(
-        $expenseTotal,
+        int $expenseTotal,
         AfterpayRefundRequestTransfer $refundRequestTransfer
-    ) {
-        $this->refundRequestBuilder
-            ->addOrderExpenseToRefundRequest(
-                $expenseTotal,
-                $refundRequestTransfer
-            );
+    ): void {
+        $this->refundRequestBuilder->addOrderExpenseToRefundRequest($expenseTotal, $refundRequestTransfer);
     }
 
     /**
@@ -150,12 +152,9 @@ class RefundTransactionHandler implements RefundTransactionHandlerInterface
      *
      * @return \Generated\Shared\Transfer\AfterpayPaymentTransfer
      */
-    protected function getPaymentTransferForItem(ItemTransfer $itemTransfer)
+    protected function getPaymentTransferForItem(ItemTransfer $itemTransfer): AfterpayPaymentTransfer
     {
-        return $this->paymentReader
-            ->getPaymentByIdSalesOrder(
-                $itemTransfer->getFkSalesOrder()
-            );
+        return $this->paymentReader->getPaymentByIdSalesOrder($itemTransfer->getFkSalesOrder());
     }
 
     /**
@@ -163,7 +162,7 @@ class RefundTransactionHandler implements RefundTransactionHandlerInterface
      *
      * @return \Generated\Shared\Transfer\AfterpayPaymentOrderItemTransfer
      */
-    protected function getPaymentOrderItemTransferForItem(ItemTransfer $itemTransfer)
+    protected function getPaymentOrderItemTransferForItem(ItemTransfer $itemTransfer): AfterpayPaymentOrderItemTransfer
     {
         $paymentTransfer = $this->getPaymentTransferForItem($itemTransfer);
         return $this->paymentReader
@@ -183,8 +182,8 @@ class RefundTransactionHandler implements RefundTransactionHandlerInterface
     protected function updateOrderPayment(
         AfterpayRefundResponseTransfer $refundResponseTransfer,
         AfterpayRefundRequestTransfer $refundRequestTransfer,
-        $idSalesOrder
-    ) {
+        int $idSalesOrder
+    ): void {
         if (!$refundResponseTransfer->getTotalCapturedAmount()) {
             return;
         }
@@ -209,7 +208,7 @@ class RefundTransactionHandler implements RefundTransactionHandlerInterface
      *
      * @return bool
      */
-    protected function isLastItemToRefund($itemTransfer, $paymentTransfer)
+    protected function isLastItemToRefund(ItemTransfer $itemTransfer, AfterpayPaymentTransfer $paymentTransfer): bool
     {
         return $paymentTransfer->getAuthorizedTotal() -
             $paymentTransfer->getCancelledTotal() -
@@ -223,8 +222,10 @@ class RefundTransactionHandler implements RefundTransactionHandlerInterface
      *
      * @return void
      */
-    protected function addCaptureNumberToRefundRequest($refundRequestTransfer, $itemTransfer)
-    {
+    protected function addCaptureNumberToRefundRequest(
+        AfterpayRefundRequestTransfer $refundRequestTransfer,
+        ItemTransfer $itemTransfer
+    ): void {
         $paymentOrderItemTransfer = $this->getPaymentOrderItemTransferForItem($itemTransfer);
         $refundRequestTransfer->setCaptureNumber($paymentOrderItemTransfer->getCaptureNumber());
     }

@@ -2,13 +2,14 @@
 
 /**
  * MIT License
- * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
+ * For full license information, please view the LICENSE file that was distributed with this source code.
  */
 
 namespace SprykerEcoTest\Zed\Afterpay\Business;
 
 use Generated\Shared\Transfer\AfterpayApiResponseTransfer;
 use Generated\Shared\Transfer\AfterpayCallTransfer;
+use SprykerEco\Shared\Afterpay\AfterpayConfig;
 use SprykerEco\Shared\Afterpay\AfterpayConstants;
 use SprykerEcoTest\Zed\Afterpay\Mock\AfterpayFacadeMock;
 
@@ -42,7 +43,7 @@ class AfterpayFacadeAuthorizeTest extends AfterpayFacadeAbstractTest
     protected function doTest(AfterpayApiResponseTransfer $output)
     {
         $this->assertNotEmpty($output->getOutcome());
-        $this->assertEquals($output->getOutcome(), AfterpayConstants::API_TRANSACTION_OUTCOME_ACCEPTED);
+        $this->assertEquals($output->getOutcome(), AfterpayConfig::API_TRANSACTION_OUTCOME_ACCEPTED);
         $this->assertNotEmpty($output->getCheckoutId());
         $this->assertNotEmpty($output->getReservationId());
         $this->assertNotEmpty($output->getResponsePayload());

@@ -2,13 +2,13 @@
 
 /**
  * MIT License
- * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
+ * For full license information, please view the LICENSE file that was distributed with this source code.
  */
 
 namespace SprykerEco\Zed\Afterpay\Business\Api\Adapter\ApiCall;
 
 use Spryker\Shared\Log\LoggerTrait;
-use SprykerEco\Shared\Afterpay\AfterpayApiConstants;
+use SprykerEco\Shared\Afterpay\AfterpayApiRequestConfig;
 use SprykerEco\Zed\Afterpay\AfterpayConfig;
 use SprykerEco\Zed\Afterpay\Business\Api\Adapter\Client\ClientInterface;
 use SprykerEco\Zed\Afterpay\Business\Exception\ApiHttpRequestException;
@@ -51,7 +51,7 @@ class ApiVersionCall implements ApiVersionCallInterface
     /**
      * @return string
      */
-    public function execute()
+    public function execute(): string
     {
         try {
             $jsonResponse = $this->client->sendGet(
@@ -70,25 +70,23 @@ class ApiVersionCall implements ApiVersionCallInterface
      *
      * @return string
      */
-    protected function parseVersion($jsonResponse)
+    protected function parseVersion(string $jsonResponse): string
     {
         $jsonResponseArray = $this->utilEncoding->decodeJson($jsonResponse, true);
 
-        if (is_array($jsonResponseArray) && isset($jsonResponseArray[AfterpayApiConstants::API_VERSION])) {
-            return $jsonResponseArray[AfterpayApiConstants::API_VERSION];
+        if (is_array($jsonResponseArray) && isset($jsonResponseArray[AfterpayApiRequestConfig::API_VERSION])) {
+            return $jsonResponseArray[AfterpayApiRequestConfig::API_VERSION];
         }
 
-        return "";
+        return '';
     }
 
     /**
-     * @todo extract logging to custom logger trait
-     *
      * @param \SprykerEco\Zed\Afterpay\Business\Exception\ApiHttpRequestException $apiHttpRequestException
      *
      * @return void
      */
-    protected function logApiException(ApiHttpRequestException $apiHttpRequestException)
+    protected function logApiException(ApiHttpRequestException $apiHttpRequestException): void
     {
         $this->getLogger()->error(
             $apiHttpRequestException->getMessage(),

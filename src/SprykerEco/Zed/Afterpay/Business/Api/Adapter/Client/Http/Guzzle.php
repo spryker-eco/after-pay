@@ -2,7 +2,7 @@
 
 /**
  * MIT License
- * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
+ * For full license information, please view the LICENSE file that was distributed with this source code.
  */
 
 namespace SprykerEco\Zed\Afterpay\Business\Api\Adapter\Client\Http;
@@ -11,19 +11,28 @@ use Generated\Shared\Transfer\AfterpayApiResponseErrorTransfer;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Psr7\Request;
+use Psr\Http\Message\RequestInterface;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\StreamInterface;
 use SprykerEco\Zed\Afterpay\AfterpayConfig;
 use SprykerEco\Zed\Afterpay\Business\Api\Adapter\Client\ClientInterface;
 use SprykerEco\Zed\Afterpay\Business\Exception\ApiHttpRequestException;
+use SprykerEco\Zed\Afterpay\Dependency\Service\AfterpayToUtilEncodingInterface;
 
 class Guzzle implements ClientInterface
 {
-    const REQUEST_METHOD_POST = 'POST';
-    const REQUEST_METHOD_GET = 'GET';
+    public const REQUEST_METHOD_POST = 'POST';
+    public const REQUEST_METHOD_GET = 'GET';
 
-    const REQUEST_HEADER_X_AUTH_KEY = 'X-Auth-Key';
-    const REQUEST_HEADER_CONTENT_TYPE = 'Content-Type';
+    public const REQUEST_HEADER_X_AUTH_KEY = 'X-Auth-Key';
+    public const REQUEST_HEADER_CONTENT_TYPE = 'Content-Type';
 
-    const HEADER_CONTENT_TYPE_JSON = 'application/json';
+    public const HEADER_CONTENT_TYPE_JSON = 'application/json';
+
+    /**
+     * @var \SprykerEco\Zed\Afterpay\Dependency\Service\AfterpayToUtilEncodingInterface
+     */
+    protected $encodingService;
 
     /**
      * @var \GuzzleHttp\ClientInterface
@@ -36,10 +45,14 @@ class Guzzle implements ClientInterface
     private $config;
 
     /**
+     * @param \SprykerEco\Zed\Afterpay\Dependency\Service\AfterpayToUtilEncodingInterface $encodingService
      * @param \SprykerEco\Zed\Afterpay\AfterpayConfig $config
      */
-    public function __construct(AfterpayConfig $config)
-    {
+    public function __construct(
+        AfterpayToUtilEncodingInterface $encodingService,
+        AfterpayConfig $config
+    ) {
+        $this->encodingService = $encodingService;
         $this->config = $config;
         $this->client = new Client();
     }
@@ -48,9 +61,9 @@ class Guzzle implements ClientInterface
      * @param string $endPointUrl
      * @param string|null $jsonBody
      *
-     * @return string
+     * @return \Psr\Http\Message\StreamInterface
      */
-    public function sendPost($endPointUrl, $jsonBody = null)
+    public function sendPost(string $endPointUrl, ?string $jsonBody = null): StreamInterface
     {
         $postRequest = $this->buildPostRequest($endPointUrl, $jsonBody);
         $response = $this->send($postRequest);
@@ -63,7 +76,7 @@ class Guzzle implements ClientInterface
      *
      * @return string
      */
-    public function sendGet($endPointUrl)
+    public function sendGet(string $endPointUrl): string
     {
         $getRequest = $this->buildGetRequest($endPointUrl);
         $response = $this->send($getRequest);
@@ -74,9 +87,9 @@ class Guzzle implements ClientInterface
     /**
      * @param string $endPointUrl
      *
-     * @return string
+     * @return int
      */
-    public function getStatus($endPointUrl)
+    public function getStatus(string $endPointUrl): int
     {
         $getRequest = $this->buildGetRequest($endPointUrl);
         $response = $this->send($getRequest);
@@ -85,14 +98,14 @@ class Guzzle implements ClientInterface
     }
 
     /**
-     * @param \GuzzleHttp\Psr7\Request $request
+     * @param \Psr\Http\Message\RequestInterface $request
      * @param array $options
      *
      * @throws \SprykerEco\Zed\Afterpay\Business\Exception\ApiHttpRequestException
      *
-     * @return mixed|\Psr\Http\Message\ResponseInterface
+     * @return \Psr\Http\Message\ResponseInterface
      */
-    protected function send($request, array $options = [])
+    protected function send(RequestInterface $request, array $options = []): ResponseInterface
     {
         try {
             return $this->client->send($request, $options);
@@ -101,9 +114,7 @@ class Guzzle implements ClientInterface
 
             $content = $requestException->getResponse()->getBody()->getContents();
             if (!empty($content)) {
-                $errorResponseData = \GuzzleHttp\json_decode(
-                    $content, true
-                );
+                $errorResponseData = $this->encodingService->decodeJson($content, true);
                 if (isset($errorResponseData[0])) {
                     $errorDetails = $errorResponseData[0];
                     $apiErrorTransfer = new AfterpayApiResponseErrorTransfer();
@@ -118,7 +129,6 @@ class Guzzle implements ClientInterface
                 }
             }
 
-
             throw $apiHttpRequestException;
         }
     }
@@ -127,9 +137,9 @@ class Guzzle implements ClientInterface
      * @param string $endPointUrl
      * @param string|null $jsonBody
      *
-     * @return \GuzzleHttp\Psr7\Request
+     * @return \Psr\Http\Message\RequestInterface
      */
-    protected function buildPostRequest($endPointUrl, $jsonBody = null)
+    protected function buildPostRequest(string $endPointUrl, ?string $jsonBody = null): RequestInterface
     {
         return new Request(
             static::REQUEST_METHOD_POST,
@@ -145,9 +155,9 @@ class Guzzle implements ClientInterface
     /**
      * @param string $endPointUrl
      *
-     * @return \GuzzleHttp\Psr7\Request
+     * @return \Psr\Http\Message\RequestInterface
      */
-    protected function buildGetRequest($endPointUrl)
+    protected function buildGetRequest(string $endPointUrl): RequestInterface
     {
         return new Request(
             static::REQUEST_METHOD_GET,

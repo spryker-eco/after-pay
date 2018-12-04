@@ -2,11 +2,12 @@
 
 /**
  * MIT License
- * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
+ * For full license information, please view the LICENSE file that was distributed with this source code.
  */
 
 namespace SprykerEco\Zed\Afterpay\Business\Payment\Transaction\Authorize\RequestBuilder;
 
+use Generated\Shared\Transfer\AfterpayAuthorizeRequestTransfer;
 use Generated\Shared\Transfer\AfterpayCallTransfer;
 
 interface AuthorizeRequestBuilderInterface
@@ -16,5 +17,5 @@ interface AuthorizeRequestBuilderInterface
      *
      * @return \Generated\Shared\Transfer\AfterpayAuthorizeRequestTransfer
      */
-    public function buildAuthorizeRequest(AfterpayCallTransfer $orderWithPaymentTransfer);
+    public function buildAuthorizeRequest(AfterpayCallTransfer $orderWithPaymentTransfer): AfterpayAuthorizeRequestTransfer;
 }

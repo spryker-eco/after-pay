@@ -2,12 +2,13 @@
 
 /**
  * MIT License
- * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
+ * For full license information, please view the LICENSE file that was distributed with this source code.
  */
 
 namespace SprykerEco\Zed\Afterpay\Business\AdditionalServices\Handler;
 
 use Generated\Shared\Transfer\AfterpayInstallmentPlansRequestTransfer;
+use Generated\Shared\Transfer\AfterpayInstallmentPlansResponseTransfer;
 use SprykerEco\Zed\Afterpay\Business\Api\Adapter\AdapterInterface;
 
 class LookupInstallmentPlansHandler implements LookupInstallmentPlansHandlerInterface
@@ -30,9 +31,8 @@ class LookupInstallmentPlansHandler implements LookupInstallmentPlansHandlerInte
      *
      * @return \Generated\Shared\Transfer\AfterpayInstallmentPlansResponseTransfer
      */
-    public function lookupInstallmentPlans(
-        AfterpayInstallmentPlansRequestTransfer $installmentPlansRequestTransfer
-    ) {
+    public function lookupInstallmentPlans(AfterpayInstallmentPlansRequestTransfer $installmentPlansRequestTransfer): AfterpayInstallmentPlansResponseTransfer
+    {
         return $this->apiAdapter->sendLookupInstallmentPlansRequest($installmentPlansRequestTransfer);
     }
 }

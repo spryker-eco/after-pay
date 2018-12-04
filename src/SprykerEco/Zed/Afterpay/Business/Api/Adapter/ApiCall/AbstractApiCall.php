@@ -2,7 +2,7 @@
 
 /**
  * MIT License
- * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
+ * For full license information, please view the LICENSE file that was distributed with this source code.
  */
 
 namespace SprykerEco\Zed\Afterpay\Business\Api\Adapter\ApiCall;
@@ -30,7 +30,7 @@ class AbstractApiCall
      *
      * @return string
      */
-    protected function buildJsonRequestFromTransferObject(AbstractTransfer $requestTransfer)
+    protected function buildJsonRequestFromTransferObject(AbstractTransfer $requestTransfer): string
     {
         $requestArray = $this->transferConverter->convert($requestTransfer);
         return $this->utilEncoding->encodeJson($requestArray);
@@ -41,7 +41,7 @@ class AbstractApiCall
      *
      * @return void
      */
-    protected function logApiException(ApiHttpRequestException $apiHttpRequestException)
+    protected function logApiException(ApiHttpRequestException $apiHttpRequestException): void
     {
         $this->getLogger()->error(
             $apiHttpRequestException->getDetailedMessage(),

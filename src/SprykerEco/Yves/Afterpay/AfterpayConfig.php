@@ -2,12 +2,12 @@
 
 /**
  * MIT License
- * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
+ * For full license information, please view the LICENSE file that was distributed with this source code.
  */
 
 namespace SprykerEco\Yves\Afterpay;
 
-use Spryker\Zed\Kernel\AbstractBundleConfig;
+use Spryker\Yves\Kernel\AbstractBundleConfig;
 use SprykerEco\Shared\Afterpay\AfterpayConstants;
 
 class AfterpayConfig extends AbstractBundleConfig
@@ -15,7 +15,7 @@ class AfterpayConfig extends AbstractBundleConfig
     /**
      * @return array
      */
-    public function getSubFormToPaymentMethodMapping()
+    public function getSubFormToPaymentMethodMapping(): array
     {
         return $this->get(AfterpayConstants::AFTERPAY_RISK_CHECK_CONFIGURATION);
     }
@@ -23,7 +23,7 @@ class AfterpayConfig extends AbstractBundleConfig
     /**
      * @return string
      */
-    public function getAfterpayAuthorizeWorkflow()
+    public function getAfterpayAuthorizeWorkflow(): string
     {
         return $this->get(AfterpayConstants::AFTERPAY_AUTHORIZE_WORKFLOW);
     }

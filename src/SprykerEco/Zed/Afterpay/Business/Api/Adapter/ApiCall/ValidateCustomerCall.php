@@ -2,7 +2,7 @@
 
 /**
  * MIT License
- * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
+ * For full license information, please view the LICENSE file that was distributed with this source code.
  */
 
 namespace SprykerEco\Zed\Afterpay\Business\Api\Adapter\ApiCall;
@@ -10,7 +10,7 @@ namespace SprykerEco\Zed\Afterpay\Business\Api\Adapter\ApiCall;
 use Generated\Shared\Transfer\AfterpayRequestAddressTransfer;
 use Generated\Shared\Transfer\AfterpayValidateCustomerRequestTransfer;
 use Generated\Shared\Transfer\AfterpayValidateCustomerResponseTransfer;
-use SprykerEco\Shared\Afterpay\AfterpayApiConstants;
+use SprykerEco\Shared\Afterpay\AfterpayApiRequestConfig;
 use SprykerEco\Zed\Afterpay\AfterpayConfig;
 use SprykerEco\Zed\Afterpay\Business\Api\Adapter\Client\ClientInterface;
 use SprykerEco\Zed\Afterpay\Business\Api\Adapter\Converter\TransferToCamelCaseArrayConverterInterface;
@@ -61,7 +61,7 @@ class ValidateCustomerCall extends AbstractApiCall implements ValidateCustomerCa
      *
      * @return \Generated\Shared\Transfer\AfterpayValidateCustomerResponseTransfer
      */
-    public function execute(AfterpayValidateCustomerRequestTransfer $validateCustomerRequestTransfer)
+    public function execute(AfterpayValidateCustomerRequestTransfer $validateCustomerRequestTransfer): AfterpayValidateCustomerResponseTransfer
     {
         $jsonRequest = $this->buildJsonRequestFromTransferObject($validateCustomerRequestTransfer);
 
@@ -83,14 +83,14 @@ class ValidateCustomerCall extends AbstractApiCall implements ValidateCustomerCa
      *
      * @return \Generated\Shared\Transfer\AfterpayValidateCustomerResponseTransfer
      */
-    protected function buildValidateCustomerResponseTransfer($jsonResponse)
+    protected function buildValidateCustomerResponseTransfer(string $jsonResponse): AfterpayValidateCustomerResponseTransfer
     {
         $jsonResponseArray = $this->utilEncoding->decodeJson($jsonResponse, true);
 
         $responseTransfer = new AfterpayValidateCustomerResponseTransfer();
 
         $responseTransfer
-            ->setIsValid($jsonResponseArray[AfterpayApiConstants::VALIDATE_ADDRESS_IS_VALID] ?? false)
+            ->setIsValid($jsonResponseArray[AfterpayApiRequestConfig::VALIDATE_ADDRESS_IS_VALID] ?? false)
             ->setCorrectedAddress(
                 $this->parseCorrectedAddress($jsonResponseArray)
             )
@@ -104,7 +104,7 @@ class ValidateCustomerCall extends AbstractApiCall implements ValidateCustomerCa
      *
      * @return \Generated\Shared\Transfer\AfterpayRequestAddressTransfer
      */
-    protected function parseCorrectedAddress(array $jsonResponseArray)
+    protected function parseCorrectedAddress(array $jsonResponseArray): AfterpayRequestAddressTransfer
     {
         $correctedAddressTransfer = new AfterpayRequestAddressTransfer();
         $correctedAddressArray = $this->extractAddressDataWithUnderscoreKeys($jsonResponseArray);
@@ -119,14 +119,14 @@ class ValidateCustomerCall extends AbstractApiCall implements ValidateCustomerCa
      *
      * @return array
      */
-    protected function extractAddressDataWithUnderscoreKeys(array $jsonResponseArray)
+    protected function extractAddressDataWithUnderscoreKeys(array $jsonResponseArray): array
     {
-        if (!isset($jsonResponseArray[AfterpayApiConstants::CORRECTED_ADDRESS])) {
+        if (!isset($jsonResponseArray[AfterpayApiRequestConfig::CORRECTED_ADDRESS])) {
             return [];
         }
 
         $addressWithUnderscoreKeys = [];
-        foreach ($jsonResponseArray[AfterpayApiConstants::CORRECTED_ADDRESS] as $key => $value) {
+        foreach ($jsonResponseArray[AfterpayApiRequestConfig::CORRECTED_ADDRESS] as $key => $value) {
             $keyWithUnderscore = $this->utilText->camelCaseToSeparator($key, '_');
             $addressWithUnderscoreKeys[$keyWithUnderscore] = $value;
         }

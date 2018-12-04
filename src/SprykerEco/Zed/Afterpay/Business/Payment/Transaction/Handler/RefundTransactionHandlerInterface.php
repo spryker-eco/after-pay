@@ -2,7 +2,7 @@
 
 /**
  * MIT License
- * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
+ * For full license information, please view the LICENSE file that was distributed with this source code.
  */
 
 namespace SprykerEco\Zed\Afterpay\Business\Payment\Transaction\Handler;
@@ -18,5 +18,5 @@ interface RefundTransactionHandlerInterface
      *
      * @return void
      */
-    public function refund(ItemTransfer $itemTransfer, OrderTransfer $orderTransfer);
+    public function refund(ItemTransfer $itemTransfer, OrderTransfer $orderTransfer): void;
 }

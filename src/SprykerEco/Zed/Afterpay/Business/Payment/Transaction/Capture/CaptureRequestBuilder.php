@@ -2,7 +2,7 @@
 
 /**
  * MIT License
- * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
+ * For full license information, please view the LICENSE file that was distributed with this source code.
  */
 
 namespace SprykerEco\Zed\Afterpay\Business\Payment\Transaction\Capture;
@@ -11,6 +11,7 @@ use Generated\Shared\Transfer\AfterpayCallTransfer;
 use Generated\Shared\Transfer\AfterpayCaptureRequestTransfer;
 use Generated\Shared\Transfer\AfterpayRequestOrderItemTransfer;
 use Generated\Shared\Transfer\ItemTransfer;
+use SprykerEco\Shared\Afterpay\AfterpayConfig;
 use SprykerEco\Shared\Afterpay\AfterpayConstants;
 use SprykerEco\Zed\Afterpay\Business\Payment\Mapper\OrderToRequestTransferInterface;
 use SprykerEco\Zed\Afterpay\Dependency\Facade\AfterpayToMoneyInterface;
@@ -44,7 +45,7 @@ class CaptureRequestBuilder implements CaptureRequestBuilderInterface
      *
      * @return \Generated\Shared\Transfer\AfterpayCaptureRequestTransfer
      */
-    public function buildBaseCaptureRequestForOrder(AfterpayCallTransfer $afterpayCallTransfer)
+    public function buildBaseCaptureRequestForOrder(AfterpayCallTransfer $afterpayCallTransfer): AfterpayCaptureRequestTransfer
     {
         $captureRequestTransfer = $this->orderToRequestMapper
             ->orderToBaseCaptureRequest($afterpayCallTransfer);
@@ -77,7 +78,7 @@ class CaptureRequestBuilder implements CaptureRequestBuilderInterface
      * @return $this
      */
     public function addOrderExpenseToCaptureRequest(
-        $expenseAmount,
+        int $expenseAmount,
         AfterpayCaptureRequestTransfer $captureRequestTransfer
     ) {
         $expenseItemRequestTransfer = $this->buildExpenseItemTransfer($expenseAmount);
@@ -95,7 +96,7 @@ class CaptureRequestBuilder implements CaptureRequestBuilderInterface
     protected function addOrderItemToOrderDetails(
         AfterpayRequestOrderItemTransfer $orderItemRequestTransfer,
         AfterpayCaptureRequestTransfer $captureRequestTransfer
-    ) {
+    ): void {
         $captureRequestTransfer->getOrderDetails()->addItem($orderItemRequestTransfer->setGrossUnitPrice(1900));
     }
 
@@ -108,7 +109,7 @@ class CaptureRequestBuilder implements CaptureRequestBuilderInterface
     protected function increaseTotalToCaptureAmounts(
         AfterpayRequestOrderItemTransfer $orderItemRequestTransfer,
         AfterpayCaptureRequestTransfer $captureRequestTransfer
-    ) {
+    ): void {
         $this->increaseTotalNetAmount($orderItemRequestTransfer, $captureRequestTransfer);
         $this->increaseTotalGrossAmount($orderItemRequestTransfer, $captureRequestTransfer);
     }
@@ -118,11 +119,11 @@ class CaptureRequestBuilder implements CaptureRequestBuilderInterface
      *
      * @return \Generated\Shared\Transfer\ItemTransfer
      */
-    protected function buildExpenseItemTransfer($expenseAmount)
+    protected function buildExpenseItemTransfer(int $expenseAmount): ItemTransfer
     {
         return (new ItemTransfer())
-            ->setSku(AfterpayConstants::CAPTURE_EXPENSE_SKU)
-            ->setName(AfterpayConstants::CAPTURE_EXPENSE_DESCRIPTION)
+            ->setSku(AfterpayConfig::CAPTURE_EXPENSE_SKU)
+            ->setName(AfterpayConfig::CAPTURE_EXPENSE_DESCRIPTION)
             ->setUnitGrossPrice($expenseAmount)
             ->setUnitPriceToPayAggregation($expenseAmount)
             ->setUnitTaxAmountFullAggregation(0)
@@ -138,7 +139,7 @@ class CaptureRequestBuilder implements CaptureRequestBuilderInterface
     protected function increaseTotalNetAmount(
         AfterpayRequestOrderItemTransfer $orderItemRequestTransfer,
         AfterpayCaptureRequestTransfer $captureRequestTransfer
-    ) {
+    ): void {
         $oldNetAmountDecimal = $this->decimalToInt((float)$captureRequestTransfer->getOrderDetails()->getTotalNetAmount());
         $itemNetAmountDecimal = $this->decimalToInt((float)$orderItemRequestTransfer->getNetUnitPrice());
 
@@ -157,7 +158,7 @@ class CaptureRequestBuilder implements CaptureRequestBuilderInterface
     protected function increaseTotalGrossAmount(
         AfterpayRequestOrderItemTransfer $orderItemRequestTransfer,
         AfterpayCaptureRequestTransfer $captureRequestTransfer
-    ) {
+    ): void {
         $oldGrossAmountDecimal = $this->decimalToInt((float)$captureRequestTransfer->getOrderDetails()->getTotalGrossAmount());
         $itemGrossAmountDecimal = $this->decimalToInt((float)$orderItemRequestTransfer->getGrossUnitPrice());
 
@@ -172,7 +173,7 @@ class CaptureRequestBuilder implements CaptureRequestBuilderInterface
      *
      * @return int
      */
-    protected function decimalToInt($decimalValue)
+    protected function decimalToInt(float $decimalValue): int
     {
         return $this->money->convertDecimalToInteger($decimalValue);
     }
@@ -182,7 +183,7 @@ class CaptureRequestBuilder implements CaptureRequestBuilderInterface
      *
      * @return string
      */
-    protected function intToDecimalString($intValue)
+    protected function intToDecimalString(int $intValue): string
     {
         return (string)$this->money->convertIntegerToDecimal($intValue);
     }

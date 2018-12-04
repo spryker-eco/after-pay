@@ -2,12 +2,13 @@
 
 /**
  * MIT License
- * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
+ * For full license information, please view the LICENSE file that was distributed with this source code.
  */
 
 namespace SprykerEco\Yves\Afterpay\Plugin;
 
 use Generated\Shared\Transfer\AfterpayInstallmentPlansRequestTransfer;
+use Generated\Shared\Transfer\AfterpayInstallmentPlansResponseTransfer;
 use Spryker\Yves\Kernel\AbstractPlugin;
 
 /**
@@ -24,9 +25,8 @@ class AfterpayInstallmentPlansPlugin extends AbstractPlugin implements Installme
      *
      * @return \Generated\Shared\Transfer\AfterpayInstallmentPlansResponseTransfer
      */
-    public function getAvailableInstallmentPlans(
-        AfterpayInstallmentPlansRequestTransfer $installmentPlansRequestTransfer
-    ) {
+    public function getAvailableInstallmentPlans(AfterpayInstallmentPlansRequestTransfer $installmentPlansRequestTransfer): AfterpayInstallmentPlansResponseTransfer
+    {
         return $this
             ->getFactory()
             ->getAfterpayClient()

@@ -2,7 +2,7 @@
 
 /**
  * MIT License
- * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
+ * For full license information, please view the LICENSE file that was distributed with this source code.
  */
 
 namespace SprykerEco\Yves\Afterpay\Plugin;
@@ -15,9 +15,9 @@ interface PaymentSubFormFilterPluginInterface
      *
      * @api
      *
-     * @param \Spryker\Yves\StepEngine\Dependency\Form\SubFormInterface[] $paymentSubforms
+     * @param \Spryker\Yves\StepEngine\Dependency\Form\SubFormInterface[] $paymentSubForms
      *
      * @return \Spryker\Yves\StepEngine\Dependency\Form\SubFormInterface[]
      */
-    public function filterPaymentSubforms(array $paymentSubforms);
+    public function filterPaymentSubForms(array $paymentSubForms): array;
 }

@@ -2,7 +2,7 @@
 
 /**
  * MIT License
- * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
+ * For full license information, please view the LICENSE file that was distributed with this source code.
  */
 
 namespace SprykerEco\Zed\Afterpay\Business\Api\Adapter\ApiCall;
@@ -10,7 +10,8 @@ namespace SprykerEco\Zed\Afterpay\Business\Api\Adapter\ApiCall;
 use Generated\Shared\Transfer\AfterpayApiResponseTransfer;
 use Generated\Shared\Transfer\AfterpayCancelRequestTransfer;
 use Generated\Shared\Transfer\AfterpayCancelResponseTransfer;
-use SprykerEco\Shared\Afterpay\AfterpayApiConstants;
+use SprykerEco\Shared\Afterpay\AfterpayApiRequestConfig;
+use SprykerEco\Shared\Afterpay\AfterpayConfig as AfterpayConfig1;
 use SprykerEco\Shared\Afterpay\AfterpayConstants;
 use SprykerEco\Zed\Afterpay\AfterpayConfig;
 use SprykerEco\Zed\Afterpay\Business\Api\Adapter\Client\ClientInterface;
@@ -64,7 +65,7 @@ class CancelCall extends AbstractApiCall implements CancelCallInterface
      *
      * @return \Generated\Shared\Transfer\AfterpayCancelResponseTransfer
      */
-    public function execute(AfterpayCancelRequestTransfer $requestTransfer)
+    public function execute(AfterpayCancelRequestTransfer $requestTransfer): AfterpayCancelResponseTransfer
     {
         $jsonRequest = $this->buildJsonRequestFromTransferObject($requestTransfer);
         try {
@@ -85,7 +86,7 @@ class CancelCall extends AbstractApiCall implements CancelCallInterface
      *
      * @return string
      */
-    protected function getCancelEndpointUrl(AfterpayCancelRequestTransfer $requestTransfer)
+    protected function getCancelEndpointUrl(AfterpayCancelRequestTransfer $requestTransfer): string
     {
         return $this->config->getCancelApiEndpointUrl(
             $requestTransfer->getCancellationDetails()->getNumber()
@@ -97,7 +98,7 @@ class CancelCall extends AbstractApiCall implements CancelCallInterface
      *
      * @return \Generated\Shared\Transfer\AfterpayCancelResponseTransfer
      */
-    protected function buildResponseTransfer($jsonResponse)
+    protected function buildResponseTransfer(string $jsonResponse): AfterpayCancelResponseTransfer
     {
         $apiResponseTransfer = $this->buildApiResponseTransfer($jsonResponse);
         $cancelResponseTransfer = $this->buildCancelResponseTransfer($jsonResponse);
@@ -112,7 +113,7 @@ class CancelCall extends AbstractApiCall implements CancelCallInterface
      *
      * @return \Generated\Shared\Transfer\AfterpayCancelResponseTransfer
      */
-    protected function buildCancelResponseTransfer($jsonResponse)
+    protected function buildCancelResponseTransfer(string $jsonResponse): AfterpayCancelResponseTransfer
     {
         $jsonResponseArray = $this->utilEncoding->decodeJson($jsonResponse, true);
 
@@ -121,12 +122,12 @@ class CancelCall extends AbstractApiCall implements CancelCallInterface
         $cancelResponseTransfer
             ->setTotalCapturedAmount(
                 $this->money->convertDecimalToInteger(
-                    $jsonResponseArray[AfterpayApiConstants::CANCEL_CAPTURED_AMOUNT]
+                    $jsonResponseArray[AfterpayApiRequestConfig::CANCEL_CAPTURED_AMOUNT]
                 )
             )
             ->setTotalAuthorizedAmount(
                 $this->money->convertDecimalToInteger(
-                    $jsonResponseArray[AfterpayApiConstants::CANCEL_AUTHORIZED_AMOUNT]
+                    $jsonResponseArray[AfterpayApiRequestConfig::CANCEL_AUTHORIZED_AMOUNT]
                 )
             );
 
@@ -138,15 +139,15 @@ class CancelCall extends AbstractApiCall implements CancelCallInterface
      *
      * @return \Generated\Shared\Transfer\AfterpayApiResponseTransfer
      */
-    protected function buildApiResponseTransfer($jsonResponse)
+    protected function buildApiResponseTransfer(string $jsonResponse): AfterpayApiResponseTransfer
     {
         $jsonResponseArray = $this->utilEncoding->decodeJson($jsonResponse, true);
 
         $apiResponseTransfer = new AfterpayApiResponseTransfer();
 
-        $outcome = isset($jsonResponseArray[AfterpayApiConstants::CANCEL_AUTHORIZED_AMOUNT])
-            ? AfterpayConstants::API_TRANSACTION_OUTCOME_ACCEPTED
-            : AfterpayConstants::API_TRANSACTION_OUTCOME_REJECTED;
+        $outcome = isset($jsonResponseArray[AfterpayApiRequestConfig::CANCEL_AUTHORIZED_AMOUNT])
+            ? AfterpayConfig1::API_TRANSACTION_OUTCOME_ACCEPTED
+            : AfterpayConfig1::API_TRANSACTION_OUTCOME_REJECTED;
 
         $apiResponseTransfer
             ->setOutcome($outcome)

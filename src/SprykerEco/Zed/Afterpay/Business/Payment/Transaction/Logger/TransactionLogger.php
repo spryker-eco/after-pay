@@ -2,7 +2,7 @@
 
 /**
  * MIT License
- * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
+ * For full license information, please view the LICENSE file that was distributed with this source code.
  */
 
 namespace SprykerEco\Zed\Afterpay\Business\Payment\Transaction\Logger;
@@ -36,11 +36,11 @@ class TransactionLogger implements TransactionLoggerInterface
      * @return void
      */
     public function logTransaction(
-        $transactionType,
-        $orderReference,
+        string $transactionType,
+        string $orderReference,
         AbstractTransfer $transactionRequest,
         AfterpayApiResponseTransfer $transactionResponse
-    ) {
+    ): void {
         $transactionLog = new SpyPaymentAfterpayTransactionLog();
         $transactionLog
             ->setOrderReference($orderReference)
@@ -56,7 +56,7 @@ class TransactionLogger implements TransactionLoggerInterface
      *
      * @return string
      */
-    protected function getRequestTransferEncoded(AbstractTransfer $requestTransfer)
+    protected function getRequestTransferEncoded(AbstractTransfer $requestTransfer): string
     {
         return $this->utilEncoding->encodeJson($requestTransfer->toArray());
     }

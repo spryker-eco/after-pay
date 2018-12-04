@@ -2,16 +2,16 @@
 
 /**
  * MIT License
- * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
+ * For full license information, please view the LICENSE file that was distributed with this source code.
  */
 
 namespace SprykerEco\Yves\Afterpay\AuthorizeWorkflow;
 
 use Generated\Shared\Transfer\QuoteTransfer;
 use SprykerEco\Yves\Afterpay\AuthorizeWorkflow\Steps\AvailablePaymentMethodsStepInterface;
-use SprykerEco\Yves\Afterpay\AuthorizeWorkflow\Steps\PaymentSubformsFilterStepInterface;
+use SprykerEco\Yves\Afterpay\AuthorizeWorkflow\Steps\PaymentSubFormsFilterStepInterface;
 
-class TwoStepsAuthorizeWorkflow extends AbstractAfterpayAuthorizeWorkflow implements AfterpayAuthorizeWorkflowInterface
+class TwoStepsAuthorizeWorkflow extends BaseAfterpayAuthorizeWorkflow implements AfterpayAuthorizeWorkflowInterface
 {
     /**
      * @var \SprykerEco\Yves\Afterpay\AuthorizeWorkflow\Steps\AvailablePaymentMethodsStepInterface
@@ -19,21 +19,21 @@ class TwoStepsAuthorizeWorkflow extends AbstractAfterpayAuthorizeWorkflow implem
     protected $availablePaymentMethodsStep;
 
     /**
-     * @var \SprykerEco\Yves\Afterpay\AuthorizeWorkflow\Steps\PaymentSubformsFilterStepInterface
+     * @var \SprykerEco\Yves\Afterpay\AuthorizeWorkflow\Steps\PaymentSubFormsFilterStepInterface
      */
-    protected $paymentSubformsFilter;
+    protected $paymentSubFormsFilter;
 
     /**
      * @param \SprykerEco\Yves\Afterpay\AuthorizeWorkflow\Steps\AvailablePaymentMethodsStepInterface $availablePaymentMethodsStep
-     * @param \SprykerEco\Yves\Afterpay\AuthorizeWorkflow\Steps\PaymentSubformsFilterStepInterface $paymentSubformsFilter
+     * @param \SprykerEco\Yves\Afterpay\AuthorizeWorkflow\Steps\PaymentSubFormsFilterStepInterface $paymentSubFormsFilter
      */
     public function __construct(
         AvailablePaymentMethodsStepInterface $availablePaymentMethodsStep,
-        PaymentSubformsFilterStepInterface $paymentSubformsFilter
+        PaymentSubFormsFilterStepInterface $paymentSubFormsFilter
     ) {
 
         $this->availablePaymentMethodsStep = $availablePaymentMethodsStep;
-        $this->paymentSubformsFilter = $paymentSubformsFilter;
+        $this->paymentSubFormsFilter = $paymentSubFormsFilter;
     }
 
     /**
@@ -41,7 +41,7 @@ class TwoStepsAuthorizeWorkflow extends AbstractAfterpayAuthorizeWorkflow implem
      *
      * @return \Generated\Shared\Transfer\QuoteTransfer
      */
-    public function expandQuoteBeforePaymentStep(QuoteTransfer $quoteTransfer)
+    public function expandQuoteBeforePaymentStep(QuoteTransfer $quoteTransfer): QuoteTransfer
     {
         $availablePaymentMethods = $this
             ->availablePaymentMethodsStep
@@ -53,17 +53,17 @@ class TwoStepsAuthorizeWorkflow extends AbstractAfterpayAuthorizeWorkflow implem
     }
 
     /**
-     * @param \Spryker\Yves\StepEngine\Dependency\Form\SubFormInterface[] $paymentSubforms
+     * @param \Spryker\Yves\StepEngine\Dependency\Form\SubFormInterface[] $paymentSubForms
      *
      * @return \Spryker\Yves\StepEngine\Dependency\Form\SubFormInterface[]
      */
-    public function filterAvailablePaymentMethods(array $paymentSubforms)
+    public function filterAvailablePaymentMethods(array $paymentSubForms): array
     {
-        $filteredPaymentSubforms = $this
-            ->paymentSubformsFilter
-            ->filterPaymentSubforms($paymentSubforms);
+        $filteredPaymentSubForms = $this
+            ->paymentSubFormsFilter
+            ->filterPaymentSubForms($paymentSubForms);
 
-        return $filteredPaymentSubforms;
+        return $filteredPaymentSubForms;
     }
 
     /**
@@ -71,10 +71,9 @@ class TwoStepsAuthorizeWorkflow extends AbstractAfterpayAuthorizeWorkflow implem
      *
      * @return \Generated\Shared\Transfer\QuoteTransfer
      */
-    public function addPaymentDataToQuote(QuoteTransfer $quoteTransfer)
+    public function addPaymentDataToQuote(QuoteTransfer $quoteTransfer): QuoteTransfer
     {
         $quoteTransfer = parent::addPaymentDataToQuote($quoteTransfer);
-
         $this->addAvailablePaymentMethodsDataToPayment($quoteTransfer);
 
         return $quoteTransfer;
@@ -85,7 +84,7 @@ class TwoStepsAuthorizeWorkflow extends AbstractAfterpayAuthorizeWorkflow implem
      *
      * @return void
      */
-    protected function addAvailablePaymentMethodsDataToPayment(QuoteTransfer $quoteTransfer)
+    protected function addAvailablePaymentMethodsDataToPayment(QuoteTransfer $quoteTransfer): void
     {
         $paymentTransfer = $quoteTransfer->getPayment();
         $availablePaymentMethodsTransfer = $quoteTransfer->getAfterpayAvailablePaymentMethods();

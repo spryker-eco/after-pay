@@ -2,7 +2,7 @@
 
 /**
  * MIT License
- * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
+ * For full license information, please view the LICENSE file that was distributed with this source code.
  */
 
 namespace SprykerEco\Zed\Afterpay\Business\Payment\Transaction\Capture;
@@ -18,7 +18,7 @@ interface CaptureRequestBuilderInterface
      *
      * @return \Generated\Shared\Transfer\AfterpayCaptureRequestTransfer
      */
-    public function buildBaseCaptureRequestForOrder(AfterpayCallTransfer $afterpayCallTransfer);
+    public function buildBaseCaptureRequestForOrder(AfterpayCallTransfer $afterpayCallTransfer): AfterpayCaptureRequestTransfer;
 
     /**
      * @param \Generated\Shared\Transfer\ItemTransfer $orderItemTransfer

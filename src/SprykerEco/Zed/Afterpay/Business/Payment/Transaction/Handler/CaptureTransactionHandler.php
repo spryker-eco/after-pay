@@ -2,7 +2,7 @@
 
 /**
  * MIT License
- * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
+ * For full license information, please view the LICENSE file that was distributed with this source code.
  */
 
 namespace SprykerEco\Zed\Afterpay\Business\Payment\Transaction\Handler;
@@ -12,6 +12,7 @@ use Generated\Shared\Transfer\AfterpayCaptureRequestTransfer;
 use Generated\Shared\Transfer\AfterpayCaptureResponseTransfer;
 use Generated\Shared\Transfer\AfterpayPaymentTransfer;
 use Generated\Shared\Transfer\ItemTransfer;
+use Generated\Shared\Transfer\OrderTransfer;
 use SprykerEco\Zed\Afterpay\Business\Payment\PaymentReaderInterface;
 use SprykerEco\Zed\Afterpay\Business\Payment\PaymentWriterInterface;
 use SprykerEco\Zed\Afterpay\Business\Payment\Transaction\Capture\CaptureRequestBuilderInterface;
@@ -63,7 +64,7 @@ class CaptureTransactionHandler implements CaptureTransactionHandlerInterface
      *
      * @return void
      */
-    public function capture(ItemTransfer $itemTransfer, AfterpayCallTransfer $afterpayCallTransfer)
+    public function capture(ItemTransfer $itemTransfer, AfterpayCallTransfer $afterpayCallTransfer): void
     {
         $captureRequestTransfer = $this->buildCaptureRequestForOrderItem($itemTransfer, $afterpayCallTransfer);
         $paymentTransfer = $this->getPaymentTransferForItem($itemTransfer);
@@ -85,7 +86,7 @@ class CaptureTransactionHandler implements CaptureTransactionHandlerInterface
      *
      * @return void
      */
-    protected function processExpensesCapture(AfterpayPaymentTransfer $paymentTransfer, OrderTransfer $orderTransfer)
+    protected function processExpensesCapture(AfterpayPaymentTransfer $paymentTransfer, OrderTransfer $orderTransfer): void
     {
         if (!$this->isFirstItemToCapture($paymentTransfer)) {
             return;
@@ -102,10 +103,11 @@ class CaptureTransactionHandler implements CaptureTransactionHandlerInterface
      *
      * @return \Generated\Shared\Transfer\AfterpayCaptureRequestTransfer
      */
-    protected function buildExpensesCaptureRequest(AfterpayPaymentTransfer $paymentTransfer, OrderTransfer $orderTransfer)
-    {
-        $baseCaptureRequest = $this->captureRequestBuilder
-            ->buildBaseCaptureRequestForOrder($orderTransfer);
+    protected function buildExpensesCaptureRequest(
+        AfterpayPaymentTransfer $paymentTransfer,
+        OrderTransfer $orderTransfer
+    ): AfterpayCaptureRequestTransfer {
+        $baseCaptureRequest = $this->captureRequestBuilder->buildBaseCaptureRequestForOrder($orderTransfer);
         $this->addExpensesToCaptureRequest($paymentTransfer->getExpenseTotal(), $baseCaptureRequest);
 
         return $baseCaptureRequest;
@@ -120,7 +122,7 @@ class CaptureTransactionHandler implements CaptureTransactionHandlerInterface
     protected function buildCaptureRequestForOrderItem(
         ItemTransfer $itemTransfer,
         AfterpayCallTransfer $afterpayCallTransfer
-    ) {
+    ): AfterpayCaptureRequestTransfer {
         $captureRequestTransfer = $this->captureRequestBuilder
             ->buildBaseCaptureRequestForOrder($afterpayCallTransfer);
 
@@ -138,7 +140,7 @@ class CaptureTransactionHandler implements CaptureTransactionHandlerInterface
      *
      * @return bool
      */
-    protected function isFirstItemToCapture(AfterpayPaymentTransfer $paymentTransfer)
+    protected function isFirstItemToCapture(AfterpayPaymentTransfer $paymentTransfer): bool
     {
         return $paymentTransfer->getCapturedTotal() + $paymentTransfer->getRefundedTotal() === 0;
     }
@@ -150,9 +152,9 @@ class CaptureTransactionHandler implements CaptureTransactionHandlerInterface
      * @return void
      */
     protected function addExpensesToCaptureRequest(
-        $expenseTotal,
+        int $expenseTotal,
         AfterpayCaptureRequestTransfer $captureRequestTransfer
-    ) {
+    ): void {
         $this->captureRequestBuilder
             ->addOrderExpenseToCaptureRequest(
                 $expenseTotal,
@@ -165,12 +167,9 @@ class CaptureTransactionHandler implements CaptureTransactionHandlerInterface
      *
      * @return \Generated\Shared\Transfer\AfterpayPaymentTransfer
      */
-    protected function getPaymentTransferForItem(ItemTransfer $itemTransfer)
+    protected function getPaymentTransferForItem(ItemTransfer $itemTransfer): AfterpayPaymentTransfer
     {
-        return $this->paymentReader
-            ->getPaymentByIdSalesOrder(
-                $itemTransfer->getFkSalesOrder()
-            );
+        return $this->paymentReader->getPaymentByIdSalesOrder($itemTransfer->getFkSalesOrder());
     }
 
     /**
@@ -179,8 +178,10 @@ class CaptureTransactionHandler implements CaptureTransactionHandlerInterface
      *
      * @return void
      */
-    protected function updateOrderPayment(AfterpayCaptureResponseTransfer $capturedResponseTransfer, $idSalesOrder)
-    {
+    protected function updateOrderPayment(
+        AfterpayCaptureResponseTransfer $capturedResponseTransfer,
+        int $idSalesOrder
+    ): void {
         if (!$capturedResponseTransfer->getCapturedAmount()) {
             return;
         }
@@ -199,8 +200,8 @@ class CaptureTransactionHandler implements CaptureTransactionHandlerInterface
      */
     protected function updatePaymentWithExpensesCaptureNumber(
         AfterpayCaptureResponseTransfer $capturedResponseTransfer,
-        $idSalesOrder
-    ) {
+        int $idSalesOrder
+    ): void {
         if (!$capturedResponseTransfer->getCaptureNumber()) {
             return;
         }
@@ -219,10 +220,10 @@ class CaptureTransactionHandler implements CaptureTransactionHandlerInterface
      * @return void
      */
     protected function updatePaymentOrderItem(
-        $captureResponseTransfer,
-        $itemTransfer,
-        $paymentTransfer
-    ) {
+        AfterpayCaptureResponseTransfer $captureResponseTransfer,
+        ItemTransfer $itemTransfer,
+        AfterpayPaymentTransfer $paymentTransfer
+    ): void {
         $this->paymentWriter->setCaptureNumberByIdSalesOrderItemAndIdPayment(
             $captureResponseTransfer->getCaptureNumber(),
             $itemTransfer->getIdSalesOrderItem(),

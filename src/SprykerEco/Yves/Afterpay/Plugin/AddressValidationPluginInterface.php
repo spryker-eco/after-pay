@@ -2,12 +2,13 @@
 
 /**
  * MIT License
- * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
+ * For full license information, please view the LICENSE file that was distributed with this source code.
  */
 
 namespace SprykerEco\Yves\Afterpay\Plugin;
 
 use Generated\Shared\Transfer\AfterpayValidateCustomerRequestTransfer;
+use Generated\Shared\Transfer\AfterpayValidateCustomerResponseTransfer;
 
 interface AddressValidationPluginInterface
 {
@@ -22,5 +23,5 @@ interface AddressValidationPluginInterface
      *
      * @return \Generated\Shared\Transfer\AfterpayValidateCustomerResponseTransfer
      */
-    public function validateCustomerAddress(AfterpayValidateCustomerRequestTransfer $validateCustomerRequestTransfer);
+    public function validateCustomerAddress(AfterpayValidateCustomerRequestTransfer $validateCustomerRequestTransfer): AfterpayValidateCustomerResponseTransfer;
 }

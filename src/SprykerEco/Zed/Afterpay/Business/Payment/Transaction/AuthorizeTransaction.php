@@ -2,13 +2,14 @@
 
 /**
  * MIT License
- * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
+ * For full license information, please view the LICENSE file that was distributed with this source code.
  */
 
 namespace SprykerEco\Zed\Afterpay\Business\Payment\Transaction;
 
 use Generated\Shared\Transfer\AfterpayApiResponseTransfer;
 use Generated\Shared\Transfer\AfterpayAuthorizeRequestTransfer;
+use SprykerEco\Shared\Afterpay\AfterpayConfig;
 use SprykerEco\Shared\Afterpay\AfterpayConstants;
 use SprykerEco\Zed\Afterpay\Business\Api\Adapter\AdapterInterface;
 use SprykerEco\Zed\Afterpay\Business\Payment\Transaction\Authorize\PaymentAuthorizeWriterInterface;
@@ -16,7 +17,7 @@ use SprykerEco\Zed\Afterpay\Business\Payment\Transaction\Logger\TransactionLogge
 
 class AuthorizeTransaction implements AuthorizeTransactionInterface
 {
-    const TRANSACTION_TYPE = AfterpayConstants::TRANSACTION_TYPE_AUTHORIZE;
+    public const TRANSACTION_TYPE = AfterpayConfig::TRANSACTION_TYPE_AUTHORIZE;
 
     /**
      * @var \SprykerEco\Zed\Afterpay\Business\Payment\Transaction\Logger\TransactionLoggerInterface
@@ -29,14 +30,14 @@ class AuthorizeTransaction implements AuthorizeTransactionInterface
     protected $apiAdapter;
 
     /**
-     * @var \SprykerEco\Zed\Afterpay\Business\Payment\Transaction\Authorize\PaymentAuthorizeWriter
+     * @var \SprykerEco\Zed\Afterpay\Business\Payment\Transaction\Authorize\PaymentAuthorizeWriterInterface
      */
     protected $paymentAuthorizeWriter;
 
     /**
      * @param \SprykerEco\Zed\Afterpay\Business\Payment\Transaction\Logger\TransactionLoggerInterface $transactionLogger
      * @param \SprykerEco\Zed\Afterpay\Business\Api\Adapter\AdapterInterface $apiAdapter
-     * @param \SprykerEco\Zed\Afterpay\Business\Payment\Transaction\Authorize\PaymentAuthorizeWriter $paymentAuthorizeWriter
+     * @param \SprykerEco\Zed\Afterpay\Business\Payment\Transaction\Authorize\PaymentAuthorizeWriterInterface $paymentAuthorizeWriter
      */
     public function __construct(
         TransactionLoggerInterface $transactionLogger,
@@ -53,7 +54,7 @@ class AuthorizeTransaction implements AuthorizeTransactionInterface
      *
      * @return \Generated\Shared\Transfer\AfterpayApiResponseTransfer
      */
-    public function executeTransaction(AfterpayAuthorizeRequestTransfer $authorizeRequestTransfer)
+    public function executeTransaction(AfterpayAuthorizeRequestTransfer $authorizeRequestTransfer): AfterpayApiResponseTransfer
     {
         $authorizeResponseTransfer = $this->apiAdapter->sendAuthorizationRequest($authorizeRequestTransfer);
         $this->logTransaction($authorizeRequestTransfer, $authorizeResponseTransfer);
@@ -71,7 +72,7 @@ class AuthorizeTransaction implements AuthorizeTransactionInterface
     protected function logTransaction(
         AfterpayAuthorizeRequestTransfer $authorizeRequestTransfer,
         AfterpayApiResponseTransfer $authorizeResponseTransfer
-    ) {
+    ): void {
         $this->transactionLogger->logTransaction(
             static::TRANSACTION_TYPE,
             $authorizeRequestTransfer->getOrder()->getNumber(),
@@ -89,7 +90,7 @@ class AuthorizeTransaction implements AuthorizeTransactionInterface
     protected function writeAuthorizeResponse(
         AfterpayAuthorizeRequestTransfer $authorizeRequestTransfer,
         AfterpayApiResponseTransfer $authorizeResponseTransfer
-    ) {
+    ): void {
         $this->paymentAuthorizeWriter->save(
             $authorizeRequestTransfer->getOrder()->getNumber(),
             $authorizeResponseTransfer->getReservationId(),

@@ -2,7 +2,7 @@
 
 /**
  * MIT License
- * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
+ * For full license information, please view the LICENSE file that was distributed with this source code.
  */
 
 namespace SprykerEco\Zed\Afterpay\Business\Payment\Transaction\Refund;
@@ -11,6 +11,7 @@ use Generated\Shared\Transfer\AfterpayRefundRequestTransfer;
 use Generated\Shared\Transfer\AfterpayRequestOrderItemTransfer;
 use Generated\Shared\Transfer\ItemTransfer;
 use Generated\Shared\Transfer\OrderTransfer;
+use SprykerEco\Shared\Afterpay\AfterpayConfig;
 use SprykerEco\Shared\Afterpay\AfterpayConstants;
 use SprykerEco\Zed\Afterpay\Business\Payment\Mapper\OrderToRequestTransferInterface;
 use SprykerEco\Zed\Afterpay\Dependency\Facade\AfterpayToMoneyInterface;
@@ -44,7 +45,7 @@ class RefundRequestBuilder implements RefundRequestBuilderInterface
      *
      * @return \Generated\Shared\Transfer\AfterpayRefundRequestTransfer
      */
-    public function buildBaseRefundRequestForOrder(OrderTransfer $orderTransfer)
+    public function buildBaseRefundRequestForOrder(OrderTransfer $orderTransfer): AfterpayRefundRequestTransfer
     {
         $refundRequestTransfer = $this->orderToRequestMapper
             ->orderToBaseRefundRequest($orderTransfer);
@@ -56,12 +57,12 @@ class RefundRequestBuilder implements RefundRequestBuilderInterface
      * @param \Generated\Shared\Transfer\ItemTransfer $orderItemTransfer
      * @param \Generated\Shared\Transfer\AfterpayRefundRequestTransfer $refundRequestTransfer
      *
-     * @return $this
+     * @return \SprykerEco\Zed\Afterpay\Business\Payment\Transaction\Refund\RefundRequestBuilderInterface
      */
     public function addOrderItemToRefundRequest(
         ItemTransfer $orderItemTransfer,
         AfterpayRefundRequestTransfer $refundRequestTransfer
-    ) {
+    ): RefundRequestBuilderInterface {
 
         $orderItemRequestTransfer = $this->orderToRequestMapper->orderItemToAfterpayItemRequest($orderItemTransfer);
 
@@ -72,14 +73,14 @@ class RefundRequestBuilder implements RefundRequestBuilderInterface
 
     /**
      * @param int $expenseAmount
-     * @param \Generated\Shared\Transfer\AfterpayCaptureRequestTransfer $refundRequestTransfer
+     * @param \Generated\Shared\Transfer\AfterpayRefundRequestTransfer $refundRequestTransfer
      *
-     * @return $this
+     * @return \SprykerEco\Zed\Afterpay\Business\Payment\Transaction\Refund\RefundRequestBuilderInterface
      */
     public function addOrderExpenseToRefundRequest(
-        $expenseAmount,
+        int $expenseAmount,
         AfterpayRefundRequestTransfer $refundRequestTransfer
-    ) {
+    ): RefundRequestBuilderInterface {
         $expenseItemRequestTransfer = $this->buildExpenseItemTransfer($expenseAmount);
         $this->addOrderItemToRefundRequest($expenseItemRequestTransfer, $refundRequestTransfer);
 
@@ -95,7 +96,7 @@ class RefundRequestBuilder implements RefundRequestBuilderInterface
     protected function addOrderItemToRefundDetails(
         AfterpayRequestOrderItemTransfer $orderItemRequestTransfer,
         AfterpayRefundRequestTransfer $refundRequestTransfer
-    ) {
+    ): void {
         $refundRequestTransfer->addOrderItem($orderItemRequestTransfer);
     }
 
@@ -104,11 +105,11 @@ class RefundRequestBuilder implements RefundRequestBuilderInterface
      *
      * @return \Generated\Shared\Transfer\ItemTransfer
      */
-    protected function buildExpenseItemTransfer($expenseAmount)
+    protected function buildExpenseItemTransfer(int $expenseAmount): ItemTransfer
     {
         return (new ItemTransfer())
-            ->setSku(AfterpayConstants::REFUND_EXPENSE_SKU)
-            ->setName(AfterpayConstants::REFUND_EXPENSE_DECRIPTION)
+            ->setSku(AfterpayConfig::REFUND_EXPENSE_SKU)
+            ->setName(AfterpayConfig::REFUND_EXPENSE_DECRIPTION)
             ->setUnitGrossPrice($expenseAmount)
             ->setUnitPriceToPayAggregation($expenseAmount)
             ->setUnitTaxAmountFullAggregation(0)
@@ -120,7 +121,7 @@ class RefundRequestBuilder implements RefundRequestBuilderInterface
      *
      * @return int
      */
-    protected function decimalToInt($decimalValue)
+    protected function decimalToInt(float $decimalValue): int
     {
         return $this->money->convertDecimalToInteger($decimalValue);
     }
@@ -130,7 +131,7 @@ class RefundRequestBuilder implements RefundRequestBuilderInterface
      *
      * @return string
      */
-    protected function intToDecimalString($intValue)
+    protected function intToDecimalString(int $intValue): string
     {
         return (string)$this->money->convertIntegerToDecimal($intValue);
     }

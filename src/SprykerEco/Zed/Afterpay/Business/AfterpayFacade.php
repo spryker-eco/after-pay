@@ -2,19 +2,28 @@
 
 /**
  * MIT License
- * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
+ * For full license information, please view the LICENSE file that was distributed with this source code.
  */
 
 namespace SprykerEco\Zed\Afterpay\Business;
 
+use Generated\Shared\Transfer\AfterpayApiResponseTransfer;
+use Generated\Shared\Transfer\AfterpayAvailablePaymentMethodsTransfer;
 use Generated\Shared\Transfer\AfterpayCallTransfer;
 use Generated\Shared\Transfer\AfterpayCustomerLookupRequestTransfer;
+use Generated\Shared\Transfer\AfterpayCustomerLookupResponseTransfer;
 use Generated\Shared\Transfer\AfterpayInstallmentPlansRequestTransfer;
+use Generated\Shared\Transfer\AfterpayInstallmentPlansResponseTransfer;
+use Generated\Shared\Transfer\AfterpayPaymentTransfer;
 use Generated\Shared\Transfer\AfterpayValidateBankAccountRequestTransfer;
+use Generated\Shared\Transfer\AfterpayValidateBankAccountResponseTransfer;
 use Generated\Shared\Transfer\AfterpayValidateCustomerRequestTransfer;
+use Generated\Shared\Transfer\AfterpayValidateCustomerResponseTransfer;
 use Generated\Shared\Transfer\CheckoutResponseTransfer;
 use Generated\Shared\Transfer\ItemTransfer;
+use Generated\Shared\Transfer\OrderTransfer;
 use Generated\Shared\Transfer\QuoteTransfer;
+use Generated\Shared\Transfer\SaveOrderTransfer;
 use Spryker\Zed\Kernel\Business\AbstractFacade;
 
 /**
@@ -31,9 +40,10 @@ class AfterpayFacade extends AbstractFacade implements AfterpayFacadeInterface
      *
      * @return \Generated\Shared\Transfer\AfterpayAvailablePaymentMethodsTransfer
      */
-    public function getAvailablePaymentMethods(QuoteTransfer $quoteTransfer)
+    public function getAvailablePaymentMethods(QuoteTransfer $quoteTransfer): AfterpayAvailablePaymentMethodsTransfer
     {
-        return $this->getFactory()
+        return $this
+            ->getFactory()
             ->createAvailablePaymentMethodsHandler()
             ->getAvailablePaymentMethods($quoteTransfer);
     }
@@ -47,10 +57,10 @@ class AfterpayFacade extends AbstractFacade implements AfterpayFacadeInterface
      *
      * @return \Generated\Shared\Transfer\AfterpayValidateCustomerResponseTransfer
      */
-    public function validateCustomerAddress(
-        AfterpayValidateCustomerRequestTransfer $validateCustomerRequestTransfer
-    ) {
-        return $this->getFactory()
+    public function validateCustomerAddress(AfterpayValidateCustomerRequestTransfer $validateCustomerRequestTransfer): AfterpayValidateCustomerResponseTransfer
+    {
+        return $this
+            ->getFactory()
             ->createValidateCustomerHandler()
             ->validateCustomer($validateCustomerRequestTransfer);
     }
@@ -64,10 +74,10 @@ class AfterpayFacade extends AbstractFacade implements AfterpayFacadeInterface
      *
      * @return \Generated\Shared\Transfer\AfterpayValidateBankAccountResponseTransfer
      */
-    public function validateBankAccount(
-        AfterpayValidateBankAccountRequestTransfer $validateBankAccountRequestTransfer
-    ) {
-        return $this->getFactory()
+    public function validateBankAccount(AfterpayValidateBankAccountRequestTransfer $validateBankAccountRequestTransfer): AfterpayValidateBankAccountResponseTransfer
+    {
+        return $this
+            ->getFactory()
             ->createValidateBankAccountHandler()
             ->validateBankAccount($validateBankAccountRequestTransfer);
     }
@@ -81,10 +91,10 @@ class AfterpayFacade extends AbstractFacade implements AfterpayFacadeInterface
      *
      * @return \Generated\Shared\Transfer\AfterpayCustomerLookupResponseTransfer
      */
-    public function lookupCustomer(
-        AfterpayCustomerLookupRequestTransfer $customerLookupRequestTransfer
-    ) {
-        return $this->getFactory()
+    public function lookupCustomer(AfterpayCustomerLookupRequestTransfer $customerLookupRequestTransfer): AfterpayCustomerLookupResponseTransfer
+    {
+        return $this
+            ->getFactory()
             ->createLookupCustomerHandler()
             ->lookupCustomer($customerLookupRequestTransfer);
     }
@@ -98,10 +108,10 @@ class AfterpayFacade extends AbstractFacade implements AfterpayFacadeInterface
      *
      * @return \Generated\Shared\Transfer\AfterpayInstallmentPlansResponseTransfer
      */
-    public function lookupInstallmentPlans(
-        AfterpayInstallmentPlansRequestTransfer $installmentPlansRequestTransfer
-    ) {
-        return $this->getFactory()
+    public function lookupInstallmentPlans(AfterpayInstallmentPlansRequestTransfer $installmentPlansRequestTransfer): AfterpayInstallmentPlansResponseTransfer
+    {
+        return $this
+            ->getFactory()
             ->createLookupInstallmentPlansHandler()
             ->lookupInstallmentPlans($installmentPlansRequestTransfer);
     }
@@ -112,15 +122,16 @@ class AfterpayFacade extends AbstractFacade implements AfterpayFacadeInterface
      * @api
      *
      * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
-     * @param \Generated\Shared\Transfer\CheckoutResponseTransfer $checkoutResponseTransfer
+     * @param \Generated\Shared\Transfer\SaveOrderTransfer $saveOrderTransfer
      *
      * @return void
      */
-    public function saveOrderPayment(QuoteTransfer $quoteTransfer, CheckoutResponseTransfer $checkoutResponseTransfer)
+    public function saveOrderPayment(QuoteTransfer $quoteTransfer, SaveOrderTransfer $saveOrderTransfer): void
     {
-        $this->getFactory()
+        $this
+            ->getFactory()
             ->createOrderSaver()
-            ->saveOrderPayment($quoteTransfer, $checkoutResponseTransfer);
+            ->saveOrderPayment($quoteTransfer, $saveOrderTransfer);
     }
 
     /**
@@ -133,9 +144,10 @@ class AfterpayFacade extends AbstractFacade implements AfterpayFacadeInterface
      *
      * @return \Generated\Shared\Transfer\CheckoutResponseTransfer
      */
-    public function postSaveHook(QuoteTransfer $quoteTransfer, CheckoutResponseTransfer $checkoutResponseTransfer)
+    public function postSaveHook(QuoteTransfer $quoteTransfer, CheckoutResponseTransfer $checkoutResponseTransfer): CheckoutResponseTransfer
     {
-        return $this->getFactory()
+        return $this
+            ->getFactory()
             ->createPostSaveHook()
             ->execute($quoteTransfer, $checkoutResponseTransfer);
     }
@@ -149,9 +161,10 @@ class AfterpayFacade extends AbstractFacade implements AfterpayFacadeInterface
      *
      * @return \Generated\Shared\Transfer\AfterpayApiResponseTransfer
      */
-    public function authorizePayment(AfterpayCallTransfer $afterpayCallTransfer)
+    public function authorizePayment(AfterpayCallTransfer $afterpayCallTransfer): AfterpayApiResponseTransfer
     {
-        return $this->getFactory()
+        return $this
+            ->getFactory()
             ->createAuthorizeTransactionHandler()
             ->authorize($afterpayCallTransfer);
     }
@@ -166,9 +179,10 @@ class AfterpayFacade extends AbstractFacade implements AfterpayFacadeInterface
      *
      * @return void
      */
-    public function capturePayment(ItemTransfer $itemTransfer, AfterpayCallTransfer $afterpayCallTransfer)
+    public function capturePayment(ItemTransfer $itemTransfer, AfterpayCallTransfer $afterpayCallTransfer): void
     {
-        $this->getFactory()
+        $this
+            ->getFactory()
             ->createCaptureTransactionHandler()
             ->capture($itemTransfer, $afterpayCallTransfer);
     }
@@ -181,11 +195,12 @@ class AfterpayFacade extends AbstractFacade implements AfterpayFacadeInterface
      * @param \Generated\Shared\Transfer\ItemTransfer $itemTransfer
      * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
      *
-     * @return \Generated\Shared\Transfer\AfterpayResponseTransfer
+     * @return void
      */
-    public function refundPayment(ItemTransfer $itemTransfer, OrderTransfer $orderTransfer)
+    public function refundPayment(ItemTransfer $itemTransfer, OrderTransfer $orderTransfer): void
     {
-        $this->getFactory()
+        $this
+            ->getFactory()
             ->createRefundTransactionHandler()
             ->refund($itemTransfer, $orderTransfer);
     }
@@ -198,11 +213,12 @@ class AfterpayFacade extends AbstractFacade implements AfterpayFacadeInterface
      * @param \Generated\Shared\Transfer\ItemTransfer $itemTransfer
      * @param \Generated\Shared\Transfer\AfterpayCallTransfer $afterpayCallTransfer
      *
-     * @return \Generated\Shared\Transfer\AfterpayResponseTransfer
+     * @return void
      */
-    public function cancelPayment(ItemTransfer $itemTransfer, AfterpayCallTransfer $afterpayCallTransfer)
+    public function cancelPayment(ItemTransfer $itemTransfer, AfterpayCallTransfer $afterpayCallTransfer): void
     {
-        $this->getFactory()
+        $this
+            ->getFactory()
             ->createCancelTransactionHandler()
             ->cancel($itemTransfer, $afterpayCallTransfer);
     }
@@ -216,9 +232,10 @@ class AfterpayFacade extends AbstractFacade implements AfterpayFacadeInterface
      *
      * @return \Generated\Shared\Transfer\AfterpayPaymentTransfer
      */
-    public function getPaymentByIdSalesOrder($idSalesOrder)
+    public function getPaymentByIdSalesOrder(int $idSalesOrder): AfterpayPaymentTransfer
     {
-        return $this->getFactory()
+        return $this
+            ->getFactory()
             ->createPaymentReader()
             ->getPaymentByIdSalesOrder($idSalesOrder);
     }
@@ -230,9 +247,10 @@ class AfterpayFacade extends AbstractFacade implements AfterpayFacadeInterface
      *
      * @return string
      */
-    public function getApiVersion()
+    public function getApiVersion(): string
     {
-        return $this->getFactory()
+        return $this
+            ->getFactory()
             ->createApiAdapter()
             ->getApiVersion();
     }
@@ -244,9 +262,10 @@ class AfterpayFacade extends AbstractFacade implements AfterpayFacadeInterface
      *
      * @return int
      */
-    public function getApiStatus()
+    public function getApiStatus(): int
     {
-        return $this->getFactory()
+        return $this
+            ->getFactory()
             ->createApiAdapter()
             ->getApiStatus();
     }

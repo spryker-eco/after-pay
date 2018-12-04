@@ -2,7 +2,7 @@
 
 /**
  * MIT License
- * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
+ * For full license information, please view the LICENSE file that was distributed with this source code.
  */
 
 namespace SprykerEco\Zed\Afterpay\Business\Api\Adapter\ApiCall;
@@ -11,7 +11,7 @@ use Generated\Shared\Transfer\AfterpayCustomerLookupRequestTransfer;
 use Generated\Shared\Transfer\AfterpayCustomerLookupResponseTransfer;
 use Generated\Shared\Transfer\AfterpayLookupAddressTransfer;
 use Generated\Shared\Transfer\AfterpayUserProfileTransfer;
-use SprykerEco\Shared\Afterpay\AfterpayApiConstants;
+use SprykerEco\Shared\Afterpay\AfterpayApiRequestConfig;
 use SprykerEco\Zed\Afterpay\AfterpayConfig;
 use SprykerEco\Zed\Afterpay\Business\Api\Adapter\Client\ClientInterface;
 use SprykerEco\Zed\Afterpay\Business\Api\Adapter\Converter\TransferToCamelCaseArrayConverterInterface;
@@ -58,7 +58,7 @@ class LookupCustomerCall extends AbstractApiCall implements LookupCustomerCallIn
      *
      * @return \Generated\Shared\Transfer\AfterpayCustomerLookupResponseTransfer
      */
-    public function execute(AfterpayCustomerLookupRequestTransfer $customerLookupRequestTransfer)
+    public function execute(AfterpayCustomerLookupRequestTransfer $customerLookupRequestTransfer): AfterpayCustomerLookupResponseTransfer
     {
         $jsonRequest = $this->buildJsonRequestFromTransferObject($customerLookupRequestTransfer);
 
@@ -80,17 +80,17 @@ class LookupCustomerCall extends AbstractApiCall implements LookupCustomerCallIn
      *
      * @return \Generated\Shared\Transfer\AfterpayCustomerLookupResponseTransfer
      */
-    protected function buildLookupCustomerResponseTransfer($jsonResponse)
+    protected function buildLookupCustomerResponseTransfer(string $jsonResponse): AfterpayCustomerLookupResponseTransfer
     {
         $jsonResponseArray = $this->utilEncoding->decodeJson($jsonResponse, true);
 
         $responseTransfer = new AfterpayCustomerLookupResponseTransfer();
 
-        if (!isset($jsonResponseArray[AfterpayApiConstants::USER_PROFILES])) {
+        if (!isset($jsonResponseArray[AfterpayApiRequestConfig::USER_PROFILES])) {
             return $responseTransfer;
         }
 
-        foreach ($jsonResponseArray[AfterpayApiConstants::USER_PROFILES] as $userProfile) {
+        foreach ($jsonResponseArray[AfterpayApiRequestConfig::USER_PROFILES] as $userProfile) {
             $responseTransfer->addUserProfile(
                 $this->buildUserProfileTransfer($userProfile)
             );
@@ -104,22 +104,22 @@ class LookupCustomerCall extends AbstractApiCall implements LookupCustomerCallIn
      *
      * @return \Generated\Shared\Transfer\AfterpayUserProfileTransfer
      */
-    protected function buildUserProfileTransfer(array $userProfile)
+    protected function buildUserProfileTransfer(array $userProfile): AfterpayUserProfileTransfer
     {
         $userProfileTransfer = new AfterpayUserProfileTransfer();
 
         $userProfileTransfer
-            ->setFirstName($userProfile[AfterpayApiConstants::USER_PROFILE_FIRST_NAME])
-            ->setLastName($userProfile[AfterpayApiConstants::USER_PROFILE_LAST_NAME])
-            ->setMobileNumber($userProfile[AfterpayApiConstants::USER_PROFILE_MOBILE_NUMBER])
-            ->setEmail($userProfile[AfterpayApiConstants::USER_PROFILE_EMAIL])
-            ->setLanguageCode($userProfile[AfterpayApiConstants::USER_PROFILE_LANGUAGE_CODE]);
+            ->setFirstName($userProfile[AfterpayApiRequestConfig::USER_PROFILE_FIRST_NAME])
+            ->setLastName($userProfile[AfterpayApiRequestConfig::USER_PROFILE_LAST_NAME])
+            ->setMobileNumber($userProfile[AfterpayApiRequestConfig::USER_PROFILE_MOBILE_NUMBER])
+            ->setEmail($userProfile[AfterpayApiRequestConfig::USER_PROFILE_EMAIL])
+            ->setLanguageCode($userProfile[AfterpayApiRequestConfig::USER_PROFILE_LANGUAGE_CODE]);
 
-        if (!isset($userProfile[AfterpayApiConstants::USER_PROFILE_ADDRESS_LIST])) {
+        if (!isset($userProfile[AfterpayApiRequestConfig::USER_PROFILE_ADDRESS_LIST])) {
             return $userProfileTransfer;
         }
 
-        foreach ($userProfile[AfterpayApiConstants::USER_PROFILE_ADDRESS_LIST] as $userAddress) {
+        foreach ($userProfile[AfterpayApiRequestConfig::USER_PROFILE_ADDRESS_LIST] as $userAddress) {
             $userProfileTransfer->addLookupAddress(
                 $this->buildLookupAddressTransfer($userAddress)
             );
@@ -133,22 +133,22 @@ class LookupCustomerCall extends AbstractApiCall implements LookupCustomerCallIn
      *
      * @return \Generated\Shared\Transfer\AfterpayLookupAddressTransfer
      */
-    protected function buildLookupAddressTransfer(array $userAddress)
+    protected function buildLookupAddressTransfer(array $userAddress): AfterpayLookupAddressTransfer
     {
         $lookupAddressTransfer = new AfterpayLookupAddressTransfer();
 
         $lookupAddressTransfer
-            ->setStreet($userAddress[AfterpayApiConstants::USER_PROFILE_ADDRESS_STREET])
-            ->setStreet2($userAddress[AfterpayApiConstants::USER_PROFILE_ADDRESS_STREET2])
-            ->setStreet3($userAddress[AfterpayApiConstants::USER_PROFILE_ADDRESS_STREET3])
-            ->setStreet4($userAddress[AfterpayApiConstants::USER_PROFILE_ADDRESS_STREET4])
-            ->setStreetNumber($userAddress[AfterpayApiConstants::USER_PROFILE_ADDRESS_STREET_NUMBER])
-            ->setFlatNo($userAddress[AfterpayApiConstants::USER_PROFILE_ADDRESS_FLAT])
-            ->setEntrance($userAddress[AfterpayApiConstants::USER_PROFILE_ADDRESS_ENTRANCE])
-            ->setCity($userAddress[AfterpayApiConstants::USER_PROFILE_ADDRESS_CITY])
-            ->setPostalCode($userAddress[AfterpayApiConstants::USER_PROFILE_ADDRESS_POSTAL_CODE])
-            ->setCountry($userAddress[AfterpayApiConstants::USER_PROFILE_ADDRESS_COUNTRY])
-            ->setCountryCode($userAddress[AfterpayApiConstants::USER_PROFILE_ADDRESS_COUNTRY_CODE]);
+            ->setStreet($userAddress[AfterpayApiRequestConfig::USER_PROFILE_ADDRESS_STREET])
+            ->setStreet2($userAddress[AfterpayApiRequestConfig::USER_PROFILE_ADDRESS_STREET2])
+            ->setStreet3($userAddress[AfterpayApiRequestConfig::USER_PROFILE_ADDRESS_STREET3])
+            ->setStreet4($userAddress[AfterpayApiRequestConfig::USER_PROFILE_ADDRESS_STREET4])
+            ->setStreetNumber($userAddress[AfterpayApiRequestConfig::USER_PROFILE_ADDRESS_STREET_NUMBER])
+            ->setFlatNo($userAddress[AfterpayApiRequestConfig::USER_PROFILE_ADDRESS_FLAT])
+            ->setEntrance($userAddress[AfterpayApiRequestConfig::USER_PROFILE_ADDRESS_ENTRANCE])
+            ->setCity($userAddress[AfterpayApiRequestConfig::USER_PROFILE_ADDRESS_CITY])
+            ->setPostalCode($userAddress[AfterpayApiRequestConfig::USER_PROFILE_ADDRESS_POSTAL_CODE])
+            ->setCountry($userAddress[AfterpayApiRequestConfig::USER_PROFILE_ADDRESS_COUNTRY])
+            ->setCountryCode($userAddress[AfterpayApiRequestConfig::USER_PROFILE_ADDRESS_COUNTRY_CODE]);
 
         return $lookupAddressTransfer;
     }

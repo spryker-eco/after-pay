@@ -2,7 +2,7 @@
 
 /**
  * MIT License
- * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
+ * For full license information, please view the LICENSE file that was distributed with this source code.
  */
 
 namespace SprykerEco\Yves\Afterpay\Form;
@@ -11,24 +11,21 @@ use Generated\Shared\Transfer\AfterpayPaymentTransfer;
 use Spryker\Yves\StepEngine\Dependency\Form\AbstractSubFormType;
 use Spryker\Yves\StepEngine\Dependency\Form\SubFormInterface;
 use Spryker\Yves\StepEngine\Dependency\Form\SubFormProviderNameInterface;
+use SprykerEco\Shared\Afterpay\AfterpayConfig;
 use SprykerEco\Shared\Afterpay\AfterpayConstants;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class InvoiceSubForm extends AbstractSubFormType implements SubFormInterface, SubFormProviderNameInterface
 {
-    const PAYMENT_METHOD = AfterpayConstants::PAYMENT_METHOD_INVOICE;
-
-    /**
-     * @const string
-     */
-    const PAYMENT_PROVIDER = AfterpayConstants::PROVIDER_NAME;
+    public const PAYMENT_METHOD = AfterpayConfig::PAYMENT_METHOD_INVOICE;
+    public const PAYMENT_PROVIDER = AfterpayConfig::PROVIDER_NAME;
 
     /**
      * @param \Symfony\Component\OptionsResolver\OptionsResolver $resolver
      *
      * @return void
      */
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'data_class' => AfterpayPaymentTransfer::class,
@@ -42,7 +39,7 @@ class InvoiceSubForm extends AbstractSubFormType implements SubFormInterface, Su
      *
      * @return string
      */
-    public function getPropertyPath()
+    public function getPropertyPath(): string
     {
         return static::PAYMENT_METHOD;
     }
@@ -53,7 +50,7 @@ class InvoiceSubForm extends AbstractSubFormType implements SubFormInterface, Su
      *
      * @return string
      */
-    public function getName()
+    public function getName(): string
     {
         return static::PAYMENT_METHOD;
     }
@@ -63,7 +60,7 @@ class InvoiceSubForm extends AbstractSubFormType implements SubFormInterface, Su
      *
      * @return string
      */
-    public function getTemplatePath()
+    public function getTemplatePath(): string
     {
         return static::PAYMENT_PROVIDER . '/' . static::PAYMENT_METHOD;
     }
@@ -71,8 +68,8 @@ class InvoiceSubForm extends AbstractSubFormType implements SubFormInterface, Su
     /**
      * @return string
      */
-    public function getProviderName()
+    public function getProviderName(): string
     {
-        return AfterpayConstants::PROVIDER_NAME;
+        return AfterpayConfig::PROVIDER_NAME;
     }
 }

@@ -2,65 +2,77 @@
 
 /**
  * MIT License
- * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
+ * For full license information, please view the LICENSE file that was distributed with this source code.
  */
 
 namespace SprykerEco\Zed\Afterpay\Business\Api\Adapter;
+
+use SprykerEco\Zed\Afterpay\Business\Api\Adapter\ApiCall\ApiStatusCallInterface;
+use SprykerEco\Zed\Afterpay\Business\Api\Adapter\ApiCall\ApiVersionCallInterface;
+use SprykerEco\Zed\Afterpay\Business\Api\Adapter\ApiCall\AuthorizePaymentCallInterface;
+use SprykerEco\Zed\Afterpay\Business\Api\Adapter\ApiCall\AvailablePaymentMethodsCallInterface;
+use SprykerEco\Zed\Afterpay\Business\Api\Adapter\ApiCall\CancelCallInterface;
+use SprykerEco\Zed\Afterpay\Business\Api\Adapter\ApiCall\CaptureCallInterface;
+use SprykerEco\Zed\Afterpay\Business\Api\Adapter\ApiCall\LookupCustomerCallInterface;
+use SprykerEco\Zed\Afterpay\Business\Api\Adapter\ApiCall\LookupInstallmentPlansCallInterface;
+use SprykerEco\Zed\Afterpay\Business\Api\Adapter\ApiCall\RefundCallInterface;
+use SprykerEco\Zed\Afterpay\Business\Api\Adapter\ApiCall\ValidateBankAccountCallInterface;
+use SprykerEco\Zed\Afterpay\Business\Api\Adapter\ApiCall\ValidateCustomerCallInterface;
 
 interface AdapterFactoryInterface
 {
     /**
      * @return \SprykerEco\Zed\Afterpay\Business\Api\Adapter\ApiCall\AvailablePaymentMethodsCallInterface
      */
-    public function createAvailablePaymentMethodsCall();
+    public function createAvailablePaymentMethodsCall(): AvailablePaymentMethodsCallInterface;
 
     /**
      * @return \SprykerEco\Zed\Afterpay\Business\Api\Adapter\ApiCall\AuthorizePaymentCallInterface
      */
-    public function createAuthorizePaymentCall();
+    public function createAuthorizePaymentCall(): AuthorizePaymentCallInterface;
 
     /**
      * @return \SprykerEco\Zed\Afterpay\Business\Api\Adapter\ApiCall\ValidateCustomerCallInterface
      */
-    public function createValidateCustomerCall();
+    public function createValidateCustomerCall(): ValidateCustomerCallInterface;
 
     /**
      * @return \SprykerEco\Zed\Afterpay\Business\Api\Adapter\ApiCall\ValidateBankAccountCallInterface
      */
-    public function createValidateBankAccountCall();
+    public function createValidateBankAccountCall(): ValidateBankAccountCallInterface;
 
     /**
      * @return \SprykerEco\Zed\Afterpay\Business\Api\Adapter\ApiCall\LookupCustomerCallInterface
      */
-    public function createLookupCustomerCall();
+    public function createLookupCustomerCall(): LookupCustomerCallInterface;
 
     /**
      * @return \SprykerEco\Zed\Afterpay\Business\Api\Adapter\ApiCall\CaptureCallInterface
      */
-    public function createCaptureCall();
+    public function createCaptureCall(): CaptureCallInterface;
 
     /**
      * @return \SprykerEco\Zed\Afterpay\Business\Api\Adapter\ApiCall\CancelCallInterface
      */
-    public function createCancelCall();
+    public function createCancelCall(): CancelCallInterface;
 
     /**
      * @return \SprykerEco\Zed\Afterpay\Business\Api\Adapter\ApiCall\RefundCallInterface
      */
-    public function createRefundCall();
+    public function createRefundCall(): RefundCallInterface;
 
     /**
      * @return \SprykerEco\Zed\Afterpay\Business\Api\Adapter\ApiCall\ApiVersionCallInterface
      */
-    public function createGetApiVersionCall();
+    public function createGetApiVersionCall(): ApiVersionCallInterface;
 
     /**
      * @return \SprykerEco\Zed\Afterpay\Business\Api\Adapter\ApiCall\ApiStatusCallInterface
      */
-    public function createGetApiStatusCall();
+    public function createGetApiStatusCall(): ApiStatusCallInterface;
 
     /**
      * @return \SprykerEco\Zed\Afterpay\Business\Api\Adapter\ApiCall\LookupInstallmentPlansCallInterface
      */
-    public function createLookupInstallmentPlansCall();
+    public function createLookupInstallmentPlansCall(): LookupInstallmentPlansCallInterface;
 }

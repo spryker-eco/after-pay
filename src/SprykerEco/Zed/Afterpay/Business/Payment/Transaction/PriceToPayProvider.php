@@ -1,19 +1,20 @@
 <?php
+
 /**
- * Copyright © 2017-present Spryker Systems GmbH. All rights reserved.
- * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
+ * MIT License
+ * For full license information, please view the LICENSE file that was distributed with this source code.
  */
 
 namespace SprykerEco\Zed\Afterpay\Business\Payment\Transaction;
 
 use Generated\Shared\Transfer\OrderTransfer;
 use Generated\Shared\Transfer\SalesPaymentTransfer;
+use SprykerEco\Shared\Afterpay\AfterpayConfig;
 use SprykerEco\Shared\Afterpay\AfterpayConstants;
 use SprykerEco\Zed\Afterpay\Dependency\Facade\AfterpayToPaymentInterface;
 
 class PriceToPayProvider implements PriceToPayProviderInterface
 {
-
     /**
      * @var \SprykerEco\Zed\Afterpay\Dependency\Facade\AfterpayToPaymentInterface
      */
@@ -32,7 +33,7 @@ class PriceToPayProvider implements PriceToPayProviderInterface
      *
      * @return int
      */
-    public function getPriceToPayForOrder(OrderTransfer $orderWithPaymentTransfer)
+    public function getPriceToPayForOrder(OrderTransfer $orderWithPaymentTransfer): int
     {
         $salesPaymentTransfer = $this->createSalesPaymentTransfer($orderWithPaymentTransfer);
 
@@ -44,10 +45,10 @@ class PriceToPayProvider implements PriceToPayProviderInterface
      *
      * @return \Generated\Shared\Transfer\SalesPaymentTransfer
      */
-    protected function createSalesPaymentTransfer(OrderTransfer $orderWithPaymentTransfer)
+    protected function createSalesPaymentTransfer(OrderTransfer $orderWithPaymentTransfer): SalesPaymentTransfer
     {
         $salesPaymentTransfer = new SalesPaymentTransfer();
-        $salesPaymentTransfer->setPaymentProvider(AfterpayConstants::PROVIDER_NAME);
+        $salesPaymentTransfer->setPaymentProvider(AfterpayConfig::PROVIDER_NAME);
         $salesPaymentTransfer->setPaymentMethod($this->findPaymentMethod($orderWithPaymentTransfer));
         $salesPaymentTransfer->setFkSalesOrder($orderWithPaymentTransfer->getIdSalesOrder());
 
@@ -57,12 +58,12 @@ class PriceToPayProvider implements PriceToPayProviderInterface
     /**
      * @param \Generated\Shared\Transfer\OrderTransfer $orderWithPaymentTransfer
      *
-     * @return null|string
+     * @return string|null
      */
-    protected function findPaymentMethod(OrderTransfer $orderWithPaymentTransfer)
+    protected function findPaymentMethod(OrderTransfer $orderWithPaymentTransfer): ?string
     {
         foreach ($orderWithPaymentTransfer->getPayments() as $paymentTransfer) {
-            if ($paymentTransfer->getPaymentProvider() === AfterpayConstants::PROVIDER_NAME) {
+            if ($paymentTransfer->getPaymentProvider() === AfterpayConfig::PROVIDER_NAME) {
                 return $paymentTransfer->getPaymentMethod();
             }
         }

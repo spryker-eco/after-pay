@@ -2,7 +2,7 @@
 
 /**
  * MIT License
- * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
+ * For full license information, please view the LICENSE file that was distributed with this source code.
  */
 
 namespace SprykerEco\Zed\Afterpay\Communication\Plugin\Checkout\Oms\Condition;
@@ -11,16 +11,18 @@ use Orm\Zed\Afterpay\Persistence\SpyPaymentAfterpayTransactionLog;
 use Orm\Zed\Sales\Persistence\SpySalesOrderItem;
 use Spryker\Zed\Kernel\Communication\AbstractPlugin;
 use Spryker\Zed\Oms\Dependency\Plugin\Condition\ConditionInterface;
+use SprykerEco\Shared\Afterpay\AfterpayConfig;
 use SprykerEco\Shared\Afterpay\AfterpayConstants;
 
 /**
- * @method \SprykerEco\Zed\Afterpay\Business\AfterpayFacade getFacade()
+ * @method \SprykerEco\Zed\Afterpay\Business\AfterpayFacadeInterface getFacade()
  * @method \SprykerEco\Zed\Afterpay\Persistence\AfterpayQueryContainer getQueryContainer()
  * @method \SprykerEco\Zed\Afterpay\Communication\AfterpayCommunicationFactory getFactory()
+ * @method \SprykerEco\Zed\Afterpay\AfterpayConfig getConfig()
  */
 class IsCaptureCompletedPlugin extends AbstractPlugin implements ConditionInterface
 {
-    const CAPTURE_TRANSACTION_ACCEPTED = AfterpayConstants::API_TRANSACTION_OUTCOME_ACCEPTED;
+    public const CAPTURE_TRANSACTION_ACCEPTED = AfterpayConfig::API_TRANSACTION_OUTCOME_ACCEPTED;
 
     /**
      * @api
@@ -29,7 +31,7 @@ class IsCaptureCompletedPlugin extends AbstractPlugin implements ConditionInterf
      *
      * @return bool
      */
-    public function check(SpySalesOrderItem $orderItem)
+    public function check(SpySalesOrderItem $orderItem): bool
     {
         return $this->isCaptureTransactionSuccessful($orderItem->getFkSalesOrder());
     }
@@ -39,7 +41,7 @@ class IsCaptureCompletedPlugin extends AbstractPlugin implements ConditionInterf
      *
      * @return bool
      */
-    protected function isCaptureTransactionSuccessful($idSalesOrder)
+    protected function isCaptureTransactionSuccessful(int $idSalesOrder): bool
     {
         $captureTransactionLog = $this->getFullCaptureTransactionLogEntry($idSalesOrder);
         if ($captureTransactionLog === null) {
@@ -54,7 +56,7 @@ class IsCaptureCompletedPlugin extends AbstractPlugin implements ConditionInterf
      *
      * @return \Orm\Zed\Afterpay\Persistence\SpyPaymentAfterpayTransactionLog|null
      */
-    protected function getFullCaptureTransactionLogEntry($idSalesOrder)
+    protected function getFullCaptureTransactionLogEntry(int $idSalesOrder): ?SpyPaymentAfterpayTransactionLog
     {
         $transactionLogQuery = $this->getQueryContainer()->queryCaptureTransactionLog($idSalesOrder);
 
@@ -66,7 +68,7 @@ class IsCaptureCompletedPlugin extends AbstractPlugin implements ConditionInterf
      *
      * @return bool
      */
-    protected function isTransactionSuccessful(SpyPaymentAfterpayTransactionLog $captureTransactionLog)
+    protected function isTransactionSuccessful(SpyPaymentAfterpayTransactionLog $captureTransactionLog): bool
     {
         return $captureTransactionLog->getOutcome() === static::CAPTURE_TRANSACTION_ACCEPTED;
     }

@@ -2,12 +2,13 @@
 
 /**
  * MIT License
- * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
+ * For full license information, please view the LICENSE file that was distributed with this source code.
  */
 
 namespace SprykerEco\Zed\Afterpay\Business\Api\Adapter\ApiCall;
 
 use Generated\Shared\Transfer\AfterpayCancelRequestTransfer;
+use Generated\Shared\Transfer\AfterpayCancelResponseTransfer;
 
 interface CancelCallInterface
 {
@@ -16,5 +17,5 @@ interface CancelCallInterface
      *
      * @return \Generated\Shared\Transfer\AfterpayCancelResponseTransfer
      */
-    public function execute(AfterpayCancelRequestTransfer $requestTransfer);
+    public function execute(AfterpayCancelRequestTransfer $requestTransfer): AfterpayCancelResponseTransfer;
 }

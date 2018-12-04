@@ -2,20 +2,21 @@
 
 /**
  * MIT License
- * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
+ * For full license information, please view the LICENSE file that was distributed with this source code.
  */
 
 namespace SprykerEco\Zed\Afterpay\Business\Payment\Transaction;
 
 use Generated\Shared\Transfer\AfterpayRefundRequestTransfer;
 use Generated\Shared\Transfer\AfterpayRefundResponseTransfer;
+use SprykerEco\Shared\Afterpay\AfterpayConfig;
 use SprykerEco\Shared\Afterpay\AfterpayConstants;
 use SprykerEco\Zed\Afterpay\Business\Api\Adapter\AdapterInterface;
 use SprykerEco\Zed\Afterpay\Business\Payment\Transaction\Logger\TransactionLoggerInterface;
 
 class RefundTransaction implements RefundTransactionInterface
 {
-    const TRANSACTION_TYPE = AfterpayConstants::TRANSACTION_TYPE_REFUND;
+    public const TRANSACTION_TYPE = AfterpayConfig::TRANSACTION_TYPE_REFUND;
 
     /**
      * @var \SprykerEco\Zed\Afterpay\Business\Payment\Transaction\Logger\TransactionLoggerInterface
@@ -44,7 +45,7 @@ class RefundTransaction implements RefundTransactionInterface
      *
      * @return \Generated\Shared\Transfer\AfterpayRefundResponseTransfer
      */
-    public function executeTransaction(AfterpayRefundRequestTransfer $refundRequestTransfer)
+    public function executeTransaction(AfterpayRefundRequestTransfer $refundRequestTransfer): AfterpayRefundResponseTransfer
     {
         $refundResponseTransfer = $this->apiAdapter->sendRefundRequest($refundRequestTransfer);
         $this->logTransaction($refundRequestTransfer, $refundResponseTransfer);
@@ -61,7 +62,7 @@ class RefundTransaction implements RefundTransactionInterface
     protected function logTransaction(
         AfterpayRefundRequestTransfer $refundRequestTransfer,
         AfterpayRefundResponseTransfer $refundResponseTransfer
-    ) {
+    ): void {
         $this->transactionLogger->logTransaction(
             static::TRANSACTION_TYPE,
             $refundRequestTransfer->getIdSalesOrder(),

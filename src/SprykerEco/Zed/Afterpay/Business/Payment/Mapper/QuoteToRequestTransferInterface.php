@@ -2,11 +2,12 @@
 
 /**
  * MIT License
- * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
+ * For full license information, please view the LICENSE file that was distributed with this source code.
  */
 
 namespace SprykerEco\Zed\Afterpay\Business\Payment\Mapper;
 
+use Generated\Shared\Transfer\AfterpayAvailablePaymentMethodsRequestTransfer;
 use Generated\Shared\Transfer\QuoteTransfer;
 
 interface QuoteToRequestTransferInterface
@@ -16,5 +17,5 @@ interface QuoteToRequestTransferInterface
      *
      * @return \Generated\Shared\Transfer\AfterpayAvailablePaymentMethodsRequestTransfer
      */
-    public function quoteToAvailablePaymentMethods(QuoteTransfer $quoteTransfer);
+    public function quoteToAvailablePaymentMethods(QuoteTransfer $quoteTransfer): AfterpayAvailablePaymentMethodsRequestTransfer;
 }

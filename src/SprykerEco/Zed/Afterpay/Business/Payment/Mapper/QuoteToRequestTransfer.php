@@ -2,7 +2,7 @@
 
 /**
  * MIT License
- * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
+ * For full license information, please view the LICENSE file that was distributed with this source code.
  */
 
 namespace SprykerEco\Zed\Afterpay\Business\Payment\Mapper;
@@ -14,16 +14,15 @@ use Generated\Shared\Transfer\AfterpayRequestOrderItemTransfer;
 use Generated\Shared\Transfer\AfterpayRequestOrderTransfer;
 use Generated\Shared\Transfer\ItemTransfer;
 use Generated\Shared\Transfer\QuoteTransfer;
+use SprykerEco\Shared\Afterpay\AfterpayConfig;
 use SprykerEco\Shared\Afterpay\AfterpayConstants;
 use SprykerEco\Zed\Afterpay\Dependency\Facade\AfterpayToMoneyInterface;
 use SprykerEco\Zed\Afterpay\Dependency\Facade\AfterpayToStoreInterface;
 
-//@todo extract shared behaviour between quote and order transfers if possible
-
 class QuoteToRequestTransfer implements QuoteToRequestTransferInterface
 {
-    const NEGATIVE_MULTIPLIER = -1;
-    const GIFT_CARD_PROVIDER = 'GiftCard';
+    public const NEGATIVE_MULTIPLIER = -1;
+    public const GIFT_CARD_PROVIDER = 'GiftCard';
 
     /**
      * @var \SprykerEco\Zed\Afterpay\Dependency\Facade\AfterpayToMoneyInterface
@@ -31,13 +30,13 @@ class QuoteToRequestTransfer implements QuoteToRequestTransferInterface
     protected $moneyFacade;
 
     /**
-     * @var \SprykerEco\Zed\Afterpay\Dependency\Facade\AfterpayToSalesInterface
+     * @var \SprykerEco\Zed\Afterpay\Dependency\Facade\AfterpayToStoreInterface
      */
     protected $storeFacade;
 
     /**
      * @param \SprykerEco\Zed\Afterpay\Dependency\Facade\AfterpayToMoneyInterface $moneyFacade
-     * @param \SprykerEco\Zed\Afterpay\Dependency\Facade\AfterpayToSalesInterface $storeFacade
+     * @param \SprykerEco\Zed\Afterpay\Dependency\Facade\AfterpayToStoreInterface $storeFacade
      */
     public function __construct(
         AfterpayToMoneyInterface $moneyFacade,
@@ -52,7 +51,7 @@ class QuoteToRequestTransfer implements QuoteToRequestTransferInterface
      *
      * @return \Generated\Shared\Transfer\AfterpayAvailablePaymentMethodsRequestTransfer
      */
-    public function quoteToAvailablePaymentMethods(QuoteTransfer $quoteTransfer)
+    public function quoteToAvailablePaymentMethods(QuoteTransfer $quoteTransfer): AfterpayAvailablePaymentMethodsRequestTransfer
     {
         $requestTransfer = new AfterpayAvailablePaymentMethodsRequestTransfer();
 
@@ -72,7 +71,7 @@ class QuoteToRequestTransfer implements QuoteToRequestTransferInterface
      *
      * @return \Generated\Shared\Transfer\AfterpayRequestCustomerTransfer
      */
-    protected function buildCustomerRequestTransfer(QuoteTransfer $quoteTransfer)
+    protected function buildCustomerRequestTransfer(QuoteTransfer $quoteTransfer): AfterpayRequestCustomerTransfer
     {
         $quoteBillingAddressTransfer = $quoteTransfer->getBillingAddress();
         $customerRequestTransfer = new AfterpayRequestCustomerTransfer();
@@ -81,7 +80,7 @@ class QuoteToRequestTransfer implements QuoteToRequestTransferInterface
             ->setFirstName($quoteBillingAddressTransfer->getFirstName())
             ->setLastName($quoteBillingAddressTransfer->getLastName())
             ->setConversationalLanguage($this->getStoreCountryIso2())
-            ->setCustomerCategory(AfterpayConstants::API_CUSTOMER_CATEGORY_PERSON)
+            ->setCustomerCategory(AfterpayConfig::API_CUSTOMER_CATEGORY_PERSON)
             ->setSalutation($quoteBillingAddressTransfer->getSalutation())
             ->setEmail($quoteTransfer->getCustomer()->getEmail());
 
@@ -97,7 +96,7 @@ class QuoteToRequestTransfer implements QuoteToRequestTransferInterface
      *
      * @return \Generated\Shared\Transfer\AfterpayRequestOrderTransfer
      */
-    protected function buildOrderRequestTransfer(QuoteTransfer $quoteTransfer)
+    protected function buildOrderRequestTransfer(QuoteTransfer $quoteTransfer): AfterpayRequestOrderTransfer
     {
         $orderRequestTransfer = new AfterpayRequestOrderTransfer();
         $orderRequestTransfer->setTotalGrossAmount($this->getStringDecimalQuoteGrossTotal($quoteTransfer));
@@ -119,7 +118,7 @@ class QuoteToRequestTransfer implements QuoteToRequestTransferInterface
      *
      * @return \Generated\Shared\Transfer\AfterpayRequestOrderItemTransfer
      */
-    protected function buildOrderItemRequestTransfer(ItemTransfer $itemTransfer)
+    protected function buildOrderItemRequestTransfer(ItemTransfer $itemTransfer): AfterpayRequestOrderItemTransfer
     {
         $orderItemRequestTransfer = new AfterpayRequestOrderItemTransfer();
 
@@ -138,7 +137,7 @@ class QuoteToRequestTransfer implements QuoteToRequestTransferInterface
      *
      * @return \Generated\Shared\Transfer\AfterpayRequestAddressTransfer
      */
-    protected function buildCustomerBillingAddressRequestTransfer(QuoteTransfer $quoteTransfer)
+    protected function buildCustomerBillingAddressRequestTransfer(QuoteTransfer $quoteTransfer): AfterpayRequestAddressTransfer
     {
         $customerAddressTransfer = $quoteTransfer->getBillingAddress();
         $customerAddressRequestTransfer = new AfterpayRequestAddressTransfer();
@@ -156,7 +155,7 @@ class QuoteToRequestTransfer implements QuoteToRequestTransferInterface
     /**
      * @return string
      */
-    protected function getStoreCountryIso2()
+    protected function getStoreCountryIso2(): string
     {
         return $this->storeFacade->getCurrentStore()->getName();
     }
@@ -166,7 +165,7 @@ class QuoteToRequestTransfer implements QuoteToRequestTransferInterface
      *
      * @return string
      */
-    protected function getStringDecimalQuoteGrossTotal(QuoteTransfer $quoteTransfer)
+    protected function getStringDecimalQuoteGrossTotal(QuoteTransfer $quoteTransfer): string
     {
         $quoteTotal = $quoteTransfer->getTotals()->getGrandTotal();
         if ($quoteTransfer->getTotals()->getPriceToPay()) {
@@ -181,7 +180,7 @@ class QuoteToRequestTransfer implements QuoteToRequestTransferInterface
      *
      * @return string
      */
-    protected function getStringDecimalQuoteNetTotal(QuoteTransfer $quoteTransfer)
+    protected function getStringDecimalQuoteNetTotal(QuoteTransfer $quoteTransfer): string
     {
         $quoteGrossTotal = $quoteTransfer->getTotals()->getGrandTotal();
         $quoteTaxTotal = $quoteTransfer->getTotals()->getTaxTotal()->getAmount();
@@ -195,7 +194,7 @@ class QuoteToRequestTransfer implements QuoteToRequestTransferInterface
      *
      * @return string
      */
-    protected function getStringDecimalItemGrossUnitPrice(ItemTransfer $itemTransfer)
+    protected function getStringDecimalItemGrossUnitPrice(ItemTransfer $itemTransfer): string
     {
         $itemUnitGrossPrice = $itemTransfer->getUnitPriceToPayAggregation();
 
@@ -207,7 +206,7 @@ class QuoteToRequestTransfer implements QuoteToRequestTransferInterface
      *
      * @return string
      */
-    protected function getStringDecimalItemNetUnitPrice(ItemTransfer $itemTransfer)
+    protected function getStringDecimalItemNetUnitPrice(ItemTransfer $itemTransfer): string
     {
         $itemUnitGrossPriceAmount = $itemTransfer->getUnitPriceToPayAggregation();
         $itemUnitTaxAmount = $itemTransfer->getUnitTaxAmountFullAggregation();
@@ -218,14 +217,15 @@ class QuoteToRequestTransfer implements QuoteToRequestTransferInterface
 
     /**
      * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
-     * @param  \Generated\Shared\Transfer\AfterpayRequestOrderTransfer $orderRequestTransfer
+     * @param \Generated\Shared\Transfer\AfterpayRequestOrderTransfer $orderRequestTransfer
      *
      * @return void
      */
-    protected function addGiftcardItems(QuoteTransfer $quoteTransfer, AfterpayRequestOrderTransfer $orderRequestTransfer)
-    {
+    protected function addGiftcardItems(
+        QuoteTransfer $quoteTransfer,
+        AfterpayRequestOrderTransfer $orderRequestTransfer
+    ): void {
         foreach ($this->getGiftcards($quoteTransfer) as $index => $paymentTransfer) {
-
             $orderItemRequestTransfer = new AfterpayRequestOrderItemTransfer();
             $amount = (string)$this->moneyFacade->convertIntegerToDecimal(static::NEGATIVE_MULTIPLIER * $paymentTransfer->getAmount());
 
@@ -244,7 +244,7 @@ class QuoteToRequestTransfer implements QuoteToRequestTransferInterface
      *
      * @return \Generated\Shared\Transfer\PaymentTransfer[]
      */
-    protected function getGiftcards(QuoteTransfer $quoteTransfer)
+    protected function getGiftcards(QuoteTransfer $quoteTransfer): array
     {
         $giftCardPayments = [];
         foreach ($quoteTransfer->getPayments() as $paymentTransfer) {
@@ -257,5 +257,4 @@ class QuoteToRequestTransfer implements QuoteToRequestTransferInterface
 
         return $giftCardPayments;
     }
-
 }

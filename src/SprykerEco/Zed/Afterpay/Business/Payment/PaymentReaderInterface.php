@@ -2,10 +2,13 @@
 
 /**
  * MIT License
- * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
+ * For full license information, please view the LICENSE file that was distributed with this source code.
  */
 
 namespace SprykerEco\Zed\Afterpay\Business\Payment;
+
+use Generated\Shared\Transfer\AfterpayPaymentOrderItemTransfer;
+use Generated\Shared\Transfer\AfterpayPaymentTransfer;
 
 interface PaymentReaderInterface
 {
@@ -14,7 +17,7 @@ interface PaymentReaderInterface
      *
      * @return \Generated\Shared\Transfer\AfterpayPaymentTransfer
      */
-    public function getPaymentByIdSalesOrder($idSalesOrder);
+    public function getPaymentByIdSalesOrder(int $idSalesOrder): AfterpayPaymentTransfer;
 
     /**
      * @param int $idSalesOrderItem
@@ -22,5 +25,5 @@ interface PaymentReaderInterface
      *
      * @return \Generated\Shared\Transfer\AfterpayPaymentOrderItemTransfer
      */
-    public function getPaymentOrderItemByIdSalesOrderItemAndIdPayment($idSalesOrderItem, $idPayment);
+    public function getPaymentOrderItemByIdSalesOrderItemAndIdPayment(int $idSalesOrderItem, int $idPayment): AfterpayPaymentOrderItemTransfer;
 }

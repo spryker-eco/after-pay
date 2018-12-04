@@ -2,44 +2,79 @@
 
 /**
  * MIT License
- * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
+ * For full license information, please view the LICENSE file that was distributed with this source code.
  */
 
 namespace SprykerEco\Zed\Afterpay\Business;
 
 use Spryker\Zed\Kernel\Business\AbstractBusinessFactory;
+use SprykerEco\Shared\Afterpay\AfterpayConfig;
 use SprykerEco\Shared\Afterpay\AfterpayConstants;
 use SprykerEco\Zed\Afterpay\AfterpayDependencyProvider;
 use SprykerEco\Zed\Afterpay\Business\AdditionalServices\Handler\LookupCustomerHandler;
+use SprykerEco\Zed\Afterpay\Business\AdditionalServices\Handler\LookupCustomerHandlerInterface;
 use SprykerEco\Zed\Afterpay\Business\AdditionalServices\Handler\LookupInstallmentPlansHandler;
+use SprykerEco\Zed\Afterpay\Business\AdditionalServices\Handler\LookupInstallmentPlansHandlerInterface;
 use SprykerEco\Zed\Afterpay\Business\AdditionalServices\Handler\ValidateBankAccountHandler;
+use SprykerEco\Zed\Afterpay\Business\AdditionalServices\Handler\ValidateBankAccountHandlerInterface;
 use SprykerEco\Zed\Afterpay\Business\AdditionalServices\Handler\ValidateCustomerHandler;
+use SprykerEco\Zed\Afterpay\Business\AdditionalServices\Handler\ValidateCustomerHandlerInterface;
 use SprykerEco\Zed\Afterpay\Business\Api\Adapter\AdapterFactory;
+use SprykerEco\Zed\Afterpay\Business\Api\Adapter\AdapterFactoryInterface;
+use SprykerEco\Zed\Afterpay\Business\Api\Adapter\AdapterInterface;
 use SprykerEco\Zed\Afterpay\Business\Api\Adapter\AfterpayApiAdapter;
 use SprykerEco\Zed\Afterpay\Business\Hook\PostSaveHook;
+use SprykerEco\Zed\Afterpay\Business\Hook\PostSaveHookInterface;
 use SprykerEco\Zed\Afterpay\Business\Order\Saver;
+use SprykerEco\Zed\Afterpay\Business\Order\SaverInterface;
 use SprykerEco\Zed\Afterpay\Business\Payment\Handler\RiskCheck\AvailablePaymentMethodsHandler;
+use SprykerEco\Zed\Afterpay\Business\Payment\Handler\RiskCheck\AvailablePaymentMethodsHandlerInterface;
 use SprykerEco\Zed\Afterpay\Business\Payment\Mapper\OrderToRequestTransfer;
+use SprykerEco\Zed\Afterpay\Business\Payment\Mapper\OrderToRequestTransferInterface;
 use SprykerEco\Zed\Afterpay\Business\Payment\Mapper\QuoteToRequestTransfer;
+use SprykerEco\Zed\Afterpay\Business\Payment\Mapper\QuoteToRequestTransferInterface;
 use SprykerEco\Zed\Afterpay\Business\Payment\PaymentReader;
+use SprykerEco\Zed\Afterpay\Business\Payment\PaymentReaderInterface;
 use SprykerEco\Zed\Afterpay\Business\Payment\PaymentWriter;
+use SprykerEco\Zed\Afterpay\Business\Payment\PaymentWriterInterface;
 use SprykerEco\Zed\Afterpay\Business\Payment\Transaction\Authorize\PaymentAuthorizeWriter;
+use SprykerEco\Zed\Afterpay\Business\Payment\Transaction\Authorize\PaymentAuthorizeWriterInterface;
+use SprykerEco\Zed\Afterpay\Business\Payment\Transaction\Authorize\RequestBuilder\AuthorizeRequestBuilderInterface;
 use SprykerEco\Zed\Afterpay\Business\Payment\Transaction\Authorize\RequestBuilder\OneStepAuthorizeRequestBuilder;
 use SprykerEco\Zed\Afterpay\Business\Payment\Transaction\Authorize\RequestBuilder\TwoStepsAuthorizeRequestBuilder;
 use SprykerEco\Zed\Afterpay\Business\Payment\Transaction\AuthorizeTransaction;
+use SprykerEco\Zed\Afterpay\Business\Payment\Transaction\AuthorizeTransactionInterface;
 use SprykerEco\Zed\Afterpay\Business\Payment\Transaction\Cancel\CancelRequestBuilder;
+use SprykerEco\Zed\Afterpay\Business\Payment\Transaction\Cancel\CancelRequestBuilderInterface;
 use SprykerEco\Zed\Afterpay\Business\Payment\Transaction\CancelTransaction;
+use SprykerEco\Zed\Afterpay\Business\Payment\Transaction\CancelTransactionInterface;
 use SprykerEco\Zed\Afterpay\Business\Payment\Transaction\Capture\CaptureRequestBuilder;
+use SprykerEco\Zed\Afterpay\Business\Payment\Transaction\Capture\CaptureRequestBuilderInterface;
 use SprykerEco\Zed\Afterpay\Business\Payment\Transaction\CaptureTransaction;
+use SprykerEco\Zed\Afterpay\Business\Payment\Transaction\CaptureTransactionInterface;
 use SprykerEco\Zed\Afterpay\Business\Payment\Transaction\Handler\AuthorizeTransactionHandler;
+use SprykerEco\Zed\Afterpay\Business\Payment\Transaction\Handler\AuthorizeTransactionHandlerInterface;
 use SprykerEco\Zed\Afterpay\Business\Payment\Transaction\Handler\CancelTransactionHandler;
-use SprykerEco\Zed\Afterpay\Business\Payment\Transaction\Logger\TransactionLogger;
-use SprykerEco\Zed\Afterpay\Business\Payment\Transaction\PriceToPayProvider;
+use SprykerEco\Zed\Afterpay\Business\Payment\Transaction\Handler\CancelTransactionHandlerInterface;
 use SprykerEco\Zed\Afterpay\Business\Payment\Transaction\Handler\CaptureTransactionHandler;
+use SprykerEco\Zed\Afterpay\Business\Payment\Transaction\Handler\CaptureTransactionHandlerInterface;
 use SprykerEco\Zed\Afterpay\Business\Payment\Transaction\Handler\RefundTransactionHandler;
+use SprykerEco\Zed\Afterpay\Business\Payment\Transaction\Handler\RefundTransactionHandlerInterface;
+use SprykerEco\Zed\Afterpay\Business\Payment\Transaction\Logger\TransactionLogger;
+use SprykerEco\Zed\Afterpay\Business\Payment\Transaction\Logger\TransactionLoggerInterface;
+use SprykerEco\Zed\Afterpay\Business\Payment\Transaction\PriceToPayProvider;
+use SprykerEco\Zed\Afterpay\Business\Payment\Transaction\PriceToPayProviderInterface;
 use SprykerEco\Zed\Afterpay\Business\Payment\Transaction\Refund\RefundRequestBuilder;
+use SprykerEco\Zed\Afterpay\Business\Payment\Transaction\Refund\RefundRequestBuilderInterface;
 use SprykerEco\Zed\Afterpay\Business\Payment\Transaction\RefundTransaction;
+use SprykerEco\Zed\Afterpay\Business\Payment\Transaction\RefundTransactionInterface;
 use SprykerEco\Zed\Afterpay\Business\Payment\Transaction\TransactionLogReader;
+use SprykerEco\Zed\Afterpay\Business\Payment\Transaction\TransactionLogReaderInterface;
+use SprykerEco\Zed\Afterpay\Dependency\Facade\AfterpayToCustomerInterface;
+use SprykerEco\Zed\Afterpay\Dependency\Facade\AfterpayToMoneyInterface;
+use SprykerEco\Zed\Afterpay\Dependency\Facade\AfterpayToPaymentInterface;
+use SprykerEco\Zed\Afterpay\Dependency\Facade\AfterpayToStoreInterface;
+use SprykerEco\Zed\Afterpay\Dependency\Service\AfterpayToUtilEncodingInterface;
 
 /**
  * @method \SprykerEco\Zed\Afterpay\Persistence\AfterpayQueryContainerInterface getQueryContainer()
@@ -50,7 +85,7 @@ class AfterpayBusinessFactory extends AbstractBusinessFactory
     /**
      * @return \SprykerEco\Zed\Afterpay\Business\Payment\Handler\RiskCheck\AvailablePaymentMethodsHandlerInterface
      */
-    public function createAvailablePaymentMethodsHandler()
+    public function createAvailablePaymentMethodsHandler(): AvailablePaymentMethodsHandlerInterface
     {
         return new AvailablePaymentMethodsHandler(
             $this->createApiAdapter(),
@@ -61,21 +96,19 @@ class AfterpayBusinessFactory extends AbstractBusinessFactory
     /**
      * @return \SprykerEco\Zed\Afterpay\Business\Order\SaverInterface
      */
-    public function createOrderSaver()
+    public function createOrderSaver(): SaverInterface
     {
-        return new Saver(
-            $this->getConfig()
-        );
+        return new Saver($this->getConfig());
     }
 
     /**
      * @return \SprykerEco\Zed\Afterpay\Business\Payment\Transaction\Handler\AuthorizeTransactionHandlerInterface
      */
-    public function createAuthorizeTransactionHandler()
+    public function createAuthorizeTransactionHandler(): AuthorizeTransactionHandlerInterface
     {
         return new AuthorizeTransactionHandler(
             $this->createAuthorizeTransaction(),
-            $this->createAuthorizeRequestBuilder(),
+            $this->getAuthorizeRequestBuilder(),
             $this->createPaymentWriter(),
             $this->createPriceToPayProvider()
         );
@@ -84,7 +117,7 @@ class AfterpayBusinessFactory extends AbstractBusinessFactory
     /**
      * @return \SprykerEco\Zed\Afterpay\Business\Payment\Transaction\Handler\CaptureTransactionHandlerInterface
      */
-    public function createCaptureTransactionHandler()
+    public function createCaptureTransactionHandler(): CaptureTransactionHandlerInterface
     {
         return new CaptureTransactionHandler(
             $this->createCaptureTransaction(),
@@ -97,7 +130,7 @@ class AfterpayBusinessFactory extends AbstractBusinessFactory
     /**
      * @return \SprykerEco\Zed\Afterpay\Business\Payment\Transaction\Handler\RefundTransactionHandlerInterface
      */
-    public function createRefundTransactionHandler()
+    public function createRefundTransactionHandler(): RefundTransactionHandlerInterface
     {
         return new RefundTransactionHandler(
             $this->createRefundTransaction(),
@@ -111,7 +144,7 @@ class AfterpayBusinessFactory extends AbstractBusinessFactory
     /**
      * @return \SprykerEco\Zed\Afterpay\Business\Payment\Transaction\Handler\CancelTransactionHandlerInterface
      */
-    public function createCancelTransactionHandler()
+    public function createCancelTransactionHandler(): CancelTransactionHandlerInterface
     {
         return new CancelTransactionHandler(
             $this->createCancelTransaction(),
@@ -125,17 +158,15 @@ class AfterpayBusinessFactory extends AbstractBusinessFactory
     /**
      * @return \SprykerEco\Zed\Afterpay\Business\Payment\PaymentReaderInterface
      */
-    public function createPaymentReader()
+    public function createPaymentReader(): PaymentReaderInterface
     {
-        return new PaymentReader(
-            $this->getQueryContainer()
-        );
+        return new PaymentReader($this->getQueryContainer());
     }
 
     /**
      * @return \SprykerEco\Zed\Afterpay\Business\Hook\PostSaveHookInterface
      */
-    public function createPostSaveHook()
+    public function createPostSaveHook(): PostSaveHookInterface
     {
         return new PostSaveHook(
             $this->createTransactionLogReader(),
@@ -146,7 +177,7 @@ class AfterpayBusinessFactory extends AbstractBusinessFactory
     /**
      * @return \SprykerEco\Zed\Afterpay\Business\Payment\Transaction\Capture\CaptureRequestBuilderInterface
      */
-    protected function createCaptureRequestBuilder()
+    public function createCaptureRequestBuilder(): CaptureRequestBuilderInterface
     {
         return new CaptureRequestBuilder(
             $this->createOrderToRequestMapper(),
@@ -157,7 +188,7 @@ class AfterpayBusinessFactory extends AbstractBusinessFactory
     /**
      * @return \SprykerEco\Zed\Afterpay\Business\Payment\Transaction\CaptureTransactionInterface
      */
-    protected function createCaptureTransaction()
+    public function createCaptureTransaction(): CaptureTransactionInterface
     {
         return new CaptureTransaction(
             $this->createTransactionLogger(),
@@ -168,7 +199,7 @@ class AfterpayBusinessFactory extends AbstractBusinessFactory
     /**
      * @return \SprykerEco\Zed\Afterpay\Business\Payment\Transaction\RefundTransactionInterface
      */
-    protected function createRefundTransaction()
+    public function createRefundTransaction(): RefundTransactionInterface
     {
         return new RefundTransaction(
             $this->createTransactionLogger(),
@@ -179,7 +210,7 @@ class AfterpayBusinessFactory extends AbstractBusinessFactory
     /**
      * @return \SprykerEco\Zed\Afterpay\Business\AdditionalServices\Handler\ValidateCustomerHandlerInterface
      */
-    public function createValidateCustomerHandler()
+    public function createValidateCustomerHandler(): ValidateCustomerHandlerInterface
     {
         return new ValidateCustomerHandler(
             $this->createApiAdapter(),
@@ -190,47 +221,39 @@ class AfterpayBusinessFactory extends AbstractBusinessFactory
     /**
      * @return \SprykerEco\Zed\Afterpay\Business\AdditionalServices\Handler\ValidateBankAccountHandlerInterface
      */
-    public function createValidateBankAccountHandler()
+    public function createValidateBankAccountHandler(): ValidateBankAccountHandlerInterface
     {
-        return new ValidateBankAccountHandler(
-            $this->createApiAdapter()
-        );
+        return new ValidateBankAccountHandler($this->createApiAdapter());
     }
 
     /**
      * @return \SprykerEco\Zed\Afterpay\Business\AdditionalServices\Handler\LookupCustomerHandlerInterface
      */
-    public function createLookupCustomerHandler()
+    public function createLookupCustomerHandler(): LookupCustomerHandlerInterface
     {
-        return new LookupCustomerHandler(
-            $this->createApiAdapter()
-        );
+        return new LookupCustomerHandler($this->createApiAdapter());
     }
 
     /**
      * @return \SprykerEco\Zed\Afterpay\Business\AdditionalServices\Handler\LookupInstallmentPlansHandlerInterface
      */
-    public function createLookupInstallmentPlansHandler()
+    public function createLookupInstallmentPlansHandler(): LookupInstallmentPlansHandlerInterface
     {
-        return new LookupInstallmentPlansHandler(
-            $this->createApiAdapter()
-        );
+        return new LookupInstallmentPlansHandler($this->createApiAdapter());
     }
 
     /**
      * @return \SprykerEco\Zed\Afterpay\Business\Payment\PaymentWriterInterface
      */
-    protected function createPaymentWriter()
+    public function createPaymentWriter(): PaymentWriterInterface
     {
-        return new PaymentWriter(
-            $this->getQueryContainer()
-        );
+        return new PaymentWriter($this->getQueryContainer());
     }
 
     /**
      * @return \SprykerEco\Zed\Afterpay\Business\Payment\Transaction\AuthorizeTransactionInterface
      */
-    protected function createAuthorizeTransaction()
+    public function createAuthorizeTransaction(): AuthorizeTransactionInterface
     {
         return new AuthorizeTransaction(
             $this->createTransactionLogger(),
@@ -242,7 +265,7 @@ class AfterpayBusinessFactory extends AbstractBusinessFactory
     /**
      * @return \SprykerEco\Zed\Afterpay\Business\Payment\Transaction\CancelTransactionInterface
      */
-    protected function createCancelTransaction()
+    public function createCancelTransaction(): CancelTransactionInterface
     {
         return new CancelTransaction(
             $this->createTransactionLogger(),
@@ -253,37 +276,31 @@ class AfterpayBusinessFactory extends AbstractBusinessFactory
     /**
      * @return \SprykerEco\Zed\Afterpay\Business\Payment\Transaction\Logger\TransactionLoggerInterface
      */
-    protected function createTransactionLogger()
+    public function createTransactionLogger(): TransactionLoggerInterface
     {
-        return new TransactionLogger(
-            $this->getUtilEncodingService()
-        );
+        return new TransactionLogger($this->getUtilEncodingService());
     }
 
     /**
      * @return \SprykerEco\Zed\Afterpay\Business\Api\Adapter\AdapterInterface
      */
-    public function createApiAdapter()
+    public function createApiAdapter(): AdapterInterface
     {
-        return new AfterpayApiAdapter(
-            $this->createAdapterFactory()
-        );
+        return new AfterpayApiAdapter($this->createAdapterFactory());
     }
 
     /**
-     * @return
+     * @return \SprykerEco\Zed\Afterpay\Business\Payment\Transaction\Authorize\PaymentAuthorizeWriterInterface
      */
-    protected function createPaymentAuthorizeWriter()
+    public function createPaymentAuthorizeWriter(): PaymentAuthorizeWriterInterface
     {
-        return new PaymentAuthorizeWriter(
-            $this->getQueryContainer()
-        );
+        return new PaymentAuthorizeWriter($this->getQueryContainer());
     }
 
     /**
      * @return \SprykerEco\Zed\Afterpay\Business\Api\Adapter\AdapterFactoryInterface
      */
-    protected function createAdapterFactory()
+    public function createAdapterFactory(): AdapterFactoryInterface
     {
         return new AdapterFactory();
     }
@@ -291,14 +308,14 @@ class AfterpayBusinessFactory extends AbstractBusinessFactory
     /**
      * @return \SprykerEco\Zed\Afterpay\Business\Payment\Transaction\Authorize\RequestBuilder\AuthorizeRequestBuilderInterface
      */
-    protected function getAuthorizeRequestBuilder()
+    public function getAuthorizeRequestBuilder(): AuthorizeRequestBuilderInterface
     {
         $authorizeWorkflow = $this->getConfig()->getAfterpayAuthorizeWorkflow();
 
         switch ($authorizeWorkflow) {
-            case AfterpayConstants::AFTERPAY_AUTHORIZE_WORKFLOW_ONE_STEP:
+            case AfterpayConfig::AFTERPAY_AUTHORIZE_WORKFLOW_ONE_STEP:
                 return $this->createOneStepAuthorizeRequestBuilder();
-            case AfterpayConstants::AFTERPAY_AUTHORIZE_WORKFLOW_TWO_STEPS:
+            case AfterpayConfig::AFTERPAY_AUTHORIZE_WORKFLOW_TWO_STEPS:
                 return $this->createTwoStepsAuthorizeRequestBuilder();
             default:
                 return $this->createOneStepAuthorizeRequestBuilder();
@@ -308,7 +325,7 @@ class AfterpayBusinessFactory extends AbstractBusinessFactory
     /**
      * @return \SprykerEco\Zed\Afterpay\Business\Payment\Transaction\Cancel\CancelRequestBuilderInterface
      */
-    protected function createCancelRequestBuilder()
+    public function createCancelRequestBuilder(): CancelRequestBuilderInterface
     {
         return new CancelRequestBuilder(
             $this->createOrderToRequestMapper(),
@@ -319,7 +336,7 @@ class AfterpayBusinessFactory extends AbstractBusinessFactory
     /**
      * @return \SprykerEco\Zed\Afterpay\Business\Payment\Transaction\Refund\RefundRequestBuilderInterface
      */
-    protected function createRefundRequestBuilder()
+    public function createRefundRequestBuilder(): RefundRequestBuilderInterface
     {
         return new RefundRequestBuilder(
             $this->createOrderToRequestMapper(),
@@ -328,19 +345,17 @@ class AfterpayBusinessFactory extends AbstractBusinessFactory
     }
 
     /**
-     * @return \SprykerEco\Zed\Afterpay\Business\Payment\Transaction\Authorize\RequestBuilder\OneStepAuthorizeRequestBuilder|\SprykerEco\Zed\Afterpay\Business\Payment\Transaction\Authorize\RequestBuilder\AuthorizeRequestBuilderInterface
+     * @return \SprykerEco\Zed\Afterpay\Business\Payment\Transaction\Authorize\RequestBuilder\AuthorizeRequestBuilderInterface
      */
-    protected function createOneStepAuthorizeRequestBuilder()
+    public function createOneStepAuthorizeRequestBuilder(): AuthorizeRequestBuilderInterface
     {
-        return new OneStepAuthorizeRequestBuilder(
-            $this->createOrderToRequestMapper()
-        );
+        return new OneStepAuthorizeRequestBuilder($this->createOrderToRequestMapper());
     }
 
     /**
      * @return \SprykerEco\Zed\Afterpay\Business\Payment\Mapper\OrderToRequestTransferInterface
      */
-    protected function createOrderToRequestMapper()
+    public function createOrderToRequestMapper(): OrderToRequestTransferInterface
     {
         return new OrderToRequestTransfer(
             $this->getMoneyFacade(),
@@ -350,19 +365,17 @@ class AfterpayBusinessFactory extends AbstractBusinessFactory
     }
 
     /**
-     * @return \SprykerEco\Zed\Afterpay\Business\Payment\Transaction\Authorize\RequestBuilder\TwoStepsAuthorizeRequestBuilder|\SprykerEco\Zed\Afterpay\Business\Payment\Transaction\Authorize\RequestBuilder\AuthorizeRequestBuilderInterface
+     * @return \SprykerEco\Zed\Afterpay\Business\Payment\Transaction\Authorize\RequestBuilder\AuthorizeRequestBuilderInterface
      */
-    protected function createTwoStepsAuthorizeRequestBuilder()
+    public function createTwoStepsAuthorizeRequestBuilder(): AuthorizeRequestBuilderInterface
     {
-        return new TwoStepsAuthorizeRequestBuilder(
-            $this->createOrderToRequestMapper()
-        );
+        return new TwoStepsAuthorizeRequestBuilder($this->createOrderToRequestMapper());
     }
 
     /**
      * @return \SprykerEco\Zed\Afterpay\Dependency\Service\AfterpayToUtilEncodingInterface
      */
-    protected function getUtilEncodingService()
+    public function getUtilEncodingService(): AfterpayToUtilEncodingInterface
     {
         return $this->getProvidedDependency(AfterpayDependencyProvider::SERVICE_UTIL_ENCODING);
     }
@@ -370,7 +383,7 @@ class AfterpayBusinessFactory extends AbstractBusinessFactory
     /**
      * @return \SprykerEco\Zed\Afterpay\Business\Payment\Mapper\QuoteToRequestTransferInterface
      */
-    protected function createQuoteToRequestMapper()
+    public function createQuoteToRequestMapper(): QuoteToRequestTransferInterface
     {
         return new QuoteToRequestTransfer(
             $this->getMoneyFacade(),
@@ -381,7 +394,7 @@ class AfterpayBusinessFactory extends AbstractBusinessFactory
     /**
      * @return \SprykerEco\Zed\Afterpay\Dependency\Facade\AfterpayToMoneyInterface
      */
-    protected function getMoneyFacade()
+    public function getMoneyFacade(): AfterpayToMoneyInterface
     {
         return $this->getProvidedDependency(AfterpayDependencyProvider::FACADE_MONEY);
     }
@@ -389,23 +402,15 @@ class AfterpayBusinessFactory extends AbstractBusinessFactory
     /**
      * @return \SprykerEco\Zed\Afterpay\Dependency\Facade\AfterpayToCustomerInterface
      */
-    protected function getAfterpayToCustomerBridge()
+    public function getAfterpayToCustomerBridge(): AfterpayToCustomerInterface
     {
         return $this->getProvidedDependency(AfterpayDependencyProvider::FACADE_CUSTOMER);
     }
 
     /**
-     * @return \SprykerEco\Zed\Afterpay\Dependency\Facade\AfterpayToSalesInterface
-     */
-    protected function getAfterpayToSalesBridge()
-    {
-        return $this->getProvidedDependency(AfterpayDependencyProvider::FACADE_SALES);
-    }
-
-    /**
      * @return \SprykerEco\Zed\Afterpay\Dependency\Facade\AfterpayToStoreInterface
      */
-    protected function getStoreFacade()
+    public function getStoreFacade(): AfterpayToStoreInterface
     {
         return $this->getProvidedDependency(AfterpayDependencyProvider::FACADE_STORE);
     }
@@ -413,7 +418,7 @@ class AfterpayBusinessFactory extends AbstractBusinessFactory
     /**
      * @return \SprykerEco\Zed\Afterpay\Dependency\Facade\AfterpayToPaymentInterface
      */
-    protected function getPaymentFacade()
+    public function getPaymentFacade(): AfterpayToPaymentInterface
     {
         return $this->getProvidedDependency(AfterpayDependencyProvider::FACADE_PAYMENT);
     }
@@ -421,19 +426,16 @@ class AfterpayBusinessFactory extends AbstractBusinessFactory
     /**
      * @return \SprykerEco\Zed\Afterpay\Business\Payment\Transaction\TransactionLogReaderInterface
      */
-    protected function createTransactionLogReader()
+    public function createTransactionLogReader(): TransactionLogReaderInterface
     {
-        return new TransactionLogReader(
-            $this->getQueryContainer()
-        );
+        return new TransactionLogReader($this->getQueryContainer());
     }
 
     /**
      * @return \SprykerEco\Zed\Afterpay\Business\Payment\Transaction\PriceToPayProviderInterface
      */
-    protected function createPriceToPayProvider()
+    public function createPriceToPayProvider(): PriceToPayProviderInterface
     {
         return new PriceToPayProvider($this->getPaymentFacade());
     }
-
 }

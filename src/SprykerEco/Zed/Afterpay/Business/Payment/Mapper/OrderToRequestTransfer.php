@@ -2,7 +2,7 @@
 
 /**
  * MIT License
- * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
+ * For full license information, please view the LICENSE file that was distributed with this source code.
  */
 
 namespace SprykerEco\Zed\Afterpay\Business\Payment\Mapper;
@@ -19,7 +19,7 @@ use Generated\Shared\Transfer\AfterpayRequestOrderTransfer;
 use Generated\Shared\Transfer\AfterpayRequestPaymentTransfer;
 use Generated\Shared\Transfer\ItemTransfer;
 use Generated\Shared\Transfer\OrderTransfer;
-use Spryker\Shared\Kernel\Store;
+use SprykerEco\Shared\Afterpay\AfterpayConfig;
 use SprykerEco\Shared\Afterpay\AfterpayConstants;
 use SprykerEco\Zed\Afterpay\Business\Payment\Transaction\PriceToPayProviderInterface;
 use SprykerEco\Zed\Afterpay\Dependency\Facade\AfterpayToMoneyInterface;
@@ -27,8 +27,8 @@ use SprykerEco\Zed\Afterpay\Dependency\Facade\AfterpayToStoreInterface;
 
 class OrderToRequestTransfer implements OrderToRequestTransferInterface
 {
-    const NEGATIVE_MULTIPLIER = -1;
-    const GIFT_CARD_PROVIDER = 'GiftCard';
+    public const NEGATIVE_MULTIPLIER = -1;
+    public const GIFT_CARD_PROVIDER = 'GiftCard';
 
     /**
      * @var \SprykerEco\Zed\Afterpay\Dependency\Facade\AfterpayToMoneyInterface
@@ -44,7 +44,7 @@ class OrderToRequestTransfer implements OrderToRequestTransferInterface
      * @var array
      */
     protected static $paymentMethods = [
-        AfterpayConstants::PAYMENT_METHOD_INVOICE => AfterpayConstants::PAYMENT_TYPE_INVOICE,
+        AfterpayConfig::PAYMENT_METHOD_INVOICE => AfterpayConfig::PAYMENT_TYPE_INVOICE,
     ];
 
     /**
@@ -68,13 +68,11 @@ class OrderToRequestTransfer implements OrderToRequestTransferInterface
     }
 
     /**
-     * @todo consider to split this class into separate one-s, like orderToAuthorizeRequest, orderToCaptureRequest, etc.
-     *
      * @param \Generated\Shared\Transfer\AfterpayCallTransfer $afterpayCallTransfer
      *
      * @return \Generated\Shared\Transfer\AfterpayAuthorizeRequestTransfer
      */
-    public function orderToAuthorizeRequest(AfterpayCallTransfer $afterpayCallTransfer)
+    public function orderToAuthorizeRequest(AfterpayCallTransfer $afterpayCallTransfer): AfterpayAuthorizeRequestTransfer
     {
         $requestTransfer = new AfterpayAuthorizeRequestTransfer();
 
@@ -97,7 +95,7 @@ class OrderToRequestTransfer implements OrderToRequestTransferInterface
      *
      * @return \Generated\Shared\Transfer\AfterpayCaptureRequestTransfer
      */
-    public function orderToBaseCaptureRequest(AfterpayCallTransfer $afterpayCallTransfer)
+    public function orderToBaseCaptureRequest(AfterpayCallTransfer $afterpayCallTransfer): AfterpayCaptureRequestTransfer
     {
         $requestTransfer = new AfterpayCaptureRequestTransfer();
 
@@ -116,7 +114,7 @@ class OrderToRequestTransfer implements OrderToRequestTransferInterface
      *
      * @return \Generated\Shared\Transfer\AfterpayCancelRequestTransfer
      */
-    public function orderToBaseCancelRequest(AfterpayCallTransfer $afterpayCallTransfer)
+    public function orderToBaseCancelRequest(AfterpayCallTransfer $afterpayCallTransfer): AfterpayCancelRequestTransfer
     {
         $requestTransfer = new AfterpayCancelRequestTransfer();
 
@@ -135,7 +133,7 @@ class OrderToRequestTransfer implements OrderToRequestTransferInterface
      *
      * @return \Generated\Shared\Transfer\AfterpayRefundRequestTransfer
      */
-    public function orderToBaseRefundRequest(OrderTransfer $orderTransfer)
+    public function orderToBaseRefundRequest(OrderTransfer $orderTransfer): AfterpayRefundRequestTransfer
     {
         $refundRequestTransfer = new AfterpayRefundRequestTransfer();
 
@@ -151,7 +149,7 @@ class OrderToRequestTransfer implements OrderToRequestTransferInterface
      *
      * @return \Generated\Shared\Transfer\AfterpayRequestOrderItemTransfer
      */
-    public function orderItemToAfterpayItemRequest(ItemTransfer $itemTransfer)
+    public function orderItemToAfterpayItemRequest(ItemTransfer $itemTransfer): AfterpayRequestOrderItemTransfer
     {
         return $this->buildOrderItemRequestTransfer($itemTransfer);
     }
@@ -161,7 +159,7 @@ class OrderToRequestTransfer implements OrderToRequestTransferInterface
      *
      * @return \Generated\Shared\Transfer\AfterpayRequestCustomerTransfer
      */
-    protected function buildCustomerRequestTransfer(AfterpayCallTransfer $afterpayCallTransfer)
+    protected function buildCustomerRequestTransfer(AfterpayCallTransfer $afterpayCallTransfer): AfterpayRequestCustomerTransfer
     {
         $billingAddressTransfer = $afterpayCallTransfer->getBillingAddress();
         $customerRequestTransfer = new AfterpayRequestCustomerTransfer();
@@ -170,7 +168,7 @@ class OrderToRequestTransfer implements OrderToRequestTransferInterface
             ->setFirstName($billingAddressTransfer->getFirstName())
             ->setLastName($billingAddressTransfer->getLastName())
             ->setConversationalLanguage($this->getStoreCountryIso2())
-            ->setCustomerCategory(AfterpayConstants::API_CUSTOMER_CATEGORY_PERSON)
+            ->setCustomerCategory(AfterpayConfig::API_CUSTOMER_CATEGORY_PERSON)
             ->setSalutation($billingAddressTransfer->getSalutation())
             ->setEmail($afterpayCallTransfer->getEmail());
 
@@ -186,7 +184,7 @@ class OrderToRequestTransfer implements OrderToRequestTransferInterface
      *
      * @return \Generated\Shared\Transfer\AfterpayRequestOrderTransfer
      */
-    protected function buildOrderWithItemsRequestTransfer(AfterpayCallTransfer $afterpayCallTransfer)
+    protected function buildOrderWithItemsRequestTransfer(AfterpayCallTransfer $afterpayCallTransfer): AfterpayRequestOrderTransfer
     {
         $orderRequestTransfer = $this->buildOrderRequestTransfer($afterpayCallTransfer);
 
@@ -204,7 +202,7 @@ class OrderToRequestTransfer implements OrderToRequestTransferInterface
      *
      * @return \Generated\Shared\Transfer\AfterpayRequestOrderTransfer
      */
-    protected function buildOrderRequestTransfer(AfterpayCallTransfer $afterpayCallTransfer)
+    protected function buildOrderRequestTransfer(AfterpayCallTransfer $afterpayCallTransfer): AfterpayRequestOrderTransfer
     {
         $orderRequestTransfer = new AfterpayRequestOrderTransfer();
         $orderRequestTransfer
@@ -220,7 +218,7 @@ class OrderToRequestTransfer implements OrderToRequestTransferInterface
      *
      * @return \Generated\Shared\Transfer\AfterpayRequestPaymentTransfer
      */
-    protected function buildPaymentRequestTransfer(AfterpayCallTransfer $afterpayCallTransfer)
+    protected function buildPaymentRequestTransfer(AfterpayCallTransfer $afterpayCallTransfer): AfterpayRequestPaymentTransfer
     {
         $paymentMethod = $afterpayCallTransfer->getPaymentMethod();
 
@@ -235,7 +233,7 @@ class OrderToRequestTransfer implements OrderToRequestTransferInterface
      *
      * @return \Generated\Shared\Transfer\AfterpayRequestOrderItemTransfer
      */
-    protected function buildOrderItemRequestTransfer(ItemTransfer $itemTransfer)
+    protected function buildOrderItemRequestTransfer(ItemTransfer $itemTransfer): AfterpayRequestOrderItemTransfer
     {
         $orderItemRequestTransfer = new AfterpayRequestOrderItemTransfer();
 
@@ -254,7 +252,7 @@ class OrderToRequestTransfer implements OrderToRequestTransferInterface
      *
      * @return \Generated\Shared\Transfer\AfterpayRequestAddressTransfer
      */
-    protected function buildCustomerBillingAddressRequestTransfer(AfterpayCallTransfer $afterpayCallTransfer)
+    protected function buildCustomerBillingAddressRequestTransfer(AfterpayCallTransfer $afterpayCallTransfer): AfterpayRequestAddressTransfer
     {
         $customerAddressTransfer = $afterpayCallTransfer->getBillingAddress();
         $customerAddressRequestTransfer = new AfterpayRequestAddressTransfer();
@@ -272,25 +270,17 @@ class OrderToRequestTransfer implements OrderToRequestTransferInterface
     /**
      * @return string
      */
-    protected function getStoreCountryIso2()
+    protected function getStoreCountryIso2(): string
     {
         return $this->storeFacade->getCurrentStore()->getName();
     }
 
     /**
-     * @todo think about moving such int-to-decimal and back operations to the Api layer. Do all the operations
-     * in integers, on the business side, and translate ints to decimal-strings right before building json requests.
-     * ! Make sure to pass the right request payload to the transaction logs (with floats, not ints) !
-     * To do this, it may be necessary to duplicate all request transfer objects:
-     * "business" one-s will contain totals as ints
-     * "api" one-s will contain totals as strings
-     * Like this it will be easier to see, what's happening with the data.
-     *
      * @param \Generated\Shared\Transfer\AfterpayCallTransfer $afterpayCallTransfer
      *
      * @return string
      */
-    protected function getStringDecimalOrderGrossTotal(AfterpayCallTransfer $afterpayCallTransfer)
+    protected function getStringDecimalOrderGrossTotal(AfterpayCallTransfer $afterpayCallTransfer): string
     {
         $orderGrossTotal = (int)$afterpayCallTransfer->getTotals()->getGrandTotal();
 
@@ -300,9 +290,9 @@ class OrderToRequestTransfer implements OrderToRequestTransferInterface
     /**
      * @param \Generated\Shared\Transfer\AfterpayCallTransfer $afterpayCallTransfer
      *
-     * @return float
+     * @return string
      */
-    protected function getStringDecimalOrderNetTotal(AfterpayCallTransfer $afterpayCallTransfer)
+    protected function getStringDecimalOrderNetTotal(AfterpayCallTransfer $afterpayCallTransfer): string
     {
         $orderGrossTotal = (int)$afterpayCallTransfer->getTotals()->getGrandTotal();
         $orderTaxTotal = (int)$afterpayCallTransfer->getTotals()->getTaxTotal()->getAmount();
@@ -314,9 +304,9 @@ class OrderToRequestTransfer implements OrderToRequestTransferInterface
     /**
      * @param \Generated\Shared\Transfer\ItemTransfer $itemTransfer
      *
-     * @return float
+     * @return string
      */
-    protected function getStringDecimalItemGrossUnitPrice(ItemTransfer $itemTransfer)
+    protected function getStringDecimalItemGrossUnitPrice(ItemTransfer $itemTransfer): string
     {
         $itemUnitGrossPrice = (int)$itemTransfer->getUnitPriceToPayAggregation();
 
@@ -326,9 +316,9 @@ class OrderToRequestTransfer implements OrderToRequestTransferInterface
     /**
      * @param \Generated\Shared\Transfer\ItemTransfer $itemTransfer
      *
-     * @return float
+     * @return string
      */
-    protected function getStringDecimalItemNetUnitPrice(ItemTransfer $itemTransfer)
+    protected function getStringDecimalItemNetUnitPrice(ItemTransfer $itemTransfer): string
     {
         $itemUnitGrossPriceAmount = (int)$itemTransfer->getUnitPriceToPayAggregation();
         $itemUnitTaxAmount = (int)$itemTransfer->getUnitTaxAmountFullAggregation();
@@ -339,16 +329,17 @@ class OrderToRequestTransfer implements OrderToRequestTransferInterface
 
     /**
      * @param \Generated\Shared\Transfer\OrderTransfer $orderWithPaymentTransfer
-     * @param  \Generated\Shared\Transfer\AfterpayRequestOrderTransfer $orderRequestTransfer
+     * @param \Generated\Shared\Transfer\AfterpayRequestOrderTransfer $orderRequestTransfer
      *
      * @return void
      */
-    protected function addGiftcardItems(OrderTransfer $orderWithPaymentTransfer, AfterpayRequestOrderTransfer $orderRequestTransfer)
-    {
+    protected function addGiftcardItems(
+        OrderTransfer $orderWithPaymentTransfer,
+        AfterpayRequestOrderTransfer $orderRequestTransfer
+    ): void {
         foreach ($this->getGiftcards($orderWithPaymentTransfer) as $index => $paymentTransfer) {
-
             $orderItemRequestTransfer = new AfterpayRequestOrderItemTransfer();
-            $amount = (string)$this->money->convertIntegerToDecimal(static::NEGATIVE_MULTIPLIER * $paymentTransfer->getAmount());
+            $amount = (string)$this->moneyFacade->convertIntegerToDecimal(static::NEGATIVE_MULTIPLIER * $paymentTransfer->getAmount());
 
             $orderItemRequestTransfer
                 ->setProductId(static::GIFT_CARD_PROVIDER . $index)
@@ -365,7 +356,7 @@ class OrderToRequestTransfer implements OrderToRequestTransferInterface
      *
      * @return \Generated\Shared\Transfer\PaymentTransfer[]
      */
-    protected function getGiftcards(OrderTransfer $orderWithPaymentTransfer)
+    protected function getGiftcards(OrderTransfer $orderWithPaymentTransfer): array
     {
         $giftCardPayments = [];
         foreach ($orderWithPaymentTransfer->getPayments() as $paymentTransfer) {

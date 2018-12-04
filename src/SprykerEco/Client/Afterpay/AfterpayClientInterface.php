@@ -2,15 +2,20 @@
 
 /**
  * MIT License
- * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
+ * For full license information, please view the LICENSE file that was distributed with this source code.
  */
 
 namespace SprykerEco\Client\Afterpay;
 
+use Generated\Shared\Transfer\AfterpayAvailablePaymentMethodsTransfer;
 use Generated\Shared\Transfer\AfterpayCustomerLookupRequestTransfer;
+use Generated\Shared\Transfer\AfterpayCustomerLookupResponseTransfer;
 use Generated\Shared\Transfer\AfterpayInstallmentPlansRequestTransfer;
+use Generated\Shared\Transfer\AfterpayInstallmentPlansResponseTransfer;
 use Generated\Shared\Transfer\AfterpayValidateBankAccountRequestTransfer;
+use Generated\Shared\Transfer\AfterpayValidateBankAccountResponseTransfer;
 use Generated\Shared\Transfer\AfterpayValidateCustomerRequestTransfer;
+use Generated\Shared\Transfer\AfterpayValidateCustomerResponseTransfer;
 use Generated\Shared\Transfer\QuoteTransfer;
 
 interface AfterpayClientInterface
@@ -26,7 +31,7 @@ interface AfterpayClientInterface
      *
      * @return \Generated\Shared\Transfer\AfterpayAvailablePaymentMethodsTransfer
      */
-    public function getAvailablePaymentMethods(QuoteTransfer $quoteTransfer);
+    public function getAvailablePaymentMethods(QuoteTransfer $quoteTransfer): AfterpayAvailablePaymentMethodsTransfer;
 
     /**
      * Specification:
@@ -39,7 +44,7 @@ interface AfterpayClientInterface
      *
      * @return \Generated\Shared\Transfer\AfterpayValidateCustomerResponseTransfer
      */
-    public function validateCustomerAddress(AfterpayValidateCustomerRequestTransfer $validateCustomerRequestTransfer);
+    public function validateCustomerAddress(AfterpayValidateCustomerRequestTransfer $validateCustomerRequestTransfer): AfterpayValidateCustomerResponseTransfer;
 
     /**
      * Specification:
@@ -52,7 +57,7 @@ interface AfterpayClientInterface
      *
      * @return \Generated\Shared\Transfer\AfterpayCustomerLookupResponseTransfer
      */
-    public function lookupCustomer(AfterpayCustomerLookupRequestTransfer $customerLookupRequestTransfer);
+    public function lookupCustomer(AfterpayCustomerLookupRequestTransfer $customerLookupRequestTransfer): AfterpayCustomerLookupResponseTransfer;
 
     /**
      * Specification:
@@ -65,7 +70,7 @@ interface AfterpayClientInterface
      *
      * @return \Generated\Shared\Transfer\AfterpayInstallmentPlansResponseTransfer
      */
-    public function getAvailableInstallmentPlans(AfterpayInstallmentPlansRequestTransfer $installmentPlansRequestTransfer);
+    public function getAvailableInstallmentPlans(AfterpayInstallmentPlansRequestTransfer $installmentPlansRequestTransfer): AfterpayInstallmentPlansResponseTransfer;
 
     /**
      * Specification:
@@ -79,15 +84,5 @@ interface AfterpayClientInterface
      *
      * @return \Generated\Shared\Transfer\AfterpayValidateBankAccountResponseTransfer
      */
-    public function validateBankAccount(AfterpayValidateBankAccountRequestTransfer $bankAccountValidationRequestTransfer);
-
-    /**
-     * Specification:
-     *  - Retrieve quote from current customer session
-     *
-     * @api
-     *
-     * @return \Generated\Shared\Transfer\QuoteTransfer
-     */
-    public function getQuoteFromSession();
+    public function validateBankAccount(AfterpayValidateBankAccountRequestTransfer $bankAccountValidationRequestTransfer): AfterpayValidateBankAccountResponseTransfer;
 }

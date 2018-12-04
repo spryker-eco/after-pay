@@ -2,17 +2,19 @@
 
 /**
  * MIT License
- * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
+ * For full license information, please view the LICENSE file that was distributed with this source code.
  */
 
 namespace SprykerEco\Zed\Afterpay\Business\Payment\Transaction\Handler;
 
+use Generated\Shared\Transfer\AfterpayApiResponseTransfer;
+use Generated\Shared\Transfer\AfterpayAuthorizeRequestTransfer;
 use Generated\Shared\Transfer\AfterpayCallTransfer;
+use Generated\Shared\Transfer\OrderTransfer;
 use SprykerEco\Zed\Afterpay\Business\Payment\PaymentWriterInterface;
 use SprykerEco\Zed\Afterpay\Business\Payment\Transaction\Authorize\RequestBuilder\AuthorizeRequestBuilderInterface;
 use SprykerEco\Zed\Afterpay\Business\Payment\Transaction\AuthorizeTransactionInterface;
 use SprykerEco\Zed\Afterpay\Business\Payment\Transaction\PriceToPayProviderInterface;
-use SprykerEco\Zed\Afterpay\Dependency\Facade\AfterpayToPaymentInterface;
 
 class AuthorizeTransactionHandler implements AuthorizeTransactionHandlerInterface
 {
@@ -59,7 +61,7 @@ class AuthorizeTransactionHandler implements AuthorizeTransactionHandlerInterfac
      *
      * @return \Generated\Shared\Transfer\AfterpayApiResponseTransfer
      */
-    public function authorize(AfterpayCallTransfer $afterpayCallTransfer)
+    public function authorize(AfterpayCallTransfer $afterpayCallTransfer): AfterpayApiResponseTransfer
     {
         $authorizeRequestTransfer = $this->buildAuthorizeRequest($afterpayCallTransfer);
 
@@ -71,7 +73,7 @@ class AuthorizeTransactionHandler implements AuthorizeTransactionHandlerInterfac
      *
      * @return \Generated\Shared\Transfer\AfterpayAuthorizeRequestTransfer
      */
-    protected function buildAuthorizeRequest(AfterpayCallTransfer $afterpayCallTransfer)
+    protected function buildAuthorizeRequest(AfterpayCallTransfer $afterpayCallTransfer): AfterpayAuthorizeRequestTransfer
     {
         $authorizeRequestTransfer = $this->requestBuilder->buildAuthorizeRequest($afterpayCallTransfer);
 
@@ -87,7 +89,7 @@ class AuthorizeTransactionHandler implements AuthorizeTransactionHandlerInterfac
     protected function setPaymentReservationId(
         AfterpayAuthorizeRequestTransfer $authorizeRequestTransfer,
         AfterpayApiResponseTransfer $authorizeResponseTransfer
-    ) {
+    ): void {
         $this->paymentWriter->setIdReservationByIdSalesOrder(
             $authorizeResponseTransfer->getReservationId(),
             $authorizeRequestTransfer->getIdSalesOrder()
@@ -99,7 +101,7 @@ class AuthorizeTransactionHandler implements AuthorizeTransactionHandlerInterfac
      *
      * @return void
      */
-    protected function setPaymentTotalAuthorizedAmount(OrderTransfer $orderTransfer)
+    protected function setPaymentTotalAuthorizedAmount(OrderTransfer $orderTransfer): void
     {
         $this->paymentWriter->setAuthorizedTotalByIdSalesOrder(
             $this->priceToPayProvider->getPriceToPayForOrder($orderTransfer),

@@ -2,7 +2,7 @@
 
 /**
  * MIT License
- * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
+ * For full license information, please view the LICENSE file that was distributed with this source code.
  */
 
 namespace SprykerEco\Zed\Afterpay\Business\Api\Adapter\Converter;
@@ -29,9 +29,9 @@ class TransferToCamelCaseArrayConverter implements TransferToCamelCaseArrayConve
     /**
      * @param \Spryker\Shared\Kernel\Transfer\AbstractTransfer $transfer
      *
-     * @return mixed
+     * @return array
      */
-    public function convert(AbstractTransfer $transfer)
+    public function convert(AbstractTransfer $transfer): array
     {
         return $this->convertTransferRecursively($transfer);
     }
@@ -41,7 +41,7 @@ class TransferToCamelCaseArrayConverter implements TransferToCamelCaseArrayConve
      *
      * @return array
      */
-    protected function convertTransferRecursively(AbstractTransfer $transfer)
+    protected function convertTransferRecursively(AbstractTransfer $transfer): array
     {
         $originalArray = $transfer->toArray(false);
         $camelCaseArray = [];
@@ -73,7 +73,7 @@ class TransferToCamelCaseArrayConverter implements TransferToCamelCaseArrayConve
      *
      * @return string
      */
-    protected function underscoreToCamelCase($string)
+    protected function underscoreToCamelCase(string $string): string
     {
         return $this->utilTextService->separatorToCamelCase($string, '_');
     }

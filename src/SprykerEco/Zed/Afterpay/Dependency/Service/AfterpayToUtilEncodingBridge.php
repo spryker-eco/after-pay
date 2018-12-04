@@ -1,7 +1,8 @@
 <?php
+
 /**
  * MIT License
- * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
+ * For full license information, please view the LICENSE file that was distributed with this source code.
  */
 
 namespace SprykerEco\Zed\Afterpay\Dependency\Service;
@@ -26,7 +27,7 @@ class AfterpayToUtilEncodingBridge implements AfterpayToUtilEncodingInterface
      * @param int|null $options
      * @param int|null $depth
      *
-     * @return string
+     * @return string|null
      */
     public function encodeJson($value, $options = null, $depth = null)
     {
@@ -39,7 +40,7 @@ class AfterpayToUtilEncodingBridge implements AfterpayToUtilEncodingInterface
      * @param int|null $depth
      * @param int|null $options
      *
-     * @return array
+     * @return mixed|null
      */
     public function decodeJson($jsonValue, $assoc = false, $depth = null, $options = null)
     {

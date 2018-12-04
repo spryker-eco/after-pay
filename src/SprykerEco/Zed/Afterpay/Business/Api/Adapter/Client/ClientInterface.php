@@ -2,10 +2,12 @@
 
 /**
  * MIT License
- * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
+ * For full license information, please view the LICENSE file that was distributed with this source code.
  */
 
 namespace SprykerEco\Zed\Afterpay\Business\Api\Adapter\Client;
+
+use Psr\Http\Message\StreamInterface;
 
 interface ClientInterface
 {
@@ -13,21 +15,21 @@ interface ClientInterface
      * @param string $endPointUrl
      * @param string|null $jsonBody
      *
-     * @return string
+     * @return \Psr\Http\Message\StreamInterface
      */
-    public function sendPost($endPointUrl, $jsonBody = null);
+    public function sendPost(string $endPointUrl, ?string $jsonBody = null): StreamInterface;
 
     /**
      * @param string $endPointUrl
      *
      * @return string
      */
-    public function sendGet($endPointUrl);
+    public function sendGet(string $endPointUrl): string;
 
     /**
      * @param string $endPointUrl
      *
-     * @return string
+     * @return int
      */
-    public function getStatus($endPointUrl);
+    public function getStatus(string $endPointUrl): int;
 }

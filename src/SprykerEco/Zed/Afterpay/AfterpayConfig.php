@@ -2,12 +2,13 @@
 
 /**
  * MIT License
- * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
+ * For full license information, please view the LICENSE file that was distributed with this source code.
  */
 
 namespace SprykerEco\Zed\Afterpay;
 
 use Spryker\Zed\Kernel\AbstractBundleConfig;
+use SprykerEco\Shared\Afterpay\AfterpayConfig as SharedAfterpayConfig;
 use SprykerEco\Shared\Afterpay\AfterpayConstants;
 
 class AfterpayConfig extends AbstractBundleConfig
@@ -17,10 +18,10 @@ class AfterpayConfig extends AbstractBundleConfig
      *
      * @return string
      */
-    public function getCaptureApiEndpointUrl($orderNumber)
+    public function getCaptureApiEndpointUrl(string $orderNumber): string
     {
         return $this->getApiEndpointUrl(
-            sprintf(AfterpayConstants::API_ENDPOINT_CAPTURE_PATH, $orderNumber)
+            sprintf(SharedAfterpayConfig::API_ENDPOINT_CAPTURE_PATH, $orderNumber)
         );
     }
 
@@ -29,10 +30,10 @@ class AfterpayConfig extends AbstractBundleConfig
      *
      * @return string
      */
-    public function getRefundApiEndpointUrl($orderNumber)
+    public function getRefundApiEndpointUrl(string $orderNumber): string
     {
         return $this->getApiEndpointUrl(
-            sprintf(AfterpayConstants::API_ENDPOINT_REFUND_PATH, $orderNumber)
+            sprintf(SharedAfterpayConfig::API_ENDPOINT_REFUND_PATH, $orderNumber)
         );
     }
 
@@ -41,97 +42,97 @@ class AfterpayConfig extends AbstractBundleConfig
      *
      * @return string
      */
-    public function getCancelApiEndpointUrl($orderNumber)
+    public function getCancelApiEndpointUrl(string $orderNumber): string
     {
         return $this->getApiEndpointUrl(
-            sprintf(AfterpayConstants::API_ENDPOINT_CANCEL_PATH, $orderNumber)
+            sprintf(SharedAfterpayConfig::API_ENDPOINT_CANCEL_PATH, $orderNumber)
         );
     }
 
     /**
      * @return string
      */
-    public function getAuthorizeApiEndpointUrl()
+    public function getAuthorizeApiEndpointUrl(): string
     {
         return $this->getApiEndpointUrl(
-            AfterpayConstants::API_ENDPOINT_AUTHORIZE_PATH
+            SharedAfterpayConfig::API_ENDPOINT_AUTHORIZE_PATH
         );
     }
 
     /**
      * @return string
      */
-    public function getValidateAddressApiEndpointUrl()
+    public function getValidateAddressApiEndpointUrl(): string
     {
         return $this->getApiEndpointUrl(
-            AfterpayConstants::API_ENDPOINT_VALIDATE_ADDRESS_PATH
+            SharedAfterpayConfig::API_ENDPOINT_VALIDATE_ADDRESS_PATH
         );
     }
 
     /**
      * @return string
      */
-    public function getLookupCustomerApiEndpointUrl()
+    public function getLookupCustomerApiEndpointUrl(): string
     {
         return $this->getApiEndpointUrl(
-            AfterpayConstants::API_ENDPOINT_LOOKUP_CUSTOMER_PATH
+            SharedAfterpayConfig::API_ENDPOINT_LOOKUP_CUSTOMER_PATH
         );
     }
 
     /**
      * @return string
      */
-    public function getLookupInstallmentPlansApiEndpointUrl()
+    public function getLookupInstallmentPlansApiEndpointUrl(): string
     {
         return $this->getApiEndpointUrl(
-            AfterpayConstants::API_ENDPOINT_LOOKUP_INSTALLMENT_PLANS_PATH
+            SharedAfterpayConfig::API_ENDPOINT_LOOKUP_INSTALLMENT_PLANS_PATH
         );
     }
 
     /**
      * @return string
      */
-    public function getValidateBankAccountApiEndpointUrl()
+    public function getValidateBankAccountApiEndpointUrl(): string
     {
         return $this->getApiEndpointUrl(
-            AfterpayConstants::API_ENDPOINT_VALIDATE_BANK_ACCOUNT_PATH
+            SharedAfterpayConfig::API_ENDPOINT_VALIDATE_BANK_ACCOUNT_PATH
         );
     }
 
     /**
      * @return string
      */
-    public function getStatusApiEndpointUrl()
+    public function getStatusApiEndpointUrl(): string
     {
         return $this->getApiEndpointUrl(
-            AfterpayConstants::API_ENDPOINT_API_STATUS_PATH
+            SharedAfterpayConfig::API_ENDPOINT_API_STATUS_PATH
         );
     }
 
     /**
      * @return string
      */
-    public function getVersionApiEndpointUrl()
+    public function getVersionApiEndpointUrl(): string
     {
         return $this->getApiEndpointUrl(
-            AfterpayConstants::API_ENDPOINT_API_VERSION_PATH
+            SharedAfterpayConfig::API_ENDPOINT_API_VERSION_PATH
         );
     }
 
     /**
      * @return string
      */
-    public function getAvailablePaymentMethodsApiEndpointUrl()
+    public function getAvailablePaymentMethodsApiEndpointUrl(): string
     {
         return $this->getApiEndpointUrl(
-            AfterpayConstants::API_ENDPOINT_AVAILABLE_PAYMENT_METHODS_PATH
+            SharedAfterpayConfig::API_ENDPOINT_AVAILABLE_PAYMENT_METHODS_PATH
         );
     }
 
     /**
      * @return string
      */
-    public function getApiCredentialsAuthKey()
+    public function getApiCredentialsAuthKey(): string
     {
         return $this->get(AfterpayConstants::API_CREDENTIALS_AUTH_KEY);
     }
@@ -139,7 +140,7 @@ class AfterpayConfig extends AbstractBundleConfig
     /**
      * @return string
      */
-    public function getAfterpayAuthorizeWorkflow()
+    public function getAfterpayAuthorizeWorkflow(): string
     {
         return $this->get(AfterpayConstants::AFTERPAY_AUTHORIZE_WORKFLOW);
     }
@@ -149,10 +150,10 @@ class AfterpayConfig extends AbstractBundleConfig
      *
      * @return string
      */
-    public function getPaymentChannelId($paymentMethod)
+    public function getPaymentChannelId(string $paymentMethod): string
     {
         switch ($paymentMethod) {
-            case AfterpayConstants::PAYMENT_METHOD_INVOICE:
+            case SharedAfterpayConfig::PAYMENT_METHOD_INVOICE:
                 return $this->get(AfterpayConstants::PAYMENT_INVOICE_CHANNEL_ID);
             default:
                 return $this->get(AfterpayConstants::PAYMENT_INVOICE_CHANNEL_ID);
@@ -162,7 +163,7 @@ class AfterpayConfig extends AbstractBundleConfig
     /**
      * @return string
      */
-    public function getPaymentAuthorizationFailedUrl()
+    public function getPaymentAuthorizationFailedUrl(): string
     {
         return $this->get(AfterpayConstants::AFTERPAY_YVES_AUTHORIZE_PAYMENT_FAILED_URL);
     }
@@ -172,7 +173,7 @@ class AfterpayConfig extends AbstractBundleConfig
      *
      * @return string
      */
-    protected function getApiEndpointUrl($endpointPath)
+    protected function getApiEndpointUrl(string $endpointPath): string
     {
         return $this->get(AfterpayConstants::API_ENDPOINT_BASE_URL) . $endpointPath;
     }

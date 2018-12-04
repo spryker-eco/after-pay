@@ -2,14 +2,14 @@
 
 /**
  * MIT License
- * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
+ * For full license information, please view the LICENSE file that was distributed with this source code.
  */
 
 namespace SprykerEco\Zed\Afterpay\Business\Api\Adapter\ApiCall;
 
 use Generated\Shared\Transfer\AfterpayValidateBankAccountRequestTransfer;
 use Generated\Shared\Transfer\AfterpayValidateBankAccountResponseTransfer;
-use SprykerEco\Shared\Afterpay\AfterpayApiConstants;
+use SprykerEco\Shared\Afterpay\AfterpayApiRequestConfig;
 use SprykerEco\Zed\Afterpay\AfterpayConfig;
 use SprykerEco\Zed\Afterpay\Business\Api\Adapter\Client\ClientInterface;
 use SprykerEco\Zed\Afterpay\Business\Api\Adapter\Converter\TransferToCamelCaseArrayConverterInterface;
@@ -56,7 +56,7 @@ class ValidateBankAccountCall extends AbstractApiCall implements ValidateBankAcc
      *
      * @return \Generated\Shared\Transfer\AfterpayValidateBankAccountResponseTransfer
      */
-    public function execute(AfterpayValidateBankAccountRequestTransfer $validateBankAccountRequestTransfer)
+    public function execute(AfterpayValidateBankAccountRequestTransfer $validateBankAccountRequestTransfer): AfterpayValidateBankAccountResponseTransfer
     {
         $jsonRequest = $this->buildJsonRequestFromTransferObject($validateBankAccountRequestTransfer);
 
@@ -78,12 +78,12 @@ class ValidateBankAccountCall extends AbstractApiCall implements ValidateBankAcc
      *
      * @return \Generated\Shared\Transfer\AfterpayValidateBankAccountResponseTransfer
      */
-    protected function buildValidateBankAccountResponseTransfer($jsonResponse)
+    protected function buildValidateBankAccountResponseTransfer(string $jsonResponse): AfterpayValidateBankAccountResponseTransfer
     {
         $jsonResponseArray = $this->utilEncoding->decodeJson($jsonResponse, true);
 
         $responseTransfer = new AfterpayValidateBankAccountResponseTransfer();
-        $responseTransfer->setIsValid($jsonResponseArray[AfterpayApiConstants::VALIDATE_BANK_ACCOUNT_IS_VALID] ?? false);
+        $responseTransfer->setIsValid($jsonResponseArray[AfterpayApiRequestConfig::VALIDATE_BANK_ACCOUNT_IS_VALID] ?? false);
 
         return $responseTransfer;
     }

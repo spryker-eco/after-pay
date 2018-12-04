@@ -2,15 +2,20 @@
 
 /**
  * MIT License
- * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
+ * For full license information, please view the LICENSE file that was distributed with this source code.
  */
 
 namespace SprykerEco\Client\Afterpay;
 
+use Generated\Shared\Transfer\AfterpayAvailablePaymentMethodsTransfer;
 use Generated\Shared\Transfer\AfterpayCustomerLookupRequestTransfer;
+use Generated\Shared\Transfer\AfterpayCustomerLookupResponseTransfer;
 use Generated\Shared\Transfer\AfterpayInstallmentPlansRequestTransfer;
+use Generated\Shared\Transfer\AfterpayInstallmentPlansResponseTransfer;
 use Generated\Shared\Transfer\AfterpayValidateBankAccountRequestTransfer;
+use Generated\Shared\Transfer\AfterpayValidateBankAccountResponseTransfer;
 use Generated\Shared\Transfer\AfterpayValidateCustomerRequestTransfer;
+use Generated\Shared\Transfer\AfterpayValidateCustomerResponseTransfer;
 use Generated\Shared\Transfer\QuoteTransfer;
 use Spryker\Client\Kernel\AbstractClient;
 
@@ -24,28 +29,14 @@ class AfterpayClient extends AbstractClient implements AfterpayClientInterface
      *
      * @api
      *
-     * @return \Generated\Shared\Transfer\QuoteTransfer
-     */
-    public function getQuoteFromSession()
-    {
-        return $this->getFactory()
-            ->getQuoteClient()
-            ->getQuote();
-    }
-
-    /**
-     * {@inheritdoc}
-     *
-     * @api
-     *
      * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
      *
      * @return \Generated\Shared\Transfer\AfterpayAvailablePaymentMethodsTransfer
      */
-    public function getAvailablePaymentMethods(QuoteTransfer $quoteTransfer)
+    public function getAvailablePaymentMethods(QuoteTransfer $quoteTransfer): AfterpayAvailablePaymentMethodsTransfer
     {
         return $this->getFactory()
-            ->createZedStub()
+            ->createZedAfterpayStub()
             ->getAvailablePaymentMethodsByQuote($quoteTransfer);
     }
 
@@ -58,10 +49,10 @@ class AfterpayClient extends AbstractClient implements AfterpayClientInterface
      *
      * @return \Generated\Shared\Transfer\AfterpayValidateCustomerResponseTransfer
      */
-    public function validateCustomerAddress(AfterpayValidateCustomerRequestTransfer $validateCustomerRequestTransfer)
+    public function validateCustomerAddress(AfterpayValidateCustomerRequestTransfer $validateCustomerRequestTransfer): AfterpayValidateCustomerResponseTransfer
     {
         return $this->getFactory()
-            ->createZedStub()
+            ->createZedAfterpayStub()
             ->validateCustomerAddress($validateCustomerRequestTransfer);
     }
 
@@ -74,10 +65,10 @@ class AfterpayClient extends AbstractClient implements AfterpayClientInterface
      *
      * @return \Generated\Shared\Transfer\AfterpayInstallmentPlansResponseTransfer
      */
-    public function getAvailableInstallmentPlans(AfterpayInstallmentPlansRequestTransfer $installmentPlansRequestTransfer)
+    public function getAvailableInstallmentPlans(AfterpayInstallmentPlansRequestTransfer $installmentPlansRequestTransfer): AfterpayInstallmentPlansResponseTransfer
     {
         return $this->getFactory()
-            ->createZedStub()
+            ->createZedAfterpayStub()
             ->getAvailableInstallmentPlans($installmentPlansRequestTransfer);
     }
 
@@ -90,10 +81,10 @@ class AfterpayClient extends AbstractClient implements AfterpayClientInterface
      *
      * @return \Generated\Shared\Transfer\AfterpayCustomerLookupResponseTransfer
      */
-    public function lookupCustomer(AfterpayCustomerLookupRequestTransfer $customerLookupRequestTransfer)
+    public function lookupCustomer(AfterpayCustomerLookupRequestTransfer $customerLookupRequestTransfer): AfterpayCustomerLookupResponseTransfer
     {
         return $this->getFactory()
-            ->createZedStub()
+            ->createZedAfterpayStub()
             ->lookupCustomer($customerLookupRequestTransfer);
     }
 
@@ -106,10 +97,10 @@ class AfterpayClient extends AbstractClient implements AfterpayClientInterface
      *
      * @return \Generated\Shared\Transfer\AfterpayValidateBankAccountResponseTransfer
      */
-    public function validateBankAccount(AfterpayValidateBankAccountRequestTransfer $bankAccountValidationRequestTransfer)
+    public function validateBankAccount(AfterpayValidateBankAccountRequestTransfer $bankAccountValidationRequestTransfer): AfterpayValidateBankAccountResponseTransfer
     {
         return $this->getFactory()
-            ->createZedStub()
+            ->createZedAfterpayStub()
             ->validateBankAccount($bankAccountValidationRequestTransfer);
     }
 }

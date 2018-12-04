@@ -2,7 +2,7 @@
 
 /**
  * MIT License
- * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
+ * For full license information, please view the LICENSE file that was distributed with this source code.
  */
 
 namespace SprykerEco\Zed\Afterpay\Business\Api\Adapter\ApiCall;
@@ -10,7 +10,8 @@ namespace SprykerEco\Zed\Afterpay\Business\Api\Adapter\ApiCall;
 use Generated\Shared\Transfer\AfterpayApiResponseTransfer;
 use Generated\Shared\Transfer\AfterpayRefundRequestTransfer;
 use Generated\Shared\Transfer\AfterpayRefundResponseTransfer;
-use SprykerEco\Shared\Afterpay\AfterpayApiConstants;
+use SprykerEco\Shared\Afterpay\AfterpayApiRequestConfig;
+use SprykerEco\Shared\Afterpay\AfterpayConfig as AfterpayConfig1;
 use SprykerEco\Shared\Afterpay\AfterpayConstants;
 use SprykerEco\Zed\Afterpay\AfterpayConfig;
 use SprykerEco\Zed\Afterpay\Business\Api\Adapter\Client\ClientInterface;
@@ -64,7 +65,7 @@ class RefundCall extends AbstractApiCall implements RefundCallInterface
      *
      * @return \Generated\Shared\Transfer\AfterpayRefundResponseTransfer
      */
-    public function execute(AfterpayRefundRequestTransfer $requestTransfer)
+    public function execute(AfterpayRefundRequestTransfer $requestTransfer): AfterpayRefundResponseTransfer
     {
         $jsonRequest = $this->buildJsonRequestFromTransferObject($requestTransfer);
         try {
@@ -85,7 +86,7 @@ class RefundCall extends AbstractApiCall implements RefundCallInterface
      *
      * @return string
      */
-    protected function getRefundEndpointUrl(AfterpayRefundRequestTransfer $requestTransfer)
+    protected function getRefundEndpointUrl(AfterpayRefundRequestTransfer $requestTransfer): string
     {
         return $this->config->getRefundApiEndpointUrl(
             $requestTransfer->getOrderNumber()
@@ -97,7 +98,7 @@ class RefundCall extends AbstractApiCall implements RefundCallInterface
      *
      * @return \Generated\Shared\Transfer\AfterpayRefundResponseTransfer
      */
-    protected function buildResponseTransfer($jsonResponse)
+    protected function buildResponseTransfer(string $jsonResponse): AfterpayRefundResponseTransfer
     {
         $apiResponseTransfer = $this->buildApiResponseTransfer($jsonResponse);
         $refundResponseTransfer = $this->buildRefundResponseTransfer($jsonResponse);
@@ -112,7 +113,7 @@ class RefundCall extends AbstractApiCall implements RefundCallInterface
      *
      * @return \Generated\Shared\Transfer\AfterpayRefundResponseTransfer
      */
-    protected function buildRefundResponseTransfer($jsonResponse)
+    protected function buildRefundResponseTransfer(string $jsonResponse): AfterpayRefundResponseTransfer
     {
         $jsonResponseArray = $this->utilEncoding->decodeJson($jsonResponse, true);
 
@@ -121,12 +122,12 @@ class RefundCall extends AbstractApiCall implements RefundCallInterface
         $refundResponseTransfer
             ->setTotalCapturedAmount(
                 $this->money->convertDecimalToInteger(
-                    $jsonResponseArray[AfterpayApiConstants::REFUND_TOTAL_CAPTURED_AMOUNT]
+                    $jsonResponseArray[AfterpayApiRequestConfig::REFUND_TOTAL_CAPTURED_AMOUNT]
                 )
             )
             ->setTotalAuthorizedAmount(
                 $this->money->convertDecimalToInteger(
-                    $jsonResponseArray[AfterpayApiConstants::REFUND_TOTAL_AUTHORIZE_AMOUNT]
+                    $jsonResponseArray[AfterpayApiRequestConfig::REFUND_TOTAL_AUTHORIZE_AMOUNT]
                 )
             );
 
@@ -138,15 +139,15 @@ class RefundCall extends AbstractApiCall implements RefundCallInterface
      *
      * @return \Generated\Shared\Transfer\AfterpayApiResponseTransfer
      */
-    protected function buildApiResponseTransfer($jsonResponse)
+    protected function buildApiResponseTransfer(string $jsonResponse): AfterpayApiResponseTransfer
     {
         $jsonResponseArray = $this->utilEncoding->decodeJson($jsonResponse, true);
 
         $apiResponseTransfer = new AfterpayApiResponseTransfer();
 
-        $outcome = $jsonResponseArray[AfterpayApiConstants::REFUND_TOTAL_CAPTURED_AMOUNT]
-            ? AfterpayConstants::API_TRANSACTION_OUTCOME_ACCEPTED
-            : AfterpayConstants::API_TRANSACTION_OUTCOME_REJECTED;
+        $outcome = $jsonResponseArray[AfterpayApiRequestConfig::REFUND_TOTAL_CAPTURED_AMOUNT]
+            ? AfterpayConfig1::API_TRANSACTION_OUTCOME_ACCEPTED
+            : AfterpayConfig1::API_TRANSACTION_OUTCOME_REJECTED;
 
         $apiResponseTransfer
             ->setOutcome($outcome)

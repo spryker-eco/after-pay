@@ -2,16 +2,16 @@
 
 /**
  * MIT License
- * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
+ * For full license information, please view the LICENSE file that was distributed with this source code.
  */
 
 namespace SprykerEco\Yves\Afterpay\AuthorizeWorkflow\Steps;
 
 use Spryker\Yves\StepEngine\Dependency\Form\SubFormInterface;
-use SprykerEco\Client\Afterpay\AfterpayClientInterface;
 use SprykerEco\Yves\Afterpay\AfterpayConfig;
+use SprykerEco\Yves\Afterpay\Dependency\Client\AfterpayToQuoteClientInterface;
 
-class PaymentSubformsFilterStep implements PaymentSubformsFilterStepInterface
+class PaymentSubFormsFilterStep implements PaymentSubFormsFilterStepInterface
 {
     /**
      * @var \SprykerEco\Yves\Afterpay\AfterpayConfig
@@ -19,56 +19,55 @@ class PaymentSubformsFilterStep implements PaymentSubformsFilterStepInterface
     protected $config;
 
     /**
-     * @var \SprykerEco\Client\Afterpay\AfterpayClientInterface
+     * @var \SprykerEco\Yves\Afterpay\Dependency\Client\AfterpayToQuoteClientInterface
      */
-    protected $afterpayClient;
+    protected $quoteClient;
 
     /**
      * @param \SprykerEco\Yves\Afterpay\AfterpayConfig $config
-     * @param \SprykerEco\Client\Afterpay\AfterpayClientInterface $afterpayClient
+     * @param \SprykerEco\Yves\Afterpay\Dependency\Client\AfterpayToQuoteClientInterface $quoteClient
      */
-    public function __construct(AfterpayConfig $config, AfterpayClientInterface $afterpayClient)
+    public function __construct(AfterpayConfig $config, AfterpayToQuoteClientInterface $quoteClient)
     {
         $this->config = $config;
-        $this->afterpayClient = $afterpayClient;
+        $this->quoteClient = $quoteClient;
     }
 
     /**
-     * @param \Spryker\Yves\StepEngine\Dependency\Form\SubFormInterface[] $paymentSubforms
+     * @param \Spryker\Yves\StepEngine\Dependency\Form\SubFormInterface[] $paymentSubForms
      *
      * @return \Spryker\Yves\StepEngine\Dependency\Form\SubFormInterface[]
      */
-    public function filterPaymentSubforms(array $paymentSubforms)
+    public function filterPaymentSubForms(array $paymentSubForms): array
     {
-        foreach ($paymentSubforms as $key => $subform) {
-            if (!$this->isSubformPluginAllowed($subform)) {
-                unset($paymentSubforms[$key]);
+        foreach ($paymentSubForms as $key => $subForm) {
+            if (!$this->isSubFormPluginAllowed($subForm)) {
+                unset($paymentSubForms[$key]);
             }
         }
-        return $paymentSubforms;
+
+        return $paymentSubForms;
     }
 
     /**
-     * @param \Spryker\Yves\StepEngine\Dependency\Form\SubFormInterface $subform
+     * @param \Spryker\Yves\StepEngine\Dependency\Form\SubFormInterface $subForm
      *
-     * @return boolean
+     * @return bool
      */
-    protected function isSubformPluginAllowed(SubFormInterface $subform)
+    protected function isSubFormPluginAllowed(SubFormInterface $subForm): bool
     {
         $allowedPaymentMethods = $this->getListOfAllowedPaymentMethods();
-        $subformPaymentMethod = $this->getSubformPaymentMethod($subform);
+        $subFormPaymentMethod = $this->getSubFormPaymentMethod($subForm);
 
-        return
-            ($subformPaymentMethod !== null)
-            && (in_array($subformPaymentMethod, $allowedPaymentMethods));
+        return ($subFormPaymentMethod !== null) && (in_array($subFormPaymentMethod, $allowedPaymentMethods));
     }
 
     /**
      * @return array
      */
-    protected function getListOfAllowedPaymentMethods()
+    protected function getListOfAllowedPaymentMethods(): array
     {
-        $quoteTransfer = $this->afterpayClient->getQuoteFromSession();
+        $quoteTransfer = $this->quoteClient->getQuote();
 
         $allowedPaymentMethodNames = $quoteTransfer
             ->getAfterpayAvailablePaymentMethods()
@@ -82,15 +81,15 @@ class PaymentSubformsFilterStep implements PaymentSubformsFilterStepInterface
     }
 
     /**
-     * @param \Spryker\Yves\StepEngine\Dependency\Form\SubFormInterface $subform
+     * @param \Spryker\Yves\StepEngine\Dependency\Form\SubFormInterface $subForm
      *
      * @return string|null
      */
-    protected function getSubformPaymentMethod(SubFormInterface $subform)
+    protected function getSubFormPaymentMethod(SubFormInterface $subForm): ?string
     {
-        $subformNameToPaymentMethodMapping = $this->config->getSubFormToPaymentMethodMapping();
-        $subformName = $subform->getName();
+        $subFormNameToPaymentMethodMapping = $this->config->getSubFormToPaymentMethodMapping();
+        $subFormName = $subForm->getName();
 
-        return $subformNameToPaymentMethodMapping[$subformName] ?? null;
+        return $subFormNameToPaymentMethodMapping[$subFormName] ?? null;
     }
 }

@@ -2,7 +2,7 @@
 
 /**
  * MIT License
- * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
+ * For full license information, please view the LICENSE file that was distributed with this source code.
  */
 
 namespace SprykerEco\Zed\Afterpay\Business\Api\Adapter\ApiCall;
@@ -11,7 +11,7 @@ use Generated\Shared\Transfer\AfterpayInstallmentPlansRequestTransfer;
 use Generated\Shared\Transfer\AfterpayInstallmentPlansResponseTransfer;
 use Generated\Shared\Transfer\AfterpayInstallmentPlanTransfer;
 use Spryker\Shared\Kernel\Transfer\AbstractTransfer;
-use SprykerEco\Shared\Afterpay\AfterpayApiConstants;
+use SprykerEco\Shared\Afterpay\AfterpayApiRequestConfig;
 use SprykerEco\Zed\Afterpay\AfterpayConfig;
 use SprykerEco\Zed\Afterpay\Business\Api\Adapter\Client\ClientInterface;
 use SprykerEco\Zed\Afterpay\Business\Api\Adapter\Converter\TransferToCamelCaseArrayConverterInterface;
@@ -67,7 +67,7 @@ class LookupInstallmentPlansCall extends AbstractApiCall implements LookupInstal
      *
      * @return \Generated\Shared\Transfer\AfterpayInstallmentPlansResponseTransfer
      */
-    public function execute(AfterpayInstallmentPlansRequestTransfer $installmentPlansRequestTransfer)
+    public function execute(AfterpayInstallmentPlansRequestTransfer $installmentPlansRequestTransfer): AfterpayInstallmentPlansResponseTransfer
     {
         $jsonRequest = $this->buildJsonRequestFromTransferObject($installmentPlansRequestTransfer);
 
@@ -85,11 +85,11 @@ class LookupInstallmentPlansCall extends AbstractApiCall implements LookupInstal
     }
 
     /**
-     * @param \Spryker\Shared\Kernel\Transfer\AbstractTransfer|\Generated\Shared\Transfer\AfterpayInstallmentPlansRequestTransfer $installmentPlansRequestTransfer
+     * @param \Generated\Shared\Transfer\AfterpayInstallmentPlansRequestTransfer $installmentPlansRequestTransfer
      *
      * @return string
      */
-    protected function buildJsonRequestFromTransferObject(AbstractTransfer $installmentPlansRequestTransfer)
+    protected function buildJsonRequestFromTransferObject(AbstractTransfer $installmentPlansRequestTransfer): string
     {
         $this->convertIntegerFieldsToDecimal($installmentPlansRequestTransfer);
 
@@ -101,17 +101,17 @@ class LookupInstallmentPlansCall extends AbstractApiCall implements LookupInstal
      *
      * @return \Generated\Shared\Transfer\AfterpayInstallmentPlansResponseTransfer
      */
-    protected function buildLookupCustomerResponseTransfer($jsonResponse)
+    protected function buildLookupCustomerResponseTransfer(string $jsonResponse): AfterpayInstallmentPlansResponseTransfer
     {
         $jsonResponseArray = $this->utilEncoding->decodeJson($jsonResponse, true);
 
         $responseTransfer = new AfterpayInstallmentPlansResponseTransfer();
 
-        if (!isset($jsonResponseArray[AfterpayApiConstants::AVAILABLE_PLANS])) {
+        if (!isset($jsonResponseArray[AfterpayApiRequestConfig::AVAILABLE_PLANS])) {
             return $responseTransfer;
         }
 
-        foreach ($jsonResponseArray[AfterpayApiConstants::AVAILABLE_PLANS] as $planArray) {
+        foreach ($jsonResponseArray[AfterpayApiRequestConfig::AVAILABLE_PLANS] as $planArray) {
             $responseTransfer->addInstallmentPlan(
                 $this->buildInstallmentPlanTransfer($planArray)
             );
@@ -125,11 +125,9 @@ class LookupInstallmentPlansCall extends AbstractApiCall implements LookupInstal
      *
      * @return void
      */
-    protected function convertIntegerFieldsToDecimal(
-        AfterpayInstallmentPlansRequestTransfer $installmentPlansRequestTransfer
-    ) {
+    protected function convertIntegerFieldsToDecimal(AfterpayInstallmentPlansRequestTransfer $installmentPlansRequestTransfer): void
+    {
         $integerAmount = $installmentPlansRequestTransfer->getAmount();
-
         $installmentPlansRequestTransfer->setAmount(
             (string)$this->money->convertIntegerToDecimal($integerAmount)
         );
@@ -140,62 +138,62 @@ class LookupInstallmentPlansCall extends AbstractApiCall implements LookupInstal
      *
      * @return \Generated\Shared\Transfer\AfterpayInstallmentPlanTransfer
      */
-    protected function buildInstallmentPlanTransfer(array $installmentPlanArray)
+    protected function buildInstallmentPlanTransfer(array $installmentPlanArray): AfterpayInstallmentPlanTransfer
     {
         $installmentPlanTransfer = new AfterpayInstallmentPlanTransfer();
 
         $installmentPlanTransfer
             ->setBasketAmount(
                 $this->money->convertDecimalToInteger(
-                    $installmentPlanArray[AfterpayApiConstants::BASKET_AMOUNT]
+                    $installmentPlanArray[AfterpayApiRequestConfig::BASKET_AMOUNT]
                 )
             )
             ->setInstallmentAmount(
                 $this->money->convertDecimalToInteger(
-                    $installmentPlanArray[AfterpayApiConstants::INSTALLMENT_AMOUNT]
+                    $installmentPlanArray[AfterpayApiRequestConfig::INSTALLMENT_AMOUNT]
                 )
             )
             ->setFirstInstallmentAmount(
                 $this->money->convertDecimalToInteger(
-                    $installmentPlanArray[AfterpayApiConstants::FIRST_INSTALLMENT_AMOUNT]
+                    $installmentPlanArray[AfterpayApiRequestConfig::FIRST_INSTALLMENT_AMOUNT]
                 )
             )
             ->setLastInstallmentAmount(
                 $this->money->convertDecimalToInteger(
-                    $installmentPlanArray[AfterpayApiConstants::LAST_INSTALLMENT_AMOUNT]
+                    $installmentPlanArray[AfterpayApiRequestConfig::LAST_INSTALLMENT_AMOUNT]
                 )
             )
             ->setTotalAmount(
                 $this->money->convertDecimalToInteger(
-                    $installmentPlanArray[AfterpayApiConstants::TOTAL_AMOUNT]
+                    $installmentPlanArray[AfterpayApiRequestConfig::TOTAL_AMOUNT]
                 )
             )
             ->setNumberOfInstallments(
-                $installmentPlanArray[AfterpayApiConstants::NUMBER_OF_INSTALLMENTS]
+                $installmentPlanArray[AfterpayApiRequestConfig::NUMBER_OF_INSTALLMENTS]
             )
             ->setInterestRate(
-                $installmentPlanArray[AfterpayApiConstants::INTEREST_RATE]
+                $installmentPlanArray[AfterpayApiRequestConfig::INTEREST_RATE]
             )
             ->setEffectiveInterestRate(
-                $installmentPlanArray[AfterpayApiConstants::EFFECTIVE_INTEREST_RATE]
+                $installmentPlanArray[AfterpayApiRequestConfig::EFFECTIVE_INTEREST_RATE]
             )
             ->setEffectiveAnnualPercentageRate(
-                $installmentPlanArray[AfterpayApiConstants::EFFECTIVE_ANNUAL_PERCENTAGE_RATE]
+                $installmentPlanArray[AfterpayApiRequestConfig::EFFECTIVE_ANNUAL_PERCENTAGE_RATE]
             )
             ->setTotalInterestAmount(
-                $installmentPlanArray[AfterpayApiConstants::TOTAL_INTEREST_AMOUNT]
+                $installmentPlanArray[AfterpayApiRequestConfig::TOTAL_INTEREST_AMOUNT]
             )
             ->setStartupFee(
-                $installmentPlanArray[AfterpayApiConstants::STARTUP_FEE]
+                $installmentPlanArray[AfterpayApiRequestConfig::STARTUP_FEE]
             )
             ->setMonthlyFee(
-                $installmentPlanArray[AfterpayApiConstants::MONTHLY_FEE]
+                $installmentPlanArray[AfterpayApiRequestConfig::MONTHLY_FEE]
             )
             ->setInstallmentProfileNumber(
-                $installmentPlanArray[AfterpayApiConstants::INSTALLMENT_PROFILE_NUMBER]
+                $installmentPlanArray[AfterpayApiRequestConfig::INSTALLMENT_PROFILE_NUMBER]
             )
             ->setReadMore(
-                $installmentPlanArray[AfterpayApiConstants::READ_MORE]
+                $installmentPlanArray[AfterpayApiRequestConfig::READ_MORE]
             );
 
         return $installmentPlanTransfer;

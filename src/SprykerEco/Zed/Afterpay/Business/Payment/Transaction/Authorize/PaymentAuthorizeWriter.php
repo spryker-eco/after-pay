@@ -2,7 +2,7 @@
 
 /**
  * MIT License
- * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
+ * For full license information, please view the LICENSE file that was distributed with this source code.
  */
 
 namespace SprykerEco\Zed\Afterpay\Business\Payment\Transaction\Authorize;
@@ -32,10 +32,11 @@ class PaymentAuthorizeWriter implements PaymentAuthorizeWriterInterface
      *
      * @return void
      */
-    public function save($orderReference, $idReservation, $idCheckout)
+    public function save(string $orderReference, string $idReservation, string $idCheckout): void
     {
         $authorizationEntity = $this->getPaymentAuthorizeEntity($orderReference);
-        $authorizationEntity->setOrderReference($orderReference)
+        $authorizationEntity
+            ->setOrderReference($orderReference)
             ->setIdReservation($idReservation)
             ->setIdCheckout($idCheckout)
             ->save();
@@ -46,7 +47,7 @@ class PaymentAuthorizeWriter implements PaymentAuthorizeWriterInterface
      *
      * @return \Orm\Zed\Afterpay\Persistence\SpyPaymentAfterpayAuthorization
      */
-    protected function getPaymentAuthorizeEntity($orderReference)
+    protected function getPaymentAuthorizeEntity(string $orderReference): SpyPaymentAfterpayAuthorization
     {
         $existingEntity = $this->afterpayQueryContainer
             ->queryAuthorizationByOrderReference($orderReference)

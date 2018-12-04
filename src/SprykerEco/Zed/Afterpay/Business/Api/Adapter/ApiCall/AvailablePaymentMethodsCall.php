@@ -2,14 +2,14 @@
 
 /**
  * MIT License
- * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
+ * For full license information, please view the LICENSE file that was distributed with this source code.
  */
 
 namespace SprykerEco\Zed\Afterpay\Business\Api\Adapter\ApiCall;
 
 use Generated\Shared\Transfer\AfterpayAvailablePaymentMethodsRequestTransfer;
 use Generated\Shared\Transfer\AfterpayAvailablePaymentMethodsResponseTransfer;
-use SprykerEco\Shared\Afterpay\AfterpayApiConstants;
+use SprykerEco\Shared\Afterpay\AfterpayApiRequestConfig;
 use SprykerEco\Zed\Afterpay\AfterpayConfig;
 use SprykerEco\Zed\Afterpay\Business\Api\Adapter\Client\ClientInterface;
 use SprykerEco\Zed\Afterpay\Business\Api\Adapter\Converter\TransferToCamelCaseArrayConverterInterface;
@@ -51,7 +51,7 @@ class AvailablePaymentMethodsCall extends AbstractApiCall implements AvailablePa
      *
      * @return \Generated\Shared\Transfer\AfterpayAvailablePaymentMethodsResponseTransfer
      */
-    public function execute(AfterpayAvailablePaymentMethodsRequestTransfer $requestTransfer)
+    public function execute(AfterpayAvailablePaymentMethodsRequestTransfer $requestTransfer): AfterpayAvailablePaymentMethodsResponseTransfer
     {
         $jsonRequest = $this->buildJsonRequestFromTransferObject($requestTransfer);
 
@@ -61,8 +61,6 @@ class AvailablePaymentMethodsCall extends AbstractApiCall implements AvailablePa
                 $jsonRequest
             );
         } catch (ApiHttpRequestException $apiHttpRequestException) {
-            // @todo do a proper error handling. Afterpay cam provide some more details about business errors
-            // Make sure to get these messages, parse them into transfer objects and assign to API response transfer.
             $this->logApiException($apiHttpRequestException);
             $jsonResponse = '[]';
         }
@@ -75,7 +73,7 @@ class AvailablePaymentMethodsCall extends AbstractApiCall implements AvailablePa
      *
      * @return \Generated\Shared\Transfer\AfterpayAvailablePaymentMethodsResponseTransfer
      */
-    protected function buildAvailablePaymentMethodsResponseTransfer($jsonResponse)
+    protected function buildAvailablePaymentMethodsResponseTransfer(string $jsonResponse): AfterpayAvailablePaymentMethodsResponseTransfer
     {
         $jsonResponseArray = $this->utilEncoding->decodeJson($jsonResponse, true);
 
@@ -85,11 +83,11 @@ class AvailablePaymentMethodsCall extends AbstractApiCall implements AvailablePa
         $customerNumber = $this->extractCustomerNumber($jsonResponseArray);
 
         $responseTransfer
-            ->setCheckoutId($jsonResponseArray[AfterpayApiConstants::TRANSACTION_CHECKOUT_ID] ?? null)
-            ->setOutcome($jsonResponseArray[AfterpayApiConstants::TRANSACTION_OUTCOME] ?? null)
-            ->setCustomer($jsonResponseArray[AfterpayApiConstants::CUSTOMER] ?? [])
+            ->setCheckoutId($jsonResponseArray[AfterpayApiRequestConfig::TRANSACTION_CHECKOUT_ID] ?? null)
+            ->setOutcome($jsonResponseArray[AfterpayApiRequestConfig::TRANSACTION_OUTCOME] ?? null)
+            ->setCustomer($jsonResponseArray[AfterpayApiRequestConfig::CUSTOMER] ?? [])
             ->setCustomerNumber($customerNumber)
-            ->setPaymentMethods($jsonResponseArray[AfterpayApiConstants::PAYMENT_METHODS] ?? [])
+            ->setPaymentMethods($jsonResponseArray[AfterpayApiRequestConfig::PAYMENT_METHODS] ?? [])
             ->setRiskCheckResultCode($riskCheckResultCode);
 
         return $responseTransfer;
@@ -100,17 +98,13 @@ class AvailablePaymentMethodsCall extends AbstractApiCall implements AvailablePa
      *
      * @return string|null
      */
-    protected function extractRiskCheckCode($jsonResponseArray)
+    protected function extractRiskCheckCode(array $jsonResponseArray): ?string
     {
-        if (!isset(
-            $jsonResponseArray[AfterpayApiConstants::ADDITIONAL_RESPONSE_INFO],
-            $jsonResponseArray[AfterpayApiConstants::ADDITIONAL_RESPONSE_INFO][AfterpayApiConstants::RISK_CHECK_CODE]
-        )
-        ) {
+        if (!isset($jsonResponseArray[AfterpayApiRequestConfig::ADDITIONAL_RESPONSE_INFO][AfterpayApiRequestConfig::RISK_CHECK_CODE])) {
             return null;
         }
 
-        return $jsonResponseArray[AfterpayApiConstants::ADDITIONAL_RESPONSE_INFO][AfterpayApiConstants::RISK_CHECK_CODE];
+        return $jsonResponseArray[AfterpayApiRequestConfig::ADDITIONAL_RESPONSE_INFO][AfterpayApiRequestConfig::RISK_CHECK_CODE];
     }
 
     /**
@@ -118,18 +112,12 @@ class AvailablePaymentMethodsCall extends AbstractApiCall implements AvailablePa
      *
      * @return string|null
      */
-    protected function extractCustomerNumber($jsonResponseArray)
+    protected function extractCustomerNumber(array $jsonResponseArray): ?string
     {
-        $customerNumber = null;
-
-        if (isset(
-            $jsonResponseArray[AfterpayApiConstants::CUSTOMER],
-            $jsonResponseArray[AfterpayApiConstants::CUSTOMER][AfterpayApiConstants::CUSTOMER_NUMBER]
-        )
-        ) {
-            $customerNumber = $jsonResponseArray[AfterpayApiConstants::CUSTOMER][AfterpayApiConstants::CUSTOMER_NUMBER];
+        if (!isset($jsonResponseArray[AfterpayApiRequestConfig::CUSTOMER][AfterpayApiRequestConfig::CUSTOMER_NUMBER])) {
+            return null;
         }
 
-        return $customerNumber;
+        return $jsonResponseArray[AfterpayApiRequestConfig::CUSTOMER][AfterpayApiRequestConfig::CUSTOMER_NUMBER];
     }
 }

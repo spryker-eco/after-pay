@@ -2,7 +2,7 @@
 
 /**
  * MIT License
- * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
+ * For full license information, please view the LICENSE file that was distributed with this source code.
  */
 
 namespace SprykerEco\Zed\Afterpay\Business\Exception;
@@ -12,14 +12,13 @@ use Generated\Shared\Transfer\AfterpayApiResponseErrorTransfer;
 
 class ApiHttpRequestException extends Exception
 {
-
     /**
-     * @var $error
+     * @var \Generated\Shared\Transfer\AfterpayApiResponseErrorTransfer
      */
     protected $error;
 
     /**
-     * @var $detailedMessage
+     * @var string
      */
     protected $detailedMessage;
 
@@ -28,7 +27,7 @@ class ApiHttpRequestException extends Exception
      *
      * @return void
      */
-    public function setError(AfterpayApiResponseErrorTransfer $error)
+    public function setError(AfterpayApiResponseErrorTransfer $error): void
     {
         $this->error = $error;
     }
@@ -36,7 +35,7 @@ class ApiHttpRequestException extends Exception
     /**
      * @return \Generated\Shared\Transfer\AfterpayApiResponseErrorTransfer
      */
-    public function getError()
+    public function getError(): AfterpayApiResponseErrorTransfer
     {
         return $this->error;
     }
@@ -46,7 +45,7 @@ class ApiHttpRequestException extends Exception
      *
      * @return void
      */
-    public function setDetailedMessage(string $message)
+    public function setDetailedMessage(string $message): void
     {
         $this->detailedMessage = $message;
     }
@@ -54,12 +53,11 @@ class ApiHttpRequestException extends Exception
     /**
      * @return string
      */
-    public function getDetailedMessage()
+    public function getDetailedMessage(): string
     {
         if (empty($this->detailedMessage)) {
             return parent::getMessage();
         }
         return $this->detailedMessage;
     }
-
 }

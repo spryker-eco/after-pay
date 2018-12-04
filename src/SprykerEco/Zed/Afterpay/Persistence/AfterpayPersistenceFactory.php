@@ -2,7 +2,7 @@
 
 /**
  * MIT License
- * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
+ * For full license information, please view the LICENSE file that was distributed with this source code.
  */
 
 namespace SprykerEco\Zed\Afterpay\Persistence;
@@ -15,14 +15,14 @@ use Spryker\Zed\Kernel\Persistence\AbstractPersistenceFactory;
 
 /**
  * @method \SprykerEco\Zed\Afterpay\AfterpayConfig getConfig()
- * @method \SprykerEco\Zed\Afterpay\Persistence\AfterpayQueryContainer getQueryContainer()
+ * @method \SprykerEco\Zed\Afterpay\Persistence\AfterpayQueryContainerInterface getQueryContainer()
  */
 class AfterpayPersistenceFactory extends AbstractPersistenceFactory
 {
     /**
      * @return \Orm\Zed\Afterpay\Persistence\SpyPaymentAfterpayQuery
      */
-    public function createPaymentAfterpayQuery()
+    public function createPaymentAfterpayQuery(): SpyPaymentAfterpayQuery
     {
         return SpyPaymentAfterpayQuery::create();
     }
@@ -30,7 +30,7 @@ class AfterpayPersistenceFactory extends AbstractPersistenceFactory
     /**
      * @return \Orm\Zed\Afterpay\Persistence\SpyPaymentAfterpayOrderItemQuery
      */
-    public function createPaymentAfterpayOrderItemQuery()
+    public function createPaymentAfterpayOrderItemQuery(): SpyPaymentAfterpayOrderItemQuery
     {
         return SpyPaymentAfterpayOrderItemQuery::create();
     }
@@ -38,7 +38,7 @@ class AfterpayPersistenceFactory extends AbstractPersistenceFactory
     /**
      * @return \Orm\Zed\Afterpay\Persistence\SpyPaymentAfterpayTransactionLogQuery
      */
-    public function createPaymentAfterpayTransactionLogQuery()
+    public function createPaymentAfterpayTransactionLogQuery(): SpyPaymentAfterpayTransactionLogQuery
     {
         return SpyPaymentAfterpayTransactionLogQuery::create();
     }
@@ -46,7 +46,7 @@ class AfterpayPersistenceFactory extends AbstractPersistenceFactory
     /**
      * @return \Orm\Zed\Afterpay\Persistence\SpyPaymentAfterpayAuthorizationQuery
      */
-    public function createPaymentAfterpayAuthorizationQuery()
+    public function createPaymentAfterpayAuthorizationQuery(): SpyPaymentAfterpayAuthorizationQuery
     {
         return SpyPaymentAfterpayAuthorizationQuery::create();
     }

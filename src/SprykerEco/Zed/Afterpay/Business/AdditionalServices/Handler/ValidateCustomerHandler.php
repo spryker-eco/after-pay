@@ -2,13 +2,14 @@
 
 /**
  * MIT License
- * Use of this software requires acceptance of the Evaluation License Agreement. See LICENSE file.
+ * For full license information, please view the LICENSE file that was distributed with this source code.
  */
 
 namespace SprykerEco\Zed\Afterpay\Business\AdditionalServices\Handler;
 
 use Generated\Shared\Transfer\AddressTransfer;
 use Generated\Shared\Transfer\AfterpayValidateCustomerRequestTransfer;
+use Generated\Shared\Transfer\AfterpayValidateCustomerResponseTransfer;
 use SprykerEco\Zed\Afterpay\Business\Api\Adapter\AdapterInterface;
 use SprykerEco\Zed\Afterpay\Dependency\Facade\AfterpayToCustomerInterface;
 
@@ -41,7 +42,7 @@ class ValidateCustomerHandler implements ValidateCustomerHandlerInterface
      *
      * @return \Generated\Shared\Transfer\AfterpayValidateCustomerResponseTransfer
      */
-    public function validateCustomer(AfterpayValidateCustomerRequestTransfer $validateCustomerRequestTransfer)
+    public function validateCustomer(AfterpayValidateCustomerRequestTransfer $validateCustomerRequestTransfer): AfterpayValidateCustomerResponseTransfer
     {
         if ($this->needToLoadAddressById($validateCustomerRequestTransfer)) {
             $this->loadCustomerAddressById($validateCustomerRequestTransfer);
@@ -55,7 +56,7 @@ class ValidateCustomerHandler implements ValidateCustomerHandlerInterface
      *
      * @return bool
      */
-    protected function needToLoadAddressById(AfterpayValidateCustomerRequestTransfer $validateCustomerRequestTransfer)
+    protected function needToLoadAddressById(AfterpayValidateCustomerRequestTransfer $validateCustomerRequestTransfer): bool
     {
         $idCustomerAddress =
             $validateCustomerRequestTransfer
@@ -71,7 +72,7 @@ class ValidateCustomerHandler implements ValidateCustomerHandlerInterface
      *
      * @return void
      */
-    protected function loadCustomerAddressById(AfterpayValidateCustomerRequestTransfer $validateCustomerRequestTransfer)
+    protected function loadCustomerAddressById(AfterpayValidateCustomerRequestTransfer $validateCustomerRequestTransfer): void
     {
         $customerAddress = $this->createCustomerTransfer($validateCustomerRequestTransfer);
 
@@ -99,7 +100,7 @@ class ValidateCustomerHandler implements ValidateCustomerHandlerInterface
      *
      * @return \Generated\Shared\Transfer\AddressTransfer
      */
-    protected function createCustomerTransfer(AfterpayValidateCustomerRequestTransfer $validateCustomerRequestTransfer)
+    protected function createCustomerTransfer(AfterpayValidateCustomerRequestTransfer $validateCustomerRequestTransfer): AddressTransfer
     {
         $idCustomerAddress =
             $validateCustomerRequestTransfer
