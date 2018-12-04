@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<statemachine
+        xmlns="spryker:oms-01"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="spryker:oms-01 http://static.spryker.com/oms-01.xsd">
+
+    <process name="Authorization">
+        <states>
+            <state name="ready for authorization"/>
+            <state name="authorization succeeded"/>
+            <state name="authorization failed"/>
+        </states>
+
+        <transitions>
+            <transition happy="true" condition="AfterPay/IsAuthorizationCompleted">
+                <source>ready for authorization</source>
+                <target>authorization succeeded</target>
+                <event>send authorize request</event>
+            </transition>
+
+            <transition>
+                <source>ready for authorization</source>
+                <target>authorization failed</target>
+                <event>send authorize request</event>
+            </transition>
+        </transitions>
+
+        <events>
+            <event name="send authorize request" onEnter="true" command="AfterPay/Authorize" />
+        </events>
+    </process>
+</statemachine>

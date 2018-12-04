@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<statemachine
+        xmlns="spryker:oms-01"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="spryker:oms-01 http://static.spryker.com/oms-01.xsd">
+
+    <process name="Capture">
+        <states>
+            <state name="ready for capture"/>
+            <state name="capture succeeded"/>
+        </states>
+
+        <transitions>
+            <transition happy="true" condition="AfterPay/IsCaptureCompleted">
+                <source>ready for capture</source>
+                <target>capture succeeded</target>
+                <event>capture payment</event>
+            </transition>
+
+            <transition>
+                <source>ready for capture</source>
+                <target>ready for capture</target>
+                <event>capture payment</event>
+            </transition>
+        </transitions>
+
+        <events>
+            <event name="capture payment" onEnter="true" manual="true" command="AfterPay/Capture"/>
+        </events>
+    </process>
+</statemachine>

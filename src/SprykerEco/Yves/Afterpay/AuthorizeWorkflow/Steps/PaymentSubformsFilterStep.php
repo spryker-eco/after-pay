@@ -5,29 +5,29 @@
  * For full license information, please view the LICENSE file that was distributed with this source code.
  */
 
-namespace SprykerEco\Yves\Afterpay\AuthorizeWorkflow\Steps;
+namespace SprykerEco\Yves\AfterPay\AuthorizeWorkflow\Steps;
 
 use Spryker\Yves\StepEngine\Dependency\Form\SubFormInterface;
-use SprykerEco\Yves\Afterpay\AfterpayConfig;
-use SprykerEco\Yves\Afterpay\Dependency\Client\AfterpayToQuoteClientInterface;
+use SprykerEco\Yves\AfterPay\AfterPayConfig;
+use SprykerEco\Yves\AfterPay\Dependency\Client\AfterPayToQuoteClientInterface;
 
 class PaymentSubFormsFilterStep implements PaymentSubFormsFilterStepInterface
 {
     /**
-     * @var \SprykerEco\Yves\Afterpay\AfterpayConfig
+     * @var \SprykerEco\Yves\AfterPay\AfterPayConfig
      */
     protected $config;
 
     /**
-     * @var \SprykerEco\Yves\Afterpay\Dependency\Client\AfterpayToQuoteClientInterface
+     * @var \SprykerEco\Yves\AfterPay\Dependency\Client\AfterPayToQuoteClientInterface
      */
     protected $quoteClient;
 
     /**
-     * @param \SprykerEco\Yves\Afterpay\AfterpayConfig $config
-     * @param \SprykerEco\Yves\Afterpay\Dependency\Client\AfterpayToQuoteClientInterface $quoteClient
+     * @param \SprykerEco\Yves\AfterPay\AfterPayConfig $config
+     * @param \SprykerEco\Yves\AfterPay\Dependency\Client\AfterPayToQuoteClientInterface $quoteClient
      */
-    public function __construct(AfterpayConfig $config, AfterpayToQuoteClientInterface $quoteClient)
+    public function __construct(AfterPayConfig $config, AfterPayToQuoteClientInterface $quoteClient)
     {
         $this->config = $config;
         $this->quoteClient = $quoteClient;
@@ -70,7 +70,7 @@ class PaymentSubFormsFilterStep implements PaymentSubFormsFilterStepInterface
         $quoteTransfer = $this->quoteClient->getQuote();
 
         $allowedPaymentMethodNames = $quoteTransfer
-            ->getAfterpayAvailablePaymentMethods()
+            ->getAfterPayAvailablePaymentMethods()
             ->getAvailablePaymentMethodNames();
 
         if ($allowedPaymentMethodNames === null) {

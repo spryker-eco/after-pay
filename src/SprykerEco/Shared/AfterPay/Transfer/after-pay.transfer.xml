@@ -1,0 +1,320 @@
+<?xml version="1.0"?>
+<transfers xmlns="spryker:transfer-01"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="spryker:transfer-01 http://static.spryker.com/transfer-01.xsd">
+
+    <transfer name="AfterPayPayment">
+        <property name="idPaymentAfterPay" type="int" />
+        <property name="fkSalesOrder" type="int" />
+        <property name="paymentMethod" type="string" />
+        <property name="idCheckout" type="string" />
+        <property name="customerNumber" type="string" />
+        <property name="idReservation" type="string" />
+        <property name="capturedTotal" type="int" />
+        <property name="expensesCaptureNumber" type="string" />
+        <property name="authorizedTotal" type="int" />
+        <property name="cancelledTotal" type="int" />
+        <property name="refundedTotal" type="int" />
+        <property name="expenseTotal" type="int" />
+    </transfer>
+
+    <transfer name="AfterPayPaymentOrderItem">
+        <property name="fkSalesOrderItem" type="int" />
+        <property name="fkPaymentAfterPay" type="int" />
+        <property name="captureNumber" type="string" />
+    </transfer>
+
+    <transfer name="AfterPayTransactionLog">
+        <property name="transactionType" type="string"/>
+        <property name="outcome" type="string"/>
+        <property name="fkSalesOrder" type="int"/>
+    </transfer>
+
+    <transfer name="AfterPayAuthorizeRequest">
+        <property name="payment" type="AfterPayRequestPayment" />
+        <property name="customer" type="AfterPayRequestCustomer" />
+        <property name="order" type="AfterPayRequestOrder" />
+    </transfer>
+
+    <transfer name="AfterPayValidateBankAccountRequest">
+        <property name="bankAccount" type="string" />
+        <property name="bankCode" type="string" />
+        <property name="bankNumber" type="string" />
+    </transfer>
+
+    <transfer name="AfterPayValidateBankAccountResponse">
+        <property name="isValid" type="bool" />
+        <property name="riskCheckMessages" type="AfterPayRiskCheckMessage[]" singular="riskCheckMessage" />
+    </transfer>
+
+    <transfer name="AfterPayRiskCheckMessage">
+        <property name="type" type="string" />
+        <property name="code" type="string" />
+        <property name="message" type="string" />
+        <property name="customerFacingMessage" type="string" />
+        <property name="actionCode" type="string" />
+        <property name="fieldReference" type="string" />
+    </transfer>
+
+    <transfer name="AfterPayValidateBankAccountRequest">
+        <property name="bankAccount" type="string" />
+        <property name="bankCode" type="string" />
+        <property name="bankNumber" type="string" />
+    </transfer>
+
+    <transfer name="AfterPayCustomerLookupRequest">
+        <property name="mobilePhone" type="string" />
+        <property name="countryCode" type="string" />
+        <property name="email" type="string" />
+        <property name="postalCode" type="string" />
+        <property name="identificationNumber" type="string" />
+    </transfer>
+
+    <transfer name="AfterPayCustomerLookupResponse">
+        <property name="userProfiles" type="AfterPayUserProfile[]" singular="userProfile" />
+    </transfer>
+
+    <transfer name="AfterPayInstallmentPlansRequest">
+        <property name="amount" type="int" />
+    </transfer>
+
+    <transfer name="AfterPayInstallmentPlansResponse">
+        <property name="installmentPlans" type="AfterPayInstallmentPlan[]" singular="installmentPlan" />
+    </transfer>
+
+    <transfer name="AfterPayInstallmentPlan">
+        <property name="basketAmount" type="int" />
+        <property name="numberOfInstallments" type="int" />
+        <property name="installmentAmount" type="int" />
+        <property name="firstInstallmentAmount" type="int" />
+        <property name="lastInstallmentAmount" type="int" />
+        <property name="interestRate" type="string" />
+        <property name="effectiveInterestRate" type="string" />
+        <property name="effectiveAnnualPercentageRate" type="string" />
+        <property name="totalInterestAmount" type="int" />
+        <property name="startupFee" type="string" />
+        <property name="monthlyFee" type="int" />
+        <property name="totalAmount" type="int" />
+        <property name="installmentProfileNumber" type="int" />
+        <property name="readMore" type="string" />
+    </transfer>
+
+    <transfer name="Totals">
+        <property name="priceToPay" type="int"/>
+    </transfer>
+
+    <transfer name="AfterPayUserProfile">
+        <property name="firstName" type="string" />
+        <property name="lastName" type="string" />
+        <property name="mobileNumber" type="string" />
+        <property name="email" type="string" />
+        <property name="languageCode" type="string" />
+        <property name="addressList" type="AfterPayLookupAddress[]" singular="lookupAddress" />
+    </transfer>
+
+    <transfer name="AfterPayLookupAddress">
+        <property name="street" type="string" />
+        <property name="street2" type="string" />
+        <property name="street3" type="string" />
+        <property name="street4" type="string" />
+        <property name="streetNumber" type="string" />
+        <property name="flatNo" type="string" />
+        <property name="entrance" type="string" />
+        <property name="city" type="string" />
+        <property name="postalCode" type="string" />
+        <property name="country" type="string" />
+        <property name="countryCode" type="string" />
+    </transfer>
+
+    <transfer name="AfterPayValidateCustomerRequest">
+        <property name="customer" type="AfterPayRequestCustomer" />
+    </transfer>
+
+    <transfer name="AfterPayValidateCustomerResponse">
+        <property name="isValid" type="bool" />
+        <property name="correctedAddress" type="AfterPayRequestAddress" />
+        <property name="responsePayload" type="string" />
+    </transfer>
+
+    <transfer name="AfterPayCaptureRequest">
+        <property name="idSalesOrder" type="int" />
+        <property name="fkPayment" type="int" />
+        <property name="orderNumber" type="string" />
+        <property name="orderDetails" type="AfterPayRequestOrder" />
+    </transfer>
+
+    <transfer name="AfterPayCaptureResponse">
+        <property name="idSalesOrder" type="int" />
+        <property name="apiResponse" type="AfterPayApiResponse" />
+        <property name="capturedAmount" type="int" />
+        <property name="captureNumber" type="string" />
+        <property name="authorizedAmount" type="int" />
+        <property name="remainingAuthorizedAmount" type="int" />
+    </transfer>
+
+    <transfer name="AfterPayCancelRequest">
+        <property name="idSalesOrder" type="int" />
+        <property name="fkPayment" type="int" />
+        <property name="orderNumber" type="string" />
+        <property name="cancellationDetails" type="AfterPayRequestOrder" />
+    </transfer>
+
+    <transfer name="AfterPayCancelResponse">
+        <property name="idSalesOrder" type="int" />
+        <property name="apiResponse" type="AfterPayApiResponse" />
+        <property name="totalAuthorizedAmount" type="int" />
+        <property name="totalCapturedAmount" type="int" />
+    </transfer>
+
+    <transfer name="AfterPayRefundRequest">
+        <property name="idSalesOrder" type="int" />
+        <property name="fkPayment" type="int" />
+        <property name="orderNumber" type="int" />
+        <property name="captureNumber" type="string" />
+        <property name="orderItems" type="AfterPayRequestOrderItem[]"  singular="orderItem" />
+    </transfer>
+
+    <transfer name="AfterPayRefundResponse">
+        <property name="idSalesOrder" type="int" />
+        <property name="apiResponse" type="AfterPayApiResponse" />
+        <property name="totalAuthorizedAmount" type="int" />
+        <property name="totalCapturedAmount" type="int" />
+        <property name="numbers" type="RefundNumber[]" singular="number" />
+    </transfer>
+
+    <transfer name="RefundNumber">
+        <property name="number" type="string" />
+    </transfer>
+
+    <transfer name="AfterPayRequestPayment">
+        <property name="type" type="string" />
+    </transfer>
+
+    <transfer name="AfterPayApiResponse">
+        <property name="outcome" type="string" />
+        <property name="reservationId" type="string" />
+        <property name="checkoutId" type="string" />
+        <property name="responsePayload" type="string" />
+        <property name="error" type="AfterPayApiResponseError" />
+    </transfer>
+
+    <transfer name="AfterPayAvailablePaymentMethodsRequest">
+        <property name="customer" type="AfterPayRequestCustomer" />
+        <property name="order" type="AfterPayRequestOrder" />
+    </transfer>
+
+    <transfer name="AfterPayAvailablePaymentMethodsResponse">
+        <property name="checkoutId" type="string" />
+        <property name="outcome" type="string" />
+        <property name="customer" type="array" />
+        <property name="customerNumber" type="string" />
+        <property name="paymentMethods" type="array" />
+        <property name="riskCheckResultCode" type="string" />
+    </transfer>
+
+    <transfer name="AfterPayRequestCustomer">
+        <property name="salutation" type="string" />
+        <property name="firstName" type="string" />
+        <property name="lastName" type="string" />
+        <property name="email" type="string" />
+        <property name="customerCategory" type="string" />
+        <property name="conversationalLanguage" type="string" />
+        <property name="address" type="AfterPayRequestAddress" />
+    </transfer>
+
+    <transfer name="AfterPayRequestAddress">
+        <property name="idCustomerAddress" type="int" />
+        <property name="street" type="string" />
+        <property name="streetNumber" type="string" />
+        <property name="streetNumberAdditional" type="string" />
+        <property name="postalCode" type="string" />
+        <property name="postalPlace" type="string" />
+        <property name="countryCode" type="string" />
+    </transfer>
+
+    <transfer name="AfterPayRequestOrder">
+        <property name="number" type="string" />
+        <property name="totalGrossAmount" type="string" />
+        <property name="totalNetAmount" type="string" />
+        <property name="currency" type="string" />
+        <property name="items" type="AfterPayRequestOrderItem[]"  singular="item" />
+    </transfer>
+
+    <transfer name="AfterPayRequestOrderItem">
+        <property name="productId" type="string" />
+        <property name="description" type="string" />
+        <property name="grossUnitPrice" type="string" />
+        <property name="netUnitPrice" type="string" />
+        <property name="quantity" type="string" />
+    </transfer>
+
+    <transfer name="AfterPayResponse">
+        <property name="isSuccess" type="bool"/>
+        <property name="isError" type="bool"/>
+        <property name="isPending" type="bool"/>
+        <property name="idSalesOrder" type="int"/>
+        <property name="idPaymentReference" type="string"/>
+        <property name="processingCode" type="string"/>
+        <property name="idTransactionUnique" type="string"/>
+        <property name="paymentFormUrl" type="string"/>
+        <property name="payload" type="string"/>
+        <property name="resultCode" type="string"/>
+        <property name="customerRedirectUrl" type="string"/>
+    </transfer>
+
+    <transfer name="AfterPayApiResponseError">
+        <property name="type" type="string" />
+        <property name="code" type="string" />
+        <property name="message" type="string" />
+        <property name="actionCode" type="string" />
+        <property name="isSuccess" type="bool" />
+    </transfer>
+
+    <transfer name="AfterPayAvailablePaymentMethods">
+        <property name="availablePaymentMethodNames" type="array" />
+        <property name="riskCheckCode" type="string" />
+        <property name="customerNumber" type="string" />
+        <property name="checkoutId" type="string" />
+        <property name="quoteHash" type="string" />
+    </transfer>
+
+    <transfer name="AfterPayCall">
+        <property name="shippingAddress" type="Address" />
+        <property name="billingAddress" type="Address" />
+        <property name="orderReference" type="string" />
+        <property name="paymentMethod" type="string" />
+        <property name="email" type="string" />
+        <property name="items" type="Item[]" singular="Item"/>
+        <property name="totals" type="Totals" />
+    </transfer>
+
+    <transfer name="Quote">
+        <property name="afterpayAvailablePaymentMethods" type="AfterPayAvailablePaymentMethods" />
+        <property name="afterpayPaymentReservationId" type="string" />
+    </transfer>
+
+    <transfer name="Payment">
+        <property name="afterpayInvoice" type="AfterPayPayment"/>
+        <property name="afterpayCheckoutId" type="string" />
+        <property name="afterpayCustomerNumber" type="string" />
+    </transfer>
+
+    <transfer name="Order">
+        <property name="AfterPayPayment" type="AfterPayPayment"/>
+    </transfer>
+
+    <!--Facade related transfers start-->
+
+    <transfer name="AfterPayAuthorizeFacadeCall">
+        <property name="email" type="string" />
+        <property name="orderReference" type="string" />
+        <property name="paymentMethod" type="string" />
+        <property name="items" type="Item[]" singular="Item"/>
+        <property name="totals" type="Total" />
+        <property name="billingAddress" type="Address" />
+        <property name="shippingAddress" type="Address" />
+    </transfer>
+
+    <!--Facade related transfers end -->
+
+</transfers>

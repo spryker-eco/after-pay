@@ -1,8 +1,9 @@
 {
   "name": "spryker-eco/after-pay",
-  "description": "Afterpay bundle",
-  "license": "proprietary",
+  "description": "AfterPay bundle",
+  "license": "MIT",
   "require": {
+    "php": ">=7.1",
     "spryker/checkout": "^3.0.0",
     "spryker/currency": "^2.0.0",
     "spryker/kernel": "^3.0.0",
@@ -32,25 +33,25 @@
     "spryker/installer": "If you want to use Installer plugins you need to install spryker/installer."
   },
   "autoload": {
-    "psr-0": {
-      "SprykerEco": "src/",
-      "SprykerEcoTest": "tests/"
+    "psr-4": {
+      "SprykerEco\\": "src/SprykerEco/"
     }
   },
   "autoload-dev": {
-    "psr-0": {
-      "Functional": "tests/",
-      "Unit": "tests/"
+    "psr-4": {
+      "SprykerEcoTest\\": "tests/SprykerEcoTest/"
     }
   },
   "minimum-stability": "dev",
   "prefer-stable": true,
+  "config": {
+    "preferred-install": "dist",
+    "sort-packages": true,
+    "process-timeout": 600
+  },
   "extra": {
     "branch-alias": {
       "dev-master": "1.0.x-dev"
     }
-  },
-  "config": {
-    "sort-packages": true
   }
 }
