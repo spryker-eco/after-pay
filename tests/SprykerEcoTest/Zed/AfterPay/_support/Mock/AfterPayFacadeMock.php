@@ -14,7 +14,7 @@ class AfterPayFacadeMock extends AfterPayFacade
     /**
      * @return \SprykerEcoTest\Zed\AfterPay\Mock\AfterPayBusinessFactoryMock
      */
-    public function getFactory()
+    public function getFactory(): AfterPayBusinessFactoryMock
     {
         return new AfterPayBusinessFactoryMock();
     }

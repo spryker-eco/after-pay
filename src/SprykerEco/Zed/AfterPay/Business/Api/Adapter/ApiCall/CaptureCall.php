@@ -11,7 +11,7 @@ use Generated\Shared\Transfer\AfterPayApiResponseTransfer;
 use Generated\Shared\Transfer\AfterPayCaptureRequestTransfer;
 use Generated\Shared\Transfer\AfterPayCaptureResponseTransfer;
 use SprykerEco\Shared\AfterPay\AfterPayApiRequestConfig;
-use SprykerEco\Shared\AfterPay\AfterPayConfig as AfterPayConfig1;
+use SprykerEco\Shared\AfterPay\AfterPayConfig as SharedAfterPayConfig;
 use SprykerEco\Zed\AfterPay\AfterPayConfig;
 use SprykerEco\Zed\AfterPay\Business\Api\Adapter\Client\ClientInterface;
 use SprykerEco\Zed\AfterPay\Business\Api\Adapter\Converter\TransferToCamelCaseArrayConverterInterface;
@@ -153,8 +153,8 @@ class CaptureCall extends AbstractApiCall implements CaptureCallInterface
         $apiResponseTransfer = new AfterPayApiResponseTransfer();
 
         $outcome = $jsonResponseArray[AfterPayApiRequestConfig::CAPTURE_CAPTURE_NUMBER]
-            ? AfterPayConfig1::API_TRANSACTION_OUTCOME_ACCEPTED
-            : AfterPayConfig1::API_TRANSACTION_OUTCOME_REJECTED;
+            ? SharedAfterPayConfig::API_TRANSACTION_OUTCOME_ACCEPTED
+            : SharedAfterPayConfig::API_TRANSACTION_OUTCOME_REJECTED;
 
         $apiResponseTransfer
             ->setOutcome($outcome)

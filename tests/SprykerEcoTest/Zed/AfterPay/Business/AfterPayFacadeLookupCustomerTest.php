@@ -8,6 +8,7 @@
 namespace SprykerEcoTest\Zed\AfterPay\Business;
 
 use Generated\Shared\DataBuilder\AfterPayCustomerLookupRequestBuilder;
+use Generated\Shared\Transfer\AfterPayCustomerLookupRequestTransfer;
 use Generated\Shared\Transfer\AfterPayCustomerLookupResponseTransfer;
 
 class AfterPayFacadeLookupCustomerTest extends AfterPayFacadeAbstractTest
@@ -15,7 +16,7 @@ class AfterPayFacadeLookupCustomerTest extends AfterPayFacadeAbstractTest
     /**
      * @return void
      */
-    public function testLookupCustomer()
+    public function testLookupCustomer(): void
     {
         $request = $this->prepareRequest();
         $output = $this->doFacadeCall($request);
@@ -27,7 +28,7 @@ class AfterPayFacadeLookupCustomerTest extends AfterPayFacadeAbstractTest
      *
      * @return \Generated\Shared\Transfer\AfterPayCustomerLookupResponseTransfer
      */
-    protected function doFacadeCall($request)
+    protected function doFacadeCall(AfterPayCustomerLookupRequestTransfer $request): AfterPayCustomerLookupResponseTransfer
     {
         return $this->facade->lookupCustomer($request);
     }
@@ -37,7 +38,7 @@ class AfterPayFacadeLookupCustomerTest extends AfterPayFacadeAbstractTest
      *
      * @return void
      */
-    protected function doTest(AfterPayCustomerLookupResponseTransfer $output)
+    protected function doTest(AfterPayCustomerLookupResponseTransfer $output): void
     {
         foreach ($output->getUserProfiles() as $profile) {
             $this->assertNotEmpty($profile->getEmail());

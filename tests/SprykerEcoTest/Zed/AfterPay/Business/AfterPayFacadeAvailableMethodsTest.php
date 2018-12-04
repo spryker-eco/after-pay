@@ -16,7 +16,7 @@ class AfterPayFacadeAvailableMethodsTest extends AfterPayFacadeAbstractTest
     /**
      * @return void
      */
-    public function testGetAvailablePaymentMethods()
+    public function testGetAvailablePaymentMethods(): void
     {
         $quote = $this->createQuoteTransfer();
         $output = $this->doFacadeCall($quote);
@@ -28,7 +28,7 @@ class AfterPayFacadeAvailableMethodsTest extends AfterPayFacadeAbstractTest
      *
      * @return \Generated\Shared\Transfer\AfterPayAvailablePaymentMethodsTransfer
      */
-    protected function doFacadeCall(QuoteTransfer $quoteTransfer)
+    protected function doFacadeCall(QuoteTransfer $quoteTransfer): AfterPayAvailablePaymentMethodsTransfer
     {
         return $this->facade->getAvailablePaymentMethods($quoteTransfer);
     }
@@ -38,7 +38,7 @@ class AfterPayFacadeAvailableMethodsTest extends AfterPayFacadeAbstractTest
      *
      * @return void
      */
-    protected function doTest(AfterPayAvailablePaymentMethodsTransfer $output)
+    protected function doTest(AfterPayAvailablePaymentMethodsTransfer $output): void
     {
         $methodNames = $output->getAvailablePaymentMethodNames();
 

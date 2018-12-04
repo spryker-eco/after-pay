@@ -38,7 +38,7 @@ interface CaptureRequestBuilderInterface
      * @return $this
      */
     public function addOrderExpenseToCaptureRequest(
-        $expenseAmount,
+        int $expenseAmount,
         AfterPayCaptureRequestTransfer $captureRequestTransfer
     );
 }

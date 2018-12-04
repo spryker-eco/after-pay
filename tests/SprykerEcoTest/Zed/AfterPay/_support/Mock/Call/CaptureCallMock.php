@@ -9,6 +9,7 @@ namespace SprykerEcoTest\Zed\AfterPay\Mock\Call;
 
 use Generated\Shared\DataBuilder\AfterPayCaptureResponseBuilder;
 use Generated\Shared\Transfer\AfterPayCaptureRequestTransfer;
+use Generated\Shared\Transfer\AfterPayCaptureResponseTransfer;
 use SprykerEco\Zed\AfterPay\Business\Api\Adapter\ApiCall\CaptureCall;
 
 class CaptureCallMock extends CaptureCall
@@ -18,7 +19,7 @@ class CaptureCallMock extends CaptureCall
      *
      * @return \Generated\Shared\Transfer\AfterPayCaptureResponseTransfer
      */
-    public function execute(AfterPayCaptureRequestTransfer $requestTransfer)
+    public function execute(AfterPayCaptureRequestTransfer $requestTransfer): AfterPayCaptureResponseTransfer
     {
         return (new AfterPayCaptureResponseBuilder())
             ->withApiResponse()

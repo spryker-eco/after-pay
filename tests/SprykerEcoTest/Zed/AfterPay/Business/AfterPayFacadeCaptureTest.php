@@ -8,32 +8,15 @@
 namespace SprykerEcoTest\Zed\AfterPay\Business;
 
 use Generated\Shared\DataBuilder\ItemBuilder;
-use SprykerEcoTest\Zed\AfterPay\Mock\AfterPayFacadeMock;
+use Generated\Shared\Transfer\AfterPayCallTransfer;
+use Generated\Shared\Transfer\ItemTransfer;
 
 class AfterPayFacadeCaptureTest extends AfterPayFacadeAbstractTest
 {
     /**
      * @return void
      */
-    public function setUp()
-    {
-        parent::setUp();
-        //Create payment in database.
-    }
-
-    /**
-     * @return void
-     */
-    public function tearDown()
-    {
-        parent::tearDown();
-        //Remove payments from database.
-    }
-
-    /**
-     * @return void
-     */
-    protected function testCapture()
+    public function testCapture(): void
     {
         $call = $this->createCallTransfer();
         $item = $this->createItemTransfer();
@@ -44,7 +27,7 @@ class AfterPayFacadeCaptureTest extends AfterPayFacadeAbstractTest
     /**
      * @return \Generated\Shared\Transfer\ItemTransfer
      */
-    protected function createItemTransfer()
+    protected function createItemTransfer(): ItemTransfer
     {
         $item = (new ItemBuilder())
             ->build();
@@ -58,15 +41,15 @@ class AfterPayFacadeCaptureTest extends AfterPayFacadeAbstractTest
      *
      * @return void
      */
-    protected function doFacadeCall($item, $call)
+    protected function doFacadeCall(ItemTransfer $item, AfterPayCallTransfer $call): void
     {
-        (new AfterPayFacadeMock())->capturePayment($item, $call);
+        $this->facade->capturePayment($item, $call);
     }
 
     /**
      * @return void
      */
-    protected function doTest()
+    protected function doTest(): void
     {
         //Is transaction accepted
         //Is captured amount updated?

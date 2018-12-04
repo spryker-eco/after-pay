@@ -9,7 +9,7 @@ namespace SprykerEco\Zed\AfterPay\Business\Hook;
 
 use Generated\Shared\Transfer\CheckoutResponseTransfer;
 use Generated\Shared\Transfer\QuoteTransfer;
-use SprykerEco\Shared\AfterPay\AfterPayConfig as AfterPayConfig1;
+use SprykerEco\Shared\AfterPay\AfterPayConfig as SharedAfterPayConfig;
 use SprykerEco\Zed\AfterPay\AfterPayConfig;
 use SprykerEco\Zed\AfterPay\Business\Payment\Transaction\TransactionLogReaderInterface;
 
@@ -70,7 +70,7 @@ class PostSaveHook implements PostSaveHookInterface
             return false;
         }
 
-        return $transactionLogTransfer->getOutcome() === AfterPayConfig1::API_TRANSACTION_OUTCOME_ACCEPTED;
+        return $transactionLogTransfer->getOutcome() === SharedAfterPayConfig::API_TRANSACTION_OUTCOME_ACCEPTED;
     }
 
     /**

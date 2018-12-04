@@ -8,6 +8,7 @@
 namespace SprykerEcoTest\Zed\AfterPay\Mock\Call;
 
 use Generated\Shared\DataBuilder\AfterPayApiResponseBuilder;
+use Generated\Shared\Transfer\AfterPayApiResponseTransfer;
 use Generated\Shared\Transfer\AfterPayAuthorizeRequestTransfer;
 use SprykerEco\Zed\AfterPay\Business\Api\Adapter\ApiCall\AuthorizePaymentCall;
 
@@ -18,7 +19,7 @@ class AuthorizePaymentCallMock extends AuthorizePaymentCall
      *
      * @return \Generated\Shared\Transfer\AfterPayApiResponseTransfer
      */
-    public function execute(AfterPayAuthorizeRequestTransfer $requestTransfer)
+    public function execute(AfterPayAuthorizeRequestTransfer $requestTransfer): AfterPayApiResponseTransfer
     {
         return (new AfterPayApiResponseBuilder())->build();
     }

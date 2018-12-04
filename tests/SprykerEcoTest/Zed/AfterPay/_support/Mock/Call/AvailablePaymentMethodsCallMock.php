@@ -9,6 +9,7 @@ namespace SprykerEcoTest\Zed\AfterPay\Mock\Call;
 
 use Generated\Shared\DataBuilder\AfterPayAvailablePaymentMethodsResponseBuilder;
 use Generated\Shared\Transfer\AfterPayAvailablePaymentMethodsRequestTransfer;
+use Generated\Shared\Transfer\AfterPayAvailablePaymentMethodsResponseTransfer;
 use SprykerEco\Shared\AfterPay\AfterPayConfig;
 use SprykerEco\Zed\AfterPay\Business\Api\Adapter\ApiCall\AvailablePaymentMethodsCall;
 
@@ -19,7 +20,7 @@ class AvailablePaymentMethodsCallMock extends AvailablePaymentMethodsCall
      *
      * @return \Generated\Shared\Transfer\AfterPayAvailablePaymentMethodsResponseTransfer
      */
-    public function execute(AfterPayAvailablePaymentMethodsRequestTransfer $requestTransfer)
+    public function execute(AfterPayAvailablePaymentMethodsRequestTransfer $requestTransfer): AfterPayAvailablePaymentMethodsResponseTransfer
     {
         $response = (new AfterPayAvailablePaymentMethodsResponseBuilder())
             ->build();

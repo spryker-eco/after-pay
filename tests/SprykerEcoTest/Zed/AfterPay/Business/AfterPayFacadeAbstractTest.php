@@ -11,6 +11,9 @@ use Codeception\TestCase\Test;
 use Generated\Shared\DataBuilder\AfterPayCallBuilder;
 use Generated\Shared\DataBuilder\QuoteBuilder;
 use Generated\Shared\DataBuilder\TaxTotalBuilder;
+use Generated\Shared\Transfer\AfterPayCallTransfer;
+use Generated\Shared\Transfer\QuoteTransfer;
+use Generated\Shared\Transfer\TaxTotalTransfer;
 use SprykerEcoTest\Zed\AfterPay\Mock\AfterPayFacadeMock;
 
 class AfterPayFacadeAbstractTest extends Test
@@ -23,7 +26,7 @@ class AfterPayFacadeAbstractTest extends Test
     /**
      * @return void
      */
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         $this->facade = new AfterPayFacadeMock();
@@ -32,7 +35,7 @@ class AfterPayFacadeAbstractTest extends Test
     /**
      * @return \Generated\Shared\Transfer\AfterPayCallTransfer
      */
-    protected function createCallTransfer()
+    protected function createCallTransfer(): AfterPayCallTransfer
     {
         $call = (new AfterPayCallBuilder())
             ->withBillingAddress()
@@ -51,7 +54,7 @@ class AfterPayFacadeAbstractTest extends Test
     /**
      * @return \Generated\Shared\Transfer\QuoteTransfer
      */
-    protected function createQuoteTransfer()
+    protected function createQuoteTransfer(): QuoteTransfer
     {
         $quote = (new QuoteBuilder())
             ->withBillingAddress()
@@ -72,7 +75,7 @@ class AfterPayFacadeAbstractTest extends Test
     /**
      * @return \Generated\Shared\Transfer\TaxTotalTransfer
      */
-    protected function createTaxTotalTransfer()
+    protected function createTaxTotalTransfer(): TaxTotalTransfer
     {
         return (new TaxTotalBuilder())->build();
     }

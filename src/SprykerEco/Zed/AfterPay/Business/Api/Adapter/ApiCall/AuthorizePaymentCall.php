@@ -10,7 +10,7 @@ namespace SprykerEco\Zed\AfterPay\Business\Api\Adapter\ApiCall;
 use Generated\Shared\Transfer\AfterPayApiResponseTransfer;
 use Generated\Shared\Transfer\AfterPayAuthorizeRequestTransfer;
 use SprykerEco\Shared\AfterPay\AfterPayApiRequestConfig;
-use SprykerEco\Shared\AfterPay\AfterPayConfig as AfterPayConfig1;
+use SprykerEco\Shared\AfterPay\AfterPayConfig as SharedAfterPayConfig;
 use SprykerEco\Zed\AfterPay\AfterPayConfig;
 use SprykerEco\Zed\AfterPay\Business\Api\Adapter\Client\ClientInterface;
 use SprykerEco\Zed\AfterPay\Business\Api\Adapter\Converter\TransferToCamelCaseArrayConverterInterface;
@@ -81,7 +81,7 @@ class AuthorizePaymentCall extends AbstractApiCall implements AuthorizePaymentCa
         $responseTransfer = new AfterPayApiResponseTransfer();
 
         $responseTransfer
-            ->setOutcome($jsonResponseArray[AfterPayApiRequestConfig::TRANSACTION_OUTCOME] ?? AfterPayConfig1::API_TRANSACTION_OUTCOME_REJECTED)
+            ->setOutcome($jsonResponseArray[AfterPayApiRequestConfig::TRANSACTION_OUTCOME] ?? SharedAfterPayConfig::API_TRANSACTION_OUTCOME_REJECTED)
             ->setReservationId($jsonResponseArray[AfterPayApiRequestConfig::TRANSACTION_RESERVATION_ID] ?? null)
             ->setCheckoutId($jsonResponseArray[AfterPayApiRequestConfig::TRANSACTION_CHECKOUT_ID] ?? null)
             ->setResponsePayload($jsonResponse);

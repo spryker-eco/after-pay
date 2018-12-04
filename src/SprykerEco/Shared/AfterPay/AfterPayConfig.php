@@ -11,7 +11,7 @@ use Spryker\Shared\Kernel\AbstractBundleConfig;
 
 class AfterPayConfig extends AbstractBundleConfig
 {
-    public const PROVIDER_NAME = 'AfterPay';
+    public const PROVIDER_NAME = 'afterPay';
     public const AFTERPAY_AUTHORIZE_WORKFLOW_ONE_STEP = 'one step authorize workflow';
     public const AFTERPAY_AUTHORIZE_WORKFLOW_TWO_STEPS = 'two steps authorize workflow';
     public const PAYMENT_TYPE_INVOICE = 'Invoice';

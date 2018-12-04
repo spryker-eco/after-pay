@@ -10,14 +10,13 @@ namespace SprykerEcoTest\Zed\AfterPay\Business;
 use Generated\Shared\Transfer\AfterPayApiResponseTransfer;
 use Generated\Shared\Transfer\AfterPayCallTransfer;
 use SprykerEco\Shared\AfterPay\AfterPayConfig;
-use SprykerEcoTest\Zed\AfterPay\Mock\AfterPayFacadeMock;
 
 class AfterPayFacadeAuthorizeTest extends AfterPayFacadeAbstractTest
 {
     /**
      * @return void
      */
-    public function testAuthorize()
+    public function testAuthorize(): void
     {
         $input = $this->createCallTransfer();
         $output = $this->doFacadeCall($input);
@@ -29,9 +28,9 @@ class AfterPayFacadeAuthorizeTest extends AfterPayFacadeAbstractTest
      *
      * @return \Generated\Shared\Transfer\AfterPayApiResponseTransfer
      */
-    protected function doFacadeCall(AfterPayCallTransfer $input)
+    protected function doFacadeCall(AfterPayCallTransfer $input): AfterPayApiResponseTransfer
     {
-        return (new AfterPayFacadeMock())->authorizePayment($input);
+        return $this->facade->authorizePayment($input);
     }
 
     /**
@@ -39,7 +38,7 @@ class AfterPayFacadeAuthorizeTest extends AfterPayFacadeAbstractTest
      *
      * @return void
      */
-    protected function doTest(AfterPayApiResponseTransfer $output)
+    protected function doTest(AfterPayApiResponseTransfer $output): void
     {
         $this->assertNotEmpty($output->getOutcome());
         $this->assertEquals($output->getOutcome(), AfterPayConfig::API_TRANSACTION_OUTCOME_ACCEPTED);

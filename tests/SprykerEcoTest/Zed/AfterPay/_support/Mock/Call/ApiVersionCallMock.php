@@ -14,7 +14,7 @@ class ApiVersionCallMock extends ApiVersionCall
     /**
      * @return string
      */
-    public function execute()
+    public function execute(): string
     {
         return '1.0.0';
     }

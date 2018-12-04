@@ -9,13 +9,14 @@ namespace SprykerEcoTest\Zed\AfterPay\Business;
 
 use Generated\Shared\DataBuilder\AfterPayInstallmentPlansRequestBuilder;
 use Generated\Shared\Transfer\AfterPayInstallmentPlansRequestTransfer;
+use Generated\Shared\Transfer\AfterPayInstallmentPlansResponseTransfer;
 
 class AfterPayFacadeLookupInstallmentPlansTest extends AfterPayFacadeAbstractTest
 {
     /**
      * @return void
      */
-    public function testsLookupInstallmentPlans()
+    public function testsLookupInstallmentPlans(): void
     {
         $request = $this->prepareRequest();
         $output = $this->doFacadeCall($request);
@@ -25,7 +26,7 @@ class AfterPayFacadeLookupInstallmentPlansTest extends AfterPayFacadeAbstractTes
     /**
      * @return \Generated\Shared\Transfer\AfterPayInstallmentPlansRequestTransfer
      */
-    protected function prepareRequest()
+    protected function prepareRequest(): AfterPayInstallmentPlansRequestTransfer
     {
         return (new AfterPayInstallmentPlansRequestBuilder())
             ->build();
@@ -36,7 +37,7 @@ class AfterPayFacadeLookupInstallmentPlansTest extends AfterPayFacadeAbstractTes
      *
      * @return \Generated\Shared\Transfer\AfterPayInstallmentPlansResponseTransfer
      */
-    protected function doFacadeCall(AfterPayInstallmentPlansRequestTransfer $request)
+    protected function doFacadeCall(AfterPayInstallmentPlansRequestTransfer $request): AfterPayInstallmentPlansResponseTransfer
     {
         return $this->facade->lookupInstallmentPlans($request);
     }
@@ -46,7 +47,7 @@ class AfterPayFacadeLookupInstallmentPlansTest extends AfterPayFacadeAbstractTes
      *
      * @return void
      */
-    protected function doTest($output)
+    protected function doTest(AfterPayInstallmentPlansResponseTransfer $output): void
     {
         foreach ($output->getInstallmentPlans() as $plan) {
             $this->assertNotEmpty($plan->getBasketAmount());

@@ -9,6 +9,7 @@ namespace SprykerEcoTest\Zed\AfterPay\Mock\Call;
 
 use Generated\Shared\DataBuilder\AfterPayCustomerLookupResponseBuilder;
 use Generated\Shared\Transfer\AfterPayCustomerLookupRequestTransfer;
+use Generated\Shared\Transfer\AfterPayCustomerLookupResponseTransfer;
 use SprykerEco\Zed\AfterPay\Business\Api\Adapter\ApiCall\LookupCustomerCall;
 
 class LookupCustomerCallMock extends LookupCustomerCall
@@ -18,7 +19,7 @@ class LookupCustomerCallMock extends LookupCustomerCall
      *
      * @return \Generated\Shared\Transfer\AfterPayCustomerLookupResponseTransfer
      */
-    public function execute(AfterPayCustomerLookupRequestTransfer $customerLookupRequestTransfer)
+    public function execute(AfterPayCustomerLookupRequestTransfer $customerLookupRequestTransfer): AfterPayCustomerLookupResponseTransfer
     {
         return (new AfterPayCustomerLookupResponseBuilder())
             ->withUserProfile()

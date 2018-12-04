@@ -12,7 +12,7 @@ class AfterPayFacadeGetApiVersionTest extends AfterPayFacadeAbstractTest
     /**
      * @return void
      */
-    public function testGetApiVersion()
+    public function testGetApiVersion(): void
     {
         $output = $this->doFacadeCall();
         $this->doTest($output);
@@ -21,7 +21,7 @@ class AfterPayFacadeGetApiVersionTest extends AfterPayFacadeAbstractTest
     /**
      * @return string
      */
-    protected function doFacadeCall()
+    protected function doFacadeCall(): string
     {
         return $this->facade->getApiVersion();
     }
@@ -31,7 +31,7 @@ class AfterPayFacadeGetApiVersionTest extends AfterPayFacadeAbstractTest
      *
      * @return void
      */
-    protected function doTest($output)
+    protected function doTest(string $output): void
     {
         $this->assertNotEmpty($output);
     }

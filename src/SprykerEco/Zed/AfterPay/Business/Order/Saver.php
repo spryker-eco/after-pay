@@ -13,7 +13,7 @@ use Generated\Shared\Transfer\SaveOrderTransfer;
 use Orm\Zed\AfterPay\Persistence\SpyPaymentAfterPay;
 use Orm\Zed\AfterPay\Persistence\SpyPaymentAfterPayOrderItem;
 use Spryker\Zed\Kernel\Persistence\EntityManager\TransactionTrait;
-use SprykerEco\Shared\AfterPay\AfterPayConfig as AfterPayConfig1;
+use SprykerEco\Shared\AfterPay\AfterPayConfig as SharedAfterPayConfig;
 use SprykerEco\Zed\AfterPay\AfterPayConfig;
 
 class Saver implements SaverInterface
@@ -122,7 +122,7 @@ class Saver implements SaverInterface
         }
 
         foreach ($quoteTransfer->getPayments() as $paymentTransfer) {
-            if ($paymentTransfer->getPaymentMethod() !== AfterPayConfig1::PROVIDER_NAME || !$paymentTransfer->getAmount()) {
+            if ($paymentTransfer->getPaymentMethod() !== SharedAfterPayConfig::PROVIDER_NAME || !$paymentTransfer->getAmount()) {
                 continue;
             }
             return $paymentTransfer->getAmount();

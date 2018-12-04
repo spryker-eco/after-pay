@@ -11,7 +11,7 @@ use Generated\Shared\Transfer\AfterPayApiResponseTransfer;
 use Generated\Shared\Transfer\AfterPayRefundRequestTransfer;
 use Generated\Shared\Transfer\AfterPayRefundResponseTransfer;
 use SprykerEco\Shared\AfterPay\AfterPayApiRequestConfig;
-use SprykerEco\Shared\AfterPay\AfterPayConfig as AfterPayConfig1;
+use SprykerEco\Shared\AfterPay\AfterPayConfig as SharedAfterPayConfig;
 use SprykerEco\Zed\AfterPay\AfterPayConfig;
 use SprykerEco\Zed\AfterPay\Business\Api\Adapter\Client\ClientInterface;
 use SprykerEco\Zed\AfterPay\Business\Api\Adapter\Converter\TransferToCamelCaseArrayConverterInterface;
@@ -145,8 +145,8 @@ class RefundCall extends AbstractApiCall implements RefundCallInterface
         $apiResponseTransfer = new AfterPayApiResponseTransfer();
 
         $outcome = $jsonResponseArray[AfterPayApiRequestConfig::REFUND_TOTAL_CAPTURED_AMOUNT]
-            ? AfterPayConfig1::API_TRANSACTION_OUTCOME_ACCEPTED
-            : AfterPayConfig1::API_TRANSACTION_OUTCOME_REJECTED;
+            ? SharedAfterPayConfig::API_TRANSACTION_OUTCOME_ACCEPTED
+            : SharedAfterPayConfig::API_TRANSACTION_OUTCOME_REJECTED;
 
         $apiResponseTransfer
             ->setOutcome($outcome)

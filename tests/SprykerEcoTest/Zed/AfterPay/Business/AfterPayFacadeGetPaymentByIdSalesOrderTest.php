@@ -7,6 +7,7 @@
 
 namespace SprykerEcoTest\Zed\AfterPay\Business;
 
+use Generated\Shared\Transfer\AfterPayPaymentTransfer;
 use SprykerEco\Shared\AfterPay\AfterPayConfig;
 
 class AfterPayFacadeGetPaymentByIdSalesOrderTest extends AfterPayFacadeAbstractTest
@@ -14,7 +15,7 @@ class AfterPayFacadeGetPaymentByIdSalesOrderTest extends AfterPayFacadeAbstractT
     /**
      * @return void
      */
-    protected function testGetPaymentByIdSalesOrder()
+    public function testGetPaymentByIdSalesOrder(): void
     {
         $idSalesOrder = 45;
         $output = $this->doFacadeCall($idSalesOrder);
@@ -26,7 +27,7 @@ class AfterPayFacadeGetPaymentByIdSalesOrderTest extends AfterPayFacadeAbstractT
      *
      * @return \Generated\Shared\Transfer\AfterPayPaymentTransfer
      */
-    protected function doFacadeCall($input)
+    protected function doFacadeCall(int $input): AfterPayPaymentTransfer
     {
         return $this->facade->getPaymentByIdSalesOrder($input);
     }
@@ -36,7 +37,7 @@ class AfterPayFacadeGetPaymentByIdSalesOrderTest extends AfterPayFacadeAbstractT
      *
      * @return void
      */
-    protected function doTest($output)
+    protected function doTest(AfterPayPaymentTransfer $output): void
     {
         $paymentMethod = $output->getPaymentMethod();
         $this->assertTrue(in_array($paymentMethod, [AfterPayConfig::RISK_CHECK_METHOD_INVOICE]));
