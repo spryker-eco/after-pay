@@ -8,7 +8,6 @@
 namespace SprykerEcoTest\Zed\AfterPay\Business;
 
 use SprykerEco\Shared\AfterPay\AfterPayConfig;
-use SprykerEco\Shared\AfterPay\AfterPayConstants;
 
 class AfterPayFacadeGetPaymentByIdSalesOrderTest extends AfterPayFacadeAbstractTest
 {

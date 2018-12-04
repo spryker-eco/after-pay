@@ -10,7 +10,6 @@ namespace SprykerEco\Zed\AfterPay\Business\Payment\Transaction;
 use Generated\Shared\Transfer\AfterPayTransactionLogTransfer;
 use Orm\Zed\AfterPay\Persistence\SpyPaymentAfterPayTransactionLog;
 use SprykerEco\Shared\AfterPay\AfterPayConfig;
-use SprykerEco\Shared\AfterPay\AfterPayConstants;
 use SprykerEco\Zed\AfterPay\Persistence\AfterPayQueryContainerInterface;
 
 class TransactionLogReader implements TransactionLogReaderInterface

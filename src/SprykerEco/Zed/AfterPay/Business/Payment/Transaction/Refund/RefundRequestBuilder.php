@@ -12,7 +12,6 @@ use Generated\Shared\Transfer\AfterPayRequestOrderItemTransfer;
 use Generated\Shared\Transfer\ItemTransfer;
 use Generated\Shared\Transfer\OrderTransfer;
 use SprykerEco\Shared\AfterPay\AfterPayConfig;
-use SprykerEco\Shared\AfterPay\AfterPayConstants;
 use SprykerEco\Zed\AfterPay\Business\Payment\Mapper\OrderToRequestTransferInterface;
 use SprykerEco\Zed\AfterPay\Dependency\Facade\AfterPayToMoneyFacadeInterface;
 

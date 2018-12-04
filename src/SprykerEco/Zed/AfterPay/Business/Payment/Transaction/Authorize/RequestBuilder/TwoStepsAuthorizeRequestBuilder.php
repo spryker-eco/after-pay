@@ -13,7 +13,6 @@ use Generated\Shared\Transfer\AfterPayRequestOrderTransfer;
 use Generated\Shared\Transfer\AfterPayRequestPaymentTransfer;
 use Generated\Shared\Transfer\OrderTransfer;
 use SprykerEco\Shared\AfterPay\AfterPayConfig;
-use SprykerEco\Shared\AfterPay\AfterPayConstants;
 use SprykerEco\Zed\AfterPay\Business\Payment\Mapper\OrderToRequestTransferInterface;
 
 class TwoStepsAuthorizeRequestBuilder implements AuthorizeRequestBuilderInterface

@@ -10,7 +10,6 @@ namespace SprykerEcoTest\Zed\AfterPay\Mock\Call;
 use Generated\Shared\DataBuilder\AfterPayAvailablePaymentMethodsResponseBuilder;
 use Generated\Shared\Transfer\AfterPayAvailablePaymentMethodsRequestTransfer;
 use SprykerEco\Shared\AfterPay\AfterPayConfig;
-use SprykerEco\Shared\AfterPay\AfterPayConstants;
 use SprykerEco\Zed\AfterPay\Business\Api\Adapter\ApiCall\AvailablePaymentMethodsCall;
 
 class AvailablePaymentMethodsCallMock extends AvailablePaymentMethodsCall

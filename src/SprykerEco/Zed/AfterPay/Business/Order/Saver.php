@@ -14,7 +14,6 @@ use Orm\Zed\AfterPay\Persistence\SpyPaymentAfterPay;
 use Orm\Zed\AfterPay\Persistence\SpyPaymentAfterPayOrderItem;
 use Spryker\Zed\Kernel\Persistence\EntityManager\TransactionTrait;
 use SprykerEco\Shared\AfterPay\AfterPayConfig as AfterPayConfig1;
-use SprykerEco\Shared\AfterPay\AfterPayConstants;
 use SprykerEco\Zed\AfterPay\AfterPayConfig;
 
 class Saver implements SaverInterface

@@ -10,7 +10,6 @@ namespace SprykerEcoTest\Zed\AfterPay\Business;
 use Generated\Shared\Transfer\AfterPayApiResponseTransfer;
 use Generated\Shared\Transfer\AfterPayCallTransfer;
 use SprykerEco\Shared\AfterPay\AfterPayConfig;
-use SprykerEco\Shared\AfterPay\AfterPayConstants;
 use SprykerEcoTest\Zed\AfterPay\Mock\AfterPayFacadeMock;
 
 class AfterPayFacadeAuthorizeTest extends AfterPayFacadeAbstractTest

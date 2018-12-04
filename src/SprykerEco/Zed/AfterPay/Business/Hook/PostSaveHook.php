@@ -10,7 +10,6 @@ namespace SprykerEco\Zed\AfterPay\Business\Hook;
 use Generated\Shared\Transfer\CheckoutResponseTransfer;
 use Generated\Shared\Transfer\QuoteTransfer;
 use SprykerEco\Shared\AfterPay\AfterPayConfig as AfterPayConfig1;
-use SprykerEco\Shared\AfterPay\AfterPayConstants;
 use SprykerEco\Zed\AfterPay\AfterPayConfig;
 use SprykerEco\Zed\AfterPay\Business\Payment\Transaction\TransactionLogReaderInterface;
 

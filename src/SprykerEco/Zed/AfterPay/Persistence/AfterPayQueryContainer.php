@@ -13,7 +13,6 @@ use Orm\Zed\AfterPay\Persistence\SpyPaymentAfterPayQuery;
 use Orm\Zed\AfterPay\Persistence\SpyPaymentAfterPayTransactionLogQuery;
 use Spryker\Zed\Kernel\Persistence\AbstractQueryContainer;
 use SprykerEco\Shared\AfterPay\AfterPayConfig;
-use SprykerEco\Shared\AfterPay\AfterPayConstants;
 
 /**
  * @method \SprykerEco\Zed\AfterPay\Persistence\AfterPayPersistenceFactory getFactory()

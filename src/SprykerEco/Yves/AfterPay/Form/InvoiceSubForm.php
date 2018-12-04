@@ -12,7 +12,6 @@ use Spryker\Yves\StepEngine\Dependency\Form\AbstractSubFormType;
 use Spryker\Yves\StepEngine\Dependency\Form\SubFormInterface;
 use Spryker\Yves\StepEngine\Dependency\Form\SubFormProviderNameInterface;
 use SprykerEco\Shared\AfterPay\AfterPayConfig;
-use SprykerEco\Shared\AfterPay\AfterPayConstants;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class InvoiceSubForm extends AbstractSubFormType implements SubFormInterface, SubFormProviderNameInterface

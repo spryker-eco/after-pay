@@ -10,7 +10,6 @@ namespace SprykerEco\Zed\AfterPay\Business\Payment\Transaction;
 use Generated\Shared\Transfer\OrderTransfer;
 use Generated\Shared\Transfer\SalesPaymentTransfer;
 use SprykerEco\Shared\AfterPay\AfterPayConfig;
-use SprykerEco\Shared\AfterPay\AfterPayConstants;
 use SprykerEco\Zed\AfterPay\Dependency\Facade\AfterPayToPaymentFacadeInterface;
 
 class PriceToPayProvider implements PriceToPayProviderInterface

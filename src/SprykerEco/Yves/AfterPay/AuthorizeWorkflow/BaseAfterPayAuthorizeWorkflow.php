@@ -9,7 +9,6 @@ namespace SprykerEco\Yves\AfterPay\AuthorizeWorkflow;
 
 use Generated\Shared\Transfer\QuoteTransfer;
 use SprykerEco\Shared\AfterPay\AfterPayConfig;
-use SprykerEco\Shared\AfterPay\AfterPayConstants;
 
 class BaseAfterPayAuthorizeWorkflow
 {

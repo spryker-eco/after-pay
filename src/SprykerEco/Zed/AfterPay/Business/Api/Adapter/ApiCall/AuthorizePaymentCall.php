@@ -11,7 +11,6 @@ use Generated\Shared\Transfer\AfterPayApiResponseTransfer;
 use Generated\Shared\Transfer\AfterPayAuthorizeRequestTransfer;
 use SprykerEco\Shared\AfterPay\AfterPayApiRequestConfig;
 use SprykerEco\Shared\AfterPay\AfterPayConfig as AfterPayConfig1;
-use SprykerEco\Shared\AfterPay\AfterPayConstants;
 use SprykerEco\Zed\AfterPay\AfterPayConfig;
 use SprykerEco\Zed\AfterPay\Business\Api\Adapter\Client\ClientInterface;
 use SprykerEco\Zed\AfterPay\Business\Api\Adapter\Converter\TransferToCamelCaseArrayConverterInterface;

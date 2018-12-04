@@ -10,7 +10,6 @@ namespace SprykerEco\Zed\AfterPay\Business\Payment\Transaction;
 use Generated\Shared\Transfer\AfterPayCaptureRequestTransfer;
 use Generated\Shared\Transfer\AfterPayCaptureResponseTransfer;
 use SprykerEco\Shared\AfterPay\AfterPayConfig;
-use SprykerEco\Shared\AfterPay\AfterPayConstants;
 use SprykerEco\Zed\AfterPay\Business\Api\Adapter\AdapterInterface;
 use SprykerEco\Zed\AfterPay\Business\Payment\Transaction\Logger\TransactionLoggerInterface;
 

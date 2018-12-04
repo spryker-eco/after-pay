@@ -10,7 +10,6 @@ namespace SprykerEcoTest\Zed\AfterPay\Business;
 use Generated\Shared\Transfer\AfterPayAvailablePaymentMethodsTransfer;
 use Generated\Shared\Transfer\QuoteTransfer;
 use SprykerEco\Shared\AfterPay\AfterPayConfig;
-use SprykerEco\Shared\AfterPay\AfterPayConstants;
 
 class AfterPayFacadeAvailableMethodsTest extends AfterPayFacadeAbstractTest
 {
