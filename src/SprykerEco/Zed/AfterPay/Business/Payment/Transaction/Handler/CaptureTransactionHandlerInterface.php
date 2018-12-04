@@ -14,9 +14,9 @@ interface CaptureTransactionHandlerInterface
 {
     /**
      * @param \Generated\Shared\Transfer\ItemTransfer $itemTransfer
-     * @param \Generated\Shared\Transfer\AfterPayCallTransfer $afterpayCallTransfer
+     * @param \Generated\Shared\Transfer\AfterPayCallTransfer $afterPayCallTransfer
      *
      * @return void
      */
-    public function capture(ItemTransfer $itemTransfer, AfterPayCallTransfer $afterpayCallTransfer): void;
+    public function capture(ItemTransfer $itemTransfer, AfterPayCallTransfer $afterPayCallTransfer): void;
 }

@@ -8,7 +8,7 @@
     <transfer name="AfterPayCall">
         <property name="email" dataBuilderRule="email" />
         <property name="orderReference" dataBuilderRule="unique()->sentence(2)" />
-        <property name="paymentMethod" dataBuilderRule="=afterpayInvoice" />
+        <property name="paymentMethod" dataBuilderRule="=afterPayInvoice" />
         <property name="items" type="Item[]" singular="Item"/>
         <property name="totals" type="Totals" />
         <property name="billingAddress" type="Address" />

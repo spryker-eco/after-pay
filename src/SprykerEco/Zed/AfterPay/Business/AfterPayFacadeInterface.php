@@ -55,7 +55,7 @@ interface AfterPayFacadeInterface
 
     /**
      * Specification:
-     *  - Makes "validate bank-account" call to the afterpay API, to validate and evaluates the account and bank details
+     *  - Makes "validate bank-account" call to the AfterPay API, to validate and evaluates the account and bank details
      *  in the context of direct debit payment. It is possible to transfer either the combination of BankCode and AccountNumber or IBAN and BIC
      *  Response contains validation result and list of risk-check messages
      *
@@ -69,7 +69,7 @@ interface AfterPayFacadeInterface
 
     /**
      * Specification:
-     *  - Makes "customer-lookup" call to the afterpay API, to find customer based on social security number or mobile number.
+     *  - Makes "customer-lookup" call to the AfterPay API, to find customer based on social security number or mobile number.
      *  Response contains customer's account with list of addresses
      *
      * @api
@@ -82,7 +82,7 @@ interface AfterPayFacadeInterface
 
     /**
      * Specification:
-     *  - Makes "lookup/installment-plans" call to the afterpay API, to get the available installment plans for the specific
+     *  - Makes "lookup/installment-plans" call to the AfterPay API, to get the available installment plans for the specific
      *  product/basket value. Returns monthly installment amount, interest and fees.
      *
      * @api
@@ -100,11 +100,11 @@ interface AfterPayFacadeInterface
      *
      * @api
      *
-     * @param \Generated\Shared\Transfer\AfterPayCallTransfer $afterpayCallTransfer
+     * @param \Generated\Shared\Transfer\AfterPayCallTransfer $afterPayCallTransfer
      *
      * @return \Generated\Shared\Transfer\AfterPayApiResponseTransfer
      */
-    public function authorizePayment(AfterPayCallTransfer $afterpayCallTransfer): AfterPayApiResponseTransfer;
+    public function authorizePayment(AfterPayCallTransfer $afterPayCallTransfer): AfterPayApiResponseTransfer;
 
     /**
      * Specification:
@@ -115,11 +115,11 @@ interface AfterPayFacadeInterface
      * @api
      *
      * @param \Generated\Shared\Transfer\ItemTransfer $itemTransfer
-     * @param \Generated\Shared\Transfer\AfterPayCallTransfer $afterpayCallTransfer
+     * @param \Generated\Shared\Transfer\AfterPayCallTransfer $afterPayCallTransfer
      *
      * @return void
      */
-    public function capturePayment(ItemTransfer $itemTransfer, AfterPayCallTransfer $afterpayCallTransfer): void;
+    public function capturePayment(ItemTransfer $itemTransfer, AfterPayCallTransfer $afterPayCallTransfer): void;
 
     /**
      * Specification:
@@ -143,11 +143,11 @@ interface AfterPayFacadeInterface
      * @api
      *
      * @param \Generated\Shared\Transfer\ItemTransfer $itemTransfer
-     * @param \Generated\Shared\Transfer\AfterPayCallTransfer $afterpayCallTransfer
+     * @param \Generated\Shared\Transfer\AfterPayCallTransfer $afterPayCallTransfer
      *
      * @return void
      */
-    public function cancelPayment(ItemTransfer $itemTransfer, AfterPayCallTransfer $afterpayCallTransfer): void;
+    public function cancelPayment(ItemTransfer $itemTransfer, AfterPayCallTransfer $afterPayCallTransfer): void;
 
     /**
      * Specification:

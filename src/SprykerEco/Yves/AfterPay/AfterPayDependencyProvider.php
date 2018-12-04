@@ -38,7 +38,7 @@ class AfterPayDependencyProvider extends AbstractBundleDependencyProvider
     protected function addAfterPayClient(Container $container): Container
     {
         $container[static::CLIENT_AFTERPAY] = function (Container $container) {
-            return $container->getLocator()->afterpay()->client();
+            return $container->getLocator()->afterPay()->client();
         };
 
         return $container;

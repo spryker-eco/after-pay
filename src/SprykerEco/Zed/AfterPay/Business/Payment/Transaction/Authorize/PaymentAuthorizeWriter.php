@@ -15,14 +15,14 @@ class PaymentAuthorizeWriter implements PaymentAuthorizeWriterInterface
     /**
      * @var \SprykerEco\Zed\AfterPay\Persistence\AfterPayQueryContainerInterface
      */
-    protected $afterpayQueryContainer;
+    protected $afterPayQueryContainer;
 
     /**
-     * @param \SprykerEco\Zed\AfterPay\Persistence\AfterPayQueryContainerInterface $afterpayQueryContainer
+     * @param \SprykerEco\Zed\AfterPay\Persistence\AfterPayQueryContainerInterface $afterPayQueryContainer
      */
-    public function __construct(AfterPayQueryContainerInterface $afterpayQueryContainer)
+    public function __construct(AfterPayQueryContainerInterface $afterPayQueryContainer)
     {
-        $this->afterpayQueryContainer = $afterpayQueryContainer;
+        $this->afterPayQueryContainer = $afterPayQueryContainer;
     }
 
     /**
@@ -49,7 +49,7 @@ class PaymentAuthorizeWriter implements PaymentAuthorizeWriterInterface
      */
     protected function getPaymentAuthorizeEntity(string $orderReference): SpyPaymentAfterPayAuthorization
     {
-        $existingEntity = $this->afterpayQueryContainer
+        $existingEntity = $this->afterPayQueryContainer
             ->queryAuthorizationByOrderReference($orderReference)
             ->findOne();
         if (!$existingEntity) {

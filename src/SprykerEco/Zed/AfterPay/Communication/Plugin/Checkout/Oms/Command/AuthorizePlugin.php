@@ -33,8 +33,8 @@ class AuthorizePlugin extends AbstractPlugin implements CommandByOrderInterface
      */
     public function run(array $orderItems, SpySalesOrder $orderEntity, ReadOnlyArrayObject $data): array
     {
-        $afterpayCallTransfer = $this->createAuthorizeCallTransfer($orderEntity);
-        $this->getFacade()->authorizePayment($afterpayCallTransfer);
+        $afterPayCallTransfer = $this->createAuthorizeCallTransfer($orderEntity);
+        $this->getFacade()->authorizePayment($afterPayCallTransfer);
 
         return [];
     }

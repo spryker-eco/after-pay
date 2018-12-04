@@ -68,13 +68,13 @@ class CancelTransactionHandler implements CancelTransactionHandlerInterface
 
     /**
      * @param \Generated\Shared\Transfer\ItemTransfer $itemTransfer
-     * @param \Generated\Shared\Transfer\AfterPayCallTransfer $afterpayCallTransfer
+     * @param \Generated\Shared\Transfer\AfterPayCallTransfer $afterPayCallTransfer
      *
      * @return void
      */
-    public function cancel(ItemTransfer $itemTransfer, AfterPayCallTransfer $afterpayCallTransfer): void
+    public function cancel(ItemTransfer $itemTransfer, AfterPayCallTransfer $afterPayCallTransfer): void
     {
-        $cancelRequestTransfer = $this->buildCancelRequestForOrderItem($itemTransfer, $afterpayCallTransfer);
+        $cancelRequestTransfer = $this->buildCancelRequestForOrderItem($itemTransfer, $afterPayCallTransfer);
         $paymentTransfer = $this->getPaymentTransferForItem($itemTransfer);
 
         if ($this->isExpenseShouldBeCancelled($cancelRequestTransfer, $paymentTransfer)) {
@@ -91,16 +91,16 @@ class CancelTransactionHandler implements CancelTransactionHandlerInterface
 
     /**
      * @param \Generated\Shared\Transfer\ItemTransfer $itemTransfer
-     * @param \Generated\Shared\Transfer\AfterPayCallTransfer $afterpayCallTransfer
+     * @param \Generated\Shared\Transfer\AfterPayCallTransfer $afterPayCallTransfer
      *
      * @return \Generated\Shared\Transfer\AfterPayCancelRequestTransfer
      */
     protected function buildCancelRequestForOrderItem(
         ItemTransfer $itemTransfer,
-        AfterPayCallTransfer $afterpayCallTransfer
+        AfterPayCallTransfer $afterPayCallTransfer
     ): AfterPayCancelRequestTransfer {
         $cancelRequestTransfer = $this->cancelRequestBuilder
-            ->buildBaseCancelRequestForOrder($afterpayCallTransfer);
+            ->buildBaseCancelRequestForOrder($afterPayCallTransfer);
 
         $this->cancelRequestBuilder
             ->addOrderItemToCancelRequest(

@@ -18,14 +18,14 @@ class PaymentReader implements PaymentReaderInterface
     /**
      * @var \SprykerEco\Zed\AfterPay\Persistence\AfterPayQueryContainerInterface
      */
-    protected $afterpayQueryContainer;
+    protected $afterPayQueryContainer;
 
     /**
-     * @param \SprykerEco\Zed\AfterPay\Persistence\AfterPayQueryContainerInterface $afterpayQueryContainer
+     * @param \SprykerEco\Zed\AfterPay\Persistence\AfterPayQueryContainerInterface $afterPayQueryContainer
      */
-    public function __construct(AfterPayQueryContainerInterface $afterpayQueryContainer)
+    public function __construct(AfterPayQueryContainerInterface $afterPayQueryContainer)
     {
-        $this->afterpayQueryContainer = $afterpayQueryContainer;
+        $this->afterPayQueryContainer = $afterPayQueryContainer;
     }
 
     /**
@@ -35,10 +35,10 @@ class PaymentReader implements PaymentReaderInterface
      */
     public function getPaymentByIdSalesOrder(int $idSalesOrder): AfterPayPaymentTransfer
     {
-        $afterpayPaymentEntity = $this->getPaymentEntityByIdSalesOrder($idSalesOrder);
+        $afterPayPaymentEntity = $this->getPaymentEntityByIdSalesOrder($idSalesOrder);
 
         $paymentTransfer = new AfterPayPaymentTransfer();
-        $paymentTransfer->fromArray($afterpayPaymentEntity->toArray(), true);
+        $paymentTransfer->fromArray($afterPayPaymentEntity->toArray(), true);
 
         return $paymentTransfer;
     }
@@ -51,13 +51,13 @@ class PaymentReader implements PaymentReaderInterface
      */
     public function getPaymentOrderItemByIdSalesOrderItemAndIdPayment(int $idSalesOrderItem, int $idPayment): AfterPayPaymentOrderItemTransfer
     {
-        $afterpayPaymentOrderItemEntity = $this->getPaymentOrderItemEntityByIdSalesOrderItemAndIdPayment(
+        $afterPayPaymentOrderItemEntity = $this->getPaymentOrderItemEntityByIdSalesOrderItemAndIdPayment(
             $idSalesOrderItem,
             $idPayment
         );
 
         $paymentOrderItemTransfer = new AfterPayPaymentOrderItemTransfer();
-        $paymentOrderItemTransfer->fromArray($afterpayPaymentOrderItemEntity->toArray(), true);
+        $paymentOrderItemTransfer->fromArray($afterPayPaymentOrderItemEntity->toArray(), true);
 
         return $paymentOrderItemTransfer;
     }
@@ -69,11 +69,11 @@ class PaymentReader implements PaymentReaderInterface
      */
     protected function getPaymentEntityByIdSalesOrder(int $idSalesOrder): SpyPaymentAfterPay
     {
-        $afterpayPaymentEntity = $this->afterpayQueryContainer
+        $afterPayPaymentEntity = $this->afterPayQueryContainer
             ->queryPaymentByIdSalesOrder($idSalesOrder)
             ->findOne();
 
-        return $afterpayPaymentEntity;
+        return $afterPayPaymentEntity;
     }
 
     /**
@@ -84,9 +84,9 @@ class PaymentReader implements PaymentReaderInterface
      */
     protected function getPaymentOrderItemEntityByIdSalesOrderItemAndIdPayment(int $idSalesOrderItem, int $idPayment): SpyPaymentAfterPayOrderItem
     {
-        $afterpayPaymentOrderItemEntity = $this->afterpayQueryContainer
+        $afterPayPaymentOrderItemEntity = $this->afterPayQueryContainer
             ->queryPaymentOrderItemByIdSalesOrderAndIdPayment($idSalesOrderItem, $idPayment)
             ->findOne();
-        return $afterpayPaymentOrderItemEntity;
+        return $afterPayPaymentOrderItemEntity;
     }
 }

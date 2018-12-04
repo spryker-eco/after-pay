@@ -27,14 +27,14 @@ class OneStepAuthorizeRequestBuilder implements AuthorizeRequestBuilderInterface
     }
 
     /**
-     * @param \Generated\Shared\Transfer\AfterPayCallTransfer $afterpayCallTransfer
+     * @param \Generated\Shared\Transfer\AfterPayCallTransfer $afterPayCallTransfer
      *
      * @return \Generated\Shared\Transfer\AfterPayAuthorizeRequestTransfer
      */
-    public function buildAuthorizeRequest(AfterPayCallTransfer $afterpayCallTransfer): AfterPayAuthorizeRequestTransfer
+    public function buildAuthorizeRequest(AfterPayCallTransfer $afterPayCallTransfer): AfterPayAuthorizeRequestTransfer
     {
         return $this
             ->orderToRequestTransferMapper
-            ->orderToAuthorizeRequest($afterpayCallTransfer);
+            ->orderToAuthorizeRequest($afterPayCallTransfer);
     }
 }

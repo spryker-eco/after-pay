@@ -14,11 +14,11 @@ use Generated\Shared\Transfer\ItemTransfer;
 interface CaptureRequestBuilderInterface
 {
     /**
-     * @param \Generated\Shared\Transfer\AfterPayCallTransfer $afterpayCallTransfer
+     * @param \Generated\Shared\Transfer\AfterPayCallTransfer $afterPayCallTransfer
      *
      * @return \Generated\Shared\Transfer\AfterPayCaptureRequestTransfer
      */
-    public function buildBaseCaptureRequestForOrder(AfterPayCallTransfer $afterpayCallTransfer): AfterPayCaptureRequestTransfer;
+    public function buildBaseCaptureRequestForOrder(AfterPayCallTransfer $afterPayCallTransfer): AfterPayCaptureRequestTransfer;
 
     /**
      * @param \Generated\Shared\Transfer\ItemTransfer $orderItemTransfer

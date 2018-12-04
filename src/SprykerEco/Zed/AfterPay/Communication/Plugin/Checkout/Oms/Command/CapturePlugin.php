@@ -35,13 +35,13 @@ class CapturePlugin extends AbstractPlugin implements CommandByOrderInterface
     public function run(array $orderItems, SpySalesOrder $orderEntity, ReadOnlyArrayObject $data): array
     {
         $orderTransfer = $this->getOrderTransfer($orderEntity);
-        $afterpayCallTransfer = $this->getFactory()
+        $afterPayCallTransfer = $this->getFactory()
             ->createOrderToCallConverter()
             ->convert($orderTransfer);
 
         foreach ($orderItems as $orderItem) {
             $itemTransfer = $this->getOrderItemTransfer($orderItem);
-            $this->getFacade()->capturePayment($itemTransfer, $afterpayCallTransfer);
+            $this->getFacade()->capturePayment($itemTransfer, $afterPayCallTransfer);
         }
 
         return [];

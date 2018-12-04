@@ -289,14 +289,14 @@
     </transfer>
 
     <transfer name="Quote">
-        <property name="afterpayAvailablePaymentMethods" type="AfterPayAvailablePaymentMethods" />
-        <property name="afterpayPaymentReservationId" type="string" />
+        <property name="afterPayAvailablePaymentMethods" type="AfterPayAvailablePaymentMethods" />
+        <property name="afterPayPaymentReservationId" type="string" />
     </transfer>
 
     <transfer name="Payment">
-        <property name="afterpayInvoice" type="AfterPayPayment"/>
-        <property name="afterpayCheckoutId" type="string" />
-        <property name="afterpayCustomerNumber" type="string" />
+        <property name="afterPayInvoice" type="AfterPayPayment"/>
+        <property name="afterPayCheckoutId" type="string" />
+        <property name="afterPayCustomerNumber" type="string" />
     </transfer>
 
     <transfer name="Order">

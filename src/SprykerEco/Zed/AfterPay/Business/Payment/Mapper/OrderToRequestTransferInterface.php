@@ -19,18 +19,18 @@ use Generated\Shared\Transfer\OrderTransfer;
 interface OrderToRequestTransferInterface
 {
     /**
-     * @param \Generated\Shared\Transfer\AfterPayCallTransfer $afterpayCallTransfer
+     * @param \Generated\Shared\Transfer\AfterPayCallTransfer $afterPayCallTransfer
      *
      * @return \Generated\Shared\Transfer\AfterPayAuthorizeRequestTransfer
      */
-    public function orderToAuthorizeRequest(AfterPayCallTransfer $afterpayCallTransfer): AfterPayAuthorizeRequestTransfer;
+    public function orderToAuthorizeRequest(AfterPayCallTransfer $afterPayCallTransfer): AfterPayAuthorizeRequestTransfer;
 
     /**
-     * @param \Generated\Shared\Transfer\AfterPayCallTransfer $afterpayCallTransfer
+     * @param \Generated\Shared\Transfer\AfterPayCallTransfer $afterPayCallTransfer
      *
      * @return \Generated\Shared\Transfer\AfterPayCaptureRequestTransfer
      */
-    public function orderToBaseCaptureRequest(AfterPayCallTransfer $afterpayCallTransfer): AfterPayCaptureRequestTransfer;
+    public function orderToBaseCaptureRequest(AfterPayCallTransfer $afterPayCallTransfer): AfterPayCaptureRequestTransfer;
 
     /**
      * @param \Generated\Shared\Transfer\ItemTransfer $itemTransfer
@@ -40,11 +40,11 @@ interface OrderToRequestTransferInterface
     public function orderItemToAfterPayItemRequest(ItemTransfer $itemTransfer): AfterPayRequestOrderItemTransfer;
 
     /**
-     * @param \Generated\Shared\Transfer\AfterPayCallTransfer $afterpayCallTransfer
+     * @param \Generated\Shared\Transfer\AfterPayCallTransfer $afterPayCallTransfer
      *
      * @return \Generated\Shared\Transfer\AfterPayCancelRequestTransfer
      */
-    public function orderToBaseCancelRequest(AfterPayCallTransfer $afterpayCallTransfer): AfterPayCancelRequestTransfer;
+    public function orderToBaseCancelRequest(AfterPayCallTransfer $afterPayCallTransfer): AfterPayCancelRequestTransfer;
 
     /**
      * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer

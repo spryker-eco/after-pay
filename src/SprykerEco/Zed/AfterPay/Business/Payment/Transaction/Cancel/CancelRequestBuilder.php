@@ -40,14 +40,14 @@ class CancelRequestBuilder implements CancelRequestBuilderInterface
     }
 
     /**
-     * @param \Generated\Shared\Transfer\AfterPayCallTransfer $afterpayCallTransfer
+     * @param \Generated\Shared\Transfer\AfterPayCallTransfer $afterPayCallTransfer
      *
      * @return \Generated\Shared\Transfer\AfterPayCancelRequestTransfer
      */
-    public function buildBaseCancelRequestForOrder(AfterPayCallTransfer $afterpayCallTransfer): AfterPayCancelRequestTransfer
+    public function buildBaseCancelRequestForOrder(AfterPayCallTransfer $afterPayCallTransfer): AfterPayCancelRequestTransfer
     {
         $cancelRequestTransfer = $this->orderToRequestMapper
-            ->orderToBaseCancelRequest($afterpayCallTransfer);
+            ->orderToBaseCancelRequest($afterPayCallTransfer);
 
         return $cancelRequestTransfer;
     }

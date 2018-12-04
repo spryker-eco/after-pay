@@ -35,13 +35,13 @@ class CancelPlugin extends AbstractPlugin implements CommandByOrderInterface
     public function run(array $orderItems, SpySalesOrder $orderEntity, ReadOnlyArrayObject $data): array
     {
         $orderTransfer = $this->getOrderTransfer($orderEntity);
-        $afterpayCallTransfer = $this->getFactory()
+        $afterPayCallTransfer = $this->getFactory()
             ->createOrderToCallConverter()
             ->convert($orderTransfer);
 
         foreach ($orderItems as $orderItem) {
             $itemTransfer = $this->getOrderItemTransfer($orderItem);
-            $this->getFacade()->cancelPayment($itemTransfer, $afterpayCallTransfer);
+            $this->getFacade()->cancelPayment($itemTransfer, $afterPayCallTransfer);
         }
 
         return [];

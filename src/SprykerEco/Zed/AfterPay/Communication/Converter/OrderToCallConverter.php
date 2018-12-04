@@ -19,15 +19,15 @@ class OrderToCallConverter implements OrderToCallConverterInterface
      */
     public function convert(OrderTransfer $orderTransfer): AfterPayCallTransfer
     {
-        $afterpayCallTransfer = new AfterPayCallTransfer();
-        $afterpayCallTransfer->setOrderReference($orderTransfer->getOrderReference());
-        $afterpayCallTransfer->setEmail($orderTransfer->getCustomer()->getEmail());
-        $afterpayCallTransfer->setItems($orderTransfer->getItems());
-        $afterpayCallTransfer->setBillingAddress($orderTransfer->getBillingAddress());
-        $afterpayCallTransfer->setShippingAddress($orderTransfer->getShippingAddress());
-        $afterpayCallTransfer->setTotals($orderTransfer->getTotals());
-        $afterpayCallTransfer->setPaymentMethod($orderTransfer->getAfterPayPayment()->getPaymentMethod());
+        $afterPayCallTransfer = new AfterPayCallTransfer();
+        $afterPayCallTransfer->setOrderReference($orderTransfer->getOrderReference());
+        $afterPayCallTransfer->setEmail($orderTransfer->getCustomer()->getEmail());
+        $afterPayCallTransfer->setItems($orderTransfer->getItems());
+        $afterPayCallTransfer->setBillingAddress($orderTransfer->getBillingAddress());
+        $afterPayCallTransfer->setShippingAddress($orderTransfer->getShippingAddress());
+        $afterPayCallTransfer->setTotals($orderTransfer->getTotals());
+        $afterPayCallTransfer->setPaymentMethod($orderTransfer->getAfterPayPayment()->getPaymentMethod());
 
-        return $afterpayCallTransfer;
+        return $afterPayCallTransfer;
     }
 }

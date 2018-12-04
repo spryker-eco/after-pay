@@ -14,13 +14,13 @@ class PaymentAuthorizeReader implements PaymentAuthorizeReaderInterface
     /**
      * @var \SprykerEco\Zed\AfterPay\Persistence\AfterPayQueryContainerInterface
      */
-    protected $afterpayQueryContainer;
+    protected $afterPayQueryContainer;
 
     /**
-     * @param \SprykerEco\Zed\AfterPay\Persistence\AfterPayQueryContainerInterface $afterpayQueryContainer
+     * @param \SprykerEco\Zed\AfterPay\Persistence\AfterPayQueryContainerInterface $afterPayQueryContainer
      */
-    public function __construct(AfterPayQueryContainerInterface $afterpayQueryContainer)
+    public function __construct(AfterPayQueryContainerInterface $afterPayQueryContainer)
     {
-        $this->afterpayQueryContainer = $afterpayQueryContainer;
+        $this->afterPayQueryContainer = $afterPayQueryContainer;
     }
 }

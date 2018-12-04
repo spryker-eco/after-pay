@@ -14,7 +14,7 @@ interface CustomerLookupPluginInterface
 {
     /**
      * Specification:
-     *  - Makes "customer-lookup" call to the afterpay API, to find customer based on social security number or mobile number.
+     *  - Makes "customer-lookup" call to the AfterPay API, to find customer based on social security number or mobile number.
      *  Response contains customer's account with list of addresses
      *
      * @api

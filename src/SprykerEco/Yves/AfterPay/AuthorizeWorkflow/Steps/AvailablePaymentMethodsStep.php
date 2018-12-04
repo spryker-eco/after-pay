@@ -16,14 +16,14 @@ class AvailablePaymentMethodsStep implements AvailablePaymentMethodsStepInterfac
     /**
      * @var \SprykerEco\Client\AfterPay\AfterPayClientInterface
      */
-    protected $afterpayClient;
+    protected $afterPayClient;
 
     /**
-     * @param \SprykerEco\Client\AfterPay\AfterPayClientInterface $afterpayClient
+     * @param \SprykerEco\Client\AfterPay\AfterPayClientInterface $afterPayClient
      */
-    public function __construct(AfterPayClientInterface $afterpayClient)
+    public function __construct(AfterPayClientInterface $afterPayClient)
     {
-        $this->afterpayClient = $afterpayClient;
+        $this->afterPayClient = $afterPayClient;
     }
 
     /**
@@ -45,7 +45,7 @@ class AvailablePaymentMethodsStep implements AvailablePaymentMethodsStepInterfac
      */
     protected function setAvailablePaymentMethodsToQuote(QuoteTransfer $quoteTransfer): void
     {
-        $availablePaymentMethods = $this->afterpayClient->getAvailablePaymentMethods($quoteTransfer);
+        $availablePaymentMethods = $this->afterPayClient->getAvailablePaymentMethods($quoteTransfer);
         $quoteTransfer->setAfterPayAvailablePaymentMethods($availablePaymentMethods);
     }
 }

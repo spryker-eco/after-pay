@@ -40,14 +40,14 @@ class CaptureRequestBuilder implements CaptureRequestBuilderInterface
     }
 
     /**
-     * @param \Generated\Shared\Transfer\AfterPayCallTransfer $afterpayCallTransfer
+     * @param \Generated\Shared\Transfer\AfterPayCallTransfer $afterPayCallTransfer
      *
      * @return \Generated\Shared\Transfer\AfterPayCaptureRequestTransfer
      */
-    public function buildBaseCaptureRequestForOrder(AfterPayCallTransfer $afterpayCallTransfer): AfterPayCaptureRequestTransfer
+    public function buildBaseCaptureRequestForOrder(AfterPayCallTransfer $afterPayCallTransfer): AfterPayCaptureRequestTransfer
     {
         $captureRequestTransfer = $this->orderToRequestMapper
-            ->orderToBaseCaptureRequest($afterpayCallTransfer);
+            ->orderToBaseCaptureRequest($afterPayCallTransfer);
 
         return $captureRequestTransfer;
     }

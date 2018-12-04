@@ -14,11 +14,11 @@ use Generated\Shared\Transfer\ItemTransfer;
 interface CancelRequestBuilderInterface
 {
     /**
-     * @param \Generated\Shared\Transfer\AfterPayCallTransfer $afterpayCallTransfer
+     * @param \Generated\Shared\Transfer\AfterPayCallTransfer $afterPayCallTransfer
      *
      * @return \Generated\Shared\Transfer\AfterPayCancelRequestTransfer
      */
-    public function buildBaseCancelRequestForOrder(AfterPayCallTransfer $afterpayCallTransfer);
+    public function buildBaseCancelRequestForOrder(AfterPayCallTransfer $afterPayCallTransfer);
 
     /**
      * @param \Generated\Shared\Transfer\ItemTransfer $orderItemTransfer

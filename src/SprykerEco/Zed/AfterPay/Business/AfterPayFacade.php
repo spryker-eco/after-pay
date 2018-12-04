@@ -161,12 +161,12 @@ class AfterPayFacade extends AbstractFacade implements AfterPayFacadeInterface
      *
      * @return \Generated\Shared\Transfer\AfterPayApiResponseTransfer
      */
-    public function authorizePayment(AfterPayCallTransfer $afterpayCallTransfer): AfterPayApiResponseTransfer
+    public function authorizePayment(AfterPayCallTransfer $afterPayCallTransfer): AfterPayApiResponseTransfer
     {
         return $this
             ->getFactory()
             ->createAuthorizeTransactionHandler()
-            ->authorize($afterpayCallTransfer);
+            ->authorize($afterPayCallTransfer);
     }
 
     /**
@@ -175,16 +175,16 @@ class AfterPayFacade extends AbstractFacade implements AfterPayFacadeInterface
      * @api
      *
      * @param \Generated\Shared\Transfer\ItemTransfer $itemTransfer
-     * @param \Generated\Shared\Transfer\AfterPayCallTransfer $afterpayCallTransfer
+     * @param \Generated\Shared\Transfer\AfterPayCallTransfer $afterPayCallTransfer
      *
      * @return void
      */
-    public function capturePayment(ItemTransfer $itemTransfer, AfterPayCallTransfer $afterpayCallTransfer): void
+    public function capturePayment(ItemTransfer $itemTransfer, AfterPayCallTransfer $afterPayCallTransfer): void
     {
         $this
             ->getFactory()
             ->createCaptureTransactionHandler()
-            ->capture($itemTransfer, $afterpayCallTransfer);
+            ->capture($itemTransfer, $afterPayCallTransfer);
     }
 
     /**
@@ -211,16 +211,16 @@ class AfterPayFacade extends AbstractFacade implements AfterPayFacadeInterface
      * @api
      *
      * @param \Generated\Shared\Transfer\ItemTransfer $itemTransfer
-     * @param \Generated\Shared\Transfer\AfterPayCallTransfer $afterpayCallTransfer
+     * @param \Generated\Shared\Transfer\AfterPayCallTransfer $afterPayCallTransfer
      *
      * @return void
      */
-    public function cancelPayment(ItemTransfer $itemTransfer, AfterPayCallTransfer $afterpayCallTransfer): void
+    public function cancelPayment(ItemTransfer $itemTransfer, AfterPayCallTransfer $afterPayCallTransfer): void
     {
         $this
             ->getFactory()
             ->createCancelTransactionHandler()
-            ->cancel($itemTransfer, $afterpayCallTransfer);
+            ->cancel($itemTransfer, $afterPayCallTransfer);
     }
 
     /**
