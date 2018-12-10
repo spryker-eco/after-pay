@@ -8,7 +8,6 @@
 namespace SprykerEco\Zed\AfterPay\Business;
 
 use Generated\Shared\Transfer\AfterPayApiResponseTransfer;
-use Generated\Shared\Transfer\AfterPayAvailablePaymentMethodsTransfer;
 use Generated\Shared\Transfer\AfterPayCallTransfer;
 use Generated\Shared\Transfer\AfterPayCustomerLookupRequestTransfer;
 use Generated\Shared\Transfer\AfterPayCustomerLookupResponseTransfer;
@@ -22,6 +21,7 @@ use Generated\Shared\Transfer\AfterPayValidateCustomerResponseTransfer;
 use Generated\Shared\Transfer\CheckoutResponseTransfer;
 use Generated\Shared\Transfer\ItemTransfer;
 use Generated\Shared\Transfer\OrderTransfer;
+use Generated\Shared\Transfer\PaymentMethodsTransfer;
 use Generated\Shared\Transfer\QuoteTransfer;
 use Generated\Shared\Transfer\SaveOrderTransfer;
 use Spryker\Zed\Kernel\Business\AbstractFacade;
@@ -36,16 +36,18 @@ class AfterPayFacade extends AbstractFacade implements AfterPayFacadeInterface
      *
      * @api
      *
+     * @param \Generated\Shared\Transfer\PaymentMethodsTransfer $paymentMethodsTransfer
      * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
      *
-     * @return \Generated\Shared\Transfer\AfterPayAvailablePaymentMethodsTransfer
+     * @return \Generated\Shared\Transfer\PaymentMethodsTransfer
      */
-    public function getAvailablePaymentMethods(QuoteTransfer $quoteTransfer): AfterPayAvailablePaymentMethodsTransfer
-    {
-        return $this
-            ->getFactory()
-            ->createAvailablePaymentMethodsHandler()
-            ->getAvailablePaymentMethods($quoteTransfer);
+    public function filterPaymentMethods(
+        PaymentMethodsTransfer $paymentMethodsTransfer,
+        QuoteTransfer $quoteTransfer
+    ): PaymentMethodsTransfer {
+        return $this->getFactory()
+            ->createPaymentMethodsFilter()
+            ->filterPaymentMethods($paymentMethodsTransfer, $quoteTransfer);
     }
 
     /**

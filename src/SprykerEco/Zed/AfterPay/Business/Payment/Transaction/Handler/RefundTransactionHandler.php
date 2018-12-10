@@ -34,12 +34,12 @@ class RefundTransactionHandler implements RefundTransactionHandlerInterface
     /**
      * @var \SprykerEco\Zed\AfterPay\Business\Payment\Transaction\Refund\RefundRequestBuilderInterface
      */
-    private $refundRequestBuilder;
+    protected $refundRequestBuilder;
 
     /**
      * @var \SprykerEco\Zed\AfterPay\Business\Payment\PaymentWriterInterface
      */
-    private $paymentWriter;
+    protected $paymentWriter;
 
     /**
      * @var \SprykerEco\Zed\AfterPay\Dependency\Facade\AfterPayToMoneyFacadeInterface

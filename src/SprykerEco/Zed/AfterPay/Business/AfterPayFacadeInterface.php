@@ -8,7 +8,6 @@
 namespace SprykerEco\Zed\AfterPay\Business;
 
 use Generated\Shared\Transfer\AfterPayApiResponseTransfer;
-use Generated\Shared\Transfer\AfterPayAvailablePaymentMethodsTransfer;
 use Generated\Shared\Transfer\AfterPayCallTransfer;
 use Generated\Shared\Transfer\AfterPayCustomerLookupRequestTransfer;
 use Generated\Shared\Transfer\AfterPayCustomerLookupResponseTransfer;
@@ -22,6 +21,7 @@ use Generated\Shared\Transfer\AfterPayValidateCustomerResponseTransfer;
 use Generated\Shared\Transfer\CheckoutResponseTransfer;
 use Generated\Shared\Transfer\ItemTransfer;
 use Generated\Shared\Transfer\OrderTransfer;
+use Generated\Shared\Transfer\PaymentMethodsTransfer;
 use Generated\Shared\Transfer\QuoteTransfer;
 use Generated\Shared\Transfer\SaveOrderTransfer;
 
@@ -29,16 +29,19 @@ interface AfterPayFacadeInterface
 {
     /**
      * Specification:
-     * - Makes a call to the "payment-methods" API endpoint, to get a list of payment methods,
-     * available for the current quote, with additional information - checkout_id, and risk_check_score
+     * - Filters available payment methods depends on available payment methods from AfterPay.
      *
      * @api
      *
+     * @param \Generated\Shared\Transfer\PaymentMethodsTransfer $paymentMethodsTransfer
      * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
      *
-     * @return \Generated\Shared\Transfer\AfterPayAvailablePaymentMethodsTransfer
+     * @return \Generated\Shared\Transfer\PaymentMethodsTransfer
      */
-    public function getAvailablePaymentMethods(QuoteTransfer $quoteTransfer): AfterPayAvailablePaymentMethodsTransfer;
+    public function filterPaymentMethods(
+        PaymentMethodsTransfer $paymentMethodsTransfer,
+        QuoteTransfer $quoteTransfer
+    ): PaymentMethodsTransfer;
 
     /**
      * Specification:

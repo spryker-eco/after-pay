@@ -64,20 +64,20 @@ class AfterPayApiRequestConfig
 
     /** Lookup installment plans call */
     public const AVAILABLE_PLANS = 'availableInstallmentPlans';
-    public const BASKET_AMOUNT = "basketAmount";
-    public const NUMBER_OF_INSTALLMENTS = "numberOfInstallments";
-    public const INSTALLMENT_AMOUNT = "installmentAmount";
-    public const FIRST_INSTALLMENT_AMOUNT = "firstInstallmentAmount";
-    public const LAST_INSTALLMENT_AMOUNT = "lastInstallmentAmount";
-    public const INTEREST_RATE = "interestRate";
-    public const EFFECTIVE_INTEREST_RATE = "effectiveInterestRate";
-    public const EFFECTIVE_ANNUAL_PERCENTAGE_RATE = "effectiveAnnualPercentageRate";
-    public const TOTAL_INTEREST_AMOUNT = "totalInterestAmount";
-    public const STARTUP_FEE = "startupFee";
-    public const MONTHLY_FEE = "monthlyFee";
-    public const TOTAL_AMOUNT = "totalAmount";
-    public const INSTALLMENT_PROFILE_NUMBER = "installmentProfileNumber";
-    public const READ_MORE = "readMore";
+    public const BASKET_AMOUNT = 'basketAmount';
+    public const NUMBER_OF_INSTALLMENTS = 'numberOfInstallments';
+    public const INSTALLMENT_AMOUNT = 'installmentAmount';
+    public const FIRST_INSTALLMENT_AMOUNT = 'firstInstallmentAmount';
+    public const LAST_INSTALLMENT_AMOUNT = 'lastInstallmentAmount';
+    public const INTEREST_RATE = 'interestRate';
+    public const EFFECTIVE_INTEREST_RATE = 'effectiveInterestRate';
+    public const EFFECTIVE_ANNUAL_PERCENTAGE_RATE = 'effectiveAnnualPercentageRate';
+    public const TOTAL_INTEREST_AMOUNT = 'totalInterestAmount';
+    public const STARTUP_FEE = 'startupFee';
+    public const MONTHLY_FEE = 'monthlyFee';
+    public const TOTAL_AMOUNT = 'totalAmount';
+    public const INSTALLMENT_PROFILE_NUMBER = 'installmentProfileNumber';
+    public const READ_MORE = 'readMore';
 
     /** Technical calls */
     public const API_VERSION = 'version';

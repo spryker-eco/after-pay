@@ -34,7 +34,7 @@ class CancelCall extends AbstractApiCall implements CancelCallInterface
     /**
      * @var \SprykerEco\Zed\AfterPay\Dependency\Facade\AfterPayToMoneyFacadeInterface
      */
-    private $money;
+    protected $money;
 
     /**
      * @param \SprykerEco\Zed\AfterPay\Business\Api\Adapter\Client\ClientInterface $client

@@ -27,7 +27,7 @@ class TwoStepsAuthorizeRequestBuilder implements AuthorizeRequestBuilderInterfac
     /**
      * @var \SprykerEco\Zed\AfterPay\Business\Payment\Mapper\OrderToRequestTransferInterface
      */
-    private $orderToRequestMapper;
+    protected $orderToRequestMapper;
 
     /**
      * @param \SprykerEco\Zed\AfterPay\Business\Payment\Mapper\OrderToRequestTransferInterface $orderToRequestMapper

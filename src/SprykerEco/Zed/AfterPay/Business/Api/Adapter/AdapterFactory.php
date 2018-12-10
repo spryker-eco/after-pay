@@ -169,7 +169,7 @@ class AdapterFactory extends AbstractBusinessFactory implements AdapterFactoryIn
     /**
      * @return \SprykerEco\Zed\AfterPay\Business\Api\Adapter\ApiCall\ApiVersionCallInterface
      */
-    public function createGetApiVersionCall(): ApiVersionCallInterface
+    public function createApiVersionCall(): ApiVersionCallInterface
     {
         return new ApiVersionCall(
             $this->createHttpClient(),

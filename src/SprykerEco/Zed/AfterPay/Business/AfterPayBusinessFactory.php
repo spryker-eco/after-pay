@@ -26,8 +26,10 @@ use SprykerEco\Zed\AfterPay\Business\Hook\PostSaveHook;
 use SprykerEco\Zed\AfterPay\Business\Hook\PostSaveHookInterface;
 use SprykerEco\Zed\AfterPay\Business\Order\Saver;
 use SprykerEco\Zed\AfterPay\Business\Order\SaverInterface;
-use SprykerEco\Zed\AfterPay\Business\Payment\Handler\RiskCheck\AvailablePaymentMethodsHandler;
-use SprykerEco\Zed\AfterPay\Business\Payment\Handler\RiskCheck\AvailablePaymentMethodsHandlerInterface;
+use SprykerEco\Zed\AfterPay\Business\Payment\Filter\AfterPayPaymentMethodsFilter;
+use SprykerEco\Zed\AfterPay\Business\Payment\Filter\AfterPayPaymentMethodsFilterInterface;
+use SprykerEco\Zed\AfterPay\Business\Payment\Filter\Provider\AfterPayPaymentMethodsProvider;
+use SprykerEco\Zed\AfterPay\Business\Payment\Filter\Provider\AfterPayPaymentMethodsProviderInterface;
 use SprykerEco\Zed\AfterPay\Business\Payment\Mapper\OrderToRequestTransfer;
 use SprykerEco\Zed\AfterPay\Business\Payment\Mapper\OrderToRequestTransferInterface;
 use SprykerEco\Zed\AfterPay\Business\Payment\Mapper\QuoteToRequestTransfer;
@@ -81,17 +83,6 @@ use SprykerEco\Zed\AfterPay\Dependency\Service\AfterPayToUtilEncodingServiceInte
  */
 class AfterPayBusinessFactory extends AbstractBusinessFactory
 {
-    /**
-     * @return \SprykerEco\Zed\AfterPay\Business\Payment\Handler\RiskCheck\AvailablePaymentMethodsHandlerInterface
-     */
-    public function createAvailablePaymentMethodsHandler(): AvailablePaymentMethodsHandlerInterface
-    {
-        return new AvailablePaymentMethodsHandler(
-            $this->createApiAdapter(),
-            $this->createQuoteToRequestMapper()
-        );
-    }
-
     /**
      * @return \SprykerEco\Zed\AfterPay\Business\Order\SaverInterface
      */
@@ -372,11 +363,19 @@ class AfterPayBusinessFactory extends AbstractBusinessFactory
     }
 
     /**
-     * @return \SprykerEco\Zed\AfterPay\Dependency\Service\AfterPayToUtilEncodingServiceInterface
+     * @return \SprykerEco\Zed\AfterPay\Business\Payment\Transaction\TransactionLogReaderInterface
      */
-    public function getUtilEncodingService(): AfterPayToUtilEncodingServiceInterface
+    public function createTransactionLogReader(): TransactionLogReaderInterface
     {
-        return $this->getProvidedDependency(AfterPayDependencyProvider::SERVICE_UTIL_ENCODING);
+        return new TransactionLogReader($this->getQueryContainer());
+    }
+
+    /**
+     * @return \SprykerEco\Zed\AfterPay\Business\Payment\Transaction\PriceToPayProviderInterface
+     */
+    public function createPriceToPayProvider(): PriceToPayProviderInterface
+    {
+        return new PriceToPayProvider($this->getPaymentFacade());
     }
 
     /**
@@ -387,6 +386,25 @@ class AfterPayBusinessFactory extends AbstractBusinessFactory
         return new QuoteToRequestTransfer(
             $this->getMoneyFacade(),
             $this->getStoreFacade()
+        );
+    }
+
+    /**
+     * @return \SprykerEco\Zed\AfterPay\Business\Payment\Filter\AfterPayPaymentMethodsFilterInterface
+     */
+    public function createPaymentMethodsFilter(): AfterPayPaymentMethodsFilterInterface
+    {
+        return new AfterPayPaymentMethodsFilter($this->createPaymentMethodsProvider());
+    }
+
+    /**
+     * @return \SprykerEco\Zed\AfterPay\Business\Payment\Filter\Provider\AfterPayPaymentMethodsProviderInterface
+     */
+    public function createPaymentMethodsProvider(): AfterPayPaymentMethodsProviderInterface
+    {
+        return new AfterPayPaymentMethodsProvider(
+            $this->createApiAdapter(),
+            $this->createQuoteToRequestMapper()
         );
     }
 
@@ -423,18 +441,10 @@ class AfterPayBusinessFactory extends AbstractBusinessFactory
     }
 
     /**
-     * @return \SprykerEco\Zed\AfterPay\Business\Payment\Transaction\TransactionLogReaderInterface
+     * @return \SprykerEco\Zed\AfterPay\Dependency\Service\AfterPayToUtilEncodingServiceInterface
      */
-    public function createTransactionLogReader(): TransactionLogReaderInterface
+    public function getUtilEncodingService(): AfterPayToUtilEncodingServiceInterface
     {
-        return new TransactionLogReader($this->getQueryContainer());
-    }
-
-    /**
-     * @return \SprykerEco\Zed\AfterPay\Business\Payment\Transaction\PriceToPayProviderInterface
-     */
-    public function createPriceToPayProvider(): PriceToPayProviderInterface
-    {
-        return new PriceToPayProvider($this->getPaymentFacade());
+        return $this->getProvidedDependency(AfterPayDependencyProvider::SERVICE_UTIL_ENCODING);
     }
 }

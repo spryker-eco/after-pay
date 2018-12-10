@@ -9,15 +9,13 @@ namespace SprykerEco\Yves\AfterPay\Plugin;
 
 use Generated\Shared\Transfer\AfterPayValidateCustomerRequestTransfer;
 use Generated\Shared\Transfer\AfterPayValidateCustomerResponseTransfer;
-use Spryker\Yves\Kernel\AbstractPlugin;
 
-/**
- * @method \SprykerEco\Yves\AfterPay\AfterPayFactory getFactory()
- */
-class AfterPayAddressValidationPlugin extends AbstractPlugin implements AfterPayAddressValidationPluginInterface
+interface AfterPayAddressValidationPluginInterface
 {
     /**
-     * {@inheritdoc}
+     * Specification:
+     *  - Makes "validate-address" call to the AfterPay API, in order to validate customer address.
+     *  Response contains isValid flag along with correctedAddress.
      *
      * @api
      *
@@ -25,10 +23,5 @@ class AfterPayAddressValidationPlugin extends AbstractPlugin implements AfterPay
      *
      * @return \Generated\Shared\Transfer\AfterPayValidateCustomerResponseTransfer
      */
-    public function validateCustomerAddress(AfterPayValidateCustomerRequestTransfer $validateCustomerRequestTransfer): AfterPayValidateCustomerResponseTransfer
-    {
-        return $this->getFactory()
-            ->getClient()
-            ->validateCustomerAddress($validateCustomerRequestTransfer);
-    }
+    public function validateCustomerAddress(AfterPayValidateCustomerRequestTransfer $validateCustomerRequestTransfer): AfterPayValidateCustomerResponseTransfer;
 }

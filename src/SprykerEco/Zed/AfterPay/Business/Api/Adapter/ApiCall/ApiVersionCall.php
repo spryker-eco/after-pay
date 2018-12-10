@@ -26,12 +26,12 @@ class ApiVersionCall implements ApiVersionCallInterface
     /**
      * @var \SprykerEco\Zed\AfterPay\AfterPayConfig
      */
-    private $config;
+    protected $config;
 
     /**
      * @var \SprykerEco\Zed\AfterPay\Dependency\Service\AfterPayToUtilEncodingServiceInterface
      */
-    private $utilEncoding;
+    protected $utilEncoding;
 
     /**
      * @param \SprykerEco\Zed\AfterPay\Business\Api\Adapter\Client\ClientInterface $client

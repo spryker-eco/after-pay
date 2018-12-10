@@ -7,7 +7,6 @@
 
 namespace SprykerEco\Client\AfterPay\Zed;
 
-use Generated\Shared\Transfer\AfterPayAvailablePaymentMethodsTransfer;
 use Generated\Shared\Transfer\AfterPayCustomerLookupRequestTransfer;
 use Generated\Shared\Transfer\AfterPayCustomerLookupResponseTransfer;
 use Generated\Shared\Transfer\AfterPayInstallmentPlansRequestTransfer;
@@ -16,17 +15,9 @@ use Generated\Shared\Transfer\AfterPayValidateBankAccountRequestTransfer;
 use Generated\Shared\Transfer\AfterPayValidateBankAccountResponseTransfer;
 use Generated\Shared\Transfer\AfterPayValidateCustomerRequestTransfer;
 use Generated\Shared\Transfer\AfterPayValidateCustomerResponseTransfer;
-use Generated\Shared\Transfer\QuoteTransfer;
 
 interface AfterPayStubInterface
 {
-    /**
-     * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
-     *
-     * @return \Generated\Shared\Transfer\AfterPayAvailablePaymentMethodsTransfer
-     */
-    public function getAvailablePaymentMethodsByQuote(QuoteTransfer $quoteTransfer): AfterPayAvailablePaymentMethodsTransfer;
-
     /**
      * @param \Generated\Shared\Transfer\AfterPayValidateCustomerRequestTransfer $validateCustomerRequestTransfer
      *

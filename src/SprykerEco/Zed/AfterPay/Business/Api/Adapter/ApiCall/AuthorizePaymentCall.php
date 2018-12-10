@@ -27,7 +27,7 @@ class AuthorizePaymentCall extends AbstractApiCall implements AuthorizePaymentCa
     /**
      * @var \SprykerEco\Zed\AfterPay\AfterPayConfig
      */
-    private $config;
+    protected $config;
 
     /**
      * @param \SprykerEco\Zed\AfterPay\Business\Api\Adapter\Client\ClientInterface $client

@@ -25,7 +25,7 @@ class RefundRequestBuilder implements RefundRequestBuilderInterface
     /**
      * @var \SprykerEco\Zed\AfterPay\Dependency\Facade\AfterPayToMoneyFacadeInterface
      */
-    private $money;
+    protected $money;
 
     /**
      * @param \SprykerEco\Zed\AfterPay\Business\Payment\Mapper\OrderToRequestTransferInterface $orderToRequestMapper

@@ -34,7 +34,7 @@ class CaptureCall extends AbstractApiCall implements CaptureCallInterface
     /**
      * @var \SprykerEco\Zed\AfterPay\Dependency\Facade\AfterPayToMoneyFacadeInterface
      */
-    private $money;
+    protected $money;
 
     /**
      * @param \SprykerEco\Zed\AfterPay\Business\Api\Adapter\Client\ClientInterface $client

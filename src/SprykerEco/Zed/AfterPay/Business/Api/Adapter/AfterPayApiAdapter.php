@@ -165,7 +165,7 @@ class AfterPayApiAdapter implements AdapterInterface
     {
         return $this
             ->adapterFactory
-            ->createGetApiVersionCall()
+            ->createApiVersionCall()
             ->execute();
     }
 

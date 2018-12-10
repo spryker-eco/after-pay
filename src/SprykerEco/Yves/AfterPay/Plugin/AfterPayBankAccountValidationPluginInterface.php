@@ -9,15 +9,14 @@ namespace SprykerEco\Yves\AfterPay\Plugin;
 
 use Generated\Shared\Transfer\AfterPayValidateBankAccountRequestTransfer;
 use Generated\Shared\Transfer\AfterPayValidateBankAccountResponseTransfer;
-use Spryker\Yves\Kernel\AbstractPlugin;
 
-/**
- * @method \SprykerEco\Yves\AfterPay\AfterPayFactory getFactory()
- */
-class AfterPayBankAccountValidationPlugin extends AbstractPlugin implements AfterPayBankAccountValidationPluginInterface
+interface AfterPayBankAccountValidationPluginInterface
 {
     /**
-     * {@inheritdoc}
+     * Specification:
+     *  - Makes "validate bank-account" call to the AfterPay API, to validate and evaluates the account and bank details
+     *  in the context of direct debit payment. It is possible to transfer either the combination of BankCode and AccountNumber or IBAN and BIC
+     *  Response contains validation result and list of risk-check messages
      *
      * @api
      *
@@ -25,10 +24,5 @@ class AfterPayBankAccountValidationPlugin extends AbstractPlugin implements Afte
      *
      * @return \Generated\Shared\Transfer\AfterPayValidateBankAccountResponseTransfer
      */
-    public function validateBankAccount(AfterPayValidateBankAccountRequestTransfer $validateBankAccountRequestTransfer): AfterPayValidateBankAccountResponseTransfer
-    {
-        return $this->getFactory()
-            ->getClient()
-            ->validateBankAccount($validateBankAccountRequestTransfer);
-    }
+    public function validateBankAccount(AfterPayValidateBankAccountRequestTransfer $validateBankAccountRequestTransfer): AfterPayValidateBankAccountResponseTransfer;
 }

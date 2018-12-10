@@ -7,7 +7,6 @@
 
 namespace SprykerEco\Client\AfterPay\Zed;
 
-use Generated\Shared\Transfer\AfterPayAvailablePaymentMethodsTransfer;
 use Generated\Shared\Transfer\AfterPayCustomerLookupRequestTransfer;
 use Generated\Shared\Transfer\AfterPayCustomerLookupResponseTransfer;
 use Generated\Shared\Transfer\AfterPayInstallmentPlansRequestTransfer;
@@ -16,17 +15,10 @@ use Generated\Shared\Transfer\AfterPayValidateBankAccountRequestTransfer;
 use Generated\Shared\Transfer\AfterPayValidateBankAccountResponseTransfer;
 use Generated\Shared\Transfer\AfterPayValidateCustomerRequestTransfer;
 use Generated\Shared\Transfer\AfterPayValidateCustomerResponseTransfer;
-use Generated\Shared\Transfer\QuoteTransfer;
 use SprykerEco\Client\AfterPay\Dependency\Client\AfterPayToZedRequestClientInterface;
 
 class AfterPayStub implements AfterPayStubInterface
 {
-    public const ZED_GET_AVAILABLE_PAYMENT_METHODS = '/after-pay/gateway/get-available-payment-methods';
-    public const ZED_VALIDATE_CUSTOMER_ADDRESS = '/after-pay/gateway/validate-customer-address';
-    public const ZED_VALIDATE_BANK_ACCOUNT = '/after-pay/gateway/validate-bank-account';
-    public const ZED_LOOKUP_CUSTOMER = '/after-pay/gateway/lookup-customer';
-    public const ZED_INSTALLMENT_PLANS = '/after-pay/gateway/lookup-installment-plans';
-
     /**
      * @var \SprykerEco\Client\AfterPay\Dependency\Client\AfterPayToZedRequestClientInterface
      */
@@ -41,19 +33,6 @@ class AfterPayStub implements AfterPayStubInterface
     }
 
     /**
-     * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
-     *
-     * @return \Generated\Shared\Transfer\AfterPayAvailablePaymentMethodsTransfer
-     */
-    public function getAvailablePaymentMethodsByQuote(QuoteTransfer $quoteTransfer): AfterPayAvailablePaymentMethodsTransfer
-    {
-        /** @var \Generated\Shared\Transfer\AfterPayAvailablePaymentMethodsTransfer $availablePaymentMethodsTransfer */
-        $availablePaymentMethodsTransfer = $this->zedRequestClient->call(static::ZED_GET_AVAILABLE_PAYMENT_METHODS, $quoteTransfer);
-
-        return $availablePaymentMethodsTransfer;
-    }
-
-    /**
      * @param \Generated\Shared\Transfer\AfterPayValidateCustomerRequestTransfer $validateCustomerRequestTransfer
      *
      * @return \Generated\Shared\Transfer\AfterPayValidateCustomerResponseTransfer
@@ -61,7 +40,7 @@ class AfterPayStub implements AfterPayStubInterface
     public function validateCustomerAddress(AfterPayValidateCustomerRequestTransfer $validateCustomerRequestTransfer): AfterPayValidateCustomerResponseTransfer
     {
         /** @var \Generated\Shared\Transfer\AfterPayValidateCustomerResponseTransfer $validateCustomerResponseTransfer */
-        $validateCustomerResponseTransfer = $this->zedRequestClient->call(static::ZED_VALIDATE_CUSTOMER_ADDRESS, $validateCustomerRequestTransfer);
+        $validateCustomerResponseTransfer = $this->zedRequestClient->call('/after-pay/gateway/validate-customer-address', $validateCustomerRequestTransfer);
 
         return $validateCustomerResponseTransfer;
     }
@@ -74,7 +53,7 @@ class AfterPayStub implements AfterPayStubInterface
     public function lookupCustomer(AfterPayCustomerLookupRequestTransfer $customerLookupRequestTransfer): AfterPayCustomerLookupResponseTransfer
     {
         /** @var \Generated\Shared\Transfer\AfterPayCustomerLookupResponseTransfer $customerLookupResponseTransfer */
-        $customerLookupResponseTransfer = $this->zedRequestClient->call(static::ZED_LOOKUP_CUSTOMER, $customerLookupRequestTransfer);
+        $customerLookupResponseTransfer = $this->zedRequestClient->call('/after-pay/gateway/lookup-customer', $customerLookupRequestTransfer);
 
         return $customerLookupResponseTransfer;
     }
@@ -87,7 +66,7 @@ class AfterPayStub implements AfterPayStubInterface
     public function getAvailableInstallmentPlans(AfterPayInstallmentPlansRequestTransfer $installmentPlansRequestTransfer): AfterPayInstallmentPlansResponseTransfer
     {
         /** @var \Generated\Shared\Transfer\AfterPayInstallmentPlansResponseTransfer $installmentPlansResponseTransfer */
-        $installmentPlansResponseTransfer = $this->zedRequestClient->call(static::ZED_INSTALLMENT_PLANS, $installmentPlansRequestTransfer);
+        $installmentPlansResponseTransfer = $this->zedRequestClient->call('/after-pay/gateway/lookup-installment-plans', $installmentPlansRequestTransfer);
 
         return $installmentPlansResponseTransfer;
     }
@@ -100,7 +79,7 @@ class AfterPayStub implements AfterPayStubInterface
     public function validateBankAccount(AfterPayValidateBankAccountRequestTransfer $bankAccountValidationRequestTransfer): AfterPayValidateBankAccountResponseTransfer
     {
         /** @var \Generated\Shared\Transfer\AfterPayValidateBankAccountResponseTransfer $validateBankAccountResponseTransfer */
-        $validateBankAccountResponseTransfer = $this->zedRequestClient->call(static::ZED_VALIDATE_BANK_ACCOUNT, $bankAccountValidationRequestTransfer);
+        $validateBankAccountResponseTransfer = $this->zedRequestClient->call('/after-pay/gateway/validate-bank-account', $bankAccountValidationRequestTransfer);
 
         return $validateBankAccountResponseTransfer;
     }

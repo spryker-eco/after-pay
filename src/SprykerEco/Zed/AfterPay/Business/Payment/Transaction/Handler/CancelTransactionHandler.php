@@ -33,17 +33,17 @@ class CancelTransactionHandler implements CancelTransactionHandlerInterface
     /**
      * @var \SprykerEco\Zed\AfterPay\Business\Payment\Transaction\Cancel\CancelRequestBuilderInterface
      */
-    private $cancelRequestBuilder;
+    protected $cancelRequestBuilder;
 
     /**
      * @var \SprykerEco\Zed\AfterPay\Business\Payment\PaymentWriterInterface
      */
-    private $paymentWriter;
+    protected $paymentWriter;
 
     /**
      * @var \SprykerEco\Zed\AfterPay\Dependency\Facade\AfterPayToMoneyFacadeInterface
      */
-    private $money;
+    protected $money;
 
     /**
      * @param \SprykerEco\Zed\AfterPay\Business\Payment\Transaction\CancelTransactionInterface $transaction

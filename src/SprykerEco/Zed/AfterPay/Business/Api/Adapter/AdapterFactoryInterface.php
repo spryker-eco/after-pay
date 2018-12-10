@@ -64,7 +64,7 @@ interface AdapterFactoryInterface
     /**
      * @return \SprykerEco\Zed\AfterPay\Business\Api\Adapter\ApiCall\ApiVersionCallInterface
      */
-    public function createGetApiVersionCall(): ApiVersionCallInterface;
+    public function createApiVersionCall(): ApiVersionCallInterface;
 
     /**
      * @return \SprykerEco\Zed\AfterPay\Business\Api\Adapter\ApiCall\ApiStatusCallInterface

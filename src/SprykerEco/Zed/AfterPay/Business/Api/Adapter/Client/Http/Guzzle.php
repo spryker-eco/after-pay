@@ -42,7 +42,7 @@ class Guzzle implements ClientInterface
     /**
      * @var \SprykerEco\Zed\AfterPay\AfterPayConfig
      */
-    private $config;
+    protected $config;
 
     /**
      * @param \SprykerEco\Zed\AfterPay\Dependency\Service\AfterPayToUtilEncodingServiceInterface $encodingService

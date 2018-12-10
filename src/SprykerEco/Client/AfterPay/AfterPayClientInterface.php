@@ -7,7 +7,6 @@
 
 namespace SprykerEco\Client\AfterPay;
 
-use Generated\Shared\Transfer\AfterPayAvailablePaymentMethodsTransfer;
 use Generated\Shared\Transfer\AfterPayCustomerLookupRequestTransfer;
 use Generated\Shared\Transfer\AfterPayCustomerLookupResponseTransfer;
 use Generated\Shared\Transfer\AfterPayInstallmentPlansRequestTransfer;
@@ -16,27 +15,13 @@ use Generated\Shared\Transfer\AfterPayValidateBankAccountRequestTransfer;
 use Generated\Shared\Transfer\AfterPayValidateBankAccountResponseTransfer;
 use Generated\Shared\Transfer\AfterPayValidateCustomerRequestTransfer;
 use Generated\Shared\Transfer\AfterPayValidateCustomerResponseTransfer;
-use Generated\Shared\Transfer\QuoteTransfer;
 
 interface AfterPayClientInterface
 {
     /**
      * Specification:
-     *  - Makes "payment-methods" call to the AfterPay API, in order to get list of available
-     *  payment methods for the given quote, with risk check score.
-     *
-     * @api
-     *
-     * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
-     *
-     * @return \Generated\Shared\Transfer\AfterPayAvailablePaymentMethodsTransfer
-     */
-    public function getAvailablePaymentMethods(QuoteTransfer $quoteTransfer): AfterPayAvailablePaymentMethodsTransfer;
-
-    /**
-     * Specification:
      *  - Makes "validate-address" call to the AfterPay API, in order to validate customer address.
-     *  Response contains isValid flag along with correctedAddress.
+     *  - Response contains isValid flag along with correctedAddress.
      *
      * @api
      *
@@ -49,7 +34,7 @@ interface AfterPayClientInterface
     /**
      * Specification:
      *  - Makes "customer-lookup" call to the AfterPay API, to find customer based on social security number or mobile number.
-     *  Response contains customer's account with list of addresses
+     *  - Response contains customer's account with list of addresses.
      *
      * @api
      *
@@ -61,8 +46,8 @@ interface AfterPayClientInterface
 
     /**
      * Specification:
-     *  - Makes "lookup/installment-plans" call to the AfterPay API, to get the available installment plans for the specific
-     *  product/basket value. Returns monthly installment amount, interest and fees.
+     *  - Makes "lookup/installment-plans" call to the AfterPay API, to get the available installment plans for the specific product/basket value.
+     *  - Returns monthly installment amount, interest and fees.
      *
      * @api
      *
@@ -74,9 +59,9 @@ interface AfterPayClientInterface
 
     /**
      * Specification:
-     *  - Makes "validate bank-account" call to the AfterPay API, to validate and evaluates the account and bank details
-     *  in the context of direct debit payment. It is possible to transfer either the combination of BankCode and AccountNumber or IBAN and BIC
-     *  Response contains validation result and list of risk-check messages
+     *  - Makes "validate bank-account" call to the AfterPay API, to validate and evaluates the account and bank details in the context of direct debit payment.
+     *  - It is possible to transfer either the combination of BankCode and AccountNumber or IBAN and BIC.
+     *  - Response contains validation result and list of risk-check messages.
      *
      * @api
      *

@@ -9,15 +9,13 @@ namespace SprykerEco\Yves\AfterPay\Plugin;
 
 use Generated\Shared\Transfer\AfterPayCustomerLookupRequestTransfer;
 use Generated\Shared\Transfer\AfterPayCustomerLookupResponseTransfer;
-use Spryker\Yves\Kernel\AbstractPlugin;
 
-/**
- * @method \SprykerEco\Yves\AfterPay\AfterPayFactory getFactory()
- */
-class AfterPayCustomerLookupPlugin extends AbstractPlugin implements AfterPayCustomerLookupPluginInterface
+interface AfterPayCustomerLookupPluginInterface
 {
     /**
-     * {@inheritdoc}
+     * Specification:
+     *  - Makes "customer-lookup" call to the AfterPay API, to find customer based on social security number or mobile number.
+     *  Response contains customer's account with list of addresses
      *
      * @api
      *
@@ -25,10 +23,5 @@ class AfterPayCustomerLookupPlugin extends AbstractPlugin implements AfterPayCus
      *
      * @return \Generated\Shared\Transfer\AfterPayCustomerLookupResponseTransfer
      */
-    public function lookupCustomer(AfterPayCustomerLookupRequestTransfer $customerLookupRequestTransfer): AfterPayCustomerLookupResponseTransfer
-    {
-        return $this->getFactory()
-            ->getClient()
-            ->lookupCustomer($customerLookupRequestTransfer);
-    }
+    public function lookupCustomer(AfterPayCustomerLookupRequestTransfer $customerLookupRequestTransfer): AfterPayCustomerLookupResponseTransfer;
 }

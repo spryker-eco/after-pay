@@ -25,7 +25,7 @@ class CancelRequestBuilder implements CancelRequestBuilderInterface
     /**
      * @var \SprykerEco\Zed\AfterPay\Dependency\Facade\AfterPayToMoneyFacadeInterface
      */
-    private $money;
+    protected $money;
 
     /**
      * @param \SprykerEco\Zed\AfterPay\Business\Payment\Mapper\OrderToRequestTransferInterface $orderToRequestMapper

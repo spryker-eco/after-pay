@@ -18,12 +18,12 @@ class PostSaveHook implements PostSaveHookInterface
     /**
      * @var \SprykerEco\Zed\AfterPay\Business\Payment\Transaction\TransactionLogReaderInterface
      */
-    private $transactionLogReader;
+    protected $transactionLogReader;
 
     /**
      * @var \SprykerEco\Zed\AfterPay\AfterPayConfig
      */
-    private $config;
+    protected $config;
 
     /**
      * @param \SprykerEco\Zed\AfterPay\Business\Payment\Transaction\TransactionLogReaderInterface $transactionLogReader

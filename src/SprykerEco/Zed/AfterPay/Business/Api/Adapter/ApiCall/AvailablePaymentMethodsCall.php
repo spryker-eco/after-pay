@@ -26,7 +26,7 @@ class AvailablePaymentMethodsCall extends AbstractApiCall implements AvailablePa
     /**
      * @var \SprykerEco\Zed\AfterPay\AfterPayConfig
      */
-    private $config;
+    protected $config;
 
     /**
      * @param \SprykerEco\Zed\AfterPay\Business\Api\Adapter\Client\ClientInterface $client

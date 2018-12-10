@@ -33,12 +33,12 @@ class CaptureTransactionHandler implements CaptureTransactionHandlerInterface
     /**
      * @var \SprykerEco\Zed\AfterPay\Business\Payment\Transaction\Capture\CaptureRequestBuilderInterface
      */
-    private $captureRequestBuilder;
+    protected $captureRequestBuilder;
 
     /**
      * @var \SprykerEco\Zed\AfterPay\Business\Payment\PaymentWriterInterface
      */
-    private $paymentWriter;
+    protected $paymentWriter;
 
     /**
      * @param \SprykerEco\Zed\AfterPay\Business\Payment\Transaction\CaptureTransactionInterface $transaction

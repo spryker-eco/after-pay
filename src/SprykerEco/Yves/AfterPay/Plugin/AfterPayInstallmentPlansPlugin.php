@@ -14,7 +14,7 @@ use Spryker\Yves\Kernel\AbstractPlugin;
 /**
  * @method \SprykerEco\Yves\AfterPay\AfterPayFactory getFactory()
  */
-class AfterPayInstallmentPlansPlugin extends AbstractPlugin implements InstallmentPlansPluginInterface
+class AfterPayInstallmentPlansPlugin extends AbstractPlugin implements AfterPayInstallmentPlansPluginInterface
 {
     /**
      * {@inheritdoc}
@@ -27,9 +27,8 @@ class AfterPayInstallmentPlansPlugin extends AbstractPlugin implements Installme
      */
     public function getAvailableInstallmentPlans(AfterPayInstallmentPlansRequestTransfer $installmentPlansRequestTransfer): AfterPayInstallmentPlansResponseTransfer
     {
-        return $this
-            ->getFactory()
-            ->getAfterPayClient()
+        return $this->getFactory()
+            ->getClient()
             ->getAvailableInstallmentPlans($installmentPlansRequestTransfer);
     }
 }
