@@ -13,6 +13,7 @@ use Spryker\Yves\Kernel\AbstractPlugin;
 
 /**
  * @method \SprykerEco\Yves\AfterPay\AfterPayFactory getFactory()
+ * @method \SprykerEco\Client\AfterPay\AfterPayClientInterface getClient()
  */
 class AfterPayBankAccountValidationPlugin extends AbstractPlugin implements AfterPayBankAccountValidationPluginInterface
 {

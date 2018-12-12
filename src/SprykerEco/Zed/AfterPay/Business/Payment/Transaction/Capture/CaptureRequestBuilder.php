@@ -64,8 +64,9 @@ class CaptureRequestBuilder implements CaptureRequestBuilderInterface
     ) {
         $orderItemRequestTransfer = $this->orderToRequestMapper->orderItemToAfterPayItemRequest($orderItemTransfer);
 
-        $this->addOrderItemToOrderDetails($orderItemRequestTransfer, $captureRequestTransfer);
-        $this->increaseTotalToCaptureAmounts($orderItemRequestTransfer, $captureRequestTransfer);
+        $captureRequestTransfer->getOrderDetails()->addItem($orderItemRequestTransfer);
+        $this->increaseTotalNetAmount($orderItemRequestTransfer, $captureRequestTransfer);
+        $this->increaseTotalGrossAmount($orderItemRequestTransfer, $captureRequestTransfer);
 
         return $this;
     }
@@ -84,33 +85,6 @@ class CaptureRequestBuilder implements CaptureRequestBuilderInterface
         $this->addOrderItemToCaptureRequest($expenseItemRequestTransfer, $captureRequestTransfer);
 
         return $this;
-    }
-
-    /**
-     * @param \Generated\Shared\Transfer\AfterPayRequestOrderItemTransfer $orderItemRequestTransfer
-     * @param \Generated\Shared\Transfer\AfterPayCaptureRequestTransfer $captureRequestTransfer
-     *
-     * @return void
-     */
-    protected function addOrderItemToOrderDetails(
-        AfterPayRequestOrderItemTransfer $orderItemRequestTransfer,
-        AfterPayCaptureRequestTransfer $captureRequestTransfer
-    ): void {
-        $captureRequestTransfer->getOrderDetails()->addItem($orderItemRequestTransfer->setGrossUnitPrice(1900));
-    }
-
-    /**
-     * @param \Generated\Shared\Transfer\AfterPayRequestOrderItemTransfer $orderItemRequestTransfer
-     * @param \Generated\Shared\Transfer\AfterPayCaptureRequestTransfer $captureRequestTransfer
-     *
-     * @return void
-     */
-    protected function increaseTotalToCaptureAmounts(
-        AfterPayRequestOrderItemTransfer $orderItemRequestTransfer,
-        AfterPayCaptureRequestTransfer $captureRequestTransfer
-    ): void {
-        $this->increaseTotalNetAmount($orderItemRequestTransfer, $captureRequestTransfer);
-        $this->increaseTotalGrossAmount($orderItemRequestTransfer, $captureRequestTransfer);
     }
 
     /**

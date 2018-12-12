@@ -12,9 +12,9 @@ use Generated\Shared\Transfer\AfterPayTransactionLogTransfer;
 interface TransactionLogReaderInterface
 {
     /**
-     * @param int $idSalesOrder
+     * @param string $orderReference
      *
      * @return \Generated\Shared\Transfer\AfterPayTransactionLogTransfer|null
      */
-    public function findOrderAuthorizeTransactionLogByIdSalesOrder(int $idSalesOrder): ?AfterPayTransactionLogTransfer;
+    public function findOrderAuthorizeTransactionLogByIdSalesOrder(string $orderReference): ?AfterPayTransactionLogTransfer;
 }

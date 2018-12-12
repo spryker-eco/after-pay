@@ -13,6 +13,7 @@ use Spryker\Yves\Kernel\AbstractPlugin;
 
 /**
  * @method \SprykerEco\Yves\AfterPay\AfterPayFactory getFactory()
+ * @method \SprykerEco\Client\AfterPay\AfterPayClientInterface getClient()
  */
 class AfterPayInstallmentPlansPlugin extends AbstractPlugin implements AfterPayInstallmentPlansPluginInterface
 {

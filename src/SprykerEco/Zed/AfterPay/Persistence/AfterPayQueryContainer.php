@@ -11,6 +11,7 @@ use Orm\Zed\AfterPay\Persistence\SpyPaymentAfterPayAuthorizationQuery;
 use Orm\Zed\AfterPay\Persistence\SpyPaymentAfterPayOrderItemQuery;
 use Orm\Zed\AfterPay\Persistence\SpyPaymentAfterPayQuery;
 use Orm\Zed\AfterPay\Persistence\SpyPaymentAfterPayTransactionLogQuery;
+use Orm\Zed\Sales\Persistence\SpySalesOrderQuery;
 use Spryker\Zed\Kernel\Persistence\AbstractQueryContainer;
 use SprykerEco\Shared\AfterPay\AfterPayConfig;
 
@@ -72,15 +73,15 @@ class AfterPayQueryContainer extends AbstractQueryContainer implements AfterPayQ
     /**
      * @api
      *
-     * @param int $idSalesOrder
+     * @param string $orderReference
      *
      * @return \Orm\Zed\AfterPay\Persistence\SpyPaymentAfterPayTransactionLogQuery
      */
-    public function queryRefundTransactionLog(int $idSalesOrder): SpyPaymentAfterPayTransactionLogQuery
+    public function queryRefundTransactionLog(string $orderReference): SpyPaymentAfterPayTransactionLogQuery
     {
         return $this->getFactory()
             ->createPaymentAfterPayTransactionLogQuery()
-            ->filterByFkSalesOrder($idSalesOrder)
+            ->filterByOrderReference($orderReference)
             ->filterByTransactionType(static::TRANSACTION_TYPE_REFUND);
     }
 
@@ -144,5 +145,19 @@ class AfterPayQueryContainer extends AbstractQueryContainer implements AfterPayQ
         return $this->getFactory()
             ->createPaymentAfterPayAuthorizationQuery()
             ->filterByOrderReference($orderReference);
+    }
+
+    /**
+     * @api
+     *
+     * @param int $idSalesOrder
+     *
+     * @return \Orm\Zed\Sales\Persistence\SpySalesOrderQuery
+     */
+    public function querySalesOrder(int $idSalesOrder): SpySalesOrderQuery
+    {
+        return $this->getFactory()
+            ->createSalesOrderQuery()
+            ->filterByPrimaryKey($idSalesOrder);
     }
 }

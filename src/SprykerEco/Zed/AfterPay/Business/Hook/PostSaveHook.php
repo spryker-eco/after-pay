@@ -45,9 +45,7 @@ class PostSaveHook implements PostSaveHookInterface
      */
     public function execute(QuoteTransfer $quoteTransfer, CheckoutResponseTransfer $checkoutResponseTransfer): CheckoutResponseTransfer
     {
-        $idSalesOrder = $checkoutResponseTransfer->getSaveOrder()->getIdSalesOrder();
-
-        if ($this->isPaymentAuthorizationSuccessful($idSalesOrder)) {
+        if ($this->isPaymentAuthorizationSuccessful($quoteTransfer->getOrderReference())) {
             return $checkoutResponseTransfer;
         }
 
@@ -57,14 +55,14 @@ class PostSaveHook implements PostSaveHookInterface
     }
 
     /**
-     * @param int $idSalesOrder
+     * @param string $orderReference
      *
      * @return bool
      */
-    protected function isPaymentAuthorizationSuccessful(int $idSalesOrder): bool
+    protected function isPaymentAuthorizationSuccessful(string $orderReference): bool
     {
         $transactionLogTransfer = $this->transactionLogReader
-            ->findOrderAuthorizeTransactionLogByIdSalesOrder($idSalesOrder);
+            ->findOrderAuthorizeTransactionLogByIdSalesOrder($orderReference);
 
         if (!$transactionLogTransfer) {
             return false;

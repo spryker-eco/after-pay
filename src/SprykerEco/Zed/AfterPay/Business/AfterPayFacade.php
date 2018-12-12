@@ -159,7 +159,7 @@ class AfterPayFacade extends AbstractFacade implements AfterPayFacadeInterface
      *
      * @api
      *
-     * @param \Generated\Shared\Transfer\AfterPayCallTransfer $orderTransfer
+     * @param \Generated\Shared\Transfer\AfterPayCallTransfer $afterPayCallTransfer
      *
      * @return \Generated\Shared\Transfer\AfterPayApiResponseTransfer
      */

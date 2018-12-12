@@ -40,25 +40,33 @@ class AfterPayToRefundFacadeBridge implements AfterPayToRefundFacadeInterface
     /**
      * @param \Generated\Shared\Transfer\RefundTransfer $refundTransfer
      * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
-     * @param \Orm\Zed\Sales\Persistence\SpySalesOrderItem[] array $salesOrderItems
+     * @param \Orm\Zed\Sales\Persistence\SpySalesOrderItem[] $salesOrderItems
      *
      * @return \Generated\Shared\Transfer\RefundTransfer
      */
-    public function calculateRefundableItemAmount(RefundTransfer $refundTransfer, OrderTransfer $orderTransfer, array $salesOrderItems)
-    {
-        return $this->refundFacade->calculateRefundableItemAmount($refundTransfer, $orderTransfer, $salesOrderItems);
+    public function calculateRefundableItemAmount(
+        RefundTransfer $refundTransfer,
+        OrderTransfer $orderTransfer,
+        array $salesOrderItems
+    ) {
+        return $this->refundFacade
+            ->calculateRefundableItemAmount($refundTransfer, $orderTransfer, $salesOrderItems);
     }
 
     /**
      * @param \Generated\Shared\Transfer\RefundTransfer $refundTransfer
      * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
-     * @param \Orm\Zed\Sales\Persistence\SpySalesOrderItem[] array $salesOrderItems
+     * @param \Orm\Zed\Sales\Persistence\SpySalesOrderItem[] $salesOrderItems
      *
      * @return \Generated\Shared\Transfer\RefundTransfer
      */
-    public function calculateRefundableExpenseAmount(RefundTransfer $refundTransfer, OrderTransfer $orderTransfer, array $salesOrderItems)
-    {
-        return $this->refundFacade->calculateRefundableExpenseAmount($refundTransfer, $orderTransfer);
+    public function calculateRefundableExpenseAmount(
+        RefundTransfer $refundTransfer,
+        OrderTransfer $orderTransfer,
+        array $salesOrderItems
+    ) {
+        return $this->refundFacade
+            ->calculateRefundableExpenseAmount($refundTransfer, $orderTransfer, $salesOrderItems);
     }
 
     /**

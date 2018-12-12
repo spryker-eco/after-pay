@@ -38,7 +38,7 @@ interface RefundRequestBuilderInterface
      * @return $this
      */
     public function addOrderExpenseToRefundRequest(
-        $expenseAmount,
+        int $expenseAmount,
         AfterPayRefundRequestTransfer $refundRequestTransfer
     );
 }

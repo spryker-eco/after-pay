@@ -5,7 +5,7 @@
  * For full license information, please view the LICENSE file that was distributed with this source code.
  */
 
-namespace SprykerEco\Zed\Adyen\Communication\Plugin;
+namespace SprykerEco\Zed\AfterPay\Communication\Plugin;
 
 use Generated\Shared\Transfer\PaymentMethodsTransfer;
 use Generated\Shared\Transfer\QuoteTransfer;
@@ -15,6 +15,8 @@ use Spryker\Zed\Payment\Dependency\Plugin\Payment\PaymentMethodFilterPluginInter
 /**
  * @method \SprykerEco\Zed\AfterPay\Business\AfterPayFacadeInterface getFacade()
  * @method \SprykerEco\Zed\AfterPay\Communication\AfterPayCommunicationFactory getFactory()
+ * @method \SprykerEco\Zed\AfterPay\AfterPayConfig getConfig()
+ * @method \SprykerEco\Zed\AfterPay\Persistence\AfterPayQueryContainerInterface getQueryContainer()
  */
 class AfterPayPaymentMethodFilterPlugin extends AbstractPlugin implements PaymentMethodFilterPluginInterface
 {

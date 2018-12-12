@@ -87,9 +87,7 @@ class RefundCall extends AbstractApiCall implements RefundCallInterface
      */
     protected function getRefundEndpointUrl(AfterPayRefundRequestTransfer $requestTransfer): string
     {
-        return $this->config->getRefundApiEndpointUrl(
-            $requestTransfer->getOrderNumber()
-        );
+        return $this->config->getRefundApiEndpointUrl($requestTransfer->getOrderNumber());
     }
 
     /**

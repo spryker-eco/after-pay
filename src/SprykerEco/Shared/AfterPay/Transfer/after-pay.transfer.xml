@@ -75,7 +75,7 @@
     </transfer>
 
     <transfer name="AfterPayInstallmentPlansRequest">
-        <property name="amount" type="int" />
+        <property name="amount" type="float" />
     </transfer>
 
     <transfer name="AfterPayInstallmentPlansResponse">
@@ -169,7 +169,7 @@
     <transfer name="AfterPayRefundRequest">
         <property name="idSalesOrder" type="int" />
         <property name="fkPayment" type="int" />
-        <property name="orderNumber" type="int" />
+        <property name="orderNumber" type="string" />
         <property name="captureNumber" type="string" />
         <property name="orderItems" type="AfterPayRequestOrderItem[]"  singular="orderItem" />
     </transfer>
@@ -245,7 +245,7 @@
         <property name="description" type="string" />
         <property name="grossUnitPrice" type="string" />
         <property name="netUnitPrice" type="string" />
-        <property name="quantity" type="string" />
+        <property name="quantity" type="int" />
     </transfer>
 
     <transfer name="AfterPayResponse">
@@ -282,6 +282,7 @@
         <property name="shippingAddress" type="Address" />
         <property name="billingAddress" type="Address" />
         <property name="orderReference" type="string" />
+        <property name="idSalesOrder" type="int" />
         <property name="paymentMethod" type="string" />
         <property name="email" type="string" />
         <property name="items" type="Item[]" singular="Item"/>

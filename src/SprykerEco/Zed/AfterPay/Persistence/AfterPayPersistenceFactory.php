@@ -11,6 +11,7 @@ use Orm\Zed\AfterPay\Persistence\SpyPaymentAfterPayAuthorizationQuery;
 use Orm\Zed\AfterPay\Persistence\SpyPaymentAfterPayOrderItemQuery;
 use Orm\Zed\AfterPay\Persistence\SpyPaymentAfterPayQuery;
 use Orm\Zed\AfterPay\Persistence\SpyPaymentAfterPayTransactionLogQuery;
+use Orm\Zed\Sales\Persistence\SpySalesOrderQuery;
 use Spryker\Zed\Kernel\Persistence\AbstractPersistenceFactory;
 
 /**
@@ -49,5 +50,13 @@ class AfterPayPersistenceFactory extends AbstractPersistenceFactory
     public function createPaymentAfterPayAuthorizationQuery(): SpyPaymentAfterPayAuthorizationQuery
     {
         return SpyPaymentAfterPayAuthorizationQuery::create();
+    }
+
+    /**
+     * @return \Orm\Zed\Sales\Persistence\SpySalesOrderQuery
+     */
+    public function createSalesOrderQuery(): SpySalesOrderQuery
+    {
+        return SpySalesOrderQuery::create();
     }
 }

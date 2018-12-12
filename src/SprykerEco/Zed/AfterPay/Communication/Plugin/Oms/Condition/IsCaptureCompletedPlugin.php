@@ -15,7 +15,7 @@ use SprykerEco\Shared\AfterPay\AfterPayConfig;
 
 /**
  * @method \SprykerEco\Zed\AfterPay\Business\AfterPayFacadeInterface getFacade()
- * @method \SprykerEco\Zed\AfterPay\Persistence\AfterPayQueryContainer getQueryContainer()
+ * @method \SprykerEco\Zed\AfterPay\Persistence\AfterPayQueryContainerInterface getQueryContainer()
  * @method \SprykerEco\Zed\AfterPay\Communication\AfterPayCommunicationFactory getFactory()
  * @method \SprykerEco\Zed\AfterPay\AfterPayConfig getConfig()
  */
@@ -42,7 +42,12 @@ class IsCaptureCompletedPlugin extends AbstractPlugin implements ConditionInterf
      */
     protected function isCaptureTransactionSuccessful(int $idSalesOrder): bool
     {
-        $captureTransactionLog = $this->getFullCaptureTransactionLogEntry($idSalesOrder);
+        $order = $this->getQueryContainer()->querySalesOrder($idSalesOrder)->findOne();
+        if ($order === null) {
+            return false;
+        }
+
+        $captureTransactionLog = $this->getFullCaptureTransactionLogEntry($order->getOrderReference());
         if ($captureTransactionLog === null) {
             return false;
         }
@@ -51,13 +56,13 @@ class IsCaptureCompletedPlugin extends AbstractPlugin implements ConditionInterf
     }
 
     /**
-     * @param int $idSalesOrder
+     * @param string $orderReference
      *
      * @return \Orm\Zed\AfterPay\Persistence\SpyPaymentAfterPayTransactionLog|null
      */
-    protected function getFullCaptureTransactionLogEntry(int $idSalesOrder): ?SpyPaymentAfterPayTransactionLog
+    protected function getFullCaptureTransactionLogEntry(string $orderReference): ?SpyPaymentAfterPayTransactionLog
     {
-        $transactionLogQuery = $this->getQueryContainer()->queryCaptureTransactionLog($idSalesOrder);
+        $transactionLogQuery = $this->getQueryContainer()->queryCaptureTransactionLog($orderReference);
 
         return $transactionLogQuery->findOne();
     }

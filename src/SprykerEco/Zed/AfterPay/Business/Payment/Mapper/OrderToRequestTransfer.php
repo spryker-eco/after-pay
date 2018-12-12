@@ -29,6 +29,8 @@ class OrderToRequestTransfer implements OrderToRequestTransferInterface
     public const NEGATIVE_MULTIPLIER = -1;
     public const GIFT_CARD_PROVIDER = 'GiftCard';
 
+    protected const ZERO_AMOUNT = '0';
+
     /**
      * @var \SprykerEco\Zed\AfterPay\Dependency\Facade\AfterPayToMoneyFacadeInterface
      */
@@ -73,20 +75,10 @@ class OrderToRequestTransfer implements OrderToRequestTransferInterface
      */
     public function orderToAuthorizeRequest(AfterPayCallTransfer $afterPayCallTransfer): AfterPayAuthorizeRequestTransfer
     {
-        $requestTransfer = new AfterPayAuthorizeRequestTransfer();
-
-        $requestTransfer
-            ->setPayment(
-                $this->buildPaymentRequestTransfer($afterPayCallTransfer)
-            )
-            ->setCustomer(
-                $this->buildCustomerRequestTransfer($afterPayCallTransfer)
-            )
-            ->setOrder(
-                $this->buildOrderWithItemsRequestTransfer($afterPayCallTransfer)
-            );
-
-        return $requestTransfer;
+        return (new AfterPayAuthorizeRequestTransfer())
+            ->setPayment($this->buildPaymentRequestTransfer($afterPayCallTransfer))
+            ->setCustomer($this->buildCustomerRequestTransfer($afterPayCallTransfer))
+            ->setOrder($this->buildOrderWithItemsRequestTransfer($afterPayCallTransfer));
     }
 
     /**
@@ -96,16 +88,12 @@ class OrderToRequestTransfer implements OrderToRequestTransferInterface
      */
     public function orderToBaseCaptureRequest(AfterPayCallTransfer $afterPayCallTransfer): AfterPayCaptureRequestTransfer
     {
-        $requestTransfer = new AfterPayCaptureRequestTransfer();
+        $orderRequestTransfer = $this->buildOrderRequestTransfer($afterPayCallTransfer)
+            ->setTotalGrossAmount(static::ZERO_AMOUNT)
+            ->setTotalNetAmount(static::ZERO_AMOUNT);
 
-        $requestTransfer
-            ->setOrderDetails(
-                $this->buildOrderRequestTransfer($afterPayCallTransfer)
-                    ->setTotalGrossAmount(0)
-                    ->setTotalNetAmount(0)
-            );
-
-        return $requestTransfer;
+        return (new AfterPayCaptureRequestTransfer())
+            ->setOrderDetails($orderRequestTransfer);
     }
 
     /**
@@ -115,16 +103,12 @@ class OrderToRequestTransfer implements OrderToRequestTransferInterface
      */
     public function orderToBaseCancelRequest(AfterPayCallTransfer $afterPayCallTransfer): AfterPayCancelRequestTransfer
     {
-        $requestTransfer = new AfterPayCancelRequestTransfer();
+        $orderRequestTransfer = $this->buildOrderRequestTransfer($afterPayCallTransfer)
+            ->setTotalGrossAmount(static::ZERO_AMOUNT)
+            ->setTotalNetAmount(static::ZERO_AMOUNT);
 
-        $requestTransfer
-            ->setCancellationDetails(
-                $this->buildOrderRequestTransfer($afterPayCallTransfer)
-                    ->setTotalGrossAmount(0)
-                    ->setTotalNetAmount(0)
-            );
-
-        return $requestTransfer;
+        return (new AfterPayCancelRequestTransfer())
+            ->setCancellationDetails($orderRequestTransfer);
     }
 
     /**
@@ -134,13 +118,9 @@ class OrderToRequestTransfer implements OrderToRequestTransferInterface
      */
     public function orderToBaseRefundRequest(OrderTransfer $orderTransfer): AfterPayRefundRequestTransfer
     {
-        $refundRequestTransfer = new AfterPayRefundRequestTransfer();
-
-        $refundRequestTransfer
+        return (new AfterPayRefundRequestTransfer())
             ->setIdSalesOrder($orderTransfer->getIdSalesOrder())
             ->setOrderNumber($orderTransfer->getOrderReference());
-
-        return $refundRequestTransfer;
     }
 
     /**
@@ -161,21 +141,15 @@ class OrderToRequestTransfer implements OrderToRequestTransferInterface
     protected function buildCustomerRequestTransfer(AfterPayCallTransfer $afterPayCallTransfer): AfterPayRequestCustomerTransfer
     {
         $billingAddressTransfer = $afterPayCallTransfer->getBillingAddress();
-        $customerRequestTransfer = new AfterPayRequestCustomerTransfer();
 
-        $customerRequestTransfer
+        return (new AfterPayRequestCustomerTransfer())
             ->setFirstName($billingAddressTransfer->getFirstName())
             ->setLastName($billingAddressTransfer->getLastName())
             ->setConversationalLanguage($this->getStoreCountryIso2())
             ->setCustomerCategory(AfterPayConfig::API_CUSTOMER_CATEGORY_PERSON)
             ->setSalutation($billingAddressTransfer->getSalutation())
-            ->setEmail($afterPayCallTransfer->getEmail());
-
-        $customerRequestTransfer->setAddress(
-            $this->buildCustomerBillingAddressRequestTransfer($afterPayCallTransfer)
-        );
-
-        return $customerRequestTransfer;
+            ->setEmail($afterPayCallTransfer->getEmail())
+            ->setAddress($this->buildCustomerBillingAddressRequestTransfer($afterPayCallTransfer));
     }
 
     /**
@@ -203,13 +177,10 @@ class OrderToRequestTransfer implements OrderToRequestTransferInterface
      */
     protected function buildOrderRequestTransfer(AfterPayCallTransfer $afterPayCallTransfer): AfterPayRequestOrderTransfer
     {
-        $orderRequestTransfer = new AfterPayRequestOrderTransfer();
-        $orderRequestTransfer
+        return (new AfterPayRequestOrderTransfer())
             ->setNumber($afterPayCallTransfer->getOrderReference())
             ->setTotalGrossAmount($this->getStringDecimalOrderGrossTotal($afterPayCallTransfer))
             ->setTotalNetAmount($this->getStringDecimalOrderNetTotal($afterPayCallTransfer));
-
-        return $orderRequestTransfer;
     }
 
     /**
@@ -219,12 +190,8 @@ class OrderToRequestTransfer implements OrderToRequestTransferInterface
      */
     protected function buildPaymentRequestTransfer(AfterPayCallTransfer $afterPayCallTransfer): AfterPayRequestPaymentTransfer
     {
-        $paymentMethod = $afterPayCallTransfer->getPaymentMethod();
-
-        $requestPaymentTransfer = new AfterPayRequestPaymentTransfer();
-        $requestPaymentTransfer->setType(static::$paymentMethods[$paymentMethod]);
-
-        return $requestPaymentTransfer;
+        return (new AfterPayRequestPaymentTransfer())
+            ->setType(static::$paymentMethods[$afterPayCallTransfer->getPaymentMethod()]);
     }
 
     /**
@@ -234,16 +201,12 @@ class OrderToRequestTransfer implements OrderToRequestTransferInterface
      */
     protected function buildOrderItemRequestTransfer(ItemTransfer $itemTransfer): AfterPayRequestOrderItemTransfer
     {
-        $orderItemRequestTransfer = new AfterPayRequestOrderItemTransfer();
-
-        $orderItemRequestTransfer
+        return (new AfterPayRequestOrderItemTransfer())
             ->setProductId($itemTransfer->getSku())
             ->setDescription($itemTransfer->getName())
             ->setGrossUnitPrice($this->getStringDecimalItemGrossUnitPrice($itemTransfer))
             ->setNetUnitPrice($this->getStringDecimalItemNetUnitPrice($itemTransfer))
             ->setQuantity($itemTransfer->getQuantity());
-
-        return $orderItemRequestTransfer;
     }
 
     /**
@@ -254,16 +217,13 @@ class OrderToRequestTransfer implements OrderToRequestTransferInterface
     protected function buildCustomerBillingAddressRequestTransfer(AfterPayCallTransfer $afterPayCallTransfer): AfterPayRequestAddressTransfer
     {
         $customerAddressTransfer = $afterPayCallTransfer->getBillingAddress();
-        $customerAddressRequestTransfer = new AfterPayRequestAddressTransfer();
 
-        $customerAddressRequestTransfer
+        return (new AfterPayRequestAddressTransfer())
             ->setCountryCode($customerAddressTransfer->getIso2Code())
             ->setStreet($customerAddressTransfer->getAddress1())
             ->setStreetNumber($customerAddressTransfer->getAddress2())
             ->setPostalCode($customerAddressTransfer->getZipCode())
             ->setPostalPlace($customerAddressTransfer->getCity());
-
-        return $customerAddressRequestTransfer;
     }
 
     /**
@@ -295,7 +255,7 @@ class OrderToRequestTransfer implements OrderToRequestTransferInterface
     {
         $orderGrossTotal = (int)$afterPayCallTransfer->getTotals()->getGrandTotal();
         $orderTaxTotal = (int)$afterPayCallTransfer->getTotals()->getTaxTotal()->getAmount();
-        $orderNetTotal = (int)$orderGrossTotal - $orderTaxTotal;
+        $orderNetTotal = $orderGrossTotal - $orderTaxTotal;
 
         return (string)$this->moneyFacade->convertIntegerToDecimal($orderNetTotal);
     }
@@ -337,16 +297,16 @@ class OrderToRequestTransfer implements OrderToRequestTransferInterface
         AfterPayRequestOrderTransfer $orderRequestTransfer
     ): void {
         foreach ($this->getGiftcards($orderWithPaymentTransfer) as $index => $paymentTransfer) {
-            $orderItemRequestTransfer = new AfterPayRequestOrderItemTransfer();
-            $amount = (string)$this->moneyFacade->convertIntegerToDecimal(static::NEGATIVE_MULTIPLIER * $paymentTransfer->getAmount());
+            $amount = (string)$this->moneyFacade
+                ->convertIntegerToDecimal(static::NEGATIVE_MULTIPLIER * $paymentTransfer->getAmount());
 
-            $orderItemRequestTransfer
-                ->setProductId(static::GIFT_CARD_PROVIDER . $index)
-                ->setDescription(static::GIFT_CARD_PROVIDER . $index)
-                ->setGrossUnitPrice($amount)
-                ->setQuantity(1);
-
-            $orderRequestTransfer->addItem($orderItemRequestTransfer);
+            $orderRequestTransfer->addItem(
+                (new AfterPayRequestOrderItemTransfer())
+                    ->setProductId(static::GIFT_CARD_PROVIDER . $index)
+                    ->setDescription(static::GIFT_CARD_PROVIDER . $index)
+                    ->setGrossUnitPrice($amount)
+                    ->setQuantity(1)
+            );
         }
     }
 

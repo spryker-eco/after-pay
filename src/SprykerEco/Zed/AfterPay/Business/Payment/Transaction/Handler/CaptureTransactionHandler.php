@@ -12,7 +12,6 @@ use Generated\Shared\Transfer\AfterPayCaptureRequestTransfer;
 use Generated\Shared\Transfer\AfterPayCaptureResponseTransfer;
 use Generated\Shared\Transfer\AfterPayPaymentTransfer;
 use Generated\Shared\Transfer\ItemTransfer;
-use Generated\Shared\Transfer\OrderTransfer;
 use SprykerEco\Zed\AfterPay\Business\Payment\PaymentReaderInterface;
 use SprykerEco\Zed\AfterPay\Business\Payment\PaymentWriterInterface;
 use SprykerEco\Zed\AfterPay\Business\Payment\Transaction\Capture\CaptureRequestBuilderInterface;
@@ -69,10 +68,10 @@ class CaptureTransactionHandler implements CaptureTransactionHandlerInterface
         $captureRequestTransfer = $this->buildCaptureRequestForOrderItem($itemTransfer, $afterPayCallTransfer);
         $paymentTransfer = $this->getPaymentTransferForItem($itemTransfer);
 
-        $this->processExpensesCapture($paymentTransfer, $orderTransfer);
+        $this->processExpensesCapture($paymentTransfer, $afterPayCallTransfer);
         $captureResponseTransfer = $this->transaction->executeTransaction($captureRequestTransfer);
 
-        $this->updateOrderPayment($captureResponseTransfer, $orderTransfer->getIdSalesOrder());
+        $this->updateOrderPayment($captureResponseTransfer, $afterPayCallTransfer->getIdSalesOrder());
         $this->updatePaymentOrderItem(
             $captureResponseTransfer,
             $itemTransfer,
@@ -82,32 +81,32 @@ class CaptureTransactionHandler implements CaptureTransactionHandlerInterface
 
     /**
      * @param \Generated\Shared\Transfer\AfterPayPaymentTransfer $paymentTransfer
-     * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
+     * @param \Generated\Shared\Transfer\AfterPayCallTransfer $afterPayCallTransfer
      *
      * @return void
      */
-    protected function processExpensesCapture(AfterPayPaymentTransfer $paymentTransfer, OrderTransfer $orderTransfer): void
+    protected function processExpensesCapture(AfterPayPaymentTransfer $paymentTransfer, AfterPayCallTransfer $afterPayCallTransfer): void
     {
         if (!$this->isFirstItemToCapture($paymentTransfer)) {
             return;
         }
-        $shipmentCaptureRequestTransfer = $this->buildExpensesCaptureRequest($paymentTransfer, $orderTransfer);
+        $shipmentCaptureRequestTransfer = $this->buildExpensesCaptureRequest($paymentTransfer, $afterPayCallTransfer);
         $shipmentCaptureResponseTransfer = $this->transaction->executeTransaction($shipmentCaptureRequestTransfer);
-        $this->updateOrderPayment($shipmentCaptureResponseTransfer, $orderTransfer->getIdSalesOrder());
-        $this->updatePaymentWithExpensesCaptureNumber($shipmentCaptureResponseTransfer, $orderTransfer->getIdSalesOrder());
+        $this->updateOrderPayment($shipmentCaptureResponseTransfer, $afterPayCallTransfer->getIdSalesOrder());
+        $this->updatePaymentWithExpensesCaptureNumber($shipmentCaptureResponseTransfer, $afterPayCallTransfer->getIdSalesOrder());
     }
 
     /**
      * @param \Generated\Shared\Transfer\AfterPayPaymentTransfer $paymentTransfer
-     * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
+     * @param \Generated\Shared\Transfer\AfterPayCallTransfer $afterPayCallTransfer
      *
      * @return \Generated\Shared\Transfer\AfterPayCaptureRequestTransfer
      */
     protected function buildExpensesCaptureRequest(
         AfterPayPaymentTransfer $paymentTransfer,
-        OrderTransfer $orderTransfer
+        AfterPayCallTransfer $afterPayCallTransfer
     ): AfterPayCaptureRequestTransfer {
-        $baseCaptureRequest = $this->captureRequestBuilder->buildBaseCaptureRequestForOrder($orderTransfer);
+        $baseCaptureRequest = $this->captureRequestBuilder->buildBaseCaptureRequestForOrder($afterPayCallTransfer);
         $this->addExpensesToCaptureRequest($paymentTransfer->getExpenseTotal(), $baseCaptureRequest);
 
         return $baseCaptureRequest;

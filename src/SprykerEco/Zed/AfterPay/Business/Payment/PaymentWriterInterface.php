@@ -58,14 +58,14 @@ interface PaymentWriterInterface
     public function increaseRefundedTotalByIdSalesOrder(int $refundedAmount, int $idSalesOrder): void;
 
     /**
-     * @param int $captureNumber
+     * @param string $captureNumber
      * @param int $idSalesOrderItem
      * @param int $idPayment
      *
      * @return void
      */
     public function setCaptureNumberByIdSalesOrderItemAndIdPayment(
-        int $captureNumber,
+        string $captureNumber,
         int $idSalesOrderItem,
         int $idPayment
     ): void;

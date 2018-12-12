@@ -15,7 +15,7 @@ use SprykerEco\Shared\AfterPay\AfterPayConfig;
 
 /**
  * @method \SprykerEco\Zed\AfterPay\Business\AfterPayFacadeInterface getFacade()
- * @method \SprykerEco\Zed\AfterPay\Persistence\AfterPayQueryContainer getQueryContainer()
+ * @method \SprykerEco\Zed\AfterPay\Persistence\AfterPayQueryContainerInterface getQueryContainer()
  * @method \SprykerEco\Zed\AfterPay\Communication\AfterPayCommunicationFactory getFactory()
  * @method \SprykerEco\Zed\AfterPay\AfterPayConfig getConfig()
  */
@@ -42,7 +42,12 @@ class IsCancellationCompletedPlugin extends AbstractPlugin implements ConditionI
      */
     protected function isCancelTransactionSuccessful(int $idSalesOrder): bool
     {
-        $fullCancelTransactionLog = $this->getCancelTransactionLogEntry($idSalesOrder);
+        $order = $this->getQueryContainer()->querySalesOrder($idSalesOrder)->findOne();
+        if ($order === null) {
+            return false;
+        }
+
+        $fullCancelTransactionLog = $this->getCancelTransactionLogEntry($order->getOrderReference());
         if ($fullCancelTransactionLog === null) {
             return false;
         }
@@ -51,13 +56,13 @@ class IsCancellationCompletedPlugin extends AbstractPlugin implements ConditionI
     }
 
     /**
-     * @param int $idSalesOrder
+     * @param string $orderReference
      *
      * @return \Orm\Zed\AfterPay\Persistence\SpyPaymentAfterPayTransactionLog|null
      */
-    protected function getCancelTransactionLogEntry(int $idSalesOrder): ?SpyPaymentAfterPayTransactionLog
+    protected function getCancelTransactionLogEntry(string $orderReference): ?SpyPaymentAfterPayTransactionLog
     {
-        $transactionLogQuery = $this->getQueryContainer()->queryCancelTransactionLog($idSalesOrder);
+        $transactionLogQuery = $this->getQueryContainer()->queryCancelTransactionLog($orderReference);
 
         return $transactionLogQuery->findOne();
     }

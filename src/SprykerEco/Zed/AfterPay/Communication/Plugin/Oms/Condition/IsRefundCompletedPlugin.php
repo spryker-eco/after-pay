@@ -15,7 +15,7 @@ use SprykerEco\Shared\AfterPay\AfterPayConfig;
 
 /**
  * @method \SprykerEco\Zed\AfterPay\Business\AfterPayFacadeInterface getFacade()
- * @method \SprykerEco\Zed\AfterPay\Persistence\AfterPayQueryContainer getQueryContainer()
+ * @method \SprykerEco\Zed\AfterPay\Persistence\AfterPayQueryContainerInterface getQueryContainer()
  * @method \SprykerEco\Zed\AfterPay\Communication\AfterPayCommunicationFactory getFactory()
  * @method \SprykerEco\Zed\AfterPay\AfterPayConfig getConfig()
  */
@@ -42,7 +42,12 @@ class IsRefundCompletedPlugin extends AbstractPlugin implements ConditionInterfa
      */
     protected function isRefundTransactionSuccessful(int $idSalesOrder): bool
     {
-        $captureTransactionLog = $this->getFullRefundTransactionLogEntry($idSalesOrder);
+        $order = $this->getQueryContainer()->querySalesOrder($idSalesOrder)->findOne();
+        if ($order === null) {
+            return false;
+        }
+
+        $captureTransactionLog = $this->getFullRefundTransactionLogEntry($order->getOrderReference());
         if ($captureTransactionLog === null) {
             return false;
         }
@@ -51,13 +56,13 @@ class IsRefundCompletedPlugin extends AbstractPlugin implements ConditionInterfa
     }
 
     /**
-     * @param int $idSalesOrder
+     * @param string $orderReference
      *
      * @return \Orm\Zed\AfterPay\Persistence\SpyPaymentAfterPayTransactionLog|null
      */
-    protected function getFullRefundTransactionLogEntry(int $idSalesOrder): ?SpyPaymentAfterPayTransactionLog
+    protected function getFullRefundTransactionLogEntry(string $orderReference): ?SpyPaymentAfterPayTransactionLog
     {
-        $transactionLogQuery = $this->getQueryContainer()->queryRefundTransactionLog($idSalesOrder);
+        $transactionLogQuery = $this->getQueryContainer()->queryRefundTransactionLog($orderReference);
 
         return $transactionLogQuery->findOne();
     }

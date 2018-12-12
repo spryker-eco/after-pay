@@ -168,11 +168,11 @@ class CancelRequestBuilder implements CancelRequestBuilderInterface
     }
 
     /**
-     * @param string $decimalValue
+     * @param float $decimalValue
      *
      * @return int
      */
-    protected function decimalToInt(string $decimalValue): int
+    protected function decimalToInt(float $decimalValue): int
     {
         return $this->money->convertDecimalToInteger($decimalValue);
     }

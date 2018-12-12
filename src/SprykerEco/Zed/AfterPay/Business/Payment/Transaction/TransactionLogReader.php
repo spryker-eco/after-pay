@@ -30,13 +30,13 @@ class TransactionLogReader implements TransactionLogReaderInterface
     }
 
     /**
-     * @param int $idSalesOrder
+     * @param string $orderReference
      *
      * @return \Generated\Shared\Transfer\AfterPayTransactionLogTransfer|null
      */
-    public function findOrderAuthorizeTransactionLogByIdSalesOrder(int $idSalesOrder): ?AfterPayTransactionLogTransfer
+    public function findOrderAuthorizeTransactionLogByIdSalesOrder(string $orderReference): ?AfterPayTransactionLogTransfer
     {
-        $spyTransactionLog = $this->findOrderAuthorizeTransactionEntity($idSalesOrder);
+        $spyTransactionLog = $this->findOrderAuthorizeTransactionEntity($orderReference);
 
         if ($spyTransactionLog === null) {
             return null;
@@ -46,18 +46,14 @@ class TransactionLogReader implements TransactionLogReaderInterface
     }
 
     /**
-     * @param int $idSalesOrder
+     * @param string $orderReference
      *
      * @return \Orm\Zed\AfterPay\Persistence\SpyPaymentAfterPayTransactionLog|null
      */
-    protected function findOrderAuthorizeTransactionEntity(int $idSalesOrder): ?SpyPaymentAfterPayTransactionLog
+    protected function findOrderAuthorizeTransactionEntity(string $orderReference): ?SpyPaymentAfterPayTransactionLog
     {
-        $transactionLogEntity = $this
-            ->queryContainer
-            ->queryTransactionByIdSalesOrderAndType(
-                $idSalesOrder,
-                static::TRANSACTION_TYPE_AUTHORIZE
-            )
+        $transactionLogEntity = $this->queryContainer
+            ->queryTransactionByIdSalesOrderAndType($orderReference, static::TRANSACTION_TYPE_AUTHORIZE)
             ->findOne();
 
         return $transactionLogEntity;

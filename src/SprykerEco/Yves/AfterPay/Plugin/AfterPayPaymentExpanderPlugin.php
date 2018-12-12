@@ -15,6 +15,7 @@ use Symfony\Component\HttpFoundation\Request;
 
 /**
  * @method \SprykerEco\Yves\AfterPay\AfterPayFactory getFactory()
+ * @method \SprykerEco\Client\AfterPay\AfterPayClientInterface getClient()
  */
 class AfterPayPaymentExpanderPlugin extends AbstractPlugin implements StepHandlerPluginInterface
 {
@@ -24,14 +25,14 @@ class AfterPayPaymentExpanderPlugin extends AbstractPlugin implements StepHandle
      * @api
      *
      * @param \Symfony\Component\HttpFoundation\Request $request
-     * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
+     * @param \Generated\Shared\Transfer\QuoteTransfer $dataTransfer
      *
      * @return \Generated\Shared\Transfer\QuoteTransfer
      */
-    public function addToDataClass(Request $request, AbstractTransfer $quoteTransfer): QuoteTransfer
+    public function addToDataClass(Request $request, AbstractTransfer $dataTransfer): QuoteTransfer
     {
         return $this->getFactory()
             ->createPaymentExpander()
-            ->addPaymentToQuote($request, $quoteTransfer);
+            ->addPaymentToQuote($request, $dataTransfer);
     }
 }

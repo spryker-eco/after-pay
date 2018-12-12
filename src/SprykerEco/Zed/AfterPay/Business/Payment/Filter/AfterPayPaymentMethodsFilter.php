@@ -21,8 +21,14 @@ class AfterPayPaymentMethodsFilter implements AfterPayPaymentMethodsFilterInterf
      */
     protected $availablePaymentMethods;
 
+    /**
+     * @var \SprykerEco\Zed\AfterPay\Business\Payment\Filter\Provider\AfterPayPaymentMethodsProviderInterface
+     */
     protected $paymentMethodsProvider;
 
+    /**
+     * @param \SprykerEco\Zed\AfterPay\Business\Payment\Filter\Provider\AfterPayPaymentMethodsProviderInterface $paymentMethodsProvider
+     */
     public function __construct(AfterPayPaymentMethodsProviderInterface $paymentMethodsProvider)
     {
         $this->paymentMethodsProvider = $paymentMethodsProvider;

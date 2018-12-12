@@ -64,7 +64,7 @@ class RefundTransaction implements RefundTransactionInterface
     ): void {
         $this->transactionLogger->logTransaction(
             static::TRANSACTION_TYPE,
-            $refundRequestTransfer->getIdSalesOrder(),
+            $refundRequestTransfer->getOrderNumber(),
             $refundRequestTransfer,
             $refundResponseTransfer->getApiResponse()
         );

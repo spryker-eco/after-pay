@@ -42,7 +42,12 @@ class IsAuthorizationCompletedPlugin extends AbstractPlugin implements Condition
      */
     protected function isAuthorizationTransactionSuccessful(int $idSalesOrder): bool
     {
-        $authorizeTransactionLog = $this->getAuthorizeTransactionLogEntry($idSalesOrder);
+        $order = $this->getQueryContainer()->querySalesOrder($idSalesOrder)->findOne();
+        if ($order === null) {
+            return false;
+        }
+
+        $authorizeTransactionLog = $this->getAuthorizeTransactionLogEntry($order->getOrderReference());
         if ($authorizeTransactionLog === null) {
             return false;
         }
@@ -51,13 +56,13 @@ class IsAuthorizationCompletedPlugin extends AbstractPlugin implements Condition
     }
 
     /**
-     * @param int $idSalesOrder
+     * @param string $orderReference
      *
      * @return \Orm\Zed\AfterPay\Persistence\SpyPaymentAfterPayTransactionLog|null
      */
-    protected function getAuthorizeTransactionLogEntry(int $idSalesOrder): ?SpyPaymentAfterPayTransactionLog
+    protected function getAuthorizeTransactionLogEntry(string $orderReference): ?SpyPaymentAfterPayTransactionLog
     {
-        $transactionLogQuery = $this->getQueryContainer()->queryAuthorizeTransactionLog($idSalesOrder);
+        $transactionLogQuery = $this->getQueryContainer()->queryAuthorizeTransactionLog($orderReference);
 
         return $transactionLogQuery->findOne();
     }
