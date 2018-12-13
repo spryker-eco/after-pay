@@ -19,16 +19,17 @@ class OrderToCallConverter implements OrderToCallConverterInterface
      */
     public function convert(OrderTransfer $orderTransfer): AfterPayCallTransfer
     {
-        $afterPayCallTransfer = new AfterPayCallTransfer();
-        $afterPayCallTransfer->setOrderReference($orderTransfer->getOrderReference());
-        $afterPayCallTransfer->setIdSalesOrder($orderTransfer->getIdSalesOrder());
-        $afterPayCallTransfer->setEmail($orderTransfer->getCustomer()->getEmail());
-        $afterPayCallTransfer->setItems($orderTransfer->getItems());
-        $afterPayCallTransfer->setBillingAddress($orderTransfer->getBillingAddress());
-        $afterPayCallTransfer->setShippingAddress($orderTransfer->getShippingAddress());
-        $afterPayCallTransfer->setTotals($orderTransfer->getTotals());
-        $afterPayCallTransfer->setPaymentMethod($orderTransfer->getAfterPayPayment()->getPaymentMethod());
+        /** @var \Generated\Shared\Transfer\PaymentTransfer $paymentTransfer */
+        $paymentTransfer = $orderTransfer->getPayments()->offsetGet(0);
 
-        return $afterPayCallTransfer;
+        return (new AfterPayCallTransfer())
+            ->setOrderReference($orderTransfer->getOrderReference())
+            ->setIdSalesOrder($orderTransfer->getIdSalesOrder())
+            ->setEmail($orderTransfer->getCustomer()->getEmail())
+            ->setItems($orderTransfer->getItems())
+            ->setBillingAddress($orderTransfer->getBillingAddress())
+            ->setShippingAddress($orderTransfer->getShippingAddress())
+            ->setTotals($orderTransfer->getTotals())
+            ->setPaymentMethod($paymentTransfer->getPaymentMethod());
     }
 }

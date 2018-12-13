@@ -58,25 +58,24 @@ class CaptureTransactionHandler implements CaptureTransactionHandlerInterface
     }
 
     /**
-     * @param \Generated\Shared\Transfer\ItemTransfer $itemTransfer
+     * @param \Generated\Shared\Transfer\ItemTransfer[] $items
      * @param \Generated\Shared\Transfer\AfterPayCallTransfer $afterPayCallTransfer
      *
      * @return void
      */
-    public function capture(ItemTransfer $itemTransfer, AfterPayCallTransfer $afterPayCallTransfer): void
+    public function capture(array $items, AfterPayCallTransfer $afterPayCallTransfer): void
     {
-        $captureRequestTransfer = $this->buildCaptureRequestForOrderItem($itemTransfer, $afterPayCallTransfer);
-        $paymentTransfer = $this->getPaymentTransferForItem($itemTransfer);
-
+        $paymentTransfer = $this->getPaymentTransferForItem($afterPayCallTransfer);
         $this->processExpensesCapture($paymentTransfer, $afterPayCallTransfer);
+
+        $captureRequestTransfer = $this->buildCaptureRequestForOrderItem($items, $afterPayCallTransfer);
         $captureResponseTransfer = $this->transaction->executeTransaction($captureRequestTransfer);
 
         $this->updateOrderPayment($captureResponseTransfer, $afterPayCallTransfer->getIdSalesOrder());
-        $this->updatePaymentOrderItem(
-            $captureResponseTransfer,
-            $itemTransfer,
-            $paymentTransfer
-        );
+
+        foreach ($items as $itemTransfer) {
+            $this->updatePaymentOrderItem($captureResponseTransfer, $itemTransfer, $paymentTransfer);
+        }
     }
 
     /**
@@ -113,23 +112,20 @@ class CaptureTransactionHandler implements CaptureTransactionHandlerInterface
     }
 
     /**
-     * @param \Generated\Shared\Transfer\ItemTransfer $itemTransfer
+     * @param \Generated\Shared\Transfer\ItemTransfer[] $items
      * @param \Generated\Shared\Transfer\AfterPayCallTransfer $afterPayCallTransfer
      *
      * @return \Generated\Shared\Transfer\AfterPayCaptureRequestTransfer
      */
     protected function buildCaptureRequestForOrderItem(
-        ItemTransfer $itemTransfer,
+        array $items,
         AfterPayCallTransfer $afterPayCallTransfer
     ): AfterPayCaptureRequestTransfer {
-        $captureRequestTransfer = $this->captureRequestBuilder
-            ->buildBaseCaptureRequestForOrder($afterPayCallTransfer);
+        $captureRequestTransfer = $this->captureRequestBuilder->buildBaseCaptureRequestForOrder($afterPayCallTransfer);
 
-        $this->captureRequestBuilder
-            ->addOrderItemToCaptureRequest(
-                $itemTransfer,
-                $captureRequestTransfer
-            );
+        foreach ($items as $itemTransfer) {
+            $this->captureRequestBuilder->addOrderItemToCaptureRequest($itemTransfer, $captureRequestTransfer);
+        }
 
         return $captureRequestTransfer;
     }
@@ -154,21 +150,17 @@ class CaptureTransactionHandler implements CaptureTransactionHandlerInterface
         int $expenseTotal,
         AfterPayCaptureRequestTransfer $captureRequestTransfer
     ): void {
-        $this->captureRequestBuilder
-            ->addOrderExpenseToCaptureRequest(
-                $expenseTotal,
-                $captureRequestTransfer
-            );
+        $this->captureRequestBuilder->addOrderExpenseToCaptureRequest($expenseTotal, $captureRequestTransfer);
     }
 
     /**
-     * @param \Generated\Shared\Transfer\ItemTransfer $itemTransfer
+     * @param \Generated\Shared\Transfer\AfterPayCallTransfer $afterPayCallTransfer
      *
      * @return \Generated\Shared\Transfer\AfterPayPaymentTransfer
      */
-    protected function getPaymentTransferForItem(ItemTransfer $itemTransfer): AfterPayPaymentTransfer
+    protected function getPaymentTransferForItem(AfterPayCallTransfer $afterPayCallTransfer): AfterPayPaymentTransfer
     {
-        return $this->paymentReader->getPaymentByIdSalesOrder($itemTransfer->getFkSalesOrder());
+        return $this->paymentReader->getPaymentByIdSalesOrder($afterPayCallTransfer->getIdSalesOrder());
     }
 
     /**

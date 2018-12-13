@@ -63,9 +63,6 @@
         <column name="request_payload" required="false" type="LONGVARCHAR"/>
         <column name="response_payload" required="true" type="LONGVARCHAR"/>
 
-        <unique name="spy_payment_after_pay_transaction_log-order_reference">
-            <unique-column name="order_reference"/>
-        </unique>
         <behavior name="timestampable"/>
         <id-method-parameter value="spy_payment_after_pay_transaction_log_pk_seq"/>
         <index name="spy_payment_after_pay_transaction_log-transaction_type">

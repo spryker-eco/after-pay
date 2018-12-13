@@ -64,7 +64,7 @@ class CaptureTransaction implements CaptureTransactionInterface
     ): void {
         $this->transactionLogger->logTransaction(
             static::TRANSACTION_TYPE,
-            $captureRequestTransfer->getOrderNumber(),
+            $captureRequestTransfer->getOrderDetails()->getNumber(),
             $captureRequestTransfer,
             $captureResponseTransfer->getApiResponse()
         );

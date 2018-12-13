@@ -64,7 +64,7 @@ class CancelTransaction implements CancelTransactionInterface
     ): void {
         $this->transactionLogger->logTransaction(
             static::TRANSACTION_TYPE,
-            $cancelRequestTransfer->getOrderNumber(),
+            $cancelRequestTransfer->getCancellationDetails()->getNumber(),
             $cancelRequestTransfer,
             $cancelResponseTransfer->getApiResponse()
         );
