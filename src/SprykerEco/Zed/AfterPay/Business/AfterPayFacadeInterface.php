@@ -145,12 +145,12 @@ interface AfterPayFacadeInterface
      *
      * @api
      *
-     * @param \Generated\Shared\Transfer\ItemTransfer $itemTransfer
+     * @param \Generated\Shared\Transfer\ItemTransfer[] $items
      * @param \Generated\Shared\Transfer\AfterPayCallTransfer $afterPayCallTransfer
      *
      * @return void
      */
-    public function cancelPayment(ItemTransfer $itemTransfer, AfterPayCallTransfer $afterPayCallTransfer): void;
+    public function cancelPayment(array $items, AfterPayCallTransfer $afterPayCallTransfer): void;
 
     /**
      * Specification:

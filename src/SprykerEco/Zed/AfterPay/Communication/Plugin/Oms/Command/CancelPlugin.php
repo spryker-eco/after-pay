@@ -10,7 +10,6 @@ namespace SprykerEco\Zed\AfterPay\Communication\Plugin\Oms\Command;
 use Generated\Shared\Transfer\ItemTransfer;
 use Generated\Shared\Transfer\OrderTransfer;
 use Orm\Zed\Sales\Persistence\SpySalesOrder;
-use Orm\Zed\Sales\Persistence\SpySalesOrderItem;
 use Spryker\Zed\Kernel\Communication\AbstractPlugin;
 use Spryker\Zed\Oms\Business\Util\ReadOnlyArrayObject;
 use Spryker\Zed\Oms\Dependency\Plugin\Command\CommandByOrderInterface;
@@ -39,31 +38,33 @@ class CancelPlugin extends AbstractPlugin implements CommandByOrderInterface
             ->createOrderToCallConverter()
             ->convert($orderTransfer);
 
-        foreach ($orderItems as $orderItem) {
-            $itemTransfer = $this->getOrderItemTransfer($orderItem);
-            $this->getFacade()->cancelPayment($itemTransfer, $afterPayCallTransfer);
-        }
+        $items = $this->getItemTransfers($orderItems);
+
+        $this->getFacade()->cancelPayment($items, $afterPayCallTransfer);
 
         return [];
     }
 
     /**
-     * @param \Orm\Zed\Sales\Persistence\SpySalesOrderItem $orderItem
+     * @param \Orm\Zed\Sales\Persistence\SpySalesOrderItem[] $orderItems
      *
-     * @return \Generated\Shared\Transfer\ItemTransfer
+     * @return \Generated\Shared\Transfer\ItemTransfer[]
      */
-    protected function getOrderItemTransfer(SpySalesOrderItem $orderItem): ItemTransfer
+    protected function getItemTransfers(array $orderItems): array
     {
-        $itemTransfer = new ItemTransfer();
-        $itemTransfer->fromArray($orderItem->toArray(), true);
+        $items = [];
 
-        $itemTransfer->setUnitGrossPrice($orderItem->getGrossPrice());
-        $itemTransfer->setUnitNetPrice($orderItem->getNetPrice());
+        foreach ($orderItems as $orderItem) {
+            $itemTransfer = new ItemTransfer();
+            $itemTransfer->fromArray($orderItem->toArray(), true);
+            $itemTransfer->setUnitGrossPrice($orderItem->getGrossPrice());
+            $itemTransfer->setUnitNetPrice($orderItem->getNetPrice());
+            $itemTransfer->setUnitPriceToPayAggregation($orderItem->getPriceToPayAggregation());
+            $itemTransfer->setUnitTaxAmountFullAggregation($orderItem->getTaxAmountFullAggregation());
+            $items[] = $itemTransfer;
+        }
 
-        $itemTransfer->setUnitPriceToPayAggregation($orderItem->getPriceToPayAggregation());
-        $itemTransfer->setUnitTaxAmountFullAggregation($orderItem->getTaxAmountFullAggregation());
-
-        return $itemTransfer;
+        return $items;
     }
 
     /**
@@ -73,13 +74,8 @@ class CancelPlugin extends AbstractPlugin implements CommandByOrderInterface
      */
     protected function getOrderTransfer(SpySalesOrder $order): OrderTransfer
     {
-        $orderTransfer = $this
-            ->getFactory()
+        return $this->getFactory()
             ->getSalesFacade()
-            ->getOrderByIdSalesOrder(
-                $order->getIdSalesOrder()
-            );
-
-        return $orderTransfer;
+            ->getOrderByIdSalesOrder($order->getIdSalesOrder());
     }
 }

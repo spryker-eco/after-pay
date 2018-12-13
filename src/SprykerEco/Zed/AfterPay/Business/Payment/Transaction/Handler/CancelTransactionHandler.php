@@ -11,7 +11,6 @@ use Generated\Shared\Transfer\AfterPayCallTransfer;
 use Generated\Shared\Transfer\AfterPayCancelRequestTransfer;
 use Generated\Shared\Transfer\AfterPayCancelResponseTransfer;
 use Generated\Shared\Transfer\AfterPayPaymentTransfer;
-use Generated\Shared\Transfer\ItemTransfer;
 use SprykerEco\Zed\AfterPay\Business\Payment\PaymentReaderInterface;
 use SprykerEco\Zed\AfterPay\Business\Payment\PaymentWriterInterface;
 use SprykerEco\Zed\AfterPay\Business\Payment\Transaction\Cancel\CancelRequestBuilderInterface;
@@ -67,46 +66,40 @@ class CancelTransactionHandler implements CancelTransactionHandlerInterface
     }
 
     /**
-     * @param \Generated\Shared\Transfer\ItemTransfer $itemTransfer
+     * @param \Generated\Shared\Transfer\ItemTransfer[] $items
      * @param \Generated\Shared\Transfer\AfterPayCallTransfer $afterPayCallTransfer
      *
      * @return void
      */
-    public function cancel(ItemTransfer $itemTransfer, AfterPayCallTransfer $afterPayCallTransfer): void
+    public function cancel(array $items, AfterPayCallTransfer $afterPayCallTransfer): void
     {
-        $cancelRequestTransfer = $this->buildCancelRequestForOrderItem($itemTransfer, $afterPayCallTransfer);
-        $paymentTransfer = $this->getPaymentTransferForItem($itemTransfer);
+        $paymentTransfer = $this->getPaymentTransferForItem($afterPayCallTransfer);
+        $cancelRequestTransfer = $this->buildCancelRequestForOrderItem($items, $afterPayCallTransfer);
 
         if ($this->isExpenseShouldBeCancelled($cancelRequestTransfer, $paymentTransfer)) {
             $this->addExpensesToCancelRequest($paymentTransfer->getExpenseTotal(), $cancelRequestTransfer);
         }
 
         $cancelResponseTransfer = $this->transaction->executeTransaction($cancelRequestTransfer);
-
-        $this->updateOrderPayment(
-            $cancelRequestTransfer,
-            $cancelResponseTransfer
-        );
+        $this->updateOrderPayment($cancelRequestTransfer, $cancelResponseTransfer);
     }
 
     /**
-     * @param \Generated\Shared\Transfer\ItemTransfer $itemTransfer
+     * @param \Generated\Shared\Transfer\ItemTransfer[] $items
      * @param \Generated\Shared\Transfer\AfterPayCallTransfer $afterPayCallTransfer
      *
      * @return \Generated\Shared\Transfer\AfterPayCancelRequestTransfer
      */
     protected function buildCancelRequestForOrderItem(
-        ItemTransfer $itemTransfer,
+        array $items,
         AfterPayCallTransfer $afterPayCallTransfer
     ): AfterPayCancelRequestTransfer {
-        $cancelRequestTransfer = $this->cancelRequestBuilder
-            ->buildBaseCancelRequestForOrder($afterPayCallTransfer);
+        $cancelRequestTransfer = $this->cancelRequestBuilder->buildBaseCancelRequestForOrder($afterPayCallTransfer);
 
-        $this->cancelRequestBuilder
-            ->addOrderItemToCancelRequest(
-                $itemTransfer,
-                $cancelRequestTransfer
-            );
+        foreach ($items as $itemTransfer) {
+            $this->cancelRequestBuilder->addOrderItemToCancelRequest($itemTransfer, $cancelRequestTransfer);
+            $cancelRequestTransfer->setIdSalesOrder($itemTransfer->getFkSalesOrder());
+        }
 
         return $cancelRequestTransfer;
     }
@@ -121,17 +114,14 @@ class CancelTransactionHandler implements CancelTransactionHandlerInterface
         AfterPayCancelRequestTransfer $cancelRequestTransfer,
         AfterPayPaymentTransfer $paymentTransfer
     ): bool {
-        $amountToCancelDecimal = $cancelRequestTransfer->getCancellationDetails()->getTotalGrossAmount();
-        $amountToCancelInt = $this->money->convertDecimalToInteger((float)$amountToCancelDecimal);
-
+        $amountToCancelDecimal = (float)$cancelRequestTransfer->getCancellationDetails()->getTotalGrossAmount();
+        $amountToCancel = $this->money->convertDecimalToInteger($amountToCancelDecimal);
         $amountCancelled = $paymentTransfer->getCancelledTotal();
         $amountAuthorized = $paymentTransfer->getAuthorizedTotal();
-
         $expenseTotal = $paymentTransfer->getExpenseTotal();
-
         $refundedTotal = $paymentTransfer->getExpenseTotal();
 
-        return $amountToCancelInt + $amountCancelled + $expenseTotal + $refundedTotal === $amountAuthorized;
+        return $amountToCancel + $amountCancelled + $expenseTotal + $refundedTotal === $amountAuthorized;
     }
 
     /**
@@ -141,24 +131,20 @@ class CancelTransactionHandler implements CancelTransactionHandlerInterface
      * @return void
      */
     protected function addExpensesToCancelRequest(
-        $expenseTotal,
+        int $expenseTotal,
         AfterPayCancelRequestTransfer $cancelRequestTransfer
     ): void {
-        $this->cancelRequestBuilder
-            ->addOrderExpenseToCancelRequest(
-                $expenseTotal,
-                $cancelRequestTransfer
-            );
+        $this->cancelRequestBuilder->addOrderExpenseToCancelRequest($expenseTotal, $cancelRequestTransfer);
     }
 
     /**
-     * @param \Generated\Shared\Transfer\ItemTransfer $itemTransfer
+     * @param \Generated\Shared\Transfer\AfterPayCallTransfer $afterPayCallTransfer
      *
      * @return \Generated\Shared\Transfer\AfterPayPaymentTransfer
      */
-    protected function getPaymentTransferForItem(ItemTransfer $itemTransfer): AfterPayPaymentTransfer
+    protected function getPaymentTransferForItem(AfterPayCallTransfer $afterPayCallTransfer): AfterPayPaymentTransfer
     {
-        return $this->paymentReader->getPaymentByIdSalesOrder($itemTransfer->getFkSalesOrder());
+        return $this->paymentReader->getPaymentByIdSalesOrder($afterPayCallTransfer->getIdSalesOrder());
     }
 
     /**
@@ -175,12 +161,10 @@ class CancelTransactionHandler implements CancelTransactionHandlerInterface
             return;
         }
 
-        $amountToCancelDecimal = $cancelRequestTransfer->getCancellationDetails()->getTotalGrossAmount();
-        $amountToCancelInt = $this->money->convertDecimalToInteger((float)$amountToCancelDecimal);
+        $amountToCancelDecimal = (float)$cancelRequestTransfer->getCancellationDetails()->getTotalGrossAmount();
+        $amountToCancel = $this->money->convertDecimalToInteger($amountToCancelDecimal);
 
-        $this->paymentWriter->increaseTotalCancelledAmountByIdSalesOrder(
-            $amountToCancelInt,
-            $cancelRequestTransfer->getIdSalesOrder()
-        );
+        $this->paymentWriter
+            ->increaseTotalCancelledAmountByIdSalesOrder($amountToCancel, $cancelRequestTransfer->getIdSalesOrder());
     }
 }

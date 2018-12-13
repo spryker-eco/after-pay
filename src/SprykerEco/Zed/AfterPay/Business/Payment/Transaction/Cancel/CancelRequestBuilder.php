@@ -46,8 +46,7 @@ class CancelRequestBuilder implements CancelRequestBuilderInterface
      */
     public function buildBaseCancelRequestForOrder(AfterPayCallTransfer $afterPayCallTransfer): AfterPayCancelRequestTransfer
     {
-        $cancelRequestTransfer = $this->orderToRequestMapper
-            ->orderToBaseCancelRequest($afterPayCallTransfer);
+        $cancelRequestTransfer = $this->orderToRequestMapper->orderToBaseCancelRequest($afterPayCallTransfer);
 
         return $cancelRequestTransfer;
     }
@@ -143,9 +142,9 @@ class CancelRequestBuilder implements CancelRequestBuilderInterface
         $itemNetAmountDecimal = $this->decimalToInt((float)$orderItemRequestTransfer->getNetUnitPrice());
 
         $newNetAmountDecimal = $oldNetAmountDecimal + $itemNetAmountDecimal;
-        $cancelRequestTransfer->getCancellationDetails()->setTotalNetAmount(
-            $this->intToDecimalString($newNetAmountDecimal)
-        );
+        $cancelRequestTransfer
+            ->getCancellationDetails()
+            ->setTotalNetAmount($this->intToDecimalString($newNetAmountDecimal));
     }
 
     /**
@@ -162,9 +161,9 @@ class CancelRequestBuilder implements CancelRequestBuilderInterface
         $itemGrossAmountDecimal = $this->decimalToInt((float)$orderItemRequestTransfer->getGrossUnitPrice());
 
         $newGrossAmountDecimal = $oldGrossAmountDecimal + $itemGrossAmountDecimal;
-        $cancelRequestTransfer->getCancellationDetails()->setTotalGrossAmount(
-            $this->intToDecimalString($newGrossAmountDecimal)
-        );
+        $cancelRequestTransfer
+            ->getCancellationDetails()
+            ->setTotalGrossAmount($this->intToDecimalString($newGrossAmountDecimal));
     }
 
     /**
