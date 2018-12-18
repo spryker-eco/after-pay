@@ -7,14 +7,14 @@
 
 namespace SprykerEco\Zed\AfterPay\Business\Payment\Transaction;
 
-use Generated\Shared\Transfer\OrderTransfer;
+use Generated\Shared\Transfer\AfterPayCallTransfer;
 
 interface PriceToPayProviderInterface
 {
     /**
-     * @param \Generated\Shared\Transfer\OrderTransfer $orderWithPaymentTransfer
+     * @param \Generated\Shared\Transfer\AfterPayCallTransfer $afterPayCallTransfer
      *
      * @return int
      */
-    public function getPriceToPayForOrder(OrderTransfer $orderWithPaymentTransfer): int;
+    public function getPriceToPayForOrder(AfterPayCallTransfer $afterPayCallTransfer): int;
 }

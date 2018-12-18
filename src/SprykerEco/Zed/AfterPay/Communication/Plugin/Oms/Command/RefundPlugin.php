@@ -40,10 +40,9 @@ class RefundPlugin extends AbstractPlugin implements CommandByOrderInterface
         $orderTransfer = $this->getOrderTransfer($orderEntity);
         $this->hydrateAfterPayPayment($orderTransfer);
 
-        foreach ($orderItems as $orderItem) {
-            $itemTransfer = $this->getOrderItemTransfer($orderItem);
-            $this->getFacade()->refundPayment($itemTransfer, $orderTransfer);
-        }
+        $items = $this->getItemTransfers($orderItems);
+
+        $this->getFacade()->refundPayment($items, $orderTransfer);
         $this->storeRefund($orderItems, $orderEntity);
 
         return [];
@@ -56,12 +55,9 @@ class RefundPlugin extends AbstractPlugin implements CommandByOrderInterface
      */
     protected function getOrderTransfer(SpySalesOrder $order): OrderTransfer
     {
-        $orderTransfer = $this
-            ->getFactory()
+        $orderTransfer = $this->getFactory()
             ->getSalesFacade()
-            ->getOrderByIdSalesOrder(
-                $order->getIdSalesOrder()
-            );
+            ->getOrderByIdSalesOrder($order->getIdSalesOrder());
 
         return $orderTransfer;
     }
@@ -77,22 +73,25 @@ class RefundPlugin extends AbstractPlugin implements CommandByOrderInterface
     }
 
     /**
-     * @param \Orm\Zed\Sales\Persistence\SpySalesOrderItem $orderItem
+     * @param \Orm\Zed\Sales\Persistence\SpySalesOrderItem[] $orderItems
      *
-     * @return \Generated\Shared\Transfer\ItemTransfer
+     * @return \Generated\Shared\Transfer\ItemTransfer[]
      */
-    protected function getOrderItemTransfer(SpySalesOrderItem $orderItem): ItemTransfer
+    protected function getItemTransfers(array $orderItems): array
     {
-        $itemTransfer = new ItemTransfer();
-        $itemTransfer->fromArray($orderItem->toArray(), true);
+        $items = [];
 
-        $itemTransfer->setUnitGrossPrice($orderItem->getGrossPrice());
-        $itemTransfer->setUnitNetPrice($orderItem->getNetPrice());
+        foreach ($orderItems as $orderItem) {
+            $itemTransfer = new ItemTransfer();
+            $itemTransfer->fromArray($orderItem->toArray(), true);
+            $itemTransfer->setUnitGrossPrice($orderItem->getGrossPrice());
+            $itemTransfer->setUnitNetPrice($orderItem->getNetPrice());
+            $itemTransfer->setUnitPriceToPayAggregation($orderItem->getPriceToPayAggregation());
+            $itemTransfer->setUnitTaxAmountFullAggregation($orderItem->getTaxAmountFullAggregation());
+            $items[] = $itemTransfer;
+        }
 
-        $itemTransfer->setUnitPriceToPayAggregation($orderItem->getPriceToPayAggregation());
-        $itemTransfer->setUnitTaxAmountFullAggregation($orderItem->getTaxAmountFullAggregation());
-
-        return $itemTransfer;
+        return $items;
     }
 
     /**

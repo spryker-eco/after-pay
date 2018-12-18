@@ -10,7 +10,6 @@ namespace SprykerEco\Zed\AfterPay\Business\Payment\Transaction\Handler;
 use Generated\Shared\Transfer\AfterPayApiResponseTransfer;
 use Generated\Shared\Transfer\AfterPayAuthorizeRequestTransfer;
 use Generated\Shared\Transfer\AfterPayCallTransfer;
-use Generated\Shared\Transfer\OrderTransfer;
 use SprykerEco\Zed\AfterPay\Business\Payment\PaymentWriterInterface;
 use SprykerEco\Zed\AfterPay\Business\Payment\Transaction\Authorize\RequestBuilder\AuthorizeRequestBuilderInterface;
 use SprykerEco\Zed\AfterPay\Business\Payment\Transaction\AuthorizeTransactionInterface;
@@ -64,8 +63,12 @@ class AuthorizeTransactionHandler implements AuthorizeTransactionHandlerInterfac
     public function authorize(AfterPayCallTransfer $afterPayCallTransfer): AfterPayApiResponseTransfer
     {
         $authorizeRequestTransfer = $this->buildAuthorizeRequest($afterPayCallTransfer);
+        $authorizeResponseTransfer = $this->transaction->executeTransaction($authorizeRequestTransfer);
 
-        return $this->transaction->executeTransaction($authorizeRequestTransfer);
+        $this->setPaymentReservationId($afterPayCallTransfer, $authorizeResponseTransfer);
+        $this->setPaymentTotalAuthorizedAmount($afterPayCallTransfer);
+
+        return $authorizeResponseTransfer;
     }
 
     /**
@@ -81,31 +84,31 @@ class AuthorizeTransactionHandler implements AuthorizeTransactionHandlerInterfac
     }
 
     /**
-     * @param \Generated\Shared\Transfer\AfterPayAuthorizeRequestTransfer $authorizeRequestTransfer
+     * @param \Generated\Shared\Transfer\AfterPayCallTransfer $afterPayCallTransfer
      * @param \Generated\Shared\Transfer\AfterPayApiResponseTransfer $authorizeResponseTransfer
      *
      * @return void
      */
     protected function setPaymentReservationId(
-        AfterPayAuthorizeRequestTransfer $authorizeRequestTransfer,
+        AfterPayCallTransfer $afterPayCallTransfer,
         AfterPayApiResponseTransfer $authorizeResponseTransfer
     ): void {
         $this->paymentWriter->setIdReservationByIdSalesOrder(
             $authorizeResponseTransfer->getReservationId(),
-            $authorizeRequestTransfer->getIdSalesOrder()
+            $afterPayCallTransfer->getIdSalesOrder()
         );
     }
 
     /**
-     * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
+     * @param \Generated\Shared\Transfer\AfterPayCallTransfer $afterPayCallTransfer
      *
      * @return void
      */
-    protected function setPaymentTotalAuthorizedAmount(OrderTransfer $orderTransfer): void
+    protected function setPaymentTotalAuthorizedAmount(AfterPayCallTransfer $afterPayCallTransfer): void
     {
         $this->paymentWriter->setAuthorizedTotalByIdSalesOrder(
-            $this->priceToPayProvider->getPriceToPayForOrder($orderTransfer),
-            $orderTransfer->getIdSalesOrder()
+            $this->priceToPayProvider->getPriceToPayForOrder($afterPayCallTransfer),
+            $afterPayCallTransfer->getIdSalesOrder()
         );
     }
 }

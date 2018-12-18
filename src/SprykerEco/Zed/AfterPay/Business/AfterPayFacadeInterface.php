@@ -130,12 +130,12 @@ interface AfterPayFacadeInterface
      *
      * @api
      *
-     * @param \Generated\Shared\Transfer\ItemTransfer $itemTransfer
+     * @param \Generated\Shared\Transfer\ItemTransfer[] $items
      * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
      *
      * @return void
      */
-    public function refundPayment(ItemTransfer $itemTransfer, OrderTransfer $orderTransfer): void;
+    public function refundPayment(array $items, OrderTransfer $orderTransfer): void;
 
     /**
      * Specification:

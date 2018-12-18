@@ -66,9 +66,10 @@ class CaptureTransactionHandler implements CaptureTransactionHandlerInterface
     public function capture(array $items, AfterPayCallTransfer $afterPayCallTransfer): void
     {
         $paymentTransfer = $this->getPaymentTransferForItem($afterPayCallTransfer);
+        $captureRequestTransfer = $this->buildCaptureRequestForOrderItem($items, $afterPayCallTransfer);
+
         $this->processExpensesCapture($paymentTransfer, $afterPayCallTransfer);
 
-        $captureRequestTransfer = $this->buildCaptureRequestForOrderItem($items, $afterPayCallTransfer);
         $captureResponseTransfer = $this->transaction->executeTransaction($captureRequestTransfer);
 
         $this->updateOrderPayment($captureResponseTransfer, $afterPayCallTransfer->getIdSalesOrder());

@@ -33,8 +33,6 @@ class OneStepAuthorizeRequestBuilder implements AuthorizeRequestBuilderInterface
      */
     public function buildAuthorizeRequest(AfterPayCallTransfer $afterPayCallTransfer): AfterPayAuthorizeRequestTransfer
     {
-        return $this
-            ->orderToRequestTransferMapper
-            ->orderToAuthorizeRequest($afterPayCallTransfer);
+        return $this->orderToRequestTransferMapper->orderToAuthorizeRequest($afterPayCallTransfer);
     }
 }

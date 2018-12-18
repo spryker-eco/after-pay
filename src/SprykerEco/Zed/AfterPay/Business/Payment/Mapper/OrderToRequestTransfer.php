@@ -17,6 +17,7 @@ use Generated\Shared\Transfer\AfterPayRequestCustomerTransfer;
 use Generated\Shared\Transfer\AfterPayRequestOrderItemTransfer;
 use Generated\Shared\Transfer\AfterPayRequestOrderTransfer;
 use Generated\Shared\Transfer\AfterPayRequestPaymentTransfer;
+use Generated\Shared\Transfer\ExpenseTransfer;
 use Generated\Shared\Transfer\ItemTransfer;
 use Generated\Shared\Transfer\OrderTransfer;
 use SprykerEco\Shared\AfterPay\AfterPayConfig;
@@ -144,7 +145,7 @@ class OrderToRequestTransfer implements OrderToRequestTransferInterface
 
         return (new AfterPayRequestCustomerTransfer())
             ->setFirstName($billingAddressTransfer->getFirstName())
-            ->setLastName($billingAddressTransfer->getLastName())
+            ->setLastName($billingAddressTransfer->getLastName( ))
             ->setConversationalLanguage($this->getStoreCountryIso2())
             ->setCustomerCategory(AfterPayConfig::API_CUSTOMER_CATEGORY_PERSON)
             ->setSalutation($billingAddressTransfer->getSalutation())
@@ -166,6 +167,8 @@ class OrderToRequestTransfer implements OrderToRequestTransferInterface
                 $this->buildOrderItemRequestTransfer($itemTransfer)
             );
         }
+
+        $orderRequestTransfer = $this->addExpensesToOrderRequestTransfer($orderRequestTransfer, $afterPayCallTransfer);
 
         return $orderRequestTransfer;
     }
@@ -241,7 +244,7 @@ class OrderToRequestTransfer implements OrderToRequestTransferInterface
      */
     protected function getStringDecimalOrderGrossTotal(AfterPayCallTransfer $afterPayCallTransfer): string
     {
-        $orderGrossTotal = (int)$afterPayCallTransfer->getTotals()->getGrandTotal();
+        $orderGrossTotal = $afterPayCallTransfer->getTotals()->getGrandTotal();
 
         return (string)$this->moneyFacade->convertIntegerToDecimal($orderGrossTotal);
     }
@@ -253,8 +256,8 @@ class OrderToRequestTransfer implements OrderToRequestTransferInterface
      */
     protected function getStringDecimalOrderNetTotal(AfterPayCallTransfer $afterPayCallTransfer): string
     {
-        $orderGrossTotal = (int)$afterPayCallTransfer->getTotals()->getGrandTotal();
-        $orderTaxTotal = (int)$afterPayCallTransfer->getTotals()->getTaxTotal()->getAmount();
+        $orderGrossTotal = $afterPayCallTransfer->getTotals()->getGrandTotal();
+        $orderTaxTotal = $afterPayCallTransfer->getTotals()->getTaxTotal()->getAmount();
         $orderNetTotal = $orderGrossTotal - $orderTaxTotal;
 
         return (string)$this->moneyFacade->convertIntegerToDecimal($orderNetTotal);
@@ -267,7 +270,7 @@ class OrderToRequestTransfer implements OrderToRequestTransferInterface
      */
     protected function getStringDecimalItemGrossUnitPrice(ItemTransfer $itemTransfer): string
     {
-        $itemUnitGrossPrice = (int)$itemTransfer->getUnitPriceToPayAggregation();
+        $itemUnitGrossPrice = $itemTransfer->getUnitPriceToPayAggregation();
 
         return (string)$this->moneyFacade->convertIntegerToDecimal($itemUnitGrossPrice);
     }
@@ -279,8 +282,8 @@ class OrderToRequestTransfer implements OrderToRequestTransferInterface
      */
     protected function getStringDecimalItemNetUnitPrice(ItemTransfer $itemTransfer): string
     {
-        $itemUnitGrossPriceAmount = (int)$itemTransfer->getUnitPriceToPayAggregation();
-        $itemUnitTaxAmount = (int)$itemTransfer->getUnitTaxAmountFullAggregation();
+        $itemUnitGrossPriceAmount = $itemTransfer->getUnitPriceToPayAggregation();
+        $itemUnitTaxAmount = $itemTransfer->getUnitTaxAmountFullAggregation();
         $itemUnitNetAmount = $itemUnitGrossPriceAmount - $itemUnitTaxAmount;
 
         return (string)$this->moneyFacade->convertIntegerToDecimal($itemUnitNetAmount);
@@ -327,5 +330,69 @@ class OrderToRequestTransfer implements OrderToRequestTransferInterface
         }
 
         return $giftCardPayments;
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\AfterPayRequestOrderTransfer $orderRequestTransfer
+     * @param \Generated\Shared\Transfer\AfterPayCallTransfer $afterPayCallTransfer
+     *
+     * @return \Generated\Shared\Transfer\AfterPayRequestOrderTransfer
+     */
+    protected function addExpensesToOrderRequestTransfer(
+        AfterPayRequestOrderTransfer $orderRequestTransfer,
+        AfterPayCallTransfer $afterPayCallTransfer
+    ): AfterPayRequestOrderTransfer {
+        foreach ($afterPayCallTransfer->getExpenses() as $expenseTransfer) {
+            if ($expenseTransfer->getSumPriceToPayAggregation() > 0) {
+                $orderRequestTransfer->addItem(
+                    $this->buildOrderExpenseRequestTransfer($expenseTransfer)
+                );
+            }
+        }
+
+        return $orderRequestTransfer;
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\ExpenseTransfer $expenseTransfer
+     *
+     * @return \Generated\Shared\Transfer\AfterPayRequestOrderItemTransfer
+     */
+    protected function buildOrderExpenseRequestTransfer(ExpenseTransfer $expenseTransfer): AfterPayRequestOrderItemTransfer
+    {
+        $item = (new AfterPayRequestOrderItemTransfer())
+            ->setProductId($expenseTransfer->getType())
+            ->setDescription($expenseTransfer->getName())
+            ->setGrossUnitPrice($this->getStringDecimalExpenseGrossUnitPrice($expenseTransfer))
+            ->setNetUnitPrice($this->getStringDecimalExpenseNetUnitPrice($expenseTransfer))
+            ->setQuantity($expenseTransfer->getQuantity());
+
+        return $item;
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\ExpenseTransfer $expenseTransfer
+     *
+     * @return string
+     */
+    protected function getStringDecimalExpenseGrossUnitPrice(ExpenseTransfer $expenseTransfer): string
+    {
+        $expenseUnitGrossPrice = $expenseTransfer->getUnitPriceToPayAggregation();
+
+        return (string)$this->moneyFacade->convertIntegerToDecimal($expenseUnitGrossPrice);
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\ExpenseTransfer $expenseTransfer
+     *
+     * @return string
+     */
+    protected function getStringDecimalExpenseNetUnitPrice(ExpenseTransfer $expenseTransfer): string
+    {
+        $expenseUnitGrossPriceAmount = $expenseTransfer->getUnitPriceToPayAggregation();
+        $expenseUnitTaxAmount = $expenseTransfer->getUnitTaxAmount();
+        $expenseUnitNetAmount = $expenseUnitGrossPriceAmount - $expenseUnitTaxAmount;
+
+        return (string)$this->moneyFacade->convertIntegerToDecimal($expenseUnitNetAmount);
     }
 }

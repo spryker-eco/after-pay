@@ -19,7 +19,6 @@ use Generated\Shared\Transfer\AfterPayValidateBankAccountResponseTransfer;
 use Generated\Shared\Transfer\AfterPayValidateCustomerRequestTransfer;
 use Generated\Shared\Transfer\AfterPayValidateCustomerResponseTransfer;
 use Generated\Shared\Transfer\CheckoutResponseTransfer;
-use Generated\Shared\Transfer\ItemTransfer;
 use Generated\Shared\Transfer\OrderTransfer;
 use Generated\Shared\Transfer\PaymentMethodsTransfer;
 use Generated\Shared\Transfer\QuoteTransfer;
@@ -186,16 +185,16 @@ class AfterPayFacade extends AbstractFacade implements AfterPayFacadeInterface
      *
      * @api
      *
-     * @param \Generated\Shared\Transfer\ItemTransfer $itemTransfer
+     * @param \Generated\Shared\Transfer\ItemTransfer[] $items
      * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
      *
      * @return void
      */
-    public function refundPayment(ItemTransfer $itemTransfer, OrderTransfer $orderTransfer): void
+    public function refundPayment(array $items, OrderTransfer $orderTransfer): void
     {
         $this->getFactory()
             ->createRefundTransactionHandler()
-            ->refund($itemTransfer, $orderTransfer);
+            ->refund($items, $orderTransfer);
     }
 
     /**

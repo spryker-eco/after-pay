@@ -46,9 +46,7 @@ class CancelRequestBuilder implements CancelRequestBuilderInterface
      */
     public function buildBaseCancelRequestForOrder(AfterPayCallTransfer $afterPayCallTransfer): AfterPayCancelRequestTransfer
     {
-        $cancelRequestTransfer = $this->orderToRequestMapper->orderToBaseCancelRequest($afterPayCallTransfer);
-
-        return $cancelRequestTransfer;
+        return $this->orderToRequestMapper->orderToBaseCancelRequest($afterPayCallTransfer);
     }
 
     /**

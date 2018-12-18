@@ -98,8 +98,9 @@ class CancelTransactionHandler implements CancelTransactionHandlerInterface
 
         foreach ($items as $itemTransfer) {
             $this->cancelRequestBuilder->addOrderItemToCancelRequest($itemTransfer, $cancelRequestTransfer);
-            $cancelRequestTransfer->setIdSalesOrder($itemTransfer->getFkSalesOrder());
         }
+
+        $cancelRequestTransfer->setIdSalesOrder($afterPayCallTransfer->getIdSalesOrder());
 
         return $cancelRequestTransfer;
     }

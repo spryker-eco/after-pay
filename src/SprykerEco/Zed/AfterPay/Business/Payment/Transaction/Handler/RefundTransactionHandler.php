@@ -68,68 +68,62 @@ class RefundTransactionHandler implements RefundTransactionHandlerInterface
     }
 
     /**
-     * @param \Generated\Shared\Transfer\ItemTransfer $itemTransfer
+     * @param \Generated\Shared\Transfer\ItemTransfer[] $items
      * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
      *
      * @return void
      */
-    public function refund(ItemTransfer $itemTransfer, OrderTransfer $orderTransfer): void
+    public function refund(array $items, OrderTransfer $orderTransfer): void
     {
-        $refundRequestTransfer = $this->buildRefundRequestForOrderItem($itemTransfer, $orderTransfer);
-        $paymentTransfer = $this->getPaymentTransferForItem($itemTransfer);
-
-        $this->processExpensesRefund($itemTransfer, $paymentTransfer, $orderTransfer);
+        $refundRequestTransfer = $this->buildRefundRequestForOrderItem($items, $orderTransfer);
+        $paymentTransfer = $this->getPaymentTransferForItem($refundRequestTransfer);
+        $this->processExpensesRefund($items, $paymentTransfer, $orderTransfer);
 
         $refundResponseTransfer = $this->transaction->executeTransaction($refundRequestTransfer);
 
-        $this->updateOrderPayment(
-            $refundResponseTransfer,
-            $refundRequestTransfer,
-            $orderTransfer->getIdSalesOrder()
-        );
+        $this->updateOrderPayment($refundResponseTransfer, $refundRequestTransfer);
     }
 
     /**
-     * @param \Generated\Shared\Transfer\ItemTransfer $itemTransfer
+     * @param \Generated\Shared\Transfer\ItemTransfer[] $items
      * @param \Generated\Shared\Transfer\AfterPayPaymentTransfer $paymentTransfer
      * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
      *
      * @return void
      */
     protected function processExpensesRefund(
-        ItemTransfer $itemTransfer,
+        array $items,
         AfterPayPaymentTransfer $paymentTransfer,
         OrderTransfer $orderTransfer
     ): void {
-        if (!$this->isLastItemToRefund($itemTransfer, $paymentTransfer)) {
+        if (!$this->isLastItemToRefund($items, $paymentTransfer)) {
             return;
         }
+
         $expensesRefundRequest = $this->refundRequestBuilder
             ->buildBaseRefundRequestForOrder($orderTransfer);
         $this->addExpensesToRefundRequest($paymentTransfer->getExpenseTotal(), $expensesRefundRequest);
         $expensesRefundRequest->setCaptureNumber($paymentTransfer->getExpensesCaptureNumber());
         $expensesRefundResponse = $this->transaction->executeTransaction($expensesRefundRequest);
-        $this->updateOrderPayment($expensesRefundResponse, $expensesRefundRequest, $orderTransfer->getIdSalesOrder());
+        $this->updateOrderPayment($expensesRefundResponse, $expensesRefundRequest);
     }
 
     /**
-     * @param \Generated\Shared\Transfer\ItemTransfer $itemTransfer
+     * @param \Generated\Shared\Transfer\ItemTransfer[] $items
      * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
      *
      * @return \Generated\Shared\Transfer\AfterPayRefundRequestTransfer
      */
     protected function buildRefundRequestForOrderItem(
-        ItemTransfer $itemTransfer,
+        array $items,
         OrderTransfer $orderTransfer
     ): AfterPayRefundRequestTransfer {
-        $refundRequestTransfer = $this->refundRequestBuilder
-            ->buildBaseRefundRequestForOrder($orderTransfer);
-        $this->refundRequestBuilder
-            ->addOrderItemToRefundRequest(
-                $itemTransfer,
-                $refundRequestTransfer
-            );
-        $this->addCaptureNumberToRefundRequest($refundRequestTransfer, $itemTransfer);
+        $refundRequestTransfer = $this->refundRequestBuilder->buildBaseRefundRequestForOrder($orderTransfer);
+
+        foreach ($items as $itemTransfer) {
+            $this->refundRequestBuilder->addOrderItemToRefundRequest($itemTransfer, $refundRequestTransfer);
+            $this->addCaptureNumberToRefundRequest($refundRequestTransfer, $itemTransfer);
+        }
 
         return $refundRequestTransfer;
     }
@@ -148,23 +142,27 @@ class RefundTransactionHandler implements RefundTransactionHandlerInterface
     }
 
     /**
-     * @param \Generated\Shared\Transfer\ItemTransfer $itemTransfer
+     * @param \Generated\Shared\Transfer\AfterPayRefundRequestTransfer $refundRequestTransfer
      *
      * @return \Generated\Shared\Transfer\AfterPayPaymentTransfer
      */
-    protected function getPaymentTransferForItem(ItemTransfer $itemTransfer): AfterPayPaymentTransfer
+    protected function getPaymentTransferForItem(AfterPayRefundRequestTransfer $refundRequestTransfer): AfterPayPaymentTransfer
     {
-        return $this->paymentReader->getPaymentByIdSalesOrder($itemTransfer->getFkSalesOrder());
+        return $this->paymentReader->getPaymentByIdSalesOrder($refundRequestTransfer->getIdSalesOrder());
     }
 
     /**
+     * @param \Generated\Shared\Transfer\AfterPayRefundRequestTransfer $refundRequestTransfer
      * @param \Generated\Shared\Transfer\ItemTransfer $itemTransfer
      *
      * @return \Generated\Shared\Transfer\AfterPayPaymentOrderItemTransfer
      */
-    protected function getPaymentOrderItemTransferForItem(ItemTransfer $itemTransfer): AfterPayPaymentOrderItemTransfer
-    {
-        $paymentTransfer = $this->getPaymentTransferForItem($itemTransfer);
+    protected function getPaymentOrderItemTransferForItem(
+        AfterPayRefundRequestTransfer $refundRequestTransfer,
+        ItemTransfer $itemTransfer
+    ): AfterPayPaymentOrderItemTransfer {
+        $paymentTransfer = $this->getPaymentTransferForItem($refundRequestTransfer);
+
         return $this->paymentReader
             ->getPaymentOrderItemByIdSalesOrderItemAndIdPayment(
                 $itemTransfer->getIdSalesOrderItem(),
@@ -175,14 +173,12 @@ class RefundTransactionHandler implements RefundTransactionHandlerInterface
     /**
      * @param \Generated\Shared\Transfer\AfterPayRefundResponseTransfer $refundResponseTransfer
      * @param \Generated\Shared\Transfer\AfterPayRefundRequestTransfer $refundRequestTransfer
-     * @param int $idSalesOrder
      *
      * @return void
      */
     protected function updateOrderPayment(
         AfterPayRefundResponseTransfer $refundResponseTransfer,
-        AfterPayRefundRequestTransfer $refundRequestTransfer,
-        int $idSalesOrder
+        AfterPayRefundRequestTransfer $refundRequestTransfer
     ): void {
         if (!$refundResponseTransfer->getTotalCapturedAmount()) {
             return;
@@ -198,22 +194,29 @@ class RefundTransactionHandler implements RefundTransactionHandlerInterface
 
         $this->paymentWriter->increaseRefundedTotalByIdSalesOrder(
             $refundedAmountInt,
-            $idSalesOrder
+            $refundRequestTransfer->getIdSalesOrder()
         );
     }
 
     /**
-     * @param \Generated\Shared\Transfer\ItemTransfer $itemTransfer
+     * @param \Generated\Shared\Transfer\ItemTransfer[] $items
      * @param \Generated\Shared\Transfer\AfterPayPaymentTransfer $paymentTransfer
      *
      * @return bool
      */
-    protected function isLastItemToRefund(ItemTransfer $itemTransfer, AfterPayPaymentTransfer $paymentTransfer): bool
+    protected function isLastItemToRefund(array $items, AfterPayPaymentTransfer $paymentTransfer): bool
     {
-        return $paymentTransfer->getAuthorizedTotal() -
+        $refundable = $paymentTransfer->getAuthorizedTotal() -
             $paymentTransfer->getCancelledTotal() -
             $paymentTransfer->getRefundedTotal() -
-            $paymentTransfer->getExpenseTotal() === $itemTransfer->getRefundableAmount();
+            $paymentTransfer->getExpenseTotal();
+
+        $amountToRefund = 0;
+        foreach ($items as $itemTransfer) {
+            $amountToRefund += $itemTransfer->getRefundableAmount();
+        }
+
+        return $refundable === $amountToRefund;
     }
 
     /**
@@ -226,7 +229,7 @@ class RefundTransactionHandler implements RefundTransactionHandlerInterface
         AfterPayRefundRequestTransfer $refundRequestTransfer,
         ItemTransfer $itemTransfer
     ): void {
-        $paymentOrderItemTransfer = $this->getPaymentOrderItemTransferForItem($itemTransfer);
+        $paymentOrderItemTransfer = $this->getPaymentOrderItemTransferForItem($refundRequestTransfer, $itemTransfer);
         $refundRequestTransfer->setCaptureNumber($paymentOrderItemTransfer->getCaptureNumber());
     }
 }

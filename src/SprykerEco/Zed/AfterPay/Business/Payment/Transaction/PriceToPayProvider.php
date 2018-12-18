@@ -7,7 +7,7 @@
 
 namespace SprykerEco\Zed\AfterPay\Business\Payment\Transaction;
 
-use Generated\Shared\Transfer\OrderTransfer;
+use Generated\Shared\Transfer\AfterPayCallTransfer;
 use Generated\Shared\Transfer\SalesPaymentTransfer;
 use SprykerEco\Shared\AfterPay\AfterPayConfig;
 use SprykerEco\Zed\AfterPay\Dependency\Facade\AfterPayToPaymentFacadeInterface;
@@ -28,45 +28,29 @@ class PriceToPayProvider implements PriceToPayProviderInterface
     }
 
     /**
-     * @param \Generated\Shared\Transfer\OrderTransfer $orderWithPaymentTransfer
+     * @param \Generated\Shared\Transfer\AfterPayCallTransfer $afterPayCallTransfer
      *
      * @return int
      */
-    public function getPriceToPayForOrder(OrderTransfer $orderWithPaymentTransfer): int
+    public function getPriceToPayForOrder(AfterPayCallTransfer $afterPayCallTransfer): int
     {
-        $salesPaymentTransfer = $this->createSalesPaymentTransfer($orderWithPaymentTransfer);
+        $salesPaymentTransfer = $this->createSalesPaymentTransfer($afterPayCallTransfer);
 
         return $this->paymentFacade->getPaymentMethodPriceToPay($salesPaymentTransfer);
     }
 
     /**
-     * @param \Generated\Shared\Transfer\OrderTransfer $orderWithPaymentTransfer
+     * @param \Generated\Shared\Transfer\AfterPayCallTransfer $afterPayCallTransfer
      *
      * @return \Generated\Shared\Transfer\SalesPaymentTransfer
      */
-    protected function createSalesPaymentTransfer(OrderTransfer $orderWithPaymentTransfer): SalesPaymentTransfer
+    protected function createSalesPaymentTransfer(AfterPayCallTransfer $afterPayCallTransfer): SalesPaymentTransfer
     {
         $salesPaymentTransfer = new SalesPaymentTransfer();
         $salesPaymentTransfer->setPaymentProvider(AfterPayConfig::PROVIDER_NAME);
-        $salesPaymentTransfer->setPaymentMethod($this->findPaymentMethod($orderWithPaymentTransfer));
-        $salesPaymentTransfer->setFkSalesOrder($orderWithPaymentTransfer->getIdSalesOrder());
+        $salesPaymentTransfer->setPaymentMethod($afterPayCallTransfer->getPaymentMethod());
+        $salesPaymentTransfer->setFkSalesOrder($afterPayCallTransfer->getIdSalesOrder());
 
         return $salesPaymentTransfer;
-    }
-
-    /**
-     * @param \Generated\Shared\Transfer\OrderTransfer $orderWithPaymentTransfer
-     *
-     * @return string|null
-     */
-    protected function findPaymentMethod(OrderTransfer $orderWithPaymentTransfer): ?string
-    {
-        foreach ($orderWithPaymentTransfer->getPayments() as $paymentTransfer) {
-            if ($paymentTransfer->getPaymentProvider() === AfterPayConfig::PROVIDER_NAME) {
-                return $paymentTransfer->getPaymentMethod();
-            }
-        }
-
-        return null;
     }
 }
