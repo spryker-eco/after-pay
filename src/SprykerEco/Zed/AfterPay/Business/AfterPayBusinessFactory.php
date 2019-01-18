@@ -26,10 +26,11 @@ use SprykerEco\Zed\AfterPay\Business\Hook\PostSaveHook;
 use SprykerEco\Zed\AfterPay\Business\Hook\PostSaveHookInterface;
 use SprykerEco\Zed\AfterPay\Business\Order\Saver;
 use SprykerEco\Zed\AfterPay\Business\Order\SaverInterface;
-use SprykerEco\Zed\AfterPay\Business\Payment\Filter\AfterPayPaymentMethodsFilter;
 use SprykerEco\Zed\AfterPay\Business\Payment\Filter\AfterPayPaymentMethodsFilterInterface;
+use SprykerEco\Zed\AfterPay\Business\Payment\Filter\OneStepAuthorizePaymentMethodsFilter;
 use SprykerEco\Zed\AfterPay\Business\Payment\Filter\Provider\AfterPayPaymentMethodsProvider;
 use SprykerEco\Zed\AfterPay\Business\Payment\Filter\Provider\AfterPayPaymentMethodsProviderInterface;
+use SprykerEco\Zed\AfterPay\Business\Payment\Filter\TwoStepAuthorizePaymentMethodsFilter;
 use SprykerEco\Zed\AfterPay\Business\Payment\Mapper\OrderToRequestTransfer;
 use SprykerEco\Zed\AfterPay\Business\Payment\Mapper\OrderToRequestTransferInterface;
 use SprykerEco\Zed\AfterPay\Business\Payment\Mapper\QuoteToRequestTransfer;
@@ -71,6 +72,8 @@ use SprykerEco\Zed\AfterPay\Business\Payment\Transaction\RefundTransaction;
 use SprykerEco\Zed\AfterPay\Business\Payment\Transaction\RefundTransactionInterface;
 use SprykerEco\Zed\AfterPay\Business\Payment\Transaction\TransactionLogReader;
 use SprykerEco\Zed\AfterPay\Business\Payment\Transaction\TransactionLogReaderInterface;
+use SprykerEco\Zed\AfterPay\Business\Payment\Transaction\Validator\AuthorizeValidator;
+use SprykerEco\Zed\AfterPay\Business\Payment\Transaction\Validator\AuthorizeValidatorInterface;
 use SprykerEco\Zed\AfterPay\Dependency\Facade\AfterPayToCustomerFacadeInterface;
 use SprykerEco\Zed\AfterPay\Dependency\Facade\AfterPayToMoneyFacadeInterface;
 use SprykerEco\Zed\AfterPay\Dependency\Facade\AfterPayToPaymentFacadeInterface;
@@ -394,7 +397,32 @@ class AfterPayBusinessFactory extends AbstractBusinessFactory
      */
     public function createPaymentMethodsFilter(): AfterPayPaymentMethodsFilterInterface
     {
-        return new AfterPayPaymentMethodsFilter($this->createPaymentMethodsProvider());
+        $authorizeWorkflow = $this->getConfig()->getAfterPayAuthorizeWorkflow();
+
+        switch ($authorizeWorkflow) {
+            case AfterPayConfig::AFTERPAY_AUTHORIZE_WORKFLOW_ONE_STEP:
+                return $this->createOneStepAuthorizePaymentMethodsFilter();
+            case AfterPayConfig::AFTERPAY_AUTHORIZE_WORKFLOW_TWO_STEPS:
+                return $this->createTwoStepAuthorizePaymentMethodsFilter();
+            default:
+                return $this->createOneStepAuthorizePaymentMethodsFilter();
+        }
+    }
+
+    /**
+     * @return \SprykerEco\Zed\AfterPay\Business\Payment\Filter\AfterPayPaymentMethodsFilterInterface
+     */
+    public function createOneStepAuthorizePaymentMethodsFilter(): AfterPayPaymentMethodsFilterInterface
+    {
+        return new OneStepAuthorizePaymentMethodsFilter();
+    }
+
+    /**
+     * @return \SprykerEco\Zed\AfterPay\Business\Payment\Filter\AfterPayPaymentMethodsFilterInterface
+     */
+    public function createTwoStepAuthorizePaymentMethodsFilter(): AfterPayPaymentMethodsFilterInterface
+    {
+        return new TwoStepAuthorizePaymentMethodsFilter();
     }
 
     /**
@@ -446,5 +474,16 @@ class AfterPayBusinessFactory extends AbstractBusinessFactory
     public function getUtilEncodingService(): AfterPayToUtilEncodingServiceInterface
     {
         return $this->getProvidedDependency(AfterPayDependencyProvider::SERVICE_UTIL_ENCODING);
+    }
+
+    /**
+     * @return \SprykerEco\Zed\AfterPay\Business\Payment\Transaction\Validator\AuthorizeValidatorInterface
+     */
+    public function createAuthorizeValidator(): AuthorizeValidatorInterface
+    {
+        return new AuthorizeValidator(
+            $this->createPaymentMethodsProvider(),
+            $this->getConfig()
+        );
     }
 }
