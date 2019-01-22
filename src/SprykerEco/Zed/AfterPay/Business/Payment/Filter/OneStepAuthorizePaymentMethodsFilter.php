@@ -7,13 +7,8 @@
 
 namespace SprykerEco\Zed\AfterPay\Business\Payment\Filter;
 
-use ArrayObject;
 use Generated\Shared\Transfer\PaymentMethodsTransfer;
-use Generated\Shared\Transfer\PaymentMethodTransfer;
 use Generated\Shared\Transfer\QuoteTransfer;
-use SprykerEco\Zed\AfterPay\AfterPayConfig;
-use SprykerEco\Shared\AfterPay\AfterPayConfig as SharedAfterPayConfig;
-use SprykerEco\Zed\AfterPay\Business\Payment\Filter\Provider\AfterPayPaymentMethodsProviderInterface;
 
 class OneStepAuthorizePaymentMethodsFilter implements AfterPayPaymentMethodsFilterInterface
 {
