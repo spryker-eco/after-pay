@@ -12,9 +12,7 @@ use Generated\Shared\Transfer\AfterPayAvailablePaymentMethodsTransfer;
 use Generated\Shared\Transfer\PaymentMethodsTransfer;
 use Generated\Shared\Transfer\PaymentMethodTransfer;
 use Generated\Shared\Transfer\QuoteTransfer;
-use SprykerEco\Zed\AfterPay\AfterPayConfig;
 use SprykerEco\Shared\AfterPay\AfterPayConfig as SharedAfterPayConfig;
-use SprykerEco\Zed\AfterPay\Business\Payment\Filter\Provider\AfterPayPaymentMethodsProviderInterface;
 
 class TwoStepAuthorizePaymentMethodsFilter implements AfterPayPaymentMethodsFilterInterface
 {
@@ -31,12 +29,9 @@ class TwoStepAuthorizePaymentMethodsFilter implements AfterPayPaymentMethodsFilt
         $result = new ArrayObject();
 
         foreach ($paymentMethodsTransfer->getMethods() as $paymentMethodTransfer) {
-            if($this->isPaymentProviderAfterPay($paymentMethodTransfer) &&
-                !$this->isAvailable($paymentMethodTransfer, $quoteTransfer->getAfterPayAvailablePaymentMethods())) {
-                continue;
+            if ($this->checkPaymentMethodAvailability($paymentMethodTransfer, $quoteTransfer)) {
+                $result->append($paymentMethodTransfer);
             }
-
-            $result->append($paymentMethodTransfer);
         }
 
         $paymentMethodsTransfer->setMethods($result);
@@ -46,7 +41,25 @@ class TwoStepAuthorizePaymentMethodsFilter implements AfterPayPaymentMethodsFilt
 
     /**
      * @param \Generated\Shared\Transfer\PaymentMethodTransfer $paymentMethodTransfer
-     * @param AfterPayAvailablePaymentMethodsTransfer $availablePaymentMethods
+     * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
+     *
+     * @return bool
+     */
+    protected function checkPaymentMethodAvailability(
+        PaymentMethodTransfer $paymentMethodTransfer,
+        QuoteTransfer $quoteTransfer
+    ): bool {
+        if ($this->isPaymentProviderAfterPay($paymentMethodTransfer) &&
+            !$this->isAvailable($paymentMethodTransfer, $quoteTransfer->getAfterPayAvailablePaymentMethods())) {
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\PaymentMethodTransfer $paymentMethodTransfer
+     * @param \Generated\Shared\Transfer\AfterPayAvailablePaymentMethodsTransfer $availablePaymentMethods
      *
      * @return bool
      */
@@ -54,7 +67,7 @@ class TwoStepAuthorizePaymentMethodsFilter implements AfterPayPaymentMethodsFilt
         PaymentMethodTransfer $paymentMethodTransfer,
         AfterPayAvailablePaymentMethodsTransfer $availablePaymentMethods
     ): bool {
-        if($availablePaymentMethods->getCheckoutId() === null) {
+        if ($availablePaymentMethods->getCheckoutId() === null) {
             return false;
         }
 
