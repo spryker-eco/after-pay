@@ -68,7 +68,9 @@ class CaptureTransactionHandler implements CaptureTransactionHandlerInterface
         $paymentTransfer = $this->getPaymentTransferForItem($afterPayCallTransfer);
         $captureRequestTransfer = $this->buildCaptureRequestForOrderItem($items, $afterPayCallTransfer);
 
-        $this->processExpensesCapture($paymentTransfer, $afterPayCallTransfer);
+        if ($paymentTransfer->getExpenseTotal()) {
+            $this->processExpensesCapture($paymentTransfer, $afterPayCallTransfer);
+        }
 
         $captureResponseTransfer = $this->transaction->executeTransaction($captureRequestTransfer);
 

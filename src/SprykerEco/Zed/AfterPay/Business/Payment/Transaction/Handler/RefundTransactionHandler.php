@@ -77,7 +77,10 @@ class RefundTransactionHandler implements RefundTransactionHandlerInterface
     {
         $refundRequestTransfer = $this->buildRefundRequestForOrderItem($items, $orderTransfer);
         $paymentTransfer = $this->getPaymentTransferForItem($refundRequestTransfer);
-        $this->processExpensesRefund($items, $paymentTransfer, $orderTransfer);
+
+        if ($paymentTransfer->getExpenseTotal()) {
+            $this->processExpensesRefund($items, $paymentTransfer, $orderTransfer);
+        }
 
         $refundResponseTransfer = $this->transaction->executeTransaction($refundRequestTransfer);
 
