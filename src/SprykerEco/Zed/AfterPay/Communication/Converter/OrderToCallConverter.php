@@ -32,7 +32,8 @@ class OrderToCallConverter implements OrderToCallConverterInterface
             ->setTotals($orderTransfer->getTotals())
             ->setPaymentMethod($paymentTransfer->getPaymentMethod())
             ->setExpenses($orderTransfer->getExpenses())
-            ->setCheckoutId($this->getCheckoutId($orderTransfer));
+            ->setCheckoutId($this->getCheckoutId($orderTransfer))
+            ->setCurrency($orderTransfer->getCurrencyIsoCode());
     }
 
     /**

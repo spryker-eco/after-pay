@@ -12,6 +12,7 @@ use Generated\Shared\Transfer\AfterPayRequestAddressTransfer;
 use Generated\Shared\Transfer\AfterPayRequestCustomerTransfer;
 use Generated\Shared\Transfer\AfterPayRequestOrderItemTransfer;
 use Generated\Shared\Transfer\AfterPayRequestOrderTransfer;
+use Generated\Shared\Transfer\ExpenseTransfer;
 use Generated\Shared\Transfer\ItemTransfer;
 use Generated\Shared\Transfer\QuoteTransfer;
 use SprykerEco\Shared\AfterPay\AfterPayConfig;
@@ -97,15 +98,17 @@ class QuoteToRequestTransfer implements QuoteToRequestTransferInterface
      */
     protected function buildOrderRequestTransfer(QuoteTransfer $quoteTransfer): AfterPayRequestOrderTransfer
     {
-        $orderRequestTransfer = new AfterPayRequestOrderTransfer();
-        $orderRequestTransfer->setTotalGrossAmount($this->getStringDecimalQuoteGrossTotal($quoteTransfer));
-        $orderRequestTransfer->setTotalNetAmount($this->getStringDecimalQuoteNetTotal($quoteTransfer));
+        $orderRequestTransfer = (new AfterPayRequestOrderTransfer())
+            ->setTotalGrossAmount($this->getStringDecimalQuoteGrossTotal($quoteTransfer))
+            ->setCurrency($quoteTransfer->getCurrency()->getCode());
 
         foreach ($quoteTransfer->getItems() as $itemTransfer) {
             $orderRequestTransfer->addItem(
                 $this->buildOrderItemRequestTransfer($itemTransfer)
             );
         }
+
+        $orderRequestTransfer = $this->addExpensesToOrderRequestTransfer($orderRequestTransfer, $quoteTransfer);
 
         $this->addGiftcardItems($quoteTransfer, $orderRequestTransfer);
 
@@ -125,8 +128,11 @@ class QuoteToRequestTransfer implements QuoteToRequestTransferInterface
             ->setProductId($itemTransfer->getSku())
             ->setDescription($itemTransfer->getName())
             ->setGrossUnitPrice($this->getStringDecimalItemGrossUnitPrice($itemTransfer))
-            ->setNetUnitPrice($this->getStringDecimalItemNetUnitPrice($itemTransfer))
-            ->setQuantity($itemTransfer->getQuantity());
+            ->setQuantity($itemTransfer->getQuantity())
+            ->setVatAmount($this->getStringDecimalItemVatAmountPrice($itemTransfer))
+            ->setVatPercent($itemTransfer->getTaxRate())
+            ->setImageUrl($this->getImageUrlFromOrderItem($itemTransfer))
+            ->setGroupId($itemTransfer->getGroupKey());
 
         return $orderItemRequestTransfer;
     }
@@ -215,6 +221,18 @@ class QuoteToRequestTransfer implements QuoteToRequestTransferInterface
     }
 
     /**
+     * @param \Generated\Shared\Transfer\ItemTransfer $itemTransfer
+     *
+     * @return string
+     */
+    protected function getStringDecimalItemVatAmountPrice(ItemTransfer $itemTransfer): string
+    {
+        $itemVatAmountPrice = $itemTransfer->getUnitTaxAmountFullAggregation();
+
+        return (string)$this->moneyFacade->convertIntegerToDecimal($itemVatAmountPrice);
+    }
+
+    /**
      * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
      * @param \Generated\Shared\Transfer\AfterPayRequestOrderTransfer $orderRequestTransfer
      *
@@ -255,5 +273,99 @@ class QuoteToRequestTransfer implements QuoteToRequestTransferInterface
         }
 
         return $giftCardPayments;
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\ItemTransfer $itemTransfer
+     *
+     * @return string
+     */
+    protected function getImageUrlFromOrderItem(ItemTransfer $itemTransfer): string
+    {
+        foreach ($itemTransfer->getImages() as $imageTransfer) {
+            $imageUrl = $imageTransfer->getExternalUrlSmall();
+
+            if (!$this->hasImageUrlHttpProtocol($imageUrl)) {
+                return 'http:' . $imageUrl;
+            }
+
+            return $imageUrl;
+        }
+    }
+
+    /**
+     * @param string $url
+     *
+     * @return bool
+     */
+    protected function hasImageUrlHttpProtocol(string $url): bool
+    {
+        $hasImageHttpProtocolInUrl = strpos($url, 'http:') || strpos($url, 'https:');
+
+        return $hasImageHttpProtocolInUrl !== false;
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\AfterPayRequestOrderTransfer $orderRequestTransfer
+     * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
+     *
+     * @return \Generated\Shared\Transfer\AfterPayRequestOrderTransfer
+     */
+    protected function addExpensesToOrderRequestTransfer(
+        AfterPayRequestOrderTransfer $orderRequestTransfer,
+        QuoteTransfer $quoteTransfer
+    ): AfterPayRequestOrderTransfer {
+        foreach ($quoteTransfer->getExpenses() as $expenseTransfer) {
+            if ($expenseTransfer->getSumPriceToPayAggregation() > 0) {
+                $orderRequestTransfer->addItem(
+                    $this->buildOrderExpenseRequestTransfer($expenseTransfer)
+                );
+            }
+        }
+
+        return $orderRequestTransfer;
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\ExpenseTransfer $expenseTransfer
+     *
+     * @return \Generated\Shared\Transfer\AfterPayRequestOrderItemTransfer
+     */
+    protected function buildOrderExpenseRequestTransfer(ExpenseTransfer $expenseTransfer): AfterPayRequestOrderItemTransfer
+    {
+        $item = (new AfterPayRequestOrderItemTransfer())
+            ->setProductId($expenseTransfer->getType())
+            ->setDescription($expenseTransfer->getName())
+            ->setGrossUnitPrice($this->getStringDecimalExpenseGrossUnitPrice($expenseTransfer))
+            ->setNetUnitPrice($this->getStringDecimalExpenseNetUnitPrice($expenseTransfer))
+            ->setQuantity($expenseTransfer->getQuantity());
+
+        return $item;
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\ExpenseTransfer $expenseTransfer
+     *
+     * @return string
+     */
+    protected function getStringDecimalExpenseGrossUnitPrice(ExpenseTransfer $expenseTransfer): string
+    {
+        $expenseUnitGrossPrice = $expenseTransfer->getUnitPriceToPayAggregation();
+
+        return (string)$this->moneyFacade->convertIntegerToDecimal($expenseUnitGrossPrice);
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\ExpenseTransfer $expenseTransfer
+     *
+     * @return string
+     */
+    protected function getStringDecimalExpenseNetUnitPrice(ExpenseTransfer $expenseTransfer): string
+    {
+        $expenseUnitGrossPriceAmount = $expenseTransfer->getUnitPriceToPayAggregation();
+        $expenseUnitTaxAmount = $expenseTransfer->getUnitTaxAmount();
+        $expenseUnitNetAmount = $expenseUnitGrossPriceAmount - $expenseUnitTaxAmount;
+
+        return (string)$this->moneyFacade->convertIntegerToDecimal($expenseUnitNetAmount);
     }
 }

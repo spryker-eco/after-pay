@@ -65,7 +65,6 @@ class CaptureRequestBuilder implements CaptureRequestBuilderInterface
         $orderItemRequestTransfer = $this->orderToRequestMapper->orderItemToAfterPayItemRequest($orderItemTransfer);
 
         $captureRequestTransfer->getOrderDetails()->addItem($orderItemRequestTransfer);
-        $this->increaseTotalNetAmount($orderItemRequestTransfer, $captureRequestTransfer);
         $this->increaseTotalGrossAmount($orderItemRequestTransfer, $captureRequestTransfer);
 
         return $this;

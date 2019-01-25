@@ -211,6 +211,7 @@
         <property name="customerNumber" type="string" />
         <property name="paymentMethods" type="array" />
         <property name="riskCheckResultCode" type="string" />
+        <property name="riskCheckMessages" type="AfterPayRiskCheckMessage[]" singular="riskCheckMessage" />
     </transfer>
 
     <transfer name="AfterPayRequestCustomer">
@@ -221,6 +222,15 @@
         <property name="customerCategory" type="string" />
         <property name="conversationalLanguage" type="string" />
         <property name="address" type="AfterPayRequestAddress" />
+        <property name="riskData" type="AfterPayRequestCustomerRisk" />
+    </transfer>
+
+    <transfer name="AfterPayRequestCustomerRisk">
+        <property name="ipAddress" type="string" />
+        <property name="profileTrackingId" type="string" />
+        <property name="existingCustomer" type="bool" />
+        <property name="customerSince" type="string" />
+        <property name="numberOfTransactions" type="int" />
     </transfer>
 
     <transfer name="AfterPayRequestAddress">
@@ -247,6 +257,11 @@
         <property name="grossUnitPrice" type="string" />
         <property name="netUnitPrice" type="string" />
         <property name="quantity" type="int" />
+        <property name="vatPercent" type="int" />
+        <property name="vatAmount" type="int" />
+        <property name="imageUrl" type="string" />
+        <property name="productUrl" type="string" />
+        <property name="groupId" type="string" />
     </transfer>
 
     <transfer name="AfterPayResponse">
@@ -277,6 +292,8 @@
         <property name="customerNumber" type="string" />
         <property name="checkoutId" type="string" />
         <property name="quoteHash" type="string" />
+        <property name="outcome" type="string" />
+        <property name="riskCheckMessages" type="AfterPayRiskCheckMessage[]" singular="riskCheckMessage" />
     </transfer>
 
     <transfer name="AfterPayCall">
@@ -290,6 +307,7 @@
         <property name="totals" type="Totals" />
         <property name="expenses" type="Expense[]" />
         <property name="checkoutId" type="string" />
+        <property name="currency" type="string" />
     </transfer>
 
     <transfer name="Quote">
@@ -301,6 +319,7 @@
         <property name="afterPayInvoice" type="AfterPayPayment"/>
         <property name="afterPayCheckoutId" type="string" />
         <property name="afterPayCustomerNumber" type="string" />
+        <property name="afterPayPaymentMethodAvailability" type="bool" />
     </transfer>
 
     <transfer name="Order">

@@ -7,8 +7,10 @@
 
 namespace SprykerEco\Zed\AfterPay\Business\Api\Adapter\ApiCall;
 
+use ArrayObject;
 use Generated\Shared\Transfer\AfterPayAvailablePaymentMethodsRequestTransfer;
 use Generated\Shared\Transfer\AfterPayAvailablePaymentMethodsResponseTransfer;
+use Generated\Shared\Transfer\AfterPayRiskCheckMessageTransfer;
 use SprykerEco\Shared\AfterPay\AfterPayApiRequestConfig;
 use SprykerEco\Zed\AfterPay\AfterPayConfig;
 use SprykerEco\Zed\AfterPay\Business\Api\Adapter\Client\ClientInterface;
@@ -88,7 +90,8 @@ class AvailablePaymentMethodsCall extends AbstractApiCall implements AvailablePa
             ->setCustomer($jsonResponseArray[AfterPayApiRequestConfig::CUSTOMER] ?? [])
             ->setCustomerNumber($customerNumber)
             ->setPaymentMethods($jsonResponseArray[AfterPayApiRequestConfig::PAYMENT_METHODS] ?? [])
-            ->setRiskCheckResultCode($riskCheckResultCode);
+            ->setRiskCheckResultCode($riskCheckResultCode)
+            ->setRiskCheckMessages($this->extractRiskCheckMessages($jsonResponseArray));
 
         return $responseTransfer;
     }
@@ -119,5 +122,29 @@ class AvailablePaymentMethodsCall extends AbstractApiCall implements AvailablePa
         }
 
         return $jsonResponseArray[AfterPayApiRequestConfig::CUSTOMER][AfterPayApiRequestConfig::CUSTOMER_NUMBER];
+    }
+
+    /**
+     * @param array $jsonResponseArray
+     *
+     * @return \Generated\Shared\Transfer\AfterPayRiskCheckMessageTransfer[]
+     */
+    protected function extractRiskCheckMessages(array $jsonResponseArray): ArrayObject
+    {
+        $riskCheckMessages = new ArrayObject();
+
+        if (!isset($jsonResponseArray[AfterPayApiRequestConfig::RISK_CHECK_MESSAGES])) {
+            return $riskCheckMessages;
+        }
+
+        foreach ($jsonResponseArray[AfterPayApiRequestConfig::RISK_CHECK_MESSAGES] as $riskMessage) {
+            $riskCheckMessages[] = (new AfterPayRiskCheckMessageTransfer())
+                ->setMessage($riskMessage[AfterPayApiRequestConfig::RISK_CHECK_MESSAGE_MESSAGE])
+                ->setCustomerFacingMessage($riskMessage[AfterPayApiRequestConfig::RISK_CHECK_MESSAGE_CUSTOMER_FACING_MESSAGE])
+                ->setType($riskMessage[AfterPayApiRequestConfig::RISK_CHECK_MESSAGE_TYPE])
+                ->setCode($riskMessage[AfterPayApiRequestConfig::RISK_CHECK_MESSAGE_CODE]);
+        }
+
+        return $riskCheckMessages;
     }
 }

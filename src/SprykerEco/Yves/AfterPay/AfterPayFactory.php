@@ -14,8 +14,6 @@ use SprykerEco\Yves\AfterPay\Expander\AfterPayPaymentExpander;
 use SprykerEco\Yves\AfterPay\Expander\AfterPayPaymentExpanderInterface;
 use SprykerEco\Yves\AfterPay\Form\DataProvider\InvoiceDataProvider;
 use SprykerEco\Yves\AfterPay\Form\InvoiceSubForm;
-use SprykerEco\Yves\AfterPay\Handler\AfterPayAvailablePaymentMethodsPluginHandler;
-use SprykerEco\Yves\AfterPay\Handler\AfterPayAvailablePaymentMethodsPluginHandlerInterface;
 
 /**
  * @method \SprykerEco\Yves\AfterPay\AfterPayConfig getConfig()
@@ -45,15 +43,5 @@ class AfterPayFactory extends AbstractFactory
     public function createPaymentExpander(): AfterPayPaymentExpanderInterface
     {
         return new AfterPayPaymentExpander();
-    }
-
-    /**
-     * @return \SprykerEco\Yves\AfterPay\Handler\AfterPayAvailablePaymentMethodsPluginHandlerInterface
-     */
-    public function createAfterPayAvailablePaymentMethodsPluginHandler(): AfterPayAvailablePaymentMethodsPluginHandlerInterface
-    {
-        return new AfterPayAvailablePaymentMethodsPluginHandler(
-            $this->getClient()
-        );
     }
 }
