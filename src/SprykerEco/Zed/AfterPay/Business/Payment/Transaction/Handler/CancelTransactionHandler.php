@@ -115,14 +115,16 @@ class CancelTransactionHandler implements CancelTransactionHandlerInterface
         AfterPayCancelRequestTransfer $cancelRequestTransfer,
         AfterPayPaymentTransfer $paymentTransfer
     ): bool {
-        $amountToCancelDecimal = (float)$cancelRequestTransfer->getCancellationDetails()->getTotalGrossAmount();
-        $amountToCancel = $this->money->convertDecimalToInteger($amountToCancelDecimal);
-        $amountCancelled = $paymentTransfer->getCancelledTotal();
         $amountAuthorized = $paymentTransfer->getAuthorizedTotal();
-        $expenseTotal = $paymentTransfer->getExpenseTotal();
-        $refundedTotal = $paymentTransfer->getExpenseTotal();
 
-        return $amountToCancel + $amountCancelled + $expenseTotal + $refundedTotal === $amountAuthorized;
+        $amountToCancel = $this->money->convertDecimalToInteger(
+            (float)$cancelRequestTransfer->getCancellationDetails()->getTotalGrossAmount()
+        );
+        $amountCancelled = $paymentTransfer->getCancelledTotal();
+        $expenseTotal = $paymentTransfer->getExpenseTotal();
+        $capturedTotal = $paymentTransfer->getCapturedTotal();
+
+        return $amountToCancel + $amountCancelled + $expenseTotal + $capturedTotal === $amountAuthorized;
     }
 
     /**

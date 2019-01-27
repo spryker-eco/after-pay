@@ -104,8 +104,7 @@ class OrderToRequestTransfer implements OrderToRequestTransferInterface
     public function orderToBaseCancelRequest(AfterPayCallTransfer $afterPayCallTransfer): AfterPayCancelRequestTransfer
     {
         $orderRequestTransfer = $this->buildOrderRequestTransfer($afterPayCallTransfer)
-            ->setTotalGrossAmount(static::ZERO_AMOUNT)
-            ->setTotalNetAmount(static::ZERO_AMOUNT);
+            ->setTotalGrossAmount(static::ZERO_AMOUNT);
 
         return (new AfterPayCancelRequestTransfer())
             ->setCancellationDetails($orderRequestTransfer);
