@@ -14,6 +14,7 @@ use Generated\Shared\DataBuilder\TaxTotalBuilder;
 use Generated\Shared\Transfer\AfterPayCallTransfer;
 use Generated\Shared\Transfer\QuoteTransfer;
 use Generated\Shared\Transfer\TaxTotalTransfer;
+use SprykerEco\Zed\AfterPay\Persistence\AfterPayQueryContainer;
 use SprykerEcoTest\Zed\AfterPay\Mock\AfterPayFacadeMock;
 
 class AfterPayFacadeAbstractTest extends Test
@@ -24,12 +25,18 @@ class AfterPayFacadeAbstractTest extends Test
     protected $facade;
 
     /**
+     * @var \SprykerEco\Zed\AfterPay\Persistence\AfterPayQueryContainerInterface
+     */
+    protected $afterPayQueryContainer;
+
+    /**
      * @return void
      */
     public function setUp(): void
     {
         parent::setUp();
         $this->facade = new AfterPayFacadeMock();
+        $this->afterPayQueryContainer = new AfterPayQueryContainer();
     }
 
     /**
@@ -47,6 +54,18 @@ class AfterPayFacadeAbstractTest extends Test
         $call->getTotals()->setTaxTotal(
             $this->createTaxTotalTransfer()
         );
+
+        $totals = $call->getTotals();
+        $totals->setExpenseTotal((int)$totals->getExpenseTotal())
+            ->setGrandTotal((int)$totals->getGrandTotal())
+            ->setDiscountTotal((int)$totals->getDiscountTotal())
+            ->setCanceledTotal((int)$totals->getCanceledTotal())
+            ->setRefundTotal((int)$totals->getRefundTotal());
+
+        foreach ($call->getItems() as $item) {
+            $item->setUnitPriceToPayAggregation((int)$item->getUnitPriceToPayAggregation());
+            $item->setUnitTaxAmountFullAggregation((int)$item->getUnitTaxAmountFullAggregation());
+        }
 
         return $call;
     }

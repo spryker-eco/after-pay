@@ -7,51 +7,104 @@
 
 namespace SprykerEcoTest\Zed\AfterPay\Business;
 
-use Generated\Shared\DataBuilder\ItemBuilder;
 use Generated\Shared\Transfer\AfterPayCallTransfer;
-use Generated\Shared\Transfer\ItemTransfer;
+use Generated\Shared\Transfer\AfterPayPaymentTransfer;
+use Orm\Zed\AfterPay\Persistence\SpyPaymentAfterPay;
+use Orm\Zed\AfterPay\Persistence\SpyPaymentAfterPayOrderItem;
+use Spryker\Shared\Oms\OmsConstants;
+use SprykerEco\Shared\AfterPay\AfterPayConfig;
 
 class AfterPayFacadeCaptureTest extends AfterPayFacadeAbstractTest
 {
+    /**
+     * @var \SprykerEcoTest\Zed\AfterPay\AfterPayZedTester
+     */
+    protected $tester;
+
+    /**
+     * @var \SprykerEco\Zed\AfterPay\Persistence\AfterPayQueryContainerInterface
+     */
+    protected $afterPayQueryContainer;
+
     /**
      * @return void
      */
     public function testCapture(): void
     {
-        $call = $this->createCallTransfer();
-        $item = $this->createItemTransfer();
-        $this->doFacadeCall($item, $call);
-        $this->doTest();
+        $call = $this->prepareData();
+        $afterPayPaymentTransferBeforeCapture = $this->facade->getPaymentByIdSalesOrder($call->getIdSalesOrder());
+        $this->doFacadeCall((array)$call->getItems(), $call);
+        $this->doTest($call, $afterPayPaymentTransferBeforeCapture);
     }
 
     /**
-     * @return \Generated\Shared\Transfer\ItemTransfer
-     */
-    protected function createItemTransfer(): ItemTransfer
-    {
-        $item = (new ItemBuilder())
-            ->build();
-
-        return $item;
-    }
-
-    /**
-     * @param \Generated\Shared\Transfer\ItemTransfer $item
+     * @param \Generated\Shared\Transfer\ItemTransfer[] $item
      * @param \Generated\Shared\Transfer\AfterPayCallTransfer $call
      *
      * @return void
      */
-    protected function doFacadeCall(ItemTransfer $item, AfterPayCallTransfer $call): void
+    protected function doFacadeCall(array $item, AfterPayCallTransfer $call): void
     {
         $this->facade->capturePayment($item, $call);
     }
 
     /**
+     * @param \Generated\Shared\Transfer\AfterPayCallTransfer $afterPayCallTransfer
+     * @param \Generated\Shared\Transfer\AfterPayPaymentTransfer $afterPayPaymentTransferBeforeCapture
+     *
      * @return void
      */
-    protected function doTest(): void
+    protected function doTest(
+        AfterPayCallTransfer $afterPayCallTransfer,
+        AfterPayPaymentTransfer $afterPayPaymentTransferBeforeCapture
+    ): void {
+        $afterPayPaymentTransferAfterCapture = $this->facade->getPaymentByIdSalesOrder($afterPayCallTransfer->getIdSalesOrder());
+
+        $this->assertNotEquals(
+            $afterPayPaymentTransferBeforeCapture->getCapturedTotal(),
+            $afterPayPaymentTransferAfterCapture->getCapturedTotal()
+        );
+    }
+
+    /**
+     * @return \Generated\Shared\Transfer\AfterPayCallTransfer
+     */
+    protected function prepareData(): AfterPayCallTransfer
     {
-        //Is transaction accepted
-        //Is captured amount updated?
+        $call = $this->createCallTransfer();
+
+        $processName = 'AfterPayInvoice01';
+        $this->tester->setConfig(OmsConstants::ACTIVE_PROCESSES, [$processName]);
+        $prices = [
+            'unitPrice' => 100,
+            'sumPrice' => 100,
+        ];
+        $saveOrderTransfer = $this->tester->haveOrder($prices, $processName);
+
+        (new SpyPaymentAfterPay())
+            ->setFkSalesOrder($saveOrderTransfer->getIdSalesOrder())
+            ->setPaymentMethod(AfterPayConfig::PAYMENT_TYPE_INVOICE)
+            ->save();
+
+        $afterPayPaymentEntity = $this->afterPayQueryContainer
+            ->queryPaymentByIdSalesOrder($saveOrderTransfer->getIdSalesOrder())
+            ->findOne();
+
+        foreach ($saveOrderTransfer->getOrderItems() as $item) {
+            $item->setUnitPriceToPayAggregation((int)$item->getUnitPriceToPayAggregation());
+            $item->setUnitTaxAmountFullAggregation((int)$item->getUnitTaxAmountFullAggregation());
+
+            (new SpyPaymentAfterPayOrderItem())
+                ->setFkPaymentAfterPay($afterPayPaymentEntity->getIdPaymentAfterPay())
+                ->setFkSalesOrderItem($item->getIdSalesOrderItem())
+                ->setCaptureNumber('testCaptureNumber')
+                ->save();
+        }
+
+        $call->setItems($saveOrderTransfer->getOrderItems());
+
+        $call->setIdSalesOrder($saveOrderTransfer->getIdSalesOrder());
+
+        return $call;
     }
 }

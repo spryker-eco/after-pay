@@ -28,8 +28,10 @@ class AfterPayFacadeLookupInstallmentPlansTest extends AfterPayFacadeAbstractTes
      */
     protected function prepareRequest(): AfterPayInstallmentPlansRequestTransfer
     {
-        return (new AfterPayInstallmentPlansRequestBuilder())
+        $request = (new AfterPayInstallmentPlansRequestBuilder())
             ->build();
+
+        return $request->setAmount((int)$request->getAmount());
     }
 
     /**
