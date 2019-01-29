@@ -127,7 +127,7 @@ class AvailablePaymentMethodsCall extends AbstractApiCall implements AvailablePa
     /**
      * @param array $jsonResponseArray
      *
-     * @return \Generated\Shared\Transfer\AfterPayRiskCheckMessageTransfer[]
+     * @return \ArrayObject|\Generated\Shared\Transfer\AfterPayRiskCheckMessageTransfer[]
      */
     protected function extractRiskCheckMessages(array $jsonResponseArray): ArrayObject
     {
