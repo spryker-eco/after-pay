@@ -8,16 +8,20 @@
 namespace SprykerEcoTest\Zed\AfterPay\Mock;
 
 use SprykerEco\Zed\AfterPay\Business\Api\Adapter\AdapterFactory;
+use SprykerEco\Zed\AfterPay\Business\Api\Adapter\ApiCall\ApiStatusCallInterface;
 use SprykerEco\Zed\AfterPay\Business\Api\Adapter\ApiCall\ApiVersionCallInterface;
 use SprykerEco\Zed\AfterPay\Business\Api\Adapter\ApiCall\AuthorizePaymentCallInterface;
 use SprykerEco\Zed\AfterPay\Business\Api\Adapter\ApiCall\AvailablePaymentMethodsCallInterface;
 use SprykerEco\Zed\AfterPay\Business\Api\Adapter\ApiCall\CaptureCallInterface;
 use SprykerEco\Zed\AfterPay\Business\Api\Adapter\ApiCall\LookupCustomerCallInterface;
+use SprykerEco\Zed\AfterPay\Business\Api\Adapter\ApiCall\LookupInstallmentPlansCallInterface;
+use SprykerEcoTest\Zed\AfterPay\Mock\Call\ApiStatusCallMock;
 use SprykerEcoTest\Zed\AfterPay\Mock\Call\ApiVersionCallMock;
 use SprykerEcoTest\Zed\AfterPay\Mock\Call\AuthorizePaymentCallMock;
 use SprykerEcoTest\Zed\AfterPay\Mock\Call\AvailablePaymentMethodsCallMock;
 use SprykerEcoTest\Zed\AfterPay\Mock\Call\CaptureCallMock;
 use SprykerEcoTest\Zed\AfterPay\Mock\Call\LookupCustomerCallMock;
+use SprykerEcoTest\Zed\AfterPay\Mock\Call\LookupInstallmentPlansCallMock;
 
 class AdapterFactoryMock extends AdapterFactory
 {
@@ -64,7 +68,7 @@ class AdapterFactoryMock extends AdapterFactory
     /**
      * @return \SprykerEco\Zed\AfterPay\Business\Api\Adapter\ApiCall\ApiVersionCallInterface
      */
-    public function createGetApiVersionCallMock(): ApiVersionCallInterface
+    public function createApiVersionCall(): ApiVersionCallInterface
     {
         return new ApiVersionCallMock(
             $this->createHttpClient(),
@@ -82,6 +86,31 @@ class AdapterFactoryMock extends AdapterFactory
             $this->createHttpClient(),
             $this->createTransferToCamelCaseArrayConverter(),
             $this->getUtilEncodingService(),
+            $this->getConfig()
+        );
+    }
+
+    /**
+     * @return \SprykerEco\Zed\AfterPay\Business\Api\Adapter\ApiCall\ApiStatusCallInterface
+     */
+    public function createGetApiStatusCall(): ApiStatusCallInterface
+    {
+        return new ApiStatusCallMock(
+            $this->createHttpClient(),
+            $this->getConfig()
+        );
+    }
+
+    /**
+     * @return \SprykerEco\Zed\AfterPay\Business\Api\Adapter\ApiCall\LookupInstallmentPlansCallInterface
+     */
+    public function createLookupInstallmentPlansCall(): LookupInstallmentPlansCallInterface
+    {
+        return new LookupInstallmentPlansCallMock(
+            $this->createHttpClient(),
+            $this->createTransferToCamelCaseArrayConverter(),
+            $this->getUtilEncodingService(),
+            $this->getMoneyFacade(),
             $this->getConfig()
         );
     }

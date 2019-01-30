@@ -16,6 +16,7 @@ use Orm\Zed\Payment\Persistence\SpySalesPaymentMethodType;
 use Orm\Zed\Payment\Persistence\SpySalesPaymentMethodTypeQuery;
 use Spryker\Shared\Oms\OmsConstants;
 use SprykerEco\Shared\AfterPay\AfterPayConfig;
+use SprykerEco\Shared\AfterPay\AfterPayConstants;
 
 class AfterPayFacadeAuthorizeTest extends AfterPayFacadeAbstractTest
 {
@@ -32,6 +33,8 @@ class AfterPayFacadeAuthorizeTest extends AfterPayFacadeAbstractTest
         // Assign
         $processName = 'AfterPayInvoice01';
         $this->tester->setConfig(OmsConstants::ACTIVE_PROCESSES, [$processName]);
+        $this->tester->setConfig(AfterPayConstants::AFTERPAY_AUTHORIZE_WORKFLOW, AfterPayConfig::AFTERPAY_AUTHORIZE_WORKFLOW_ONE_STEP);
+
         $prices = [
             'unitPrice' => 100,
             'sumPrice' => 100,
