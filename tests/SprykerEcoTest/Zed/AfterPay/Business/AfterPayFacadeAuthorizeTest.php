@@ -103,11 +103,11 @@ class AfterPayFacadeAuthorizeTest extends AfterPayFacadeAbstractTest
      */
     protected function doTest(AfterPayApiResponseTransfer $output): void
     {
-        $this->assertNotEmpty($output->getOutcome());
+        $this->assertNotNull($output->getOutcome());
         $this->assertEquals($output->getOutcome(), AfterPayConfig::API_TRANSACTION_OUTCOME_ACCEPTED);
-        $this->assertNotEmpty($output->getCheckoutId());
-        $this->assertNotEmpty($output->getReservationId());
-        $this->assertNotEmpty($output->getResponsePayload());
+        $this->assertNotNull($output->getCheckoutId());
+        $this->assertNotNull($output->getReservationId());
+        $this->assertNotNull($output->getResponsePayload());
     }
 
     /**
