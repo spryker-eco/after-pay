@@ -1,4 +1,4 @@
-# Adyen Module
+# AfterPay Module
 
 ## Installation
 

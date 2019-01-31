@@ -1,19 +1,20 @@
 {
   "name": "spryker-eco/after-pay",
-  "description": "Afterpay bundle",
-  "license": "proprietary",
+  "description": "AfterPay bundle",
+  "license": "MIT",
   "require": {
-    "spryker/checkout": "^3.0.0",
-    "spryker/currency": "^2.0.0",
+    "php": ">=7.1",
+    "spryker/checkout": "^3.0.0 || ^4.2.0",
+    "spryker/currency": "^2.0.0 || ^3.5.0",
     "spryker/kernel": "^3.0.0",
     "spryker/locale": "^3.0.0",
     "spryker/money": "^2.0.0",
-    "spryker/oms": "^7.0.0",
+    "spryker/oms": "^7.0.0|| ^8.4.0",
     "spryker/payment": "^4.0.0",
-    "spryker/propel-orm": "*",
-    "spryker/quote": "^1.0.0",
+    "spryker/propel-orm": "^1.0.0",
+    "spryker/quote": "^1.0.0 || ^2.6.0",
     "spryker/sales": "^6.0.0 || ^7.0.0 || ^8.0.0",
-    "spryker/session": "^3.0.0",
+    "spryker/session": "^3.0.0 || 4.0.0",
     "spryker/step-engine": "^2.0.0 || ^3.0.0",
     "spryker/symfony": "^3.0.0",
     "spryker/util-encoding": "^2.0.0",
@@ -32,25 +33,25 @@
     "spryker/installer": "If you want to use Installer plugins you need to install spryker/installer."
   },
   "autoload": {
-    "psr-0": {
-      "SprykerEco": "src/",
-      "SprykerEcoTest": "tests/"
+    "psr-4": {
+      "SprykerEco\\": "src/SprykerEco/"
     }
   },
   "autoload-dev": {
-    "psr-0": {
-      "Functional": "tests/",
-      "Unit": "tests/"
+    "psr-4": {
+      "SprykerEcoTest\\": "tests/SprykerEcoTest/"
     }
   },
   "minimum-stability": "dev",
   "prefer-stable": true,
+  "config": {
+    "preferred-install": "dist",
+    "sort-packages": true,
+    "process-timeout": 600
+  },
   "extra": {
     "branch-alias": {
       "dev-master": "1.0.x-dev"
     }
-  },
-  "config": {
-    "sort-packages": true
   }
 }
