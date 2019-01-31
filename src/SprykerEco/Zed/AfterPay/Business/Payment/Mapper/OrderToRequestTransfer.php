@@ -209,7 +209,6 @@ class OrderToRequestTransfer implements OrderToRequestTransferInterface
             ->setQuantity($itemTransfer->getQuantity())
             ->setVatAmount($this->getStringDecimalItemVatAmountPrice($itemTransfer))
             ->setVatPercent($itemTransfer->getTaxRate())
-            ->setImageUrl($this->getImageUrlFromOrderItem($itemTransfer))
             ->setGroupId($itemTransfer->getGroupKey());
     }
 
@@ -407,37 +406,5 @@ class OrderToRequestTransfer implements OrderToRequestTransferInterface
         $expenseUnitNetAmount = $expenseUnitGrossPriceAmount - $expenseUnitTaxAmount;
 
         return (string)$this->moneyFacade->convertIntegerToDecimal($expenseUnitNetAmount);
-    }
-
-    /**
-     * @param \Generated\Shared\Transfer\ItemTransfer $itemTransfer
-     *
-     * @return string|null
-     */
-    protected function getImageUrlFromOrderItem(ItemTransfer $itemTransfer): ?string
-    {
-        foreach ($itemTransfer->getImages() as $imageTransfer) {
-            $imageUrl = $imageTransfer->getExternalUrlSmall();
-
-            if (!$this->hasImageUrlHttpProtocol($imageUrl)) {
-                return 'http:' . $imageUrl;
-            }
-
-            return $imageUrl;
-        }
-
-        return null;
-    }
-
-    /**
-     * @param string $url
-     *
-     * @return bool
-     */
-    protected function hasImageUrlHttpProtocol(string $url): bool
-    {
-        $hasImageHttpProtocolInUrl = strpos($url, 'http:') || strpos($url, 'https:');
-
-        return $hasImageHttpProtocolInUrl !== false;
     }
 }

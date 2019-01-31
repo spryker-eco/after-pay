@@ -131,7 +131,6 @@ class QuoteToRequestTransfer implements QuoteToRequestTransferInterface
             ->setQuantity($itemTransfer->getQuantity())
             ->setVatAmount($this->getStringDecimalItemVatAmountPrice($itemTransfer))
             ->setVatPercent($itemTransfer->getTaxRate())
-            ->setImageUrl($this->getImageUrlFromOrderItem($itemTransfer))
             ->setGroupId($itemTransfer->getGroupKey());
 
         return $orderItemRequestTransfer;
@@ -273,36 +272,6 @@ class QuoteToRequestTransfer implements QuoteToRequestTransferInterface
         }
 
         return $giftCardPayments;
-    }
-
-    /**
-     * @param \Generated\Shared\Transfer\ItemTransfer $itemTransfer
-     *
-     * @return string
-     */
-    protected function getImageUrlFromOrderItem(ItemTransfer $itemTransfer): string
-    {
-        foreach ($itemTransfer->getImages() as $imageTransfer) {
-            $imageUrl = $imageTransfer->getExternalUrlSmall();
-
-            if (!$this->hasImageUrlHttpProtocol($imageUrl)) {
-                return 'http:' . $imageUrl;
-            }
-
-            return $imageUrl;
-        }
-    }
-
-    /**
-     * @param string $url
-     *
-     * @return bool
-     */
-    protected function hasImageUrlHttpProtocol(string $url): bool
-    {
-        $hasImageHttpProtocolInUrl = strpos($url, 'http:') || strpos($url, 'https:');
-
-        return $hasImageHttpProtocolInUrl !== false;
     }
 
     /**

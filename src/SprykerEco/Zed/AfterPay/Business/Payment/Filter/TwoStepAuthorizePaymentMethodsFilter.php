@@ -49,8 +49,9 @@ class TwoStepAuthorizePaymentMethodsFilter implements AfterPayPaymentMethodsFilt
         PaymentMethodTransfer $paymentMethodTransfer,
         QuoteTransfer $quoteTransfer
     ): bool {
-        if ($this->isPaymentProviderAfterPay($paymentMethodTransfer) &&
-            !$this->isAvailable($paymentMethodTransfer, $quoteTransfer->getAfterPayAvailablePaymentMethods())) {
+        $isAvailable = $this->isAvailable($paymentMethodTransfer, $quoteTransfer->getAfterPayAvailablePaymentMethods());
+
+        if ($this->isPaymentProviderAfterPay($paymentMethodTransfer) && !$isAvailable) {
             return false;
         }
 
