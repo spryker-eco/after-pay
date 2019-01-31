@@ -302,14 +302,12 @@ class QuoteToRequestTransfer implements QuoteToRequestTransferInterface
      */
     protected function buildOrderExpenseRequestTransfer(ExpenseTransfer $expenseTransfer): AfterPayRequestOrderItemTransfer
     {
-        $item = (new AfterPayRequestOrderItemTransfer())
+        return (new AfterPayRequestOrderItemTransfer())
             ->setProductId($expenseTransfer->getType())
             ->setDescription($expenseTransfer->getName())
             ->setGrossUnitPrice($this->getStringDecimalExpenseGrossUnitPrice($expenseTransfer))
             ->setNetUnitPrice($this->getStringDecimalExpenseNetUnitPrice($expenseTransfer))
             ->setQuantity($expenseTransfer->getQuantity());
-
-        return $item;
     }
 
     /**
