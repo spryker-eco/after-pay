@@ -7,6 +7,7 @@
 
 namespace SprykerEco\Client\AfterPay\Zed;
 
+use Generated\Shared\Transfer\AfterPayAvailablePaymentMethodsTransfer;
 use Generated\Shared\Transfer\AfterPayCustomerLookupRequestTransfer;
 use Generated\Shared\Transfer\AfterPayCustomerLookupResponseTransfer;
 use Generated\Shared\Transfer\AfterPayInstallmentPlansRequestTransfer;
@@ -15,6 +16,7 @@ use Generated\Shared\Transfer\AfterPayValidateBankAccountRequestTransfer;
 use Generated\Shared\Transfer\AfterPayValidateBankAccountResponseTransfer;
 use Generated\Shared\Transfer\AfterPayValidateCustomerRequestTransfer;
 use Generated\Shared\Transfer\AfterPayValidateCustomerResponseTransfer;
+use Generated\Shared\Transfer\QuoteTransfer;
 use SprykerEco\Client\AfterPay\Dependency\Client\AfterPayToZedRequestClientInterface;
 
 class AfterPayStub implements AfterPayStubInterface
@@ -82,5 +84,19 @@ class AfterPayStub implements AfterPayStubInterface
         $validateBankAccountResponseTransfer = $this->zedRequestClient->call('/after-pay/gateway/validate-bank-account', $bankAccountValidationRequestTransfer);
 
         return $validateBankAccountResponseTransfer;
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
+     *
+     * @return \Generated\Shared\Transfer\AfterPayAvailablePaymentMethodsTransfer
+     */
+    public function getAvailablePaymentMethods(QuoteTransfer $quoteTransfer): AfterPayAvailablePaymentMethodsTransfer
+    {
+        /** @var \Generated\Shared\Transfer\AfterPayAvailablePaymentMethodsTransfer $availablePaymentMethodsTransfer */
+        $availablePaymentMethodsTransfer = $this->zedRequestClient
+            ->call('/after-pay/gateway/get-available-payment-methods', $quoteTransfer);
+
+        return $availablePaymentMethodsTransfer;
     }
 }

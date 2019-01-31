@@ -31,6 +31,22 @@ class OrderToCallConverter implements OrderToCallConverterInterface
             ->setShippingAddress($orderTransfer->getShippingAddress())
             ->setTotals($orderTransfer->getTotals())
             ->setPaymentMethod($paymentTransfer->getPaymentMethod())
-            ->setExpenses($orderTransfer->getExpenses());
+            ->setExpenses($orderTransfer->getExpenses())
+            ->setCheckoutId($this->getCheckoutId($orderTransfer))
+            ->setCurrency($orderTransfer->getCurrencyIsoCode());
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
+     *
+     * @return string|null
+     */
+    protected function getCheckoutId(OrderTransfer $orderTransfer): ?string
+    {
+        if ($orderTransfer->getAfterPayPayment()) {
+            return $orderTransfer->getAfterPayPayment()->getIdCheckout();
+        }
+
+        return null;
     }
 }

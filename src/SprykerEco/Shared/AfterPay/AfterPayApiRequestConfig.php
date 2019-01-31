@@ -20,6 +20,11 @@ class AfterPayApiRequestConfig
     public const RISK_CHECK_CODE = 'rsS_RiskCheck_ResultCode';
     public const CUSTOMER = 'customer';
     public const CUSTOMER_NUMBER = 'customer';
+    public const RISK_CHECK_MESSAGES = 'riskCheckMessages';
+    public const RISK_CHECK_MESSAGE_CODE = 'code';
+    public const RISK_CHECK_MESSAGE_CUSTOMER_FACING_MESSAGE = 'customerFacingMessage';
+    public const RISK_CHECK_MESSAGE_MESSAGE = 'message';
+    public const RISK_CHECK_MESSAGE_TYPE = 'type';
 
     /** Capture call */
     public const CAPTURE_CAPTURED_AMOUNT = 'capturedAmount';

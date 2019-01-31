@@ -8,6 +8,7 @@
 namespace SprykerEco\Zed\AfterPay\Business;
 
 use Generated\Shared\Transfer\AfterPayApiResponseTransfer;
+use Generated\Shared\Transfer\AfterPayAvailablePaymentMethodsTransfer;
 use Generated\Shared\Transfer\AfterPayCallTransfer;
 use Generated\Shared\Transfer\AfterPayCustomerLookupRequestTransfer;
 use Generated\Shared\Transfer\AfterPayCustomerLookupResponseTransfer;
@@ -256,5 +257,20 @@ class AfterPayFacade extends AbstractFacade implements AfterPayFacadeInterface
         return $this->getFactory()
             ->createApiAdapter()
             ->getApiStatus();
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @api
+     *
+     * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
+     * @return \Generated\Shared\Transfer\AfterPayAvailablePaymentMethodsTransfer
+     */
+    public function getAvailablePaymentMethods(QuoteTransfer $quoteTransfer): AfterPayAvailablePaymentMethodsTransfer
+    {
+        return $this->getFactory()
+            ->createPaymentMethodsProvider()
+            ->getAvailablePaymentMethods($quoteTransfer);
     }
 }

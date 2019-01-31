@@ -106,7 +106,6 @@ class CancelRequestBuilder implements CancelRequestBuilderInterface
         AfterPayRequestOrderItemTransfer $orderItemRequestTransfer,
         AfterPayCancelRequestTransfer $cancelRequestTransfer
     ): void {
-        $this->increaseTotalNetAmount($orderItemRequestTransfer, $cancelRequestTransfer);
         $this->increaseTotalGrossAmount($orderItemRequestTransfer, $cancelRequestTransfer);
     }
 

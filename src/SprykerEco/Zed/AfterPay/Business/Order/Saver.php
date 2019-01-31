@@ -101,7 +101,7 @@ class Saver implements SaverInterface
             ->setFkSalesPayment($paymentTransfer->getIdSalesPayment())
             ->setPaymentMethod($paymentTransfer->getPaymentMethod())
             ->setFkSalesOrder($saveOrderTransfer->getIdSalesOrder())
-            ->setIdCheckout($paymentTransfer->getAfterPayCheckoutId())
+            ->setIdCheckout($this->getIdCheckout($quoteTransfer))
             ->setIdChannel($this->getIdChannel($paymentTransfer->getPaymentMethod()))
             ->setInfoscoreCustomerNumber($paymentTransfer->getAfterPayCustomerNumber())
             ->setExpenseTotal($quoteTransfer->getTotals()->getExpenseTotal())
@@ -139,5 +139,19 @@ class Saver implements SaverInterface
     protected function getIdChannel(string $paymentMethod): string
     {
         return $this->config->getPaymentChannelId($paymentMethod);
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
+     *
+     * @return string|null
+     */
+    protected function getIdCheckout(QuoteTransfer $quoteTransfer): ?string
+    {
+        if ($quoteTransfer->getAfterPayAvailablePaymentMethods()) {
+            return $quoteTransfer->getAfterPayAvailablePaymentMethods()->getCheckoutId();
+        }
+
+        return null;
     }
 }

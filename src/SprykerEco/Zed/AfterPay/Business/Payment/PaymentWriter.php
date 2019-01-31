@@ -150,7 +150,7 @@ class PaymentWriter implements PaymentWriterInterface
      * @param int $idSalesOrderItem
      * @param int $idPayment
      *
-     * @return \Orm\Zed\AfterPay\Persistence\SpyPaymentAfterPayOrderItem
+     * @return \Orm\Zed\AfterPay\Persistence\SpyPaymentAfterPayOrderItem|null
      */
     protected function getPaymentOrderItemEntityByIdSalesOrderItemAndIdPayment(int $idSalesOrderItem, int $idPayment): ?SpyPaymentAfterPayOrderItem
     {

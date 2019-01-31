@@ -90,8 +90,7 @@ class OrderToRequestTransfer implements OrderToRequestTransferInterface
     public function orderToBaseCaptureRequest(AfterPayCallTransfer $afterPayCallTransfer): AfterPayCaptureRequestTransfer
     {
         $orderRequestTransfer = $this->buildOrderRequestTransfer($afterPayCallTransfer)
-            ->setTotalGrossAmount(static::ZERO_AMOUNT)
-            ->setTotalNetAmount(static::ZERO_AMOUNT);
+            ->setTotalGrossAmount(static::ZERO_AMOUNT);
 
         return (new AfterPayCaptureRequestTransfer())
             ->setOrderDetails($orderRequestTransfer);
@@ -105,8 +104,7 @@ class OrderToRequestTransfer implements OrderToRequestTransferInterface
     public function orderToBaseCancelRequest(AfterPayCallTransfer $afterPayCallTransfer): AfterPayCancelRequestTransfer
     {
         $orderRequestTransfer = $this->buildOrderRequestTransfer($afterPayCallTransfer)
-            ->setTotalGrossAmount(static::ZERO_AMOUNT)
-            ->setTotalNetAmount(static::ZERO_AMOUNT);
+            ->setTotalGrossAmount(static::ZERO_AMOUNT);
 
         return (new AfterPayCancelRequestTransfer())
             ->setCancellationDetails($orderRequestTransfer);
@@ -145,7 +143,7 @@ class OrderToRequestTransfer implements OrderToRequestTransferInterface
 
         return (new AfterPayRequestCustomerTransfer())
             ->setFirstName($billingAddressTransfer->getFirstName())
-            ->setLastName($billingAddressTransfer->getLastName( ))
+            ->setLastName($billingAddressTransfer->getLastName())
             ->setConversationalLanguage($this->getStoreCountryIso2())
             ->setCustomerCategory(AfterPayConfig::API_CUSTOMER_CATEGORY_PERSON)
             ->setSalutation($billingAddressTransfer->getSalutation())
@@ -183,7 +181,7 @@ class OrderToRequestTransfer implements OrderToRequestTransferInterface
         return (new AfterPayRequestOrderTransfer())
             ->setNumber($afterPayCallTransfer->getOrderReference())
             ->setTotalGrossAmount($this->getStringDecimalOrderGrossTotal($afterPayCallTransfer))
-            ->setTotalNetAmount($this->getStringDecimalOrderNetTotal($afterPayCallTransfer));
+            ->setCurrency($afterPayCallTransfer->getCurrency());
     }
 
     /**
@@ -208,8 +206,10 @@ class OrderToRequestTransfer implements OrderToRequestTransferInterface
             ->setProductId($itemTransfer->getSku())
             ->setDescription($itemTransfer->getName())
             ->setGrossUnitPrice($this->getStringDecimalItemGrossUnitPrice($itemTransfer))
-            ->setNetUnitPrice($this->getStringDecimalItemNetUnitPrice($itemTransfer))
-            ->setQuantity($itemTransfer->getQuantity());
+            ->setQuantity($itemTransfer->getQuantity())
+            ->setVatAmount($this->getStringDecimalItemVatAmountPrice($itemTransfer))
+            ->setVatPercent($itemTransfer->getTaxRate())
+            ->setGroupId($itemTransfer->getGroupKey());
     }
 
     /**
@@ -287,6 +287,18 @@ class OrderToRequestTransfer implements OrderToRequestTransferInterface
         $itemUnitNetAmount = $itemUnitGrossPriceAmount - $itemUnitTaxAmount;
 
         return (string)$this->moneyFacade->convertIntegerToDecimal($itemUnitNetAmount);
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\ItemTransfer $itemTransfer
+     *
+     * @return string
+     */
+    protected function getStringDecimalItemVatAmountPrice(ItemTransfer $itemTransfer): string
+    {
+        $itemVatAmountPrice = $itemTransfer->getUnitTaxAmountFullAggregation();
+
+        return (string)$this->moneyFacade->convertIntegerToDecimal($itemVatAmountPrice);
     }
 
     /**

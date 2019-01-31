@@ -8,6 +8,7 @@
 namespace SprykerEco\Zed\AfterPay\Business;
 
 use Generated\Shared\Transfer\AfterPayApiResponseTransfer;
+use Generated\Shared\Transfer\AfterPayAvailablePaymentMethodsTransfer;
 use Generated\Shared\Transfer\AfterPayCallTransfer;
 use Generated\Shared\Transfer\AfterPayCustomerLookupRequestTransfer;
 use Generated\Shared\Transfer\AfterPayCustomerLookupResponseTransfer;
@@ -19,7 +20,6 @@ use Generated\Shared\Transfer\AfterPayValidateBankAccountResponseTransfer;
 use Generated\Shared\Transfer\AfterPayValidateCustomerRequestTransfer;
 use Generated\Shared\Transfer\AfterPayValidateCustomerResponseTransfer;
 use Generated\Shared\Transfer\CheckoutResponseTransfer;
-use Generated\Shared\Transfer\ItemTransfer;
 use Generated\Shared\Transfer\OrderTransfer;
 use Generated\Shared\Transfer\PaymentMethodsTransfer;
 use Generated\Shared\Transfer\QuoteTransfer;
@@ -209,4 +209,17 @@ interface AfterPayFacadeInterface
      * @return int
      */
     public function getApiStatus(): int;
+
+    /**
+     * Specification:
+     * - Sends payment authorize request to AfterPay gateway.
+     * - Returns the available payment methods and checkout id.
+     *
+     * @api
+     *
+     * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
+     *
+     * @return \Generated\Shared\Transfer\AfterPayAvailablePaymentMethodsTransfer
+     */
+    public function getAvailablePaymentMethods(QuoteTransfer $quoteTransfer): AfterPayAvailablePaymentMethodsTransfer;
 }

@@ -92,7 +92,9 @@ class AfterPayPaymentMethodsProvider implements AfterPayPaymentMethodsProviderIn
             ->setAvailablePaymentMethodNames($availablePaymentMethodNames)
             ->setRiskCheckCode($apiResponseTransfer->getRiskCheckResultCode())
             ->setCheckoutId($apiResponseTransfer->getCheckoutId())
-            ->setCustomerNumber($apiResponseTransfer->getCustomerNumber());
+            ->setCustomerNumber($apiResponseTransfer->getCustomerNumber())
+            ->setOutcome($apiResponseTransfer->getOutcome())
+            ->setRiskCheckMessages($apiResponseTransfer->getRiskCheckMessages());
 
         return $availablePaymentMethodsTransfer;
     }

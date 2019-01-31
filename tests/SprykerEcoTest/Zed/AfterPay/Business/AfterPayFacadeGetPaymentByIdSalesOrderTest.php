@@ -8,16 +8,23 @@
 namespace SprykerEcoTest\Zed\AfterPay\Business;
 
 use Generated\Shared\Transfer\AfterPayPaymentTransfer;
+use Orm\Zed\AfterPay\Persistence\SpyPaymentAfterPay;
+use Spryker\Shared\Oms\OmsConstants;
 use SprykerEco\Shared\AfterPay\AfterPayConfig;
 
 class AfterPayFacadeGetPaymentByIdSalesOrderTest extends AfterPayFacadeAbstractTest
 {
     /**
+     * @var \SprykerEcoTest\Zed\AfterPay\AfterPayZedTester
+     */
+    protected $tester;
+
+    /**
      * @return void
      */
     public function testGetPaymentByIdSalesOrder(): void
     {
-        $idSalesOrder = 45;
+        $idSalesOrder = $this->prepareData();
         $output = $this->doFacadeCall($idSalesOrder);
         $this->doTest($output);
     }
@@ -41,5 +48,26 @@ class AfterPayFacadeGetPaymentByIdSalesOrderTest extends AfterPayFacadeAbstractT
     {
         $paymentMethod = $output->getPaymentMethod();
         $this->assertTrue(in_array($paymentMethod, [AfterPayConfig::RISK_CHECK_METHOD_INVOICE]));
+    }
+
+    /**
+     * @return int
+     */
+    protected function prepareData(): int
+    {
+        $processName = 'AfterPayInvoice01';
+        $this->tester->setConfig(OmsConstants::ACTIVE_PROCESSES, [$processName]);
+        $prices = [
+            'unitPrice' => 100,
+            'sumPrice' => 100,
+        ];
+        $saveOrderTransfer = $this->tester->haveOrder($prices, $processName);
+
+        (new SpyPaymentAfterPay())
+            ->setFkSalesOrder($saveOrderTransfer->getIdSalesOrder())
+            ->setPaymentMethod(AfterPayConfig::PAYMENT_TYPE_INVOICE)
+            ->save();
+
+        return $saveOrderTransfer->getIdSalesOrder();
     }
 }

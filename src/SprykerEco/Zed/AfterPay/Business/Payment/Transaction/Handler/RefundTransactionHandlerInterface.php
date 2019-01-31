@@ -7,7 +7,6 @@
 
 namespace SprykerEco\Zed\AfterPay\Business\Payment\Transaction\Handler;
 
-use Generated\Shared\Transfer\ItemTransfer;
 use Generated\Shared\Transfer\OrderTransfer;
 
 interface RefundTransactionHandlerInterface

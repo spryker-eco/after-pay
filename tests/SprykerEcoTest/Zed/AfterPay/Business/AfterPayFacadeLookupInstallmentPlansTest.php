@@ -28,8 +28,10 @@ class AfterPayFacadeLookupInstallmentPlansTest extends AfterPayFacadeAbstractTes
      */
     protected function prepareRequest(): AfterPayInstallmentPlansRequestTransfer
     {
-        return (new AfterPayInstallmentPlansRequestBuilder())
+        $request = (new AfterPayInstallmentPlansRequestBuilder())
             ->build();
+
+        return $request->setAmount((int)$request->getAmount());
     }
 
     /**
@@ -50,20 +52,20 @@ class AfterPayFacadeLookupInstallmentPlansTest extends AfterPayFacadeAbstractTes
     protected function doTest(AfterPayInstallmentPlansResponseTransfer $output): void
     {
         foreach ($output->getInstallmentPlans() as $plan) {
-            $this->assertNotEmpty($plan->getBasketAmount());
-            $this->assertNotEmpty($plan->getEffectiveAnnualPercentageRate());
-            $this->assertNotEmpty($plan->getEffectiveInterestRate());
-            $this->assertNotEmpty($plan->getFirstInstallmentAmount());
-            $this->assertNotEmpty($plan->getInstallmentAmount());
-            $this->assertNotEmpty($plan->getInstallmentProfileNumber());
-            $this->assertNotEmpty($plan->getInterestRate());
-            $this->assertNotEmpty($plan->getLastInstallmentAmount());
-            $this->assertNotEmpty($plan->getMonthlyFee());
-            $this->assertNotEmpty($plan->getNumberOfInstallments());
-            $this->assertNotEmpty($plan->getReadMore());
-            $this->assertNotEmpty($plan->getStartupFee());
-            $this->assertNotEmpty($plan->getTotalAmount());
-            $this->assertNotEmpty($plan->getTotalInterestAmount());
+            $this->assertNotNull($plan->getBasketAmount());
+            $this->assertNotNull($plan->getEffectiveAnnualPercentageRate());
+            $this->assertNotNull($plan->getEffectiveInterestRate());
+            $this->assertNotNull($plan->getFirstInstallmentAmount());
+            $this->assertNotNull($plan->getInstallmentAmount());
+            $this->assertNotNull($plan->getInstallmentProfileNumber());
+            $this->assertNotNull($plan->getInterestRate());
+            $this->assertNotNull($plan->getLastInstallmentAmount());
+            $this->assertNotNull($plan->getMonthlyFee());
+            $this->assertNotNull($plan->getNumberOfInstallments());
+            $this->assertNotNull($plan->getReadMore());
+            $this->assertNotNull($plan->getStartupFee());
+            $this->assertNotNull($plan->getTotalAmount());
+            $this->assertNotNull($plan->getTotalInterestAmount());
         }
     }
 }
