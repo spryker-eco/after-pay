@@ -66,7 +66,9 @@ class CaptureCall extends AbstractApiCall implements CaptureCallInterface
      */
     public function execute(AfterPayCaptureRequestTransfer $requestTransfer): AfterPayCaptureResponseTransfer
     {
-        $jsonRequest = $this->buildJsonRequestFromTransferObject($requestTransfer);
+        $preparedRequestTransfer = $this->prepareRequestTransferToBuildJsonRequest($requestTransfer);
+        $jsonRequest = $this->buildJsonRequestFromTransferObject($preparedRequestTransfer);
+
         try {
             $jsonResponse = $this->client->sendPost(
                 $this->getCaptureEndpointUrl($requestTransfer),
@@ -161,5 +163,16 @@ class CaptureCall extends AbstractApiCall implements CaptureCallInterface
             ->setResponsePayload($jsonResponse);
 
         return $apiResponseTransfer;
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\AfterPayCaptureRequestTransfer $requestTransfer
+     *
+     * @return \Generated\Shared\Transfer\AfterPayCaptureRequestTransfer
+     */
+    protected function prepareRequestTransferToBuildJsonRequest(AfterPayCaptureRequestTransfer $requestTransfer): AfterPayCaptureRequestTransfer
+    {
+        return (new AfterPayCaptureRequestTransfer())
+            ->setOrderDetails($requestTransfer->getOrderDetails());
     }
 }

@@ -152,12 +152,11 @@ class AfterPayConfig extends AbstractBundleConfig
      */
     public function getPaymentChannelId(string $paymentMethod): string
     {
-        switch ($paymentMethod) {
-            case SharedAfterPayConfig::PAYMENT_METHOD_INVOICE:
-                return $this->get(AfterPayConstants::PAYMENT_INVOICE_CHANNEL_ID);
-            default:
-                return $this->get(AfterPayConstants::PAYMENT_INVOICE_CHANNEL_ID);
+        if ($paymentMethod === SharedAfterPayConfig::PAYMENT_METHOD_INVOICE) {
+            return $this->get(AfterPayConstants::PAYMENT_INVOICE_CHANNEL_ID);
         }
+
+        return $this->get(AfterPayConstants::PAYMENT_INVOICE_CHANNEL_ID);
     }
 
     /**

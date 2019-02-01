@@ -66,7 +66,9 @@ class RefundCall extends AbstractApiCall implements RefundCallInterface
      */
     public function execute(AfterPayRefundRequestTransfer $requestTransfer): AfterPayRefundResponseTransfer
     {
-        $jsonRequest = $this->buildJsonRequestFromTransferObject($requestTransfer);
+        $preparedRequestTransfer = $this->prepareRequestTransferToBuildJsonRequest($requestTransfer);
+        $jsonRequest = $this->buildJsonRequestFromTransferObject($preparedRequestTransfer);
+
         try {
             $jsonResponse = $this->client->sendPost(
                 $this->getRefundEndpointUrl($requestTransfer),
@@ -151,5 +153,17 @@ class RefundCall extends AbstractApiCall implements RefundCallInterface
             ->setResponsePayload($jsonResponse);
 
         return $apiResponseTransfer;
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\AfterPayRefundRequestTransfer $requestTransfer
+     *
+     * @return \Generated\Shared\Transfer\AfterPayRefundRequestTransfer
+     */
+    protected function prepareRequestTransferToBuildJsonRequest(AfterPayRefundRequestTransfer $requestTransfer): AfterPayRefundRequestTransfer
+    {
+        return (new AfterPayRefundRequestTransfer())
+            ->setCaptureNumber($requestTransfer->getCaptureNumber())
+            ->setOrderItems($requestTransfer->getOrderItems());
     }
 }

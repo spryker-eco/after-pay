@@ -66,7 +66,9 @@ class CancelCall extends AbstractApiCall implements CancelCallInterface
      */
     public function execute(AfterPayCancelRequestTransfer $requestTransfer): AfterPayCancelResponseTransfer
     {
-        $jsonRequest = $this->buildJsonRequestFromTransferObject($requestTransfer);
+        $preparedRequestTransfer = $this->prepareRequestTransferToBuildJsonRequest($requestTransfer);
+        $jsonRequest = $this->buildJsonRequestFromTransferObject($preparedRequestTransfer);
+
         try {
             $jsonResponse = $this->client->sendPost(
                 $this->getCancelEndpointUrl($requestTransfer),
@@ -153,5 +155,16 @@ class CancelCall extends AbstractApiCall implements CancelCallInterface
             ->setResponsePayload($jsonResponse);
 
         return $apiResponseTransfer;
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\AfterPayCancelRequestTransfer $requestTransfer
+     *
+     * @return \Generated\Shared\Transfer\AfterPayCancelRequestTransfer
+     */
+    protected function prepareRequestTransferToBuildJsonRequest(AfterPayCancelRequestTransfer $requestTransfer): AfterPayCancelRequestTransfer
+    {
+        return (new AfterPayCancelRequestTransfer())
+            ->setCancellationDetails($requestTransfer->getCancellationDetails());
     }
 }
