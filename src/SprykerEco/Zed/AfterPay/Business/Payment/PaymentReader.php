@@ -37,10 +37,8 @@ class PaymentReader implements PaymentReaderInterface
     {
         $afterPayPaymentEntity = $this->getPaymentEntityByIdSalesOrder($idSalesOrder);
 
-        $paymentTransfer = new AfterPayPaymentTransfer();
-        $paymentTransfer->fromArray($afterPayPaymentEntity->toArray(), true);
-
-        return $paymentTransfer;
+        return (new AfterPayPaymentTransfer())
+            ->fromArray($afterPayPaymentEntity->toArray(), true);
     }
 
     /**
@@ -56,10 +54,8 @@ class PaymentReader implements PaymentReaderInterface
             $idPayment
         );
 
-        $paymentOrderItemTransfer = new AfterPayPaymentOrderItemTransfer();
-        $paymentOrderItemTransfer->fromArray($afterPayPaymentOrderItemEntity->toArray(), true);
-
-        return $paymentOrderItemTransfer;
+        return (new AfterPayPaymentOrderItemTransfer())
+            ->fromArray($afterPayPaymentOrderItemEntity->toArray(), true);
     }
 
     /**

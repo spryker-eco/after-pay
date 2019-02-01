@@ -138,9 +138,7 @@ class LookupInstallmentPlansCall extends AbstractApiCall implements LookupInstal
      */
     protected function buildInstallmentPlanTransfer(array $installmentPlanArray): AfterPayInstallmentPlanTransfer
     {
-        $installmentPlanTransfer = new AfterPayInstallmentPlanTransfer();
-
-        $installmentPlanTransfer
+        return (new AfterPayInstallmentPlanTransfer())
             ->setBasketAmount(
                 $this->money->convertDecimalToInteger(
                     $installmentPlanArray[AfterPayApiRequestConfig::BASKET_AMOUNT]
@@ -193,7 +191,5 @@ class LookupInstallmentPlansCall extends AbstractApiCall implements LookupInstal
             ->setReadMore(
                 $installmentPlanArray[AfterPayApiRequestConfig::READ_MORE]
             );
-
-        return $installmentPlanTransfer;
     }
 }

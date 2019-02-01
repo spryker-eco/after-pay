@@ -55,13 +55,12 @@ class CancelPlugin extends AbstractPlugin implements CommandByOrderInterface
         $items = [];
 
         foreach ($orderItems as $orderItem) {
-            $itemTransfer = new ItemTransfer();
-            $itemTransfer->fromArray($orderItem->toArray(), true);
-            $itemTransfer->setUnitGrossPrice($orderItem->getGrossPrice());
-            $itemTransfer->setUnitNetPrice($orderItem->getNetPrice());
-            $itemTransfer->setUnitPriceToPayAggregation($orderItem->getPriceToPayAggregation());
-            $itemTransfer->setUnitTaxAmountFullAggregation($orderItem->getTaxAmountFullAggregation());
-            $items[] = $itemTransfer;
+            $items[] = (new ItemTransfer())
+                ->fromArray($orderItem->toArray(), true)
+                ->setUnitGrossPrice($orderItem->getGrossPrice())
+                ->setUnitNetPrice($orderItem->getNetPrice())
+                ->setUnitPriceToPayAggregation($orderItem->getPriceToPayAggregation())
+                ->setUnitTaxAmountFullAggregation($orderItem->getTaxAmountFullAggregation());
         }
 
         return $items;

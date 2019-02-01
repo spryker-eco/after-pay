@@ -87,16 +87,12 @@ class ValidateCustomerCall extends AbstractApiCall implements ValidateCustomerCa
     {
         $jsonResponseArray = $this->utilEncoding->decodeJson($jsonResponse, true);
 
-        $responseTransfer = new AfterPayValidateCustomerResponseTransfer();
-
-        $responseTransfer
+        return (new AfterPayValidateCustomerResponseTransfer())
             ->setIsValid($jsonResponseArray[AfterPayApiRequestConfig::VALIDATE_ADDRESS_IS_VALID] ?? false)
             ->setCorrectedAddress(
                 $this->parseCorrectedAddress($jsonResponseArray)
             )
             ->setResponsePayload($jsonResponse);
-
-        return $responseTransfer;
     }
 
     /**
@@ -106,12 +102,10 @@ class ValidateCustomerCall extends AbstractApiCall implements ValidateCustomerCa
      */
     protected function parseCorrectedAddress(array $jsonResponseArray): AfterPayRequestAddressTransfer
     {
-        $correctedAddressTransfer = new AfterPayRequestAddressTransfer();
         $correctedAddressArray = $this->extractAddressDataWithUnderscoreKeys($jsonResponseArray);
 
-        $correctedAddressTransfer->fromArray($correctedAddressArray, true);
-
-        return $correctedAddressTransfer;
+        return (new AfterPayRequestAddressTransfer())
+            ->fromArray($correctedAddressArray, true);
     }
 
     /**

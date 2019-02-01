@@ -116,9 +116,7 @@ class RefundCall extends AbstractApiCall implements RefundCallInterface
     {
         $jsonResponseArray = $this->utilEncoding->decodeJson($jsonResponse, true);
 
-        $refundResponseTransfer = new AfterPayRefundResponseTransfer();
-
-        $refundResponseTransfer
+        return (new AfterPayRefundResponseTransfer())
             ->setTotalCapturedAmount(
                 $this->money->convertDecimalToInteger(
                     $jsonResponseArray[AfterPayApiRequestConfig::REFUND_TOTAL_CAPTURED_AMOUNT]
@@ -129,8 +127,6 @@ class RefundCall extends AbstractApiCall implements RefundCallInterface
                     $jsonResponseArray[AfterPayApiRequestConfig::REFUND_TOTAL_AUTHORIZE_AMOUNT]
                 )
             );
-
-        return $refundResponseTransfer;
     }
 
     /**
@@ -142,17 +138,13 @@ class RefundCall extends AbstractApiCall implements RefundCallInterface
     {
         $jsonResponseArray = $this->utilEncoding->decodeJson($jsonResponse, true);
 
-        $apiResponseTransfer = new AfterPayApiResponseTransfer();
-
         $outcome = $jsonResponseArray[AfterPayApiRequestConfig::REFUND_TOTAL_CAPTURED_AMOUNT]
             ? SharedAfterPayConfig::API_TRANSACTION_OUTCOME_ACCEPTED
             : SharedAfterPayConfig::API_TRANSACTION_OUTCOME_REJECTED;
 
-        $apiResponseTransfer
+        return (new AfterPayApiResponseTransfer())
             ->setOutcome($outcome)
             ->setResponsePayload($jsonResponse);
-
-        return $apiResponseTransfer;
     }
 
     /**

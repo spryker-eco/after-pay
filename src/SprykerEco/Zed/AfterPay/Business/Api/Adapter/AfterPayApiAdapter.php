@@ -48,8 +48,7 @@ class AfterPayApiAdapter implements AdapterInterface
      */
     public function sendAvailablePaymentMethodsRequest(AfterPayAvailablePaymentMethodsRequestTransfer $requestTransfer): AfterPayAvailablePaymentMethodsResponseTransfer
     {
-        return $this
-            ->adapterFactory
+        return $this->adapterFactory
             ->createAvailablePaymentMethodsCall()
             ->execute($requestTransfer);
     }
@@ -61,8 +60,7 @@ class AfterPayApiAdapter implements AdapterInterface
      */
     public function sendAuthorizationRequest(AfterPayAuthorizeRequestTransfer $authorizeRequestTransfer): AfterPayApiResponseTransfer
     {
-        return $this
-            ->adapterFactory
+        return $this->adapterFactory
             ->createAuthorizePaymentCall()
             ->execute($authorizeRequestTransfer);
     }
@@ -74,8 +72,7 @@ class AfterPayApiAdapter implements AdapterInterface
      */
     public function sendValidateCustomerRequest(AfterPayValidateCustomerRequestTransfer $validateCustomerRequestTransfer): AfterPayValidateCustomerResponseTransfer
     {
-        return $this
-            ->adapterFactory
+        return $this->adapterFactory
             ->createValidateCustomerCall()
             ->execute($validateCustomerRequestTransfer);
     }
@@ -87,8 +84,7 @@ class AfterPayApiAdapter implements AdapterInterface
      */
     public function sendValidateBankAccountRequest(AfterPayValidateBankAccountRequestTransfer $validateBankAccountRequestTransfer): AfterPayValidateBankAccountResponseTransfer
     {
-        return $this
-            ->adapterFactory
+        return $this->adapterFactory
             ->createValidateBankAccountCall()
             ->execute($validateBankAccountRequestTransfer);
     }
@@ -100,8 +96,7 @@ class AfterPayApiAdapter implements AdapterInterface
      */
     public function sendLookupCustomerRequest(AfterPayCustomerLookupRequestTransfer $customerLookupRequestTransfer): AfterPayCustomerLookupResponseTransfer
     {
-        return $this
-            ->adapterFactory
+        return $this->adapterFactory
             ->createLookupCustomerCall()
             ->execute($customerLookupRequestTransfer);
     }
@@ -113,8 +108,7 @@ class AfterPayApiAdapter implements AdapterInterface
      */
     public function sendLookupInstallmentPlansRequest(AfterPayInstallmentPlansRequestTransfer $installmentPlansRequestTransfer): AfterPayInstallmentPlansResponseTransfer
     {
-        return $this
-            ->adapterFactory
+        return $this->adapterFactory
             ->createLookupInstallmentPlansCall()
             ->execute($installmentPlansRequestTransfer);
     }
@@ -126,8 +120,7 @@ class AfterPayApiAdapter implements AdapterInterface
      */
     public function sendCaptureRequest(AfterPayCaptureRequestTransfer $captureRequestTransfer): AfterPayCaptureResponseTransfer
     {
-        return $this
-            ->adapterFactory
+        return $this->adapterFactory
             ->createCaptureCall()
             ->execute($captureRequestTransfer);
     }
@@ -139,8 +132,7 @@ class AfterPayApiAdapter implements AdapterInterface
      */
     public function sendCancelRequest(AfterPayCancelRequestTransfer $cancelRequestTransfer): AfterPayCancelResponseTransfer
     {
-        return $this
-            ->adapterFactory
+        return $this->adapterFactory
             ->createCancelCall()
             ->execute($cancelRequestTransfer);
     }
@@ -152,8 +144,7 @@ class AfterPayApiAdapter implements AdapterInterface
      */
     public function sendRefundRequest(AfterPayRefundRequestTransfer $refundRequestTransfer): AfterPayRefundResponseTransfer
     {
-        return $this
-            ->adapterFactory
+        return $this->adapterFactory
             ->createRefundCall()
             ->execute($refundRequestTransfer);
     }
@@ -163,8 +154,7 @@ class AfterPayApiAdapter implements AdapterInterface
      */
     public function getApiVersion(): string
     {
-        return $this
-            ->adapterFactory
+        return $this->adapterFactory
             ->createApiVersionCall()
             ->execute();
     }
@@ -174,8 +164,7 @@ class AfterPayApiAdapter implements AdapterInterface
      */
     public function getApiStatus(): int
     {
-        return $this
-            ->adapterFactory
+        return $this->adapterFactory
             ->createGetApiStatusCall()
             ->execute();
     }

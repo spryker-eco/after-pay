@@ -82,9 +82,7 @@ class ValidateBankAccountCall extends AbstractApiCall implements ValidateBankAcc
     {
         $jsonResponseArray = $this->utilEncoding->decodeJson($jsonResponse, true);
 
-        $responseTransfer = new AfterPayValidateBankAccountResponseTransfer();
-        $responseTransfer->setIsValid($jsonResponseArray[AfterPayApiRequestConfig::VALIDATE_BANK_ACCOUNT_IS_VALID] ?? false);
-
-        return $responseTransfer;
+        return (new AfterPayValidateBankAccountResponseTransfer())
+            ->setIsValid($jsonResponseArray[AfterPayApiRequestConfig::VALIDATE_BANK_ACCOUNT_IS_VALID] ?? false);
     }
 }

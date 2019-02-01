@@ -78,13 +78,10 @@ class AvailablePaymentMethodsCall extends AbstractApiCall implements AvailablePa
     protected function buildAvailablePaymentMethodsResponseTransfer(string $jsonResponse): AfterPayAvailablePaymentMethodsResponseTransfer
     {
         $jsonResponseArray = $this->utilEncoding->decodeJson($jsonResponse, true);
-
-        $responseTransfer = new AfterPayAvailablePaymentMethodsResponseTransfer();
-
         $riskCheckResultCode = $this->extractRiskCheckCode($jsonResponseArray);
         $customerNumber = $this->extractCustomerNumber($jsonResponseArray);
 
-        $responseTransfer
+        return (new AfterPayAvailablePaymentMethodsResponseTransfer())
             ->setCheckoutId($jsonResponseArray[AfterPayApiRequestConfig::TRANSACTION_CHECKOUT_ID] ?? null)
             ->setOutcome($jsonResponseArray[AfterPayApiRequestConfig::TRANSACTION_OUTCOME] ?? null)
             ->setCustomer($jsonResponseArray[AfterPayApiRequestConfig::CUSTOMER] ?? [])
@@ -92,8 +89,6 @@ class AvailablePaymentMethodsCall extends AbstractApiCall implements AvailablePa
             ->setPaymentMethods($jsonResponseArray[AfterPayApiRequestConfig::PAYMENT_METHODS] ?? [])
             ->setRiskCheckResultCode($riskCheckResultCode)
             ->setRiskCheckMessages($this->extractRiskCheckMessages($jsonResponseArray));
-
-        return $responseTransfer;
     }
 
     /**

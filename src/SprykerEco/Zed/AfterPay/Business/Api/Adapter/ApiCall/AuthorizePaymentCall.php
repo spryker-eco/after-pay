@@ -78,14 +78,10 @@ class AuthorizePaymentCall extends AbstractApiCall implements AuthorizePaymentCa
     {
         $jsonResponseArray = $this->utilEncoding->decodeJson($jsonResponse, true);
 
-        $responseTransfer = new AfterPayApiResponseTransfer();
-
-        $responseTransfer
+        return (new AfterPayApiResponseTransfer())
             ->setOutcome($jsonResponseArray[AfterPayApiRequestConfig::TRANSACTION_OUTCOME] ?? SharedAfterPayConfig::API_TRANSACTION_OUTCOME_REJECTED)
             ->setReservationId($jsonResponseArray[AfterPayApiRequestConfig::TRANSACTION_RESERVATION_ID] ?? null)
             ->setCheckoutId($jsonResponseArray[AfterPayApiRequestConfig::TRANSACTION_CHECKOUT_ID] ?? null)
             ->setResponsePayload($jsonResponse);
-
-        return $responseTransfer;
     }
 }

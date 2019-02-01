@@ -19,15 +19,13 @@ class QuoteToCallConverter implements QuoteToCallConverterInterface
      */
     public function convert(QuoteTransfer $quoteTransfer): AfterPayCallTransfer
     {
-        $afterPayCallTransfer = new AfterPayCallTransfer();
-        $afterPayCallTransfer->setOrderReference($quoteTransfer->getOrderReference());
-        $afterPayCallTransfer->setEmail($quoteTransfer->getCustomer()->getEmail());
-        $afterPayCallTransfer->setItems($quoteTransfer->getItems());
-        $afterPayCallTransfer->setBillingAddress($quoteTransfer->getBillingAddress());
-        $afterPayCallTransfer->setShippingAddress($quoteTransfer->getShippingAddress());
-        $afterPayCallTransfer->setTotals($quoteTransfer->getTotals());
-        $afterPayCallTransfer->setPaymentMethod($quoteTransfer->getPayment()->getPaymentSelection());
-
-        return $afterPayCallTransfer;
+        return (new AfterPayCallTransfer())
+            ->setOrderReference($quoteTransfer->getOrderReference())
+            ->setEmail($quoteTransfer->getCustomer()->getEmail())
+            ->setItems($quoteTransfer->getItems())
+            ->setBillingAddress($quoteTransfer->getBillingAddress())
+            ->setShippingAddress($quoteTransfer->getShippingAddress())
+            ->setTotals($quoteTransfer->getTotals())
+            ->setPaymentMethod($quoteTransfer->getPayment()->getPaymentSelection());
     }
 }

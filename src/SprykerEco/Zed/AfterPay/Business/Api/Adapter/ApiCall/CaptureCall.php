@@ -118,9 +118,7 @@ class CaptureCall extends AbstractApiCall implements CaptureCallInterface
     {
         $jsonResponseArray = $this->utilEncoding->decodeJson($jsonResponse, true);
 
-        $captureResponseTransfer = new AfterPayCaptureResponseTransfer();
-
-        $captureResponseTransfer
+        return (new AfterPayCaptureResponseTransfer())
             ->setCapturedAmount(
                 $this->money->convertDecimalToInteger(
                     $jsonResponseArray[AfterPayApiRequestConfig::CAPTURE_CAPTURED_AMOUNT]
@@ -139,8 +137,6 @@ class CaptureCall extends AbstractApiCall implements CaptureCallInterface
             ->setCaptureNumber(
                 $jsonResponseArray[AfterPayApiRequestConfig::CAPTURE_CAPTURE_NUMBER]
             );
-
-        return $captureResponseTransfer;
     }
 
     /**
@@ -152,17 +148,13 @@ class CaptureCall extends AbstractApiCall implements CaptureCallInterface
     {
         $jsonResponseArray = $this->utilEncoding->decodeJson($jsonResponse, true);
 
-        $apiResponseTransfer = new AfterPayApiResponseTransfer();
-
         $outcome = $jsonResponseArray[AfterPayApiRequestConfig::CAPTURE_CAPTURE_NUMBER]
             ? SharedAfterPayConfig::API_TRANSACTION_OUTCOME_ACCEPTED
             : SharedAfterPayConfig::API_TRANSACTION_OUTCOME_REJECTED;
 
-        $apiResponseTransfer
+        return (new AfterPayApiResponseTransfer())
             ->setOutcome($outcome)
             ->setResponsePayload($jsonResponse);
-
-        return $apiResponseTransfer;
     }
 
     /**

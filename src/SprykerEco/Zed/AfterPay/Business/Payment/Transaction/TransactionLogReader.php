@@ -66,9 +66,7 @@ class TransactionLogReader implements TransactionLogReaderInterface
      */
     protected function buildTransactionTransfer(SpyPaymentAfterPayTransactionLog $transactionLogEntry): AfterPayTransactionLogTransfer
     {
-        $transactionLogTransfer = new AfterPayTransactionLogTransfer();
-        $transactionLogTransfer->fromArray($transactionLogEntry->toArray(), true);
-
-        return $transactionLogTransfer;
+        return (new AfterPayTransactionLogTransfer())
+            ->fromArray($transactionLogEntry->toArray(), true);
     }
 }

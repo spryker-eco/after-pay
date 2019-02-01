@@ -22,11 +22,14 @@ class InvoiceDataProvider implements StepEngineFormDataProviderInterface
      */
     public function getData(AbstractTransfer $quoteTransfer): QuoteTransfer
     {
-        if ($quoteTransfer->getPayment() === null) {
-            $paymentTransfer = new PaymentTransfer();
-            $paymentTransfer->setAfterPayInvoice(new AfterPayPaymentTransfer());
-            $quoteTransfer->setPayment($paymentTransfer);
+        if ($quoteTransfer->getPayment() !== null) {
+            return $quoteTransfer;
         }
+
+        $paymentTransfer = (new PaymentTransfer())
+            ->setAfterPayInvoice(new AfterPayPaymentTransfer());
+
+        $quoteTransfer->setPayment($paymentTransfer);
 
         return $quoteTransfer;
     }

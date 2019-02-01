@@ -117,13 +117,14 @@ class Guzzle implements ClientInterface
                 $errorResponseData = $this->encodingService->decodeJson($content, true);
                 if (isset($errorResponseData[0])) {
                     $errorDetails = $errorResponseData[0];
-                    $apiErrorTransfer = new AfterPayApiResponseErrorTransfer();
-                    $apiErrorTransfer
+
+                    $apiErrorTransfer = (new AfterPayApiResponseErrorTransfer())
                         ->setActionCode($errorDetails['actionCode'])
                         ->setCode($errorDetails['code'])
                         ->setType($errorDetails['type'])
                         ->setMessage($errorDetails['message'])
                         ->setIsSuccess(false);
+
                     $apiHttpRequestException->setError($apiErrorTransfer);
                     $apiHttpRequestException->setDetailedMessage($content);
                 }

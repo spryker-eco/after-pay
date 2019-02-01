@@ -106,9 +106,7 @@ class LookupCustomerCall extends AbstractApiCall implements LookupCustomerCallIn
      */
     protected function buildUserProfileTransfer(array $userProfile): AfterPayUserProfileTransfer
     {
-        $userProfileTransfer = new AfterPayUserProfileTransfer();
-
-        $userProfileTransfer
+        $userProfileTransfer = (new AfterPayUserProfileTransfer())
             ->setFirstName($userProfile[AfterPayApiRequestConfig::USER_PROFILE_FIRST_NAME])
             ->setLastName($userProfile[AfterPayApiRequestConfig::USER_PROFILE_LAST_NAME])
             ->setMobileNumber($userProfile[AfterPayApiRequestConfig::USER_PROFILE_MOBILE_NUMBER])
@@ -135,9 +133,7 @@ class LookupCustomerCall extends AbstractApiCall implements LookupCustomerCallIn
      */
     protected function buildLookupAddressTransfer(array $userAddress): AfterPayLookupAddressTransfer
     {
-        $lookupAddressTransfer = new AfterPayLookupAddressTransfer();
-
-        $lookupAddressTransfer
+        return (new AfterPayLookupAddressTransfer())
             ->setStreet($userAddress[AfterPayApiRequestConfig::USER_PROFILE_ADDRESS_STREET])
             ->setStreet2($userAddress[AfterPayApiRequestConfig::USER_PROFILE_ADDRESS_STREET2])
             ->setStreet3($userAddress[AfterPayApiRequestConfig::USER_PROFILE_ADDRESS_STREET3])
@@ -149,7 +145,5 @@ class LookupCustomerCall extends AbstractApiCall implements LookupCustomerCallIn
             ->setPostalCode($userAddress[AfterPayApiRequestConfig::USER_PROFILE_ADDRESS_POSTAL_CODE])
             ->setCountry($userAddress[AfterPayApiRequestConfig::USER_PROFILE_ADDRESS_COUNTRY])
             ->setCountryCode($userAddress[AfterPayApiRequestConfig::USER_PROFILE_ADDRESS_COUNTRY_CODE]);
-
-        return $lookupAddressTransfer;
     }
 }

@@ -118,9 +118,7 @@ class CancelCall extends AbstractApiCall implements CancelCallInterface
     {
         $jsonResponseArray = $this->utilEncoding->decodeJson($jsonResponse, true);
 
-        $cancelResponseTransfer = new AfterPayCancelResponseTransfer();
-
-        $cancelResponseTransfer
+        return (new AfterPayCancelResponseTransfer())
             ->setTotalCapturedAmount(
                 $this->money->convertDecimalToInteger(
                     $jsonResponseArray[AfterPayApiRequestConfig::CANCEL_CAPTURED_AMOUNT]
@@ -131,8 +129,6 @@ class CancelCall extends AbstractApiCall implements CancelCallInterface
                     $jsonResponseArray[AfterPayApiRequestConfig::CANCEL_AUTHORIZED_AMOUNT]
                 )
             );
-
-        return $cancelResponseTransfer;
     }
 
     /**
@@ -144,17 +140,13 @@ class CancelCall extends AbstractApiCall implements CancelCallInterface
     {
         $jsonResponseArray = $this->utilEncoding->decodeJson($jsonResponse, true);
 
-        $apiResponseTransfer = new AfterPayApiResponseTransfer();
-
         $outcome = isset($jsonResponseArray[AfterPayApiRequestConfig::CANCEL_AUTHORIZED_AMOUNT])
             ? SharedAfterPayConfig::API_TRANSACTION_OUTCOME_ACCEPTED
             : SharedAfterPayConfig::API_TRANSACTION_OUTCOME_REJECTED;
 
-        $apiResponseTransfer
+        return (new AfterPayApiResponseTransfer())
             ->setOutcome($outcome)
             ->setResponsePayload($jsonResponse);
-
-        return $apiResponseTransfer;
     }
 
     /**

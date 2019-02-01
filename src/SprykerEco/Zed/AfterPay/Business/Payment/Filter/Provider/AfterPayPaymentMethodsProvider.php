@@ -84,19 +84,15 @@ class AfterPayPaymentMethodsProvider implements AfterPayPaymentMethodsProviderIn
      */
     protected function parseResponseTransfer(AfterPayAvailablePaymentMethodsResponseTransfer $apiResponseTransfer): AfterPayAvailablePaymentMethodsTransfer
     {
-        $availablePaymentMethodsTransfer = new AfterPayAvailablePaymentMethodsTransfer();
-
         $availablePaymentMethodNames = $this->fetchAvailablePaymentMethodsNames($apiResponseTransfer);
 
-        $availablePaymentMethodsTransfer
+        return (new AfterPayAvailablePaymentMethodsTransfer())
             ->setAvailablePaymentMethodNames($availablePaymentMethodNames)
             ->setRiskCheckCode($apiResponseTransfer->getRiskCheckResultCode())
             ->setCheckoutId($apiResponseTransfer->getCheckoutId())
             ->setCustomerNumber($apiResponseTransfer->getCustomerNumber())
             ->setOutcome($apiResponseTransfer->getOutcome())
             ->setRiskCheckMessages($apiResponseTransfer->getRiskCheckMessages());
-
-        return $availablePaymentMethodsTransfer;
     }
 
     /**

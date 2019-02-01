@@ -63,8 +63,8 @@ class TwoStepsAuthorizeRequestBuilder implements AuthorizeRequestBuilderInterfac
         AfterPayAuthorizeRequestTransfer $authorizeRequestTransfer,
         OrderTransfer $orderWithPaymentTransfer
     ): void {
-        $requestOrderTransfer = new AfterPayRequestOrderTransfer();
-        $requestOrderTransfer->setNumber($orderWithPaymentTransfer->getOrderReference());
+        $requestOrderTransfer = (new AfterPayRequestOrderTransfer())
+            ->setNumber($orderWithPaymentTransfer->getOrderReference());
 
         $authorizeRequestTransfer->setOrder($requestOrderTransfer);
     }
@@ -95,8 +95,8 @@ class TwoStepsAuthorizeRequestBuilder implements AuthorizeRequestBuilderInterfac
     ): void {
         $paymentMethod = $orderWithPaymentTransfer->getAfterPayPayment()->getPaymentMethod();
 
-        $requestPaymentTransfer = new AfterPayRequestPaymentTransfer();
-        $requestPaymentTransfer->setType(static::$paymentMethods[$paymentMethod]);
+        $requestPaymentTransfer = (new AfterPayRequestPaymentTransfer())
+            ->setType(static::$paymentMethods[$paymentMethod]);
 
         $authorizeRequestTransfer->setPayment($requestPaymentTransfer);
     }

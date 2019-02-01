@@ -53,17 +53,13 @@ class QuoteToRequestTransfer implements QuoteToRequestTransferInterface
      */
     public function quoteToAvailablePaymentMethods(QuoteTransfer $quoteTransfer): AfterPayAvailablePaymentMethodsRequestTransfer
     {
-        $requestTransfer = new AfterPayAvailablePaymentMethodsRequestTransfer();
-
-        $requestTransfer
+        return (new AfterPayAvailablePaymentMethodsRequestTransfer())
             ->setCustomer(
                 $this->buildCustomerRequestTransfer($quoteTransfer)
             )
             ->setOrder(
                 $this->buildOrderRequestTransfer($quoteTransfer)
             );
-
-        return $requestTransfer;
     }
 
     /**
@@ -74,21 +70,17 @@ class QuoteToRequestTransfer implements QuoteToRequestTransferInterface
     protected function buildCustomerRequestTransfer(QuoteTransfer $quoteTransfer): AfterPayRequestCustomerTransfer
     {
         $quoteBillingAddressTransfer = $quoteTransfer->getBillingAddress();
-        $customerRequestTransfer = new AfterPayRequestCustomerTransfer();
 
-        $customerRequestTransfer
+        return (new AfterPayRequestCustomerTransfer())
             ->setFirstName($quoteBillingAddressTransfer->getFirstName())
             ->setLastName($quoteBillingAddressTransfer->getLastName())
             ->setConversationalLanguage($this->getStoreCountryIso2())
             ->setCustomerCategory(AfterPayConfig::API_CUSTOMER_CATEGORY_PERSON)
             ->setSalutation($quoteBillingAddressTransfer->getSalutation())
-            ->setEmail($quoteTransfer->getCustomer()->getEmail());
-
-        $customerRequestTransfer->setAddress(
-            $this->buildCustomerBillingAddressRequestTransfer($quoteTransfer)
-        );
-
-        return $customerRequestTransfer;
+            ->setEmail($quoteTransfer->getCustomer()->getEmail())
+            ->setAddress(
+                $this->buildCustomerBillingAddressRequestTransfer($quoteTransfer)
+            );
     }
 
     /**
@@ -122,9 +114,7 @@ class QuoteToRequestTransfer implements QuoteToRequestTransferInterface
      */
     protected function buildOrderItemRequestTransfer(ItemTransfer $itemTransfer): AfterPayRequestOrderItemTransfer
     {
-        $orderItemRequestTransfer = new AfterPayRequestOrderItemTransfer();
-
-        $orderItemRequestTransfer
+        return (new AfterPayRequestOrderItemTransfer())
             ->setProductId($itemTransfer->getSku())
             ->setDescription($itemTransfer->getName())
             ->setGrossUnitPrice($this->getStringDecimalItemGrossUnitPrice($itemTransfer))
@@ -132,8 +122,6 @@ class QuoteToRequestTransfer implements QuoteToRequestTransferInterface
             ->setVatAmount($this->getStringDecimalItemVatAmountPrice($itemTransfer))
             ->setVatPercent($itemTransfer->getTaxRate())
             ->setGroupId($itemTransfer->getGroupKey());
-
-        return $orderItemRequestTransfer;
     }
 
     /**
@@ -144,16 +132,13 @@ class QuoteToRequestTransfer implements QuoteToRequestTransferInterface
     protected function buildCustomerBillingAddressRequestTransfer(QuoteTransfer $quoteTransfer): AfterPayRequestAddressTransfer
     {
         $customerAddressTransfer = $quoteTransfer->getBillingAddress();
-        $customerAddressRequestTransfer = new AfterPayRequestAddressTransfer();
 
-        $customerAddressRequestTransfer
+        return (new AfterPayRequestAddressTransfer())
             ->setCountryCode($customerAddressTransfer->getIso2Code())
             ->setStreet($customerAddressTransfer->getAddress1())
             ->setStreetNumber($customerAddressTransfer->getAddress2())
             ->setPostalCode($customerAddressTransfer->getZipCode())
             ->setPostalPlace($customerAddressTransfer->getCity());
-
-        return $customerAddressRequestTransfer;
     }
 
     /**
@@ -242,10 +227,9 @@ class QuoteToRequestTransfer implements QuoteToRequestTransferInterface
         AfterPayRequestOrderTransfer $orderRequestTransfer
     ): void {
         foreach ($this->getGiftcards($quoteTransfer) as $index => $paymentTransfer) {
-            $orderItemRequestTransfer = new AfterPayRequestOrderItemTransfer();
             $amount = (string)$this->moneyFacade->convertIntegerToDecimal(static::NEGATIVE_MULTIPLIER * $paymentTransfer->getAmount());
 
-            $orderItemRequestTransfer
+            $orderItemRequestTransfer = (new AfterPayRequestOrderItemTransfer())
                 ->setProductId(static::GIFT_CARD_PROVIDER . $index)
                 ->setDescription(static::GIFT_CARD_PROVIDER . $index)
                 ->setGrossUnitPrice($amount)

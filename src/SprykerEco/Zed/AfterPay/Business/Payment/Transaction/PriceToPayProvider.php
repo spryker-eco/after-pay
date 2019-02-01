@@ -46,11 +46,9 @@ class PriceToPayProvider implements PriceToPayProviderInterface
      */
     protected function createSalesPaymentTransfer(AfterPayCallTransfer $afterPayCallTransfer): SalesPaymentTransfer
     {
-        $salesPaymentTransfer = new SalesPaymentTransfer();
-        $salesPaymentTransfer->setPaymentProvider(AfterPayConfig::PROVIDER_NAME);
-        $salesPaymentTransfer->setPaymentMethod($afterPayCallTransfer->getPaymentMethod());
-        $salesPaymentTransfer->setFkSalesOrder($afterPayCallTransfer->getIdSalesOrder());
-
-        return $salesPaymentTransfer;
+        return (new SalesPaymentTransfer())
+            ->setPaymentProvider(AfterPayConfig::PROVIDER_NAME)
+            ->setPaymentMethod($afterPayCallTransfer->getPaymentMethod())
+            ->setFkSalesOrder($afterPayCallTransfer->getIdSalesOrder());
     }
 }
