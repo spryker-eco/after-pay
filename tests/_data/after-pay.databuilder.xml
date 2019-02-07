@@ -1,0 +1,117 @@
+<?xml version="1.0"?>
+<transfers
+        xmlns="spryker:transfer-01"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="spryker:transfer-01 http://static.spryker.com/transfer-01.xsd"
+>
+
+    <transfer name="AfterPayCall">
+        <property name="email" dataBuilderRule="email" />
+        <property name="orderReference" dataBuilderRule="unique()->sentence(2)" />
+        <property name="paymentMethod" dataBuilderRule="=afterPayInvoice" />
+        <property name="items" type="Item[]" singular="Item"/>
+        <property name="totals" type="Totals" />
+        <property name="billingAddress" type="Address" />
+        <property name="shippingAddress" type="Address" />
+    </transfer>
+
+    <transfer name="AfterPayApiResponse">
+        <property name="outcome" dataBuilderRule="=Accepted" />
+        <property name="reservationId" dataBuilderRule="randomNumber" />
+        <property name="checkoutId" dataBuilderRule="randomNumber" />
+        <property name="responsePayload" dataBuilderRule="=test" />
+    </transfer>
+
+    <transfer name="AfterPayCaptureResponse">
+        <property name="idSalesOrder" dataBuilderRule="=" />
+        <property name="apiResponse" type="AfterPayApiResponse" />
+        <property name="capturedAmount" dataBuilderRule="=10000" />
+        <property name="captureNumber" dataBuilderRule="randomNumber" />
+        <property name="authorizedAmount" dataBuilderRule="=5000" />
+        <property name="remainingAuthorizedAmount" dataBuilderRule="=5000" />
+    </transfer>
+
+    <transfer name="AfterPayAvailablePaymentMethodsResponse">
+        <property name="checkoutId" dataBuilderRule="randomNumber" />
+        <property name="outcome" dataBuilderRule="randomNumber" />
+        <property name="customer" type="array" />
+        <property name="customerNumber" dataBuilderRule="randomNumber" />
+        <property name="paymentMethods" type="array" />
+        <property name="riskCheckResultCode" dataBuilderRule="randomNumber" />
+    </transfer>
+
+    <transfer name="AfterPayInstallmentPlan">
+        <property name="basketAmount" dataBuilderRule="=1000" />
+        <property name="numberOfInstallments" dataBuilderRule="randomDigit" />
+        <property name="installmentAmount" dataBuilderRule="=1000" />
+        <property name="firstInstallmentAmount" dataBuilderRule="=1000" />
+        <property name="lastInstallmentAmount" dataBuilderRule="=0" />
+        <property name="interestRate" dataBuilderRule="=0" />
+        <property name="effectiveInterestRate" dataBuilderRule="=0" />
+        <property name="effectiveAnnualPercentageRate" dataBuilderRule="=0" />
+        <property name="totalInterestAmount" dataBuilderRule="=0" />
+        <property name="startupFee" dataBuilderRule="=1000" />
+        <property name="monthlyFee" dataBuilderRule="=500" />
+        <property name="totalAmount" dataBuilderRule="=3000" />
+        <property name="installmentProfileNumber" dataBuilderRule="randomNumber" />
+        <property name="readMore" dataBuilderRule="unique()->sentence(1)" />
+    </transfer>
+
+    <transfer name="AfterPayUserProfile">
+        <property name="firstName" dataBuilderRule="firstName" />
+        <property name="lastName" dataBuilderRule="lastName" />
+        <property name="mobileNumber" dataBuilderRule="=017400000" />
+        <property name="email" dataBuilderRule="email" />
+        <property name="languageCode" dataBuilderRule="=DE" />
+        <property name="addressList" type="AfterPayLookupAddress[]" singular="lookupAddress" />
+    </transfer>
+
+    <transfer name="AfterPayLookupAddress">
+        <property name="street" dataBuilderRule="address" />
+        <property name="street2" dataBuilderRule="address" />
+        <property name="street3" dataBuilderRule="address" />
+        <property name="street4" dataBuilderRule="address" />
+        <property name="streetNumber" dataBuilderRule="=12" />
+        <property name="flatNo" dataBuilderRule="=1" />
+        <property name="entrance" dataBuilderRule="=1" />
+        <property name="city" dataBuilderRule="city" />
+        <property name="postalCode" dataBuilderRule="postcode" />
+        <property name="country" dataBuilderRule="=Germany" />
+        <property name="countryCode" dataBuilderRule="=DE" />
+    </transfer>
+
+    <transfer name="Address">
+        <property name="firstName" dataBuilderRule="firstName" />
+        <property name="lastName" dataBuilderRule="lastName" />
+        <property name="address1" dataBuilderRule="address" />
+        <property name="company" dataBuilderRule="company" />
+        <property name="city" dataBuilderRule="city" />
+        <property name="zipCode" dataBuilderRule="postcode" />
+        <property name="state" dataBuilderRule="country" />
+        <property name="iso2Code" dataBuilderRule="=DE" />
+    </transfer>
+
+    <transfer name="Item" >
+        <property name="sku" dataBuilderRule="isbn10" />
+        <property name="unitGrossPrice" dataBuilderRule="randomFloat(2)"  />
+        <property name="quantity" dataBuilderRule="=1" />
+        <property name="name" dataBuilderRule="word" />
+    </transfer>
+
+    <transfer name="Totals">
+        <property name="subtotal" dataBuilderRule="randomNumber" />
+        <property name="expenseTotal" dataBuilderRule="=1000" />
+        <property name="discountTotal" dataBuilderRule="=1000" />
+        <property name="taxTotal" type="TaxTotal" />
+        <property name="grandTotal" dataBuilderRule="=10000" />
+        <property name="netTotal" dataBuilderRule="=10000"/>
+        <property name="canceledTotal" dataBuilderRule="=0" />
+        <property name="hash" dataBuilderRule="unique()->sentence(10)"/>
+    </transfer>
+
+    <transfer name="TaxTotal">
+        <property name="taxRate" dataBuilderRule="randomFloat(2)" />
+        <property name="amount" dataBuilderRule="=1000" />
+    </transfer>
+
+</transfers>

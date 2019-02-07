@@ -1,7 +1,7 @@
-namespace: Afterpay
+namespace: AfterPay
 
 include:
-    - tests/SprykerEcoTest/Zed/Afterpay
+    - tests/SprykerEcoTest/Zed/AfterPay
 
 paths:
     tests: tests
