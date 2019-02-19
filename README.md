@@ -1,4 +1,4 @@
-# AfterPayModule
+# AfterPay Module
 
 [![Build Status](https://travis-ci.org/spryker-eco/after-pay.svg?branch=master)](https://travis-ci.org/spryker-eco/after-pay)
 [![License](https://img.shields.io/github/license/spryker-eco/after-pay.svg?b=master)](https://github.com/spryker-eco/after-pay)
