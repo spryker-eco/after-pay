@@ -13,4 +13,4 @@ composer require spryker-eco/after-pay
 
 ## Documentation
 
-[TBD](https://documentation.spryker.com)
+[Documentation](https://documentation.spryker.com/industry_partners/payment/afterpay/afterpay.htm)
