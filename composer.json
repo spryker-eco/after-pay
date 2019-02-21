@@ -1,6 +1,6 @@
 {
   "name": "spryker-eco/after-pay",
-  "description": "AfterPay bundle",
+  "description": "AfterPay module",
   "license": "MIT",
   "require": {
     "php": ">=7.1",
