@@ -167,6 +167,7 @@ class OrderToRequestTransfer implements OrderToRequestTransferInterface
         }
 
         $orderRequestTransfer = $this->addExpensesToOrderRequestTransfer($orderRequestTransfer, $afterPayCallTransfer);
+        $orderRequestTransfer = $this->addGiftcardItems($orderRequestTransfer, $afterPayCallTransfer);
 
         return $orderRequestTransfer;
     }
@@ -302,16 +303,16 @@ class OrderToRequestTransfer implements OrderToRequestTransferInterface
     }
 
     /**
-     * @param \Generated\Shared\Transfer\OrderTransfer $orderWithPaymentTransfer
      * @param \Generated\Shared\Transfer\AfterPayRequestOrderTransfer $orderRequestTransfer
+     * @param \Generated\Shared\Transfer\AfterPayCallTransfer $afterPayCallTransfer
      *
-     * @return void
+     * @return \Generated\Shared\Transfer\AfterPayRequestOrderTransfer
      */
     protected function addGiftcardItems(
-        OrderTransfer $orderWithPaymentTransfer,
-        AfterPayRequestOrderTransfer $orderRequestTransfer
-    ): void {
-        foreach ($this->getGiftcards($orderWithPaymentTransfer) as $index => $paymentTransfer) {
+        AfterPayRequestOrderTransfer $orderRequestTransfer,
+        AfterPayCallTransfer $afterPayCallTransfer
+    ): AfterPayRequestOrderTransfer {
+        foreach ($this->getGiftcards($afterPayCallTransfer) as $index => $paymentTransfer) {
             $amount = (string)$this->moneyFacade
                 ->convertIntegerToDecimal(static::NEGATIVE_MULTIPLIER * $paymentTransfer->getAmount());
 
@@ -323,17 +324,19 @@ class OrderToRequestTransfer implements OrderToRequestTransferInterface
                     ->setQuantity(1)
             );
         }
+
+        return $orderRequestTransfer;
     }
 
     /**
-     * @param \Generated\Shared\Transfer\OrderTransfer $orderWithPaymentTransfer
+     * @param \Generated\Shared\Transfer\AfterPayCallTransfer $afterPayCallTransfer
      *
      * @return \Generated\Shared\Transfer\PaymentTransfer[]
      */
-    protected function getGiftcards(OrderTransfer $orderWithPaymentTransfer): array
+    protected function getGiftcards(AfterPayCallTransfer $afterPayCallTransfer): array
     {
         $giftCardPayments = [];
-        foreach ($orderWithPaymentTransfer->getPayments() as $paymentTransfer) {
+        foreach ($afterPayCallTransfer->getPayments() as $paymentTransfer) {
             if ($paymentTransfer->getPaymentMethod() !== static::GIFT_CARD_PROVIDER) {
                 continue;
             }

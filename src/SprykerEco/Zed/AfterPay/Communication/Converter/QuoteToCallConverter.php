@@ -26,6 +26,7 @@ class QuoteToCallConverter implements QuoteToCallConverterInterface
             ->setBillingAddress($quoteTransfer->getBillingAddress())
             ->setShippingAddress($quoteTransfer->getShippingAddress())
             ->setTotals($quoteTransfer->getTotals())
+            ->setPayments($quoteTransfer->getPayments())
             ->setPaymentMethod($quoteTransfer->getPayment()->getPaymentSelection());
     }
 }
