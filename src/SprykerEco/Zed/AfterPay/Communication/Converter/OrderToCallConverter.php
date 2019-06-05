@@ -25,7 +25,7 @@ class OrderToCallConverter implements OrderToCallConverterInterface
         return (new AfterPayCallTransfer())
             ->setOrderReference($orderTransfer->getOrderReference())
             ->setIdSalesOrder($orderTransfer->getIdSalesOrder())
-            ->setEmail($orderTransfer->getCustomer()->getEmail())
+            ->setEmail($orderTransfer->getEmail())
             ->setItems($orderTransfer->getItems())
             ->setBillingAddress($orderTransfer->getBillingAddress())
             ->setShippingAddress($orderTransfer->getShippingAddress())
@@ -33,6 +33,7 @@ class OrderToCallConverter implements OrderToCallConverterInterface
             ->setPaymentMethod($paymentTransfer->getPaymentMethod())
             ->setExpenses($orderTransfer->getExpenses())
             ->setCheckoutId($this->getCheckoutId($orderTransfer))
+            ->setPayments($orderTransfer->getPayments())
             ->setCurrency($orderTransfer->getCurrencyIsoCode());
     }
 
