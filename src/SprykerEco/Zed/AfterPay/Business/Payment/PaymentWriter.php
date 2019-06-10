@@ -41,6 +41,20 @@ class PaymentWriter implements PaymentWriterInterface
     }
 
     /**
+     * @param string $customerNumber
+     * @param int $idSalesOrder
+     *
+     * @return void
+     */
+    public function setCustomerNumberByIdSalesOrder(string $customerNumber, int $idSalesOrder): void
+    {
+        $afterPayPaymentEntity = $this->getPaymentEntityByIdSalesOrder($idSalesOrder);
+        $afterPayPaymentEntity
+            ->setInfoscoreCustomerNumber($customerNumber)
+            ->save();
+    }
+
+    /**
      * @param int $authorizedTotal
      * @param int $idSalesOrder
      *

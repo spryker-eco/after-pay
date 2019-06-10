@@ -82,6 +82,19 @@ class AuthorizePaymentCall extends AbstractApiCall implements AuthorizePaymentCa
             ->setOutcome($jsonResponseArray[AfterPayApiRequestConfig::TRANSACTION_OUTCOME] ?? SharedAfterPayConfig::API_TRANSACTION_OUTCOME_REJECTED)
             ->setReservationId($jsonResponseArray[AfterPayApiRequestConfig::TRANSACTION_RESERVATION_ID] ?? null)
             ->setCheckoutId($jsonResponseArray[AfterPayApiRequestConfig::TRANSACTION_CHECKOUT_ID] ?? null)
+            ->setCustomerNumber($this->findCustomerNumber($jsonResponseArray))
             ->setResponsePayload($jsonResponse);
+    }
+
+    /**
+     * @param array $response
+     *
+     * @return string
+     */
+    protected function findCustomerNumber(array $response): ?string
+    {
+        $customerData = $response[AfterPayApiRequestConfig::CUSTOMER] ?? [];
+
+        return $customerData[AfterPayApiRequestConfig::CUSTOMER_NUMBER] ?? null;
     }
 }

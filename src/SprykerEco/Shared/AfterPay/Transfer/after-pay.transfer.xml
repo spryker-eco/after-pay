@@ -196,6 +196,7 @@
         <property name="reservationId" type="string" />
         <property name="checkoutId" type="string" />
         <property name="responsePayload" type="string" />
+        <property name="customerNumber" type="string" />
         <property name="error" type="AfterPayApiResponseError" />
     </transfer>
 

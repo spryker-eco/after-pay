@@ -18,6 +18,14 @@ interface PaymentWriterInterface
     public function setIdReservationByIdSalesOrder(string $idReservation, int $idSalesOrder): void;
 
     /**
+     * @param string $customerNumber
+     * @param int $idSalesOrder
+     *
+     * @return void
+     */
+    public function setCustomerNumberByIdSalesOrder(string $customerNumber, int $idSalesOrder): void;
+
+    /**
      * @param int $authorizedTotal
      * @param int $idSalesOrder
      *

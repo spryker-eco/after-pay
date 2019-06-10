@@ -68,6 +68,10 @@ class AuthorizeTransactionHandler implements AuthorizeTransactionHandlerInterfac
         $this->setPaymentReservationId($afterPayCallTransfer, $authorizeResponseTransfer);
         $this->setPaymentTotalAuthorizedAmount($afterPayCallTransfer);
 
+        if ($authorizeResponseTransfer->getCustomerNumber()) {
+            $this->setInfoscoreCustomerNumber($afterPayCallTransfer, $authorizeResponseTransfer);
+        }
+
         return $authorizeResponseTransfer;
     }
 
@@ -95,6 +99,22 @@ class AuthorizeTransactionHandler implements AuthorizeTransactionHandlerInterfac
     ): void {
         $this->paymentWriter->setIdReservationByIdSalesOrder(
             $authorizeResponseTransfer->getReservationId(),
+            $afterPayCallTransfer->getIdSalesOrder()
+        );
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\AfterPayCallTransfer $afterPayCallTransfer
+     * @param \Generated\Shared\Transfer\AfterPayApiResponseTransfer $authorizeResponseTransfer
+     *
+     * @return void
+     */
+    protected function setInfoscoreCustomerNumber(
+        AfterPayCallTransfer $afterPayCallTransfer,
+        AfterPayApiResponseTransfer $authorizeResponseTransfer
+    ): void {
+        $this->paymentWriter->setCustomerNumberByIdSalesOrder(
+            $authorizeResponseTransfer->getCustomerNumber(),
             $afterPayCallTransfer->getIdSalesOrder()
         );
     }
