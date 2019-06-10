@@ -9,6 +9,7 @@ namespace SprykerEco\Zed\AfterPay\Business\Payment;
 
 use Orm\Zed\AfterPay\Persistence\SpyPaymentAfterPay;
 use Orm\Zed\AfterPay\Persistence\SpyPaymentAfterPayOrderItem;
+use SprykerEco\Zed\AfterPay\Persistence\AfterPayEntityManagerInterface;
 use SprykerEco\Zed\AfterPay\Persistence\AfterPayQueryContainerInterface;
 
 class PaymentWriter implements PaymentWriterInterface
@@ -19,11 +20,20 @@ class PaymentWriter implements PaymentWriterInterface
     protected $afterPayQueryContainer;
 
     /**
-     * @param \SprykerEco\Zed\AfterPay\Persistence\AfterPayQueryContainerInterface $afterPayQueryContainer
+     * @var \SprykerEco\Zed\AfterPay\Persistence\AfterPayEntityManagerInterface
      */
-    public function __construct(AfterPayQueryContainerInterface $afterPayQueryContainer)
-    {
+    protected $afterPayEntityManager;
+
+    /**
+     * @param \SprykerEco\Zed\AfterPay\Persistence\AfterPayQueryContainerInterface $afterPayQueryContainer
+     * @param \SprykerEco\Zed\AfterPay\Persistence\AfterPayEntityManagerInterface $afterPayEntityManager
+     */
+    public function __construct(
+        AfterPayQueryContainerInterface $afterPayQueryContainer,
+        AfterPayEntityManagerInterface $afterPayEntityManager
+    ) {
         $this->afterPayQueryContainer = $afterPayQueryContainer;
+        $this->afterPayEntityManager = $afterPayEntityManager;
     }
 
     /**
@@ -48,10 +58,7 @@ class PaymentWriter implements PaymentWriterInterface
      */
     public function setCustomerNumberByIdSalesOrder(string $customerNumber, int $idSalesOrder): void
     {
-        $afterPayPaymentEntity = $this->getPaymentEntityByIdSalesOrder($idSalesOrder);
-        $afterPayPaymentEntity
-            ->setInfoscoreCustomerNumber($customerNumber)
-            ->save();
+        $this->afterPayEntityManager->addCustomerNumberToAfterPayPaymentByIdSalesOrder($customerNumber, $idSalesOrder);
     }
 
     /**

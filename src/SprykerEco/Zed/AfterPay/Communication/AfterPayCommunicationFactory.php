@@ -20,6 +20,7 @@ use SprykerEco\Zed\AfterPay\Dependency\Facade\AfterPayToSalesFacadeInterface;
  * @method \SprykerEco\Zed\AfterPay\Persistence\AfterPayQueryContainerInterface getQueryContainer()
  * @method \SprykerEco\Zed\AfterPay\AfterPayConfig getConfig()
  * @method \SprykerEco\Zed\AfterPay\Business\AfterPayFacadeInterface getFacade()
+ * @method \SprykerEco\Zed\AfterPay\Persistence\AfterPayEntityManagerInterface getEntityManager()
  */
 class AfterPayCommunicationFactory extends AbstractCommunicationFactory
 {

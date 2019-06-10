@@ -17,6 +17,7 @@ use Spryker\Zed\Kernel\Persistence\AbstractPersistenceFactory;
 /**
  * @method \SprykerEco\Zed\AfterPay\AfterPayConfig getConfig()
  * @method \SprykerEco\Zed\AfterPay\Persistence\AfterPayQueryContainerInterface getQueryContainer()
+ * @method \SprykerEco\Zed\AfterPay\Persistence\AfterPayEntityManagerInterface getEntityManager()
  */
 class AfterPayPersistenceFactory extends AbstractPersistenceFactory
 {
