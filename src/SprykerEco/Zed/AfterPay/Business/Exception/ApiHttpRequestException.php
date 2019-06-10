@@ -58,6 +58,7 @@ class ApiHttpRequestException extends Exception
         if (empty($this->detailedMessage)) {
             return parent::getMessage();
         }
+
         return $this->detailedMessage;
     }
 }

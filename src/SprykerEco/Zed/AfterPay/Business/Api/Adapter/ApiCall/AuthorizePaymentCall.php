@@ -89,7 +89,7 @@ class AuthorizePaymentCall extends AbstractApiCall implements AuthorizePaymentCa
     /**
      * @param array $response
      *
-     * @return string
+     * @return string|null
      */
     protected function findCustomerNumber(array $response): ?string
     {

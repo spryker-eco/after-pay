@@ -125,6 +125,7 @@ class Saver implements SaverInterface
             if ($paymentTransfer->getPaymentMethod() !== SharedAfterPayConfig::PROVIDER_NAME || !$paymentTransfer->getAmount()) {
                 continue;
             }
+
             return $paymentTransfer->getAmount();
         }
 

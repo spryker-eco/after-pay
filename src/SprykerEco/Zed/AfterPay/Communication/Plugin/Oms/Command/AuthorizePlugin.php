@@ -47,6 +47,7 @@ class AuthorizePlugin extends AbstractPlugin implements CommandByOrderInterface
     protected function createAuthorizeCallTransfer(SpySalesOrder $orderEntity): AfterPayCallTransfer
     {
         $orderTransfer = $this->getOrderWithPaymentTransfer($orderEntity->getIdSalesOrder());
+
         return $this->getFactory()
             ->createOrderToCallConverter()
             ->convert($orderTransfer);
