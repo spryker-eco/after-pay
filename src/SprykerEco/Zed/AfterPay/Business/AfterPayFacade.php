@@ -28,6 +28,7 @@ use Spryker\Zed\Kernel\Business\AbstractFacade;
 
 /**
  * @method \SprykerEco\Zed\AfterPay\Business\AfterPayBusinessFactory getFactory()
+ * @method \SprykerEco\Zed\AfterPay\Persistence\AfterPayEntityManagerInterface getEntityManager()
  */
 class AfterPayFacade extends AbstractFacade implements AfterPayFacadeInterface
 {

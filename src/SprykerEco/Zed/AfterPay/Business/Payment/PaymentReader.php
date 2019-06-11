@@ -83,6 +83,7 @@ class PaymentReader implements PaymentReaderInterface
         $afterPayPaymentOrderItemEntity = $this->afterPayQueryContainer
             ->queryPaymentOrderItemByIdSalesOrderAndIdPayment($idSalesOrderItem, $idPayment)
             ->findOne();
+
         return $afterPayPaymentOrderItemEntity;
     }
 }

@@ -33,6 +33,7 @@ class AbstractApiCall
     protected function buildJsonRequestFromTransferObject(AbstractTransfer $requestTransfer): string
     {
         $requestArray = $this->transferConverter->convert($requestTransfer);
+
         return $this->utilEncoding->encodeJson($requestArray);
     }
 

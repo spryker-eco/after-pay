@@ -83,6 +83,7 @@ use SprykerEco\Zed\AfterPay\Dependency\Service\AfterPayToUtilEncodingServiceInte
 /**
  * @method \SprykerEco\Zed\AfterPay\Persistence\AfterPayQueryContainerInterface getQueryContainer()
  * @method \SprykerEco\Zed\AfterPay\AfterPayConfig getConfig()
+ * @method \SprykerEco\Zed\AfterPay\Persistence\AfterPayEntityManagerInterface getEntityManager()
  */
 class AfterPayBusinessFactory extends AbstractBusinessFactory
 {
@@ -240,7 +241,7 @@ class AfterPayBusinessFactory extends AbstractBusinessFactory
      */
     public function createPaymentWriter(): PaymentWriterInterface
     {
-        return new PaymentWriter($this->getQueryContainer());
+        return new PaymentWriter($this->getQueryContainer(), $this->getEntityManager());
     }
 
     /**
