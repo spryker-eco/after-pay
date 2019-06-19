@@ -10,8 +10,8 @@ namespace SprykerEco\Zed\AfterPay\Business\Payment;
 interface PaymentWriterInterface
 {
     /**
-     * @param string|int $idReservation
-     * @param int|string|null $idSalesOrder
+     * @param int $idSalesOrder
+     * @param string|null $idReservation
      *
      * @return void
      */
