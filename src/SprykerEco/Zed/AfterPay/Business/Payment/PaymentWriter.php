@@ -42,7 +42,7 @@ class PaymentWriter implements PaymentWriterInterface
      *
      * @return void
      */
-    public function setIdReservationByIdSalesOrder(string $idReservation, int $idSalesOrder): void
+    public function setIdReservationByIdSalesOrder(int $idSalesOrder, string $idReservation = null): void
     {
         $afterPayPaymentEntity = $this->getPaymentEntityByIdSalesOrder($idSalesOrder);
         $afterPayPaymentEntity

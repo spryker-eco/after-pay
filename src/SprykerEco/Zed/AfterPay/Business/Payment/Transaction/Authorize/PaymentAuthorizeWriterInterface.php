@@ -16,5 +16,5 @@ interface PaymentAuthorizeWriterInterface
      *
      * @return void
      */
-    public function save(string $orderReference, string $idReservation, string $idCheckout): void;
+    public function save(string $orderReference, string $idReservation = null, string $idCheckout = null): void;
 }
