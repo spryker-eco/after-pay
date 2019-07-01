@@ -27,12 +27,12 @@ class PaymentAuthorizeWriter implements PaymentAuthorizeWriterInterface
 
     /**
      * @param string $orderReference
-     * @param string $idReservation
-     * @param string $idCheckout
+     * @param string|null $idReservation
+     * @param string|null $idCheckout
      *
      * @return void
      */
-    public function save(string $orderReference, string $idReservation, string $idCheckout): void
+    public function save(string $orderReference, ?string $idReservation = null, ?string $idCheckout = null): void
     {
         $authorizationEntity = $this->getPaymentAuthorizeEntity($orderReference);
         $authorizationEntity

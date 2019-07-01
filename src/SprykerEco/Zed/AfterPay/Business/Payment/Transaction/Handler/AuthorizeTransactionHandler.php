@@ -98,8 +98,8 @@ class AuthorizeTransactionHandler implements AuthorizeTransactionHandlerInterfac
         AfterPayApiResponseTransfer $authorizeResponseTransfer
     ): void {
         $this->paymentWriter->setIdReservationByIdSalesOrder(
-            $authorizeResponseTransfer->getReservationId(),
-            $afterPayCallTransfer->getIdSalesOrder()
+            $afterPayCallTransfer->getIdSalesOrder(),
+            $authorizeResponseTransfer->getReservationId()
         );
     }
 
