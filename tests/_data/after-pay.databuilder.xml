@@ -110,7 +110,7 @@
     </transfer>
 
     <transfer name="TaxTotal">
-        <property name="taxRate" dataBuilderRule="randomFloat(2)" />
+        <property name="taxRate" dataBuilderRule="randomNumber(5)" />
         <property name="amount" dataBuilderRule="=1000" />
     </transfer>
 
