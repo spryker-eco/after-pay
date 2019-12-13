@@ -33,7 +33,7 @@ use Spryker\Zed\Kernel\Business\AbstractFacade;
 class AfterPayFacade extends AbstractFacade implements AfterPayFacadeInterface
 {
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      *
      * @api
      *
@@ -52,7 +52,7 @@ class AfterPayFacade extends AbstractFacade implements AfterPayFacadeInterface
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      *
      * @api
      *
@@ -68,7 +68,7 @@ class AfterPayFacade extends AbstractFacade implements AfterPayFacadeInterface
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      *
      * @api
      *
@@ -84,7 +84,7 @@ class AfterPayFacade extends AbstractFacade implements AfterPayFacadeInterface
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      *
      * @api
      *
@@ -100,7 +100,7 @@ class AfterPayFacade extends AbstractFacade implements AfterPayFacadeInterface
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      *
      * @api
      *
@@ -116,7 +116,7 @@ class AfterPayFacade extends AbstractFacade implements AfterPayFacadeInterface
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      *
      * @api
      *
@@ -133,7 +133,7 @@ class AfterPayFacade extends AbstractFacade implements AfterPayFacadeInterface
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      *
      * @api
      *
@@ -150,7 +150,7 @@ class AfterPayFacade extends AbstractFacade implements AfterPayFacadeInterface
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      *
      * @api
      *
@@ -166,7 +166,7 @@ class AfterPayFacade extends AbstractFacade implements AfterPayFacadeInterface
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      *
      * @api
      *
@@ -183,7 +183,7 @@ class AfterPayFacade extends AbstractFacade implements AfterPayFacadeInterface
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      *
      * @api
      *
@@ -200,7 +200,7 @@ class AfterPayFacade extends AbstractFacade implements AfterPayFacadeInterface
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      *
      * @api
      *
@@ -217,7 +217,7 @@ class AfterPayFacade extends AbstractFacade implements AfterPayFacadeInterface
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      *
      * @api
      *
@@ -233,7 +233,7 @@ class AfterPayFacade extends AbstractFacade implements AfterPayFacadeInterface
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      *
      * @api
      *
@@ -247,7 +247,7 @@ class AfterPayFacade extends AbstractFacade implements AfterPayFacadeInterface
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      *
      * @api
      *
@@ -261,11 +261,12 @@ class AfterPayFacade extends AbstractFacade implements AfterPayFacadeInterface
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      *
      * @api
      *
      * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
+     *
      * @return \Generated\Shared\Transfer\AfterPayAvailablePaymentMethodsTransfer
      */
     public function getAvailablePaymentMethods(QuoteTransfer $quoteTransfer): AfterPayAvailablePaymentMethodsTransfer

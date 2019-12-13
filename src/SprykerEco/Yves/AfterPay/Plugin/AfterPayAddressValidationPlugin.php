@@ -18,7 +18,7 @@ use Spryker\Yves\Kernel\AbstractPlugin;
 class AfterPayAddressValidationPlugin extends AbstractPlugin implements AfterPayAddressValidationPluginInterface
 {
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      *
      * @api
      *

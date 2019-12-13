@@ -62,7 +62,6 @@ class RefundRequestBuilder implements RefundRequestBuilderInterface
         ItemTransfer $orderItemTransfer,
         AfterPayRefundRequestTransfer $refundRequestTransfer
     ): RefundRequestBuilderInterface {
-
         $orderItemRequestTransfer = $this->orderToRequestMapper->orderItemToAfterPayItemRequest($orderItemTransfer);
 
         $this->addOrderItemToRefundDetails($orderItemRequestTransfer, $refundRequestTransfer);
