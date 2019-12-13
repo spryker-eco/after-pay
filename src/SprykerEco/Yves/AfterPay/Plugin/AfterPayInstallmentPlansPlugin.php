@@ -18,7 +18,7 @@ use Spryker\Yves\Kernel\AbstractPlugin;
 class AfterPayInstallmentPlansPlugin extends AbstractPlugin implements AfterPayInstallmentPlansPluginInterface
 {
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      *
      * @api
      *

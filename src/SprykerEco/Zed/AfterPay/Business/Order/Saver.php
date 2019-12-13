@@ -56,7 +56,6 @@ class Saver implements SaverInterface
         QuoteTransfer $quoteTransfer,
         SaveOrderTransfer $saveOrderTransfer
     ): void {
-
         $paymentEntity = $this->buildPaymentEntity($quoteTransfer, $saveOrderTransfer);
         $paymentEntity->save();
 

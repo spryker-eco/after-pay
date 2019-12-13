@@ -18,7 +18,7 @@ use Spryker\Yves\Kernel\AbstractPlugin;
 class AfterPayBankAccountValidationPlugin extends AbstractPlugin implements AfterPayBankAccountValidationPluginInterface
 {
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      *
      * @api
      *

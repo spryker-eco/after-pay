@@ -25,7 +25,7 @@ use Spryker\Client\Kernel\AbstractClient;
 class AfterPayClient extends AbstractClient implements AfterPayClientInterface
 {
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      *
      * @api
      *
@@ -41,7 +41,7 @@ class AfterPayClient extends AbstractClient implements AfterPayClientInterface
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      *
      * @api
      *
@@ -57,7 +57,7 @@ class AfterPayClient extends AbstractClient implements AfterPayClientInterface
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      *
      * @api
      *
@@ -73,7 +73,7 @@ class AfterPayClient extends AbstractClient implements AfterPayClientInterface
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      *
      * @api
      *
@@ -89,7 +89,7 @@ class AfterPayClient extends AbstractClient implements AfterPayClientInterface
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      *
      * @api
      *

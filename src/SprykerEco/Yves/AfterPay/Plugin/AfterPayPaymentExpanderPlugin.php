@@ -20,7 +20,7 @@ use Symfony\Component\HttpFoundation\Request;
 class AfterPayPaymentExpanderPlugin extends AbstractPlugin implements StepHandlerPluginInterface
 {
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      *
      * @api
      *

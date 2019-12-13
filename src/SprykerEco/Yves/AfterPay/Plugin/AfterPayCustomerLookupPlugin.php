@@ -18,7 +18,7 @@ use Spryker\Yves\Kernel\AbstractPlugin;
 class AfterPayCustomerLookupPlugin extends AbstractPlugin implements AfterPayCustomerLookupPluginInterface
 {
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      *
      * @api
      *

@@ -180,7 +180,7 @@ interface AfterPayFacadeInterface
     public function postSaveHook(QuoteTransfer $quoteTransfer, CheckoutResponseTransfer $checkoutResponseTransfer): CheckoutResponseTransfer;
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      *
      * @api
      *
