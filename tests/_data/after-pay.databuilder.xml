@@ -91,13 +91,6 @@
         <property name="iso2Code" dataBuilderRule="=DE" />
     </transfer>
 
-    <transfer name="Item" >
-        <property name="sku" dataBuilderRule="isbn10" />
-        <property name="unitGrossPrice" dataBuilderRule="92492"  />
-        <property name="quantity" dataBuilderRule="=1" />
-        <property name="name" dataBuilderRule="word" />
-    </transfer>
-
     <transfer name="Totals">
         <property name="subtotal" dataBuilderRule="randomNumber" />
         <property name="expenseTotal" dataBuilderRule="=1000" />
