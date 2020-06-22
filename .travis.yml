@@ -44,6 +44,7 @@ env:
     - MODULE_DIR=module
     - SHOP_DIR=current
     - MODULE_NAME=after-pay
+    - POSTGRES_PORT=5432
 
 cache:
   directories:
