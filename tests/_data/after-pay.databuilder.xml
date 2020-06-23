@@ -92,7 +92,7 @@
     </transfer>
 
     <transfer name="Totals">
-        <property name="subtotal" dataBuilderRule="randomNumber" />
+        <property name="subtotal" dataBuilderRule="randomNumber(5)" />
         <property name="expenseTotal" dataBuilderRule="=1000" />
         <property name="discountTotal" dataBuilderRule="=1000" />
         <property name="taxTotal" type="TaxTotal" />
