@@ -35,7 +35,9 @@ interface AdapterInterface
      *
      * @return \Generated\Shared\Transfer\AfterPayAvailablePaymentMethodsResponseTransfer
      */
-    public function sendAvailablePaymentMethodsRequest(AfterPayAvailablePaymentMethodsRequestTransfer $requestTransfer): AfterPayAvailablePaymentMethodsResponseTransfer;
+    public function sendAvailablePaymentMethodsRequest(
+        AfterPayAvailablePaymentMethodsRequestTransfer $requestTransfer
+    ): AfterPayAvailablePaymentMethodsResponseTransfer;
 
     /**
      * @param \Generated\Shared\Transfer\AfterPayAuthorizeRequestTransfer $authorizeRequestTransfer
@@ -49,14 +51,18 @@ interface AdapterInterface
      *
      * @return \Generated\Shared\Transfer\AfterPayValidateCustomerResponseTransfer
      */
-    public function sendValidateCustomerRequest(AfterPayValidateCustomerRequestTransfer $validateCustomerRequestTransfer): AfterPayValidateCustomerResponseTransfer;
+    public function sendValidateCustomerRequest(
+        AfterPayValidateCustomerRequestTransfer $validateCustomerRequestTransfer
+    ): AfterPayValidateCustomerResponseTransfer;
 
     /**
      * @param \Generated\Shared\Transfer\AfterPayValidateBankAccountRequestTransfer $validateBankAccountRequestTransfer
      *
      * @return \Generated\Shared\Transfer\AfterPayValidateBankAccountResponseTransfer
      */
-    public function sendValidateBankAccountRequest(AfterPayValidateBankAccountRequestTransfer $validateBankAccountRequestTransfer): AfterPayValidateBankAccountResponseTransfer;
+    public function sendValidateBankAccountRequest(
+        AfterPayValidateBankAccountRequestTransfer $validateBankAccountRequestTransfer
+    ): AfterPayValidateBankAccountResponseTransfer;
 
     /**
      * @param \Generated\Shared\Transfer\AfterPayCustomerLookupRequestTransfer $customerLookupRequestTransfer
@@ -70,7 +76,9 @@ interface AdapterInterface
      *
      * @return \Generated\Shared\Transfer\AfterPayInstallmentPlansResponseTransfer
      */
-    public function sendLookupInstallmentPlansRequest(AfterPayInstallmentPlansRequestTransfer $installmentPlansRequestTransfer): AfterPayInstallmentPlansResponseTransfer;
+    public function sendLookupInstallmentPlansRequest(
+        AfterPayInstallmentPlansRequestTransfer $installmentPlansRequestTransfer
+    ): AfterPayInstallmentPlansResponseTransfer;
 
     /**
      * @param \Generated\Shared\Transfer\AfterPayCaptureRequestTransfer $captureRequestTransfer

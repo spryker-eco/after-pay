@@ -24,6 +24,8 @@ class IsCaptureCompletedPlugin extends AbstractPlugin implements ConditionInterf
     public const CAPTURE_TRANSACTION_ACCEPTED = AfterPayConfig::API_TRANSACTION_OUTCOME_ACCEPTED;
 
     /**
+     * {@inheritDoc}
+     *
      * @api
      *
      * @param \Orm\Zed\Sales\Persistence\SpySalesOrderItem $orderItem

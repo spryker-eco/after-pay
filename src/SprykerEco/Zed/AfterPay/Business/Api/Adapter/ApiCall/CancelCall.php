@@ -76,6 +76,7 @@ class CancelCall extends AbstractApiCall implements CancelCallInterface
             );
         } catch (ApiHttpRequestException $apiHttpRequestException) {
             $this->logApiException($apiHttpRequestException);
+
             throw $apiHttpRequestException;
         }
 

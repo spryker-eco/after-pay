@@ -24,6 +24,8 @@ class IsRefundCompletedPlugin extends AbstractPlugin implements ConditionInterfa
     public const REFUND_TRANSACTION_ACCEPTED = AfterPayConfig::API_TRANSACTION_OUTCOME_ACCEPTED;
 
     /**
+     * {@inheritDoc}
+     *
      * @api
      *
      * @param \Orm\Zed\Sales\Persistence\SpySalesOrderItem $orderItem

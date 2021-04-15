@@ -26,8 +26,9 @@ class AfterPayInstallmentPlansPlugin extends AbstractPlugin implements AfterPayI
      *
      * @return \Generated\Shared\Transfer\AfterPayInstallmentPlansResponseTransfer
      */
-    public function getAvailableInstallmentPlans(AfterPayInstallmentPlansRequestTransfer $installmentPlansRequestTransfer): AfterPayInstallmentPlansResponseTransfer
-    {
+    public function getAvailableInstallmentPlans(
+        AfterPayInstallmentPlansRequestTransfer $installmentPlansRequestTransfer
+    ): AfterPayInstallmentPlansResponseTransfer {
         return $this->getFactory()
             ->getClient()
             ->getAvailableInstallmentPlans($installmentPlansRequestTransfer);

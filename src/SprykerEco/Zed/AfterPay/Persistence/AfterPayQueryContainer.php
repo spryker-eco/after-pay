@@ -26,6 +26,8 @@ class AfterPayQueryContainer extends AbstractQueryContainer implements AfterPayQ
     public const TRANSACTION_TYPE_REFUND = AfterPayConfig::TRANSACTION_TYPE_REFUND;
 
     /**
+     * {@inheritDoc}
+     *
      * @api
      *
      * @param string $orderReference
@@ -41,6 +43,8 @@ class AfterPayQueryContainer extends AbstractQueryContainer implements AfterPayQ
     }
 
     /**
+     * {@inheritDoc}
+     *
      * @api
      *
      * @param string $orderReference
@@ -56,6 +60,8 @@ class AfterPayQueryContainer extends AbstractQueryContainer implements AfterPayQ
     }
 
     /**
+     * {@inheritDoc}
+     *
      * @api
      *
      * @param string $orderReference
@@ -71,6 +77,8 @@ class AfterPayQueryContainer extends AbstractQueryContainer implements AfterPayQ
     }
 
     /**
+     * {@inheritDoc}
+     *
      * @api
      *
      * @param string $orderReference
@@ -86,6 +94,8 @@ class AfterPayQueryContainer extends AbstractQueryContainer implements AfterPayQ
     }
 
     /**
+     * {@inheritDoc}
+     *
      * @api
      *
      * @param int $idSalesOrder
@@ -101,6 +111,8 @@ class AfterPayQueryContainer extends AbstractQueryContainer implements AfterPayQ
     }
 
     /**
+     * {@inheritDoc}
+     *
      * @api
      *
      * @param int $idSalesOrderItem
@@ -118,6 +130,8 @@ class AfterPayQueryContainer extends AbstractQueryContainer implements AfterPayQ
     }
 
     /**
+     * {@inheritDoc}
+     *
      * @api
      *
      * @param string $orderReference
@@ -134,6 +148,8 @@ class AfterPayQueryContainer extends AbstractQueryContainer implements AfterPayQ
     }
 
     /**
+     * {@inheritDoc}
+     *
      * @api
      *
      * @param string $orderReference
@@ -148,6 +164,8 @@ class AfterPayQueryContainer extends AbstractQueryContainer implements AfterPayQ
     }
 
     /**
+     * {@inheritDoc}
+     *
      * @api
      *
      * @param int $idSalesOrder

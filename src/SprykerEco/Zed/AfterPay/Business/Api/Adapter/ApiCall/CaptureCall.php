@@ -76,6 +76,7 @@ class CaptureCall extends AbstractApiCall implements CaptureCallInterface
             );
         } catch (ApiHttpRequestException $apiHttpRequestException) {
             $this->logApiException($apiHttpRequestException);
+
             throw $apiHttpRequestException;
         }
 

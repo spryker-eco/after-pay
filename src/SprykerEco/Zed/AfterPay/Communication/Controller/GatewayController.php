@@ -29,8 +29,9 @@ class GatewayController extends AbstractGatewayController
      *
      * @return \Generated\Shared\Transfer\AfterPayValidateCustomerResponseTransfer
      */
-    public function validateCustomerAddressAction(AfterPayValidateCustomerRequestTransfer $validateCustomerRequestTransfer): AfterPayValidateCustomerResponseTransfer
-    {
+    public function validateCustomerAddressAction(
+        AfterPayValidateCustomerRequestTransfer $validateCustomerRequestTransfer
+    ): AfterPayValidateCustomerResponseTransfer {
         return $this->getFacade()->validateCustomerAddress($validateCustomerRequestTransfer);
     }
 
@@ -39,8 +40,9 @@ class GatewayController extends AbstractGatewayController
      *
      * @return \Generated\Shared\Transfer\AfterPayValidateBankAccountResponseTransfer
      */
-    public function validateBankAccountAction(AfterPayValidateBankAccountRequestTransfer $validateBankAccountRequestTransfer): AfterPayValidateBankAccountResponseTransfer
-    {
+    public function validateBankAccountAction(
+        AfterPayValidateBankAccountRequestTransfer $validateBankAccountRequestTransfer
+    ): AfterPayValidateBankAccountResponseTransfer {
         return $this->getFacade()->validateBankAccount($validateBankAccountRequestTransfer);
     }
 
@@ -59,8 +61,9 @@ class GatewayController extends AbstractGatewayController
      *
      * @return \Generated\Shared\Transfer\AfterPayInstallmentPlansResponseTransfer
      */
-    public function lookupInstallmentPlansAction(AfterPayInstallmentPlansRequestTransfer $installmentPlansRequestTransfer): AfterPayInstallmentPlansResponseTransfer
-    {
+    public function lookupInstallmentPlansAction(
+        AfterPayInstallmentPlansRequestTransfer $installmentPlansRequestTransfer
+    ): AfterPayInstallmentPlansResponseTransfer {
         return $this->getFacade()->lookupInstallmentPlans($installmentPlansRequestTransfer);
     }
 

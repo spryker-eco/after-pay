@@ -13,7 +13,6 @@ class AfterPayApiRequestConfig
     public const TRANSACTION_RESERVATION_ID = 'reservationId';
     public const TRANSACTION_CHECKOUT_ID = 'checkoutId';
 
-    
     public const PAYMENT_METHODS = 'paymentMethods';
     public const ADDITIONAL_RESPONSE_INFO = 'additionalResponseInfo';
     public const RISK_CHECK_CODE = 'rsS_RiskCheck_ResultCode';
@@ -25,7 +24,6 @@ class AfterPayApiRequestConfig
     public const RISK_CHECK_MESSAGE_MESSAGE = 'message';
     public const RISK_CHECK_MESSAGE_TYPE = 'type';
 
-    
     public const CAPTURE_CAPTURED_AMOUNT = 'capturedAmount';
     public const CAPTURE_AUTHORIZED_AMOUNT = 'authorizedAmount';
     public const CAPTURE_REMAINING_AUTHORIZED_AMOUNT = 'remainingAuthorizedAmount';
@@ -34,18 +32,14 @@ class AfterPayApiRequestConfig
     public const REFUND_TOTAL_CAPTURED_AMOUNT = 'totalCapturedAmount';
     public const REFUND_TOTAL_AUTHORIZE_AMOUNT = 'totalAuthorizedAmount';
 
-    
     public const CANCEL_CAPTURED_AMOUNT = 'totalCapturedAmount';
     public const CANCEL_AUTHORIZED_AMOUNT = 'totalAuthorizedAmount';
 
-    
     public const VALIDATE_BANK_ACCOUNT_IS_VALID = 'isValid';
 
-    
     public const VALIDATE_ADDRESS_IS_VALID = 'isValid';
     public const CORRECTED_ADDRESS = 'correctedAddress';
 
-    
     public const USER_PROFILES = 'userProfiles';
     public const USER_PROFILE_FIRST_NAME = 'firstName';
     public const USER_PROFILE_LAST_NAME = 'lastName';
@@ -66,7 +60,6 @@ class AfterPayApiRequestConfig
     public const USER_PROFILE_ADDRESS_COUNTRY = 'country';
     public const USER_PROFILE_ADDRESS_COUNTRY_CODE = 'countryCode';
 
-    
     public const AVAILABLE_PLANS = 'availableInstallmentPlans';
     public const BASKET_AMOUNT = 'basketAmount';
     public const NUMBER_OF_INSTALLMENTS = 'numberOfInstallments';
@@ -83,6 +76,5 @@ class AfterPayApiRequestConfig
     public const INSTALLMENT_PROFILE_NUMBER = 'installmentProfileNumber';
     public const READ_MORE = 'readMore';
 
-    
     public const API_VERSION = 'version';
 }

@@ -46,8 +46,9 @@ class AfterPayApiAdapter implements AdapterInterface
      *
      * @return \Generated\Shared\Transfer\AfterPayAvailablePaymentMethodsResponseTransfer
      */
-    public function sendAvailablePaymentMethodsRequest(AfterPayAvailablePaymentMethodsRequestTransfer $requestTransfer): AfterPayAvailablePaymentMethodsResponseTransfer
-    {
+    public function sendAvailablePaymentMethodsRequest(
+        AfterPayAvailablePaymentMethodsRequestTransfer $requestTransfer
+    ): AfterPayAvailablePaymentMethodsResponseTransfer {
         return $this->adapterFactory
             ->createAvailablePaymentMethodsCall()
             ->execute($requestTransfer);
@@ -70,8 +71,9 @@ class AfterPayApiAdapter implements AdapterInterface
      *
      * @return \Generated\Shared\Transfer\AfterPayValidateCustomerResponseTransfer
      */
-    public function sendValidateCustomerRequest(AfterPayValidateCustomerRequestTransfer $validateCustomerRequestTransfer): AfterPayValidateCustomerResponseTransfer
-    {
+    public function sendValidateCustomerRequest(
+        AfterPayValidateCustomerRequestTransfer $validateCustomerRequestTransfer
+    ): AfterPayValidateCustomerResponseTransfer {
         return $this->adapterFactory
             ->createValidateCustomerCall()
             ->execute($validateCustomerRequestTransfer);
@@ -82,8 +84,9 @@ class AfterPayApiAdapter implements AdapterInterface
      *
      * @return \Generated\Shared\Transfer\AfterPayValidateBankAccountResponseTransfer
      */
-    public function sendValidateBankAccountRequest(AfterPayValidateBankAccountRequestTransfer $validateBankAccountRequestTransfer): AfterPayValidateBankAccountResponseTransfer
-    {
+    public function sendValidateBankAccountRequest(
+        AfterPayValidateBankAccountRequestTransfer $validateBankAccountRequestTransfer
+    ): AfterPayValidateBankAccountResponseTransfer {
         return $this->adapterFactory
             ->createValidateBankAccountCall()
             ->execute($validateBankAccountRequestTransfer);
@@ -106,8 +109,9 @@ class AfterPayApiAdapter implements AdapterInterface
      *
      * @return \Generated\Shared\Transfer\AfterPayInstallmentPlansResponseTransfer
      */
-    public function sendLookupInstallmentPlansRequest(AfterPayInstallmentPlansRequestTransfer $installmentPlansRequestTransfer): AfterPayInstallmentPlansResponseTransfer
-    {
+    public function sendLookupInstallmentPlansRequest(
+        AfterPayInstallmentPlansRequestTransfer $installmentPlansRequestTransfer
+    ): AfterPayInstallmentPlansResponseTransfer {
         return $this->adapterFactory
             ->createLookupInstallmentPlansCall()
             ->execute($installmentPlansRequestTransfer);

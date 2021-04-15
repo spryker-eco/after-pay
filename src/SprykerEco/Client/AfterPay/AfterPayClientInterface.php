@@ -57,7 +57,9 @@ interface AfterPayClientInterface
      *
      * @return \Generated\Shared\Transfer\AfterPayInstallmentPlansResponseTransfer
      */
-    public function getAvailableInstallmentPlans(AfterPayInstallmentPlansRequestTransfer $installmentPlansRequestTransfer): AfterPayInstallmentPlansResponseTransfer;
+    public function getAvailableInstallmentPlans(
+        AfterPayInstallmentPlansRequestTransfer $installmentPlansRequestTransfer
+    ): AfterPayInstallmentPlansResponseTransfer;
 
     /**
      * Specification:
@@ -71,7 +73,9 @@ interface AfterPayClientInterface
      *
      * @return \Generated\Shared\Transfer\AfterPayValidateBankAccountResponseTransfer
      */
-    public function validateBankAccount(AfterPayValidateBankAccountRequestTransfer $bankAccountValidationRequestTransfer): AfterPayValidateBankAccountResponseTransfer;
+    public function validateBankAccount(
+        AfterPayValidateBankAccountRequestTransfer $bankAccountValidationRequestTransfer
+    ): AfterPayValidateBankAccountResponseTransfer;
 
     /**
      * Specification:

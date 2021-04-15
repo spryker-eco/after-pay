@@ -68,7 +68,9 @@ interface AfterPayFacadeInterface
      *
      * @return \Generated\Shared\Transfer\AfterPayValidateBankAccountResponseTransfer
      */
-    public function validateBankAccount(AfterPayValidateBankAccountRequestTransfer $validateBankAccountRequestTransfer): AfterPayValidateBankAccountResponseTransfer;
+    public function validateBankAccount(
+        AfterPayValidateBankAccountRequestTransfer $validateBankAccountRequestTransfer
+    ): AfterPayValidateBankAccountResponseTransfer;
 
     /**
      * Specification:
@@ -180,7 +182,8 @@ interface AfterPayFacadeInterface
     public function postSaveHook(QuoteTransfer $quoteTransfer, CheckoutResponseTransfer $checkoutResponseTransfer): CheckoutResponseTransfer;
 
     /**
-     * {@inheritDoc}
+     * Specification:
+     * - Retrieve Payment by idSalesOrder.
      *
      * @api
      *

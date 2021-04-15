@@ -20,7 +20,6 @@ use Generated\Shared\Transfer\AfterPayRequestPaymentTransfer;
 use Generated\Shared\Transfer\ExpenseTransfer;
 use Generated\Shared\Transfer\ItemTransfer;
 use Generated\Shared\Transfer\OrderTransfer;
-use Spryker\Shared\Kernel\Transfer\AbstractTransfer;
 use SprykerEco\Shared\AfterPay\AfterPayConfig;
 use SprykerEco\Zed\AfterPay\Business\Payment\Transaction\PriceToPayProviderInterface;
 use SprykerEco\Zed\AfterPay\Dependency\Facade\AfterPayToMoneyFacadeInterface;

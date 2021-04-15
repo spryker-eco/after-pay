@@ -49,8 +49,9 @@ class AfterPayClient extends AbstractClient implements AfterPayClientInterface
      *
      * @return \Generated\Shared\Transfer\AfterPayInstallmentPlansResponseTransfer
      */
-    public function getAvailableInstallmentPlans(AfterPayInstallmentPlansRequestTransfer $installmentPlansRequestTransfer): AfterPayInstallmentPlansResponseTransfer
-    {
+    public function getAvailableInstallmentPlans(
+        AfterPayInstallmentPlansRequestTransfer $installmentPlansRequestTransfer
+    ): AfterPayInstallmentPlansResponseTransfer {
         return $this->getFactory()
             ->createZedAfterPayStub()
             ->getAvailableInstallmentPlans($installmentPlansRequestTransfer);
@@ -81,8 +82,9 @@ class AfterPayClient extends AbstractClient implements AfterPayClientInterface
      *
      * @return \Generated\Shared\Transfer\AfterPayValidateBankAccountResponseTransfer
      */
-    public function validateBankAccount(AfterPayValidateBankAccountRequestTransfer $bankAccountValidationRequestTransfer): AfterPayValidateBankAccountResponseTransfer
-    {
+    public function validateBankAccount(
+        AfterPayValidateBankAccountRequestTransfer $bankAccountValidationRequestTransfer
+    ): AfterPayValidateBankAccountResponseTransfer {
         return $this->getFactory()
             ->createZedAfterPayStub()
             ->validateBankAccount($bankAccountValidationRequestTransfer);

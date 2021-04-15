@@ -21,6 +21,7 @@ use Spryker\Zed\Kernel\Communication\AbstractPlugin;
 class AfterPayPreCheckPlugin extends AbstractPlugin implements CheckoutPreSaveHookInterface
 {
     /**
+     * {@inheritDoc}
      * Specification:
      * - Do something before orderTransfer save
      *

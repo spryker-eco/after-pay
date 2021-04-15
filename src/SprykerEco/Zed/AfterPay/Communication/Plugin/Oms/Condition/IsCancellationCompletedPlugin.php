@@ -24,6 +24,8 @@ class IsCancellationCompletedPlugin extends AbstractPlugin implements ConditionI
     public const CANCEL_TRANSACTION_ACCEPTED = AfterPayConfig::API_TRANSACTION_OUTCOME_ACCEPTED;
 
     /**
+     * {@inheritDoc}
+     *
      * @api
      *
      * @param \Orm\Zed\Sales\Persistence\SpySalesOrderItem $orderItem

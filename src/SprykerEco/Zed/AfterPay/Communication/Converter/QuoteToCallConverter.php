@@ -19,7 +19,6 @@ class QuoteToCallConverter implements QuoteToCallConverterInterface
      */
     public function convert(QuoteTransfer $quoteTransfer): AfterPayCallTransfer
     {
-
         return (new AfterPayCallTransfer())
             ->setOrderReference($quoteTransfer->getOrderReference())
             ->setIdSalesOrder($quoteTransfer->getPayment()->getIdSalesPayment())

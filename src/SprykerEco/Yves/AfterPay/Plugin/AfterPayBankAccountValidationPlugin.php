@@ -26,8 +26,9 @@ class AfterPayBankAccountValidationPlugin extends AbstractPlugin implements Afte
      *
      * @return \Generated\Shared\Transfer\AfterPayValidateBankAccountResponseTransfer
      */
-    public function validateBankAccount(AfterPayValidateBankAccountRequestTransfer $validateBankAccountRequestTransfer): AfterPayValidateBankAccountResponseTransfer
-    {
+    public function validateBankAccount(
+        AfterPayValidateBankAccountRequestTransfer $validateBankAccountRequestTransfer
+    ): AfterPayValidateBankAccountResponseTransfer {
         return $this->getFactory()
             ->getClient()
             ->validateBankAccount($validateBankAccountRequestTransfer);

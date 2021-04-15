@@ -65,8 +65,9 @@ class AfterPayStub implements AfterPayStubInterface
      *
      * @return \Generated\Shared\Transfer\AfterPayInstallmentPlansResponseTransfer
      */
-    public function getAvailableInstallmentPlans(AfterPayInstallmentPlansRequestTransfer $installmentPlansRequestTransfer): AfterPayInstallmentPlansResponseTransfer
-    {
+    public function getAvailableInstallmentPlans(
+        AfterPayInstallmentPlansRequestTransfer $installmentPlansRequestTransfer
+    ): AfterPayInstallmentPlansResponseTransfer {
         /** @var \Generated\Shared\Transfer\AfterPayInstallmentPlansResponseTransfer $installmentPlansResponseTransfer */
         $installmentPlansResponseTransfer = $this->zedRequestClient->call('/after-pay/gateway/lookup-installment-plans', $installmentPlansRequestTransfer);
 
@@ -78,8 +79,9 @@ class AfterPayStub implements AfterPayStubInterface
      *
      * @return \Generated\Shared\Transfer\AfterPayValidateBankAccountResponseTransfer
      */
-    public function validateBankAccount(AfterPayValidateBankAccountRequestTransfer $bankAccountValidationRequestTransfer): AfterPayValidateBankAccountResponseTransfer
-    {
+    public function validateBankAccount(
+        AfterPayValidateBankAccountRequestTransfer $bankAccountValidationRequestTransfer
+    ): AfterPayValidateBankAccountResponseTransfer {
         /** @var \Generated\Shared\Transfer\AfterPayValidateBankAccountResponseTransfer $validateBankAccountResponseTransfer */
         $validateBankAccountResponseTransfer = $this->zedRequestClient->call('/after-pay/gateway/validate-bank-account', $bankAccountValidationRequestTransfer);
 

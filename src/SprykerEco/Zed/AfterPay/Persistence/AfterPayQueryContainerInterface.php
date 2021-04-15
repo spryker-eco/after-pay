@@ -17,6 +17,9 @@ use Spryker\Zed\Kernel\Persistence\QueryContainer\QueryContainerInterface;
 interface AfterPayQueryContainerInterface extends QueryContainerInterface
 {
     /**
+     * Specification:
+     * - TODO: Add method specification.
+     *
      * @api
      *
      * @param int $idSalesOrder
@@ -26,6 +29,9 @@ interface AfterPayQueryContainerInterface extends QueryContainerInterface
     public function queryPaymentByIdSalesOrder(int $idSalesOrder): SpyPaymentAfterPayQuery;
 
     /**
+     * Specification:
+     * - TODO: Add method specification.
+     *
      * @api
      *
      * @param int $idSalesOrderItem
@@ -36,6 +42,9 @@ interface AfterPayQueryContainerInterface extends QueryContainerInterface
     public function queryPaymentOrderItemByIdSalesOrderAndIdPayment(int $idSalesOrderItem, int $idPayment): SpyPaymentAfterPayOrderItemQuery;
 
     /**
+     * Specification:
+     * - TODO: Add method specification.
+     *
      * @api
      *
      * @param string $orderReference
@@ -46,6 +55,9 @@ interface AfterPayQueryContainerInterface extends QueryContainerInterface
     public function queryTransactionByIdSalesOrderAndType(string $orderReference, string $transactionType): SpyPaymentAfterPayTransactionLogQuery;
 
     /**
+     * Specification:
+     * - TODO: Add method specification.
+     *
      * @api
      *
      * @param string $orderReference
@@ -55,6 +67,9 @@ interface AfterPayQueryContainerInterface extends QueryContainerInterface
     public function queryAuthorizationByOrderReference(string $orderReference): SpyPaymentAfterPayAuthorizationQuery;
 
     /**
+     * Specification:
+     * - TODO: Add method specification.
+     *
      * @api
      *
      * @param string $orderReference
@@ -64,6 +79,9 @@ interface AfterPayQueryContainerInterface extends QueryContainerInterface
     public function queryAuthorizeTransactionLog(string $orderReference): SpyPaymentAfterPayTransactionLogQuery;
 
     /**
+     * Specification:
+     * - TODO: Add method specification.
+     *
      * @api
      *
      * @param string $orderReference
@@ -73,6 +91,9 @@ interface AfterPayQueryContainerInterface extends QueryContainerInterface
     public function queryCaptureTransactionLog(string $orderReference): SpyPaymentAfterPayTransactionLogQuery;
 
     /**
+     * Specification:
+     * - TODO: Add method specification.
+     *
      * @api
      *
      * @param string $orderReference
@@ -82,6 +103,9 @@ interface AfterPayQueryContainerInterface extends QueryContainerInterface
     public function queryCancelTransactionLog(string $orderReference): SpyPaymentAfterPayTransactionLogQuery;
 
     /**
+     * Specification:
+     * - TODO: Add method specification.
+     *
      * @api
      *
      * @param int $idSalesOrder
@@ -91,6 +115,9 @@ interface AfterPayQueryContainerInterface extends QueryContainerInterface
     public function querySalesOrder(int $idSalesOrder): SpySalesOrderQuery;
 
     /**
+     * Specification:
+     * - TODO: Add method specification.
+     *
      * @api
      *
      * @param string $orderReference
