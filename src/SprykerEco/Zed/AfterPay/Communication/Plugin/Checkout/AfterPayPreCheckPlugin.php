@@ -33,11 +33,6 @@ class AfterPayPreCheckPlugin extends AbstractPlugin implements CheckoutPreSaveHo
      */
     public function preSave(QuoteTransfer $quoteTransfer, CheckoutResponseTransfer $checkoutResponseTransfer): QuoteTransfer
     {
-        $afterPayCallTransfer = $this->getFactory()
-            ->createQuoteToCallConverter()
-            ->convert($quoteTransfer);
-        $this->getFacade()->authorizePayment($afterPayCallTransfer);
-
         return $quoteTransfer;
     }
 }

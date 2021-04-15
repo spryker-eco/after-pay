@@ -35,5 +35,11 @@ class AfterPaySaveOrderPlugin extends AbstractPlugin implements CheckoutDoSaveOr
     public function saveOrder(QuoteTransfer $quoteTransfer, SaveOrderTransfer $saveOrderTransfer): void
     {
         $this->getFacade()->saveOrderPayment($quoteTransfer, $saveOrderTransfer);
+
+        $afterPayCallTransfer = $this->getFactory()
+            ->createQuoteToCallConverter()
+            ->convert($quoteTransfer);
+
+        $this->getFacade()->authorizePayment($afterPayCallTransfer);
     }
 }

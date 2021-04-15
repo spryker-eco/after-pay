@@ -20,6 +20,7 @@ use Generated\Shared\Transfer\AfterPayRequestPaymentTransfer;
 use Generated\Shared\Transfer\ExpenseTransfer;
 use Generated\Shared\Transfer\ItemTransfer;
 use Generated\Shared\Transfer\OrderTransfer;
+use Spryker\Shared\Kernel\Transfer\AbstractTransfer;
 use SprykerEco\Shared\AfterPay\AfterPayConfig;
 use SprykerEco\Zed\AfterPay\Business\Payment\Transaction\PriceToPayProviderInterface;
 use SprykerEco\Zed\AfterPay\Dependency\Facade\AfterPayToMoneyFacadeInterface;
@@ -31,6 +32,8 @@ class OrderToRequestTransfer implements OrderToRequestTransferInterface
     public const GIFT_CARD_PROVIDER = 'GiftCard';
 
     protected const ZERO_AMOUNT = '0';
+
+    protected const SHIPPING_FEE_PROVIDER = 'ShippingFee';
 
     /**
      * @var \SprykerEco\Zed\AfterPay\Dependency\Facade\AfterPayToMoneyFacadeInterface
@@ -168,6 +171,31 @@ class OrderToRequestTransfer implements OrderToRequestTransferInterface
 
         $orderRequestTransfer = $this->addExpensesToOrderRequestTransfer($orderRequestTransfer, $afterPayCallTransfer);
         $orderRequestTransfer = $this->addGiftcardItems($orderRequestTransfer, $afterPayCallTransfer);
+        $orderRequestTransfer = $this->addShippingFeeToOrderRequestTransfer($orderRequestTransfer, $afterPayCallTransfer);
+
+        return $orderRequestTransfer;
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\AfterPayRequestOrderTransfer $orderRequestTransfer
+     * @param \Generated\Shared\Transfer\AfterPayCallTransfer $afterPayCallTransfer
+     *
+     * @return \Generated\Shared\Transfer\AfterPayRequestOrderTransfer
+     */
+    protected function addShippingFeeToOrderRequestTransfer(
+        AfterPayRequestOrderTransfer $orderRequestTransfer,
+        AfterPayCallTransfer $afterPayCallTransfer
+    ): AfterPayRequestOrderTransfer {
+        $amount = (string)$this->moneyFacade
+            ->convertIntegerToDecimal($afterPayCallTransfer->getTotals()->getShipmentTotal());
+
+        $orderRequestTransfer->addItem(
+            (new AfterPayRequestOrderItemTransfer())
+                ->setProductId(static::SHIPPING_FEE_PROVIDER)
+                ->setDescription(static::SHIPPING_FEE_PROVIDER)
+                ->setGrossUnitPrice($amount)
+                ->setQuantity(1)
+        );
 
         return $orderRequestTransfer;
     }
