@@ -319,7 +319,7 @@
     </transfer>
 
     <transfer name="Order">
-        <property name="AfterPayPayment" type="AfterPayPayment"/>
+        <property name="afterPayPayment" type="AfterPayPayment"/>
     </transfer>
 
     <!--Facade related transfers start-->
