@@ -58,9 +58,6 @@ jobs:
       - name: Codecept build
         run: vendor/bin/codecept build --ansi
 
-      - name: Run CodeStyle checks
-        run: vendor/bin/phpcs -p -s --standard=vendor/spryker/code-sniffer/Spryker/ruleset.xml src/
-
 #       suite-tests:
 #        name: "Suite tests(Stub)"
 #        runs-on: ubuntu-18.04

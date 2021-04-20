@@ -3,7 +3,7 @@
   "description": "AfterPay module",
   "license": "MIT",
   "require": {
-    "php": ">=7.1",
+    "php": ">=7.2",
     "spryker/checkout": "^3.0.0 || ^4.2.0 || ^6.0.0",
     "spryker/currency": "^2.0.0 || ^3.5.0",
     "spryker/kernel": "^3.0.0",

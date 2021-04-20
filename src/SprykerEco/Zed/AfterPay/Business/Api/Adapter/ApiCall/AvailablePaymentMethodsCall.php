@@ -84,7 +84,7 @@ class AvailablePaymentMethodsCall extends AbstractApiCall implements AvailablePa
         return (new AfterPayAvailablePaymentMethodsResponseTransfer())
             ->setCheckoutId($jsonResponseArray[AfterPayApiRequestConfig::TRANSACTION_CHECKOUT_ID] ?? null)
             ->setOutcome($jsonResponseArray[AfterPayApiRequestConfig::TRANSACTION_OUTCOME] ?? null)
-            ->setCustomers($jsonResponseArray[AfterPayApiRequestConfig::CUSTOMER] ?? [])
+            ->setCustomer($jsonResponseArray[AfterPayApiRequestConfig::CUSTOMER] ?? [])
             ->setCustomerNumber($customerNumber)
             ->setPaymentMethods($jsonResponseArray[AfterPayApiRequestConfig::PAYMENT_METHODS] ?? [])
             ->setRiskCheckResultCode($riskCheckResultCode)

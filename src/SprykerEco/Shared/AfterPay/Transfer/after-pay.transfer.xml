@@ -202,7 +202,7 @@
     <transfer name="AfterPayAvailablePaymentMethodsResponse">
         <property name="checkoutId" type="string"/>
         <property name="outcome" type="string"/>
-        <property name="customers" type="array" singular="customer"/>
+        <property name="customer" type="array" singular="customer"/>
         <property name="customerNumber" type="string"/>
         <property name="paymentMethods" type="array" singular="paymentMethod"/>
         <property name="riskCheckResultCode" type="string"/>
