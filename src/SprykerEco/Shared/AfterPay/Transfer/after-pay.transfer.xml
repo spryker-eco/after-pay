@@ -202,9 +202,9 @@
     <transfer name="AfterPayAvailablePaymentMethodsResponse">
         <property name="checkoutId" type="string"/>
         <property name="outcome" type="string"/>
-        <property name="customer" type="array" singular="customer"/>
+        <property name="customers" type="array" singular="customer"/>
         <property name="customerNumber" type="string"/>
-        <property name="paymentMethods" type="array"/>
+        <property name="paymentMethods" type="array" singular="paymentMethod"/>
         <property name="riskCheckResultCode" type="string"/>
         <property name="riskCheckMessages" type="AfterPayRiskCheckMessage[]" singular="riskCheckMessage"/>
     </transfer>
@@ -282,7 +282,7 @@
     </transfer>
 
     <transfer name="AfterPayAvailablePaymentMethods">
-        <property name="availablePaymentMethodNames" type="array"/>
+        <property name="availablePaymentMethodNames" type="array" singular="availablePaymentMethodName"/>
         <property name="riskCheckCode" type="string"/>
         <property name="customerNumber" type="string"/>
         <property name="checkoutId" type="string"/>
@@ -298,9 +298,9 @@
         <property name="idSalesOrder" type="int"/>
         <property name="paymentMethod" type="string"/>
         <property name="email" type="string"/>
-        <property name="items" type="Item[]" singular="Item"/>
+        <property name="items" type="Item[]" singular="item"/>
         <property name="totals" type="Totals"/>
-        <property name="expenses" type="Expense[]"/>
+        <property name="expenses" type="Expense[]" singular="expense"/>
         <property name="payments" type="Payment[]" singular="payment"/>
         <property name="checkoutId" type="string"/>
         <property name="currency" type="string"/>
@@ -328,7 +328,7 @@
         <property name="email" type="string"/>
         <property name="orderReference" type="string"/>
         <property name="paymentMethod" type="string"/>
-        <property name="items" type="Item[]" singular="Item"/>
+        <property name="items" type="Item[]" singular="item"/>
         <property name="totals" type="Total"/>
         <property name="billingAddress" type="Address"/>
         <property name="shippingAddress" type="Address"/>
