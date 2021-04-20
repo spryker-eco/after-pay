@@ -57,12 +57,6 @@
         <property name="fieldReference" type="string" />
     </transfer>
 
-    <transfer name="AfterPayValidateBankAccountRequest">
-        <property name="bankAccount" type="string" />
-        <property name="bankCode" type="string" />
-        <property name="bankNumber" type="string" />
-    </transfer>
-
     <transfer name="AfterPayCustomerLookupRequest">
         <property name="mobilePhone" type="string" />
         <property name="countryCode" type="string" />
