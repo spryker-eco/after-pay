@@ -27,7 +27,8 @@
     "spryker/country": "*",
     "spryker/customer": "*",
     "spryker/propel": "*",
-    "spryker/testify": "*"
+    "spryker/testify": "*",
+    "spryker/product": "*"
   },
   "suggest": {
     "spryker/silex": "*",
