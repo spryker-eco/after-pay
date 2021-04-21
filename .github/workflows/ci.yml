@@ -20,9 +20,7 @@ jobs:
       PROJECT: after-pay
 
     steps:
-      - uses: actions/checkout@v1
-        with:
-          fetch-depth: 1
+      - uses: actions/checkout@v2
 
       - name: Configure sysctl limits
         run: |
