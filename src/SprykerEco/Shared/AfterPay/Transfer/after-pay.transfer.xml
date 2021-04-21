@@ -336,4 +336,34 @@
 
     <!--Facade related transfers end -->
 
+    <transfer name="Address">
+        <property name="firstName" type="string"/>
+        <property name="lastName" type="string"/>
+        <property name="address1" type="string"/>
+        <property name="company" type="string"/>
+        <property name="city" type="string"/>
+        <property name="zipCode" type="string"/>
+        <property name="state" type="string"/>
+        <property name="iso2Code" type="string"/>
+    </transfer>
+
+    <!--Facade related transfers end -->
+
+    <transfer name="Totals">
+        <property name="subtotal" type="int"/>
+        <property name="expenseTotal" type="int"/>
+        <property name="discountTotal" type="int"/>
+        <property name="taxTotal" type="TaxTotal"/>
+        <property name="grandTotal" type="int"/>
+        <property name="netTotal" type="int"/>
+        <property name="canceledTotal" type="int"/>
+        <property name="hash" type="string"/>
+    </transfer>
+
+    <!--Facade related transfers end -->
+
+    <transfer name="TaxTotal">
+        <property name="taxRate" type="float"/>
+        <property name="amount" type="int"/>
+    </transfer>
 </transfers>
