@@ -13,6 +13,8 @@ use Spryker\Zed\Checkout\Dependency\Plugin\CheckoutPreSaveHookInterface;
 use Spryker\Zed\Kernel\Communication\AbstractPlugin;
 
 /**
+ * @deprecated Use {@link \SprykerEco\Zed\AfterPay\Communication\Plugin\Checkout\AfterPaySaveOrderPlugin} instead.
+ *
  * @method \SprykerEco\Zed\AfterPay\Communication\AfterPayCommunicationFactory getFactory()
  * @method \SprykerEco\Zed\AfterPay\Business\AfterPayFacadeInterface getFacade()
  * @method \SprykerEco\Zed\AfterPay\AfterPayConfig getConfig()
@@ -34,6 +36,11 @@ class AfterPayPreCheckPlugin extends AbstractPlugin implements CheckoutPreSaveHo
      */
     public function preSave(QuoteTransfer $quoteTransfer, CheckoutResponseTransfer $checkoutResponseTransfer): QuoteTransfer
     {
+        $afterPayCallTransfer = $this->getFactory()
+            ->createQuoteToCallConverter()
+            ->convert($quoteTransfer);
+        $this->getFacade()->authorizePayment($afterPayCallTransfer);
+
         return $quoteTransfer;
     }
 }
