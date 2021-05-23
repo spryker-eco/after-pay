@@ -220,7 +220,7 @@ class OrderToRequestTransfer implements OrderToRequestTransferInterface
     protected function buildPaymentRequestTransfer(AfterPayCallTransfer $afterPayCallTransfer): AfterPayRequestPaymentTransfer
     {
         return (new AfterPayRequestPaymentTransfer())
-            ->setType(static::$paymentMethods[$afterPayCallTransfer->getPaymentMethod()]);
+            ->setType(static::$paymentMethods[$afterPayCallTransfer->getPaymentMethod()] ?? null);
     }
 
     /**
