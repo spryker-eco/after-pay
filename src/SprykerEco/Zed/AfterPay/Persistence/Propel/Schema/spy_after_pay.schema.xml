@@ -1,11 +1,11 @@
 <?xml version="1.0"?>
 <database
-        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        name="zed"
-        defaultIdMethod="native"
-        xsi:noNamespaceSchemaLocation="http://static.spryker.com/schema-01.xsd"
-        namespace="Orm\Zed\AfterPay\Persistence"
-        package="src.Orm.Zed.AfterPay.Persistence"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    name="zed"
+    defaultIdMethod="native"
+    xsi:noNamespaceSchemaLocation="http://static.spryker.com/schema-01.xsd"
+    namespace="Orm\Zed\AfterPay\Persistence"
+    package="src.Orm.Zed.AfterPay.Persistence"
 >
     <table name="spy_payment_after_pay" phpName="SpyPaymentAfterPay">
         <column name="id_payment_after_pay" required="true" type="INTEGER" autoIncrement="true" primaryKey="true"/>
