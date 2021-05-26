@@ -11,6 +11,7 @@ use Generated\Shared\Transfer\CheckoutResponseTransfer;
 use Generated\Shared\Transfer\QuoteTransfer;
 use Spryker\Zed\Checkout\Dependency\Plugin\CheckoutPostSaveHookInterface;
 use Spryker\Zed\Kernel\Communication\AbstractPlugin;
+use SprykerEco\Zed\AfterPay\Business\Payment\Mapper\OrderToRequestTransfer;
 
 /**
  * @method \SprykerEco\Zed\AfterPay\Business\AfterPayFacadeInterface getFacade()
@@ -35,6 +36,10 @@ class AfterPayPostCheckPlugin extends AbstractPlugin implements CheckoutPostSave
      */
     public function executeHook(QuoteTransfer $quoteTransfer, CheckoutResponseTransfer $checkoutResponse): void
     {
+        if (!in_array($afterPayCallTransfer->getPaymentMethod(), OrderToRequestTransfer::getPaymentMethods())) {
+            return;
+        }
+
         $this->getFacade()->postSaveHook($quoteTransfer, $checkoutResponse);
     }
 }

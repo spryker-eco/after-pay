@@ -72,6 +72,14 @@ class OrderToRequestTransfer implements OrderToRequestTransferInterface
     }
 
     /**
+     * @return array
+     */
+    public static function getPaymentMethods(): array
+    {
+        return self::$paymentMethods;
+    }
+
+    /**
      * @param \Generated\Shared\Transfer\AfterPayCallTransfer $afterPayCallTransfer
      *
      * @return \Generated\Shared\Transfer\AfterPayAuthorizeRequestTransfer
