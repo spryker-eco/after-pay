@@ -426,7 +426,10 @@ class AfterPayBusinessFactory extends AbstractBusinessFactory
         $paymentMethodsFilterStack = $this->getPaymentMethodsFilterStack();
 
         if (!isset($paymentMethodsFilterStack[$authorizeWorkflow])) {
-            throw new InvalidAfterPayPaymentMethodsFilterException($authorizeWorkflow . ' is not a valid AfterPay payment methods filter.');
+            throw new InvalidAfterPayPaymentMethodsFilterException(sprintf(
+                '%s is not a valid AfterPay payment methods filter.',
+                $authorizeWorkflow
+            ));
         }
 
         return $paymentMethodsFilterStack[$authorizeWorkflow];
