@@ -183,7 +183,7 @@ interface AfterPayFacadeInterface
 
     /**
      * Specification:
-     * - Retrieve Payment by idSalesOrder.
+     * - Retrieves payment by `idSalesOrder` from Persistence.
      *
      * @api
      *

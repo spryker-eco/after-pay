@@ -318,7 +318,10 @@ class AfterPayBusinessFactory extends AbstractBusinessFactory
         $authorizeRequestBuilderStack = $this->getAuthorizeRequestBuilderStack();
 
         if (!isset($authorizeRequestBuilderStack[$authorizeWorkflow])) {
-            throw new InvalidAfterPayAuthorizeRequestBuilderException($authorizeWorkflow . ' is not a valid AfterPay authorize request builder.');
+            throw new InvalidAfterPayAuthorizeRequestBuilderException(sprintf(
+                '%s is not a valid AfterPay authorize request builder.',
+                $authorizeWorkflow
+            ));
         }
 
         return $authorizeRequestBuilderStack[$authorizeWorkflow];

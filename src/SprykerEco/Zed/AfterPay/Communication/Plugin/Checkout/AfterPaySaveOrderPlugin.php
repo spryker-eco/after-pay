@@ -24,7 +24,6 @@ class AfterPaySaveOrderPlugin extends AbstractPlugin implements CheckoutDoSaveOr
 {
     /**
      * {@inheritDoc}
-     * Specification:
      * - Retrieves (its) data from the quote object and saves it to the database.
      * - Proceed with Authorize Payment process
      * - These plugins are already enveloped into a transaction.
@@ -42,12 +41,13 @@ class AfterPaySaveOrderPlugin extends AbstractPlugin implements CheckoutDoSaveOr
             return;
         }
 
-        $this->getFacade()->saveOrderPayment($quoteTransfer, $saveOrderTransfer);
+        $afterPayFacade = $this->getFacade();
+        $afterPayFacade->saveOrderPayment($quoteTransfer, $saveOrderTransfer);
 
         $afterPayCallTransfer = $this->getFactory()
             ->createQuoteToCallConverter()
             ->convert($quoteTransfer);
 
-        $this->getFacade()->authorizePayment($afterPayCallTransfer);
+        $afterPayFacade->authorizePayment($afterPayCallTransfer);
     }
 }

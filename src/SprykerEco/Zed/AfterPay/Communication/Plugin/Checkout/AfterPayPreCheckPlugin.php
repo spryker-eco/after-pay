@@ -24,7 +24,6 @@ class AfterPayPreCheckPlugin extends AbstractPlugin implements CheckoutPreSaveHo
 {
     /**
      * {@inheritDoc}
-     * Specification:
      * - Do something before orderTransfer save
      *
      * @api

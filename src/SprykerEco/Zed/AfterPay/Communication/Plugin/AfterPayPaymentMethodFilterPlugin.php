@@ -22,7 +22,6 @@ class AfterPayPaymentMethodFilterPlugin extends AbstractPlugin implements Paymen
 {
     /**
      * {@inheritDoc}
-     * Specification:
      * - Returns filtered by set of plugins array object of payments
      *
      * @api
