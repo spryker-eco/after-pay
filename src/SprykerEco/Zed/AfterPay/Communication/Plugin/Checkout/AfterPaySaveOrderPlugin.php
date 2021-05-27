@@ -11,6 +11,7 @@ use Generated\Shared\Transfer\QuoteTransfer;
 use Generated\Shared\Transfer\SaveOrderTransfer;
 use Spryker\Zed\CheckoutExtension\Dependency\Plugin\CheckoutDoSaveOrderInterface;
 use Spryker\Zed\Kernel\Communication\AbstractPlugin;
+use SprykerEco\Shared\AfterPay\AfterPayConfig as SharedAfterPayConfig;
 use SprykerEco\Zed\AfterPay\Business\Payment\Mapper\OrderToRequestTransfer;
 
 /**
@@ -37,7 +38,7 @@ class AfterPaySaveOrderPlugin extends AbstractPlugin implements CheckoutDoSaveOr
      */
     public function saveOrder(QuoteTransfer $quoteTransfer, SaveOrderTransfer $saveOrderTransfer): void
     {
-        if (!in_array($afterPayCallTransfer->getPaymentMethod(), OrderToRequestTransfer::getPaymentMethods())) {
+        if ($quoteTransfer->getPayment()->getPaymentProvider() !== SharedAfterPayConfig::PROVIDER_NAME) {
             return;
         }
 
