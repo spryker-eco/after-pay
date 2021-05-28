@@ -318,7 +318,10 @@ class AfterPayBusinessFactory extends AbstractBusinessFactory
         $authorizeRequestBuilderStack = $this->getAuthorizeRequestBuilderStack();
 
         if (!isset($authorizeRequestBuilderStack[$authorizeWorkflow])) {
-            throw new InvalidAfterPayAuthorizeRequestBuilderException($authorizeWorkflow . ' is not a valid AfterPay authorize request builder.');
+            throw new InvalidAfterPayAuthorizeRequestBuilderException(sprintf(
+                '%s is not a valid AfterPay authorize request builder.',
+                $authorizeWorkflow
+            ));
         }
 
         return $authorizeRequestBuilderStack[$authorizeWorkflow];
@@ -423,7 +426,10 @@ class AfterPayBusinessFactory extends AbstractBusinessFactory
         $paymentMethodsFilterStack = $this->getPaymentMethodsFilterStack();
 
         if (!isset($paymentMethodsFilterStack[$authorizeWorkflow])) {
-            throw new InvalidAfterPayPaymentMethodsFilterException($authorizeWorkflow . ' is not a valid AfterPay payment methods filter.');
+            throw new InvalidAfterPayPaymentMethodsFilterException(sprintf(
+                '%s is not a valid AfterPay payment methods filter.',
+                $authorizeWorkflow
+            ));
         }
 
         return $paymentMethodsFilterStack[$authorizeWorkflow];

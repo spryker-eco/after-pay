@@ -72,11 +72,11 @@ class OrderToRequestTransfer implements OrderToRequestTransferInterface
     }
 
     /**
-     * @return array
+     * @return string[]
      */
     public static function getPaymentMethods(): array
     {
-        return self::$paymentMethods;
+        return static::$paymentMethods;
     }
 
     /**
