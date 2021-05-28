@@ -12,7 +12,6 @@ use Generated\Shared\Transfer\SaveOrderTransfer;
 use Spryker\Zed\CheckoutExtension\Dependency\Plugin\CheckoutDoSaveOrderInterface;
 use Spryker\Zed\Kernel\Communication\AbstractPlugin;
 use SprykerEco\Shared\AfterPay\AfterPayConfig as SharedAfterPayConfig;
-use SprykerEco\Zed\AfterPay\Business\Payment\Mapper\OrderToRequestTransfer;
 
 /**
  * @method \SprykerEco\Zed\AfterPay\Business\AfterPayFacadeInterface getFacade()
@@ -25,7 +24,7 @@ class AfterPaySaveOrderPlugin extends AbstractPlugin implements CheckoutDoSaveOr
     /**
      * {@inheritDoc}
      * - Retrieves (its) data from the quote object and saves it to the database.
-     * - Proceed with Authorize Payment process
+     * - Proceed with Authorize Payment process.
      * - These plugins are already enveloped into a transaction.
      *
      * @api

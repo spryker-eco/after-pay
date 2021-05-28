@@ -12,7 +12,6 @@ use Generated\Shared\Transfer\QuoteTransfer;
 use Spryker\Zed\Checkout\Dependency\Plugin\CheckoutPostSaveHookInterface;
 use Spryker\Zed\Kernel\Communication\AbstractPlugin;
 use SprykerEco\Shared\AfterPay\AfterPayConfig as SharedAfterPayConfig;
-use SprykerEco\Zed\AfterPay\Business\Payment\Mapper\OrderToRequestTransfer;
 
 /**
  * @method \SprykerEco\Zed\AfterPay\Business\AfterPayFacadeInterface getFacade()
@@ -25,7 +24,7 @@ class AfterPayPostCheckPlugin extends AbstractPlugin implements CheckoutPostSave
     /**
      * {@inheritDoc}
      * - This plugin is called after the order is placed.
-     * - Set the success flag to false, if redirect should be headed to an error page afterwords
+     * - Set the success flag to false, if redirect should be headed to an error page afterwords.
      *
      * @api
      *

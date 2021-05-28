@@ -24,7 +24,7 @@ class AfterPayPreCheckPlugin extends AbstractPlugin implements CheckoutPreSaveHo
 {
     /**
      * {@inheritDoc}
-     * - Proceed with Authorize Payment process
+     * - Proceed with Authorize Payment process.
      *
      * @api
      *

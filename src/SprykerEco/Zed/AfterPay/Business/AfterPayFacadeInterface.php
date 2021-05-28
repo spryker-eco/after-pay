@@ -101,7 +101,7 @@ interface AfterPayFacadeInterface
     /**
      * Specification:
      * - Sends payment authorize request to AfterPay gateway.
-     * - Saves the transaction result in Quote for future recognition
+     * - Saves the transaction result in Quote for future recognition.
      *
      * @api
      *
