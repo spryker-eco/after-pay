@@ -96,6 +96,11 @@
 
     <transfer name="Totals">
         <property name="priceToPay" type="int"/>
+        <property name="expenseTotal" type="int"/>
+        <property name="grandTotal" type="int"/>
+        <property name="hash" type="string"/>
+        <property name="shipmentTotal" type="int"/>
+        <property name="taxTotal" type="TaxTotal"/>
     </transfer>
 
     <transfer name="AfterPayUserProfile">
@@ -309,6 +314,16 @@
     <transfer name="Quote">
         <property name="afterPayAvailablePaymentMethods" type="AfterPayAvailablePaymentMethods"/>
         <property name="afterPayPaymentReservationId" type="string"/>
+        <property name="payment" type="Payment"/>
+        <property name="payments" type="Payment[]" singular="payment"/>
+        <property name="orderReference" type="string"/>
+        <property name="totals" type="Totals"/>
+        <property name="billingAddress" type="Address"/>
+        <property name="shippingAddress" type="Address"/>
+        <property name="customer" type="Customer"/>
+        <property name="currency" type="Currency"/>
+        <property name="items" type="Item[]" singular="item"/>
+        <property name="expenses" type="Expense[]" singular="expense"/>
     </transfer>
 
     <transfer name="Payment">
@@ -316,10 +331,25 @@
         <property name="afterPayCheckoutId" type="string"/>
         <property name="afterPayCustomerNumber" type="string"/>
         <property name="afterPayPaymentMethodAvailability" type="bool"/>
+        <property name="paymentMethod" type="string"/>
+        <property name="amount" type="int"/>
+        <property name="paymentProvider" type="string"/>
+        <property name="idSalesPayment" type="int"/>
+        <property name="paymentSelection" type="string"/>
     </transfer>
 
     <transfer name="Order">
         <property name="afterPayPayment" type="AfterPayPayment"/>
+        <property name="idSalesOrder" type="int"/>
+        <property name="orderReference" type="string"/>
+        <property name="items" type="Item[]" singular="item"/>
+        <property name="totals" type="Totals"/>
+        <property name="payments" type="Payment[]" singular="payment"/>
+        <property name="email" type="string"/>
+        <property name="billingAddress" type="Address"/>
+        <property name="shippingAddress" type="Address"/>
+        <property name="expenses" type="Expense[]" singular="expense"/>
+        <property name="currencyIsoCode" type="string"/>
     </transfer>
 
     <!--Facade related transfers start-->
@@ -339,6 +369,88 @@
     <transfer name="TaxTotal">
         <property name="taxRate" type="float"/>
         <property name="amount" type="int"/>
+    </transfer>
+
+    <transfer name="Address">
+        <property name="iso2Code" type="string"/>
+        <property name="address3" type="string"/>
+        <property name="address2" type="string"/>
+        <property name="address1" type="string"/>
+        <property name="lastName" type="string"/>
+        <property name="firstName" type="string"/>
+        <property name="salutation" type="string"/>
+        <property name="zipCode" type="string"/>
+        <property name="city" type="string"/>
+        <property name="idCustomerAddress" type="int"/>
+    </transfer>
+
+    <transfer name="CheckoutResponse">
+        <property name="isSuccess" type="bool"/>
+        <property name="isExternalRedirect" type="bool"/>
+        <property name="redirectUrl" type="string"/>
+    </transfer>
+
+    <transfer name="SaveOrder">
+        <property name="orderItems" type="Item[]" singular="orderItem"/>
+        <property name="idSalesOrder" type="int"/>
+        <property name="orderReference" type="string"/>
+    </transfer>
+
+    <transfer name="Item">
+        <property name="idSalesOrderItem" type="int"/>
+        <property name="sku" type="string"/>
+        <property name="name" type="string"/>
+        <property name="quantity" type="int"/>
+        <property name="refundableAmount" type="int"/>
+        <property name="taxRate" type="float"/>
+        <property name="groupKey" type="string"/>
+        <property name="unitPriceToPayAggregation" type="int"/>
+        <property name="unitTaxAmountFullAggregation" type="int"/>
+        <property name="unitGrossPrice" type="int"/>
+        <property name="unitNetPrice" type="int"/>
+    </transfer>
+
+    <transfer name="PaymentMethods">
+        <property name="methods" singular="method" type="PaymentMethod[]"/>
+    </transfer>
+
+    <transfer name="PaymentMethod">
+        <property name="methodName" type="string"/>
+    </transfer>
+
+    <transfer name="Store">
+        <property name="name" type="string"/>
+    </transfer>
+
+    <transfer name="Expense">
+        <property name="type" type="string"/>
+        <property name="name" type="string"/>
+        <property name="unitTaxAmount" type="int"/>
+        <property name="quantity" type="int"/>
+        <property name="unitPriceToPayAggregation" type="int"/>
+        <property name="sumPriceToPayAggregation" type="int"/>
+    </transfer>
+
+    <transfer name="SalesPayment">
+        <property name="fkSalesOrder" type="int"/>
+        <property name="paymentProvider" type="string"/>
+        <property name="paymentMethod" type="string"/>
+    </transfer>
+
+    <transfer name="Refund">
+    </transfer>
+
+    <transfer name="Total">
+    </transfer>
+
+    <transfer name="Customer">
+        <property name="firstName" type="string"/>
+        <property name="lastName" type="string"/>
+        <property name="email" type="string"/>
+    </transfer>
+
+    <transfer name="Currency">
+        <property name="code" type="string"/>
     </transfer>
 
     <!--Facade related transfers end -->
