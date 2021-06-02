@@ -24,7 +24,7 @@ class IsCaptureCompletedPlugin extends AbstractPlugin implements ConditionInterf
     public const CAPTURE_TRANSACTION_ACCEPTED = AfterPayConfig::API_TRANSACTION_OUTCOME_ACCEPTED;
 
     /**
-     * Specification:
+     * {@inheritDoc}
      * - Checks if the `capture` operation was successfully accepted for the order.
      *
      * @api

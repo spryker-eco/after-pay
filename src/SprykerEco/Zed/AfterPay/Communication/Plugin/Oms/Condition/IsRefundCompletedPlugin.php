@@ -24,7 +24,7 @@ class IsRefundCompletedPlugin extends AbstractPlugin implements ConditionInterfa
     public const REFUND_TRANSACTION_ACCEPTED = AfterPayConfig::API_TRANSACTION_OUTCOME_ACCEPTED;
 
     /**
-     * Specification:
+     * {@inheritDoc}
      * - Checks if the `refund` operation was successfully accepted for the order.
      *
      * @api

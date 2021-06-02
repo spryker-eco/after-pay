@@ -11,7 +11,6 @@ use Generated\Shared\Transfer\CheckoutResponseTransfer;
 use Generated\Shared\Transfer\QuoteTransfer;
 use Spryker\Zed\Checkout\Dependency\Plugin\CheckoutPostSaveHookInterface;
 use Spryker\Zed\Kernel\Communication\AbstractPlugin;
-use SprykerEco\Shared\AfterPay\AfterPayConfig as SharedAfterPayConfig;
 
 /**
  * @method \SprykerEco\Zed\AfterPay\Business\AfterPayFacadeInterface getFacade()

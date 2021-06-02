@@ -24,7 +24,7 @@ use Spryker\Zed\Oms\Dependency\Plugin\Command\CommandByOrderInterface;
 class RefundPlugin extends AbstractPlugin implements CommandByOrderInterface
 {
     /**
-     * Specification:
+     * {@inheritDoc}
      * - Sends `refund` request to AfterPay gateway, to refund payment for a specific order.
      * - Command which is executed per order basis.
      *
