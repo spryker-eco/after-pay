@@ -18,7 +18,7 @@ interface AfterPayQueryContainerInterface extends QueryContainerInterface
 {
     /**
      * Specification:
-     * - TODO: Add method specification.
+     * - Returns `SpyPaymentAfterPayQuery` query for a given `idSalesOrder`.
      *
      * @api
      *
@@ -30,7 +30,7 @@ interface AfterPayQueryContainerInterface extends QueryContainerInterface
 
     /**
      * Specification:
-     * - TODO: Add method specification.
+     * - Returns `SpyPaymentAfterPayOrderItemQuery` query for a given `idSalesOrderItem` and `idPayment`.
      *
      * @api
      *
@@ -43,7 +43,7 @@ interface AfterPayQueryContainerInterface extends QueryContainerInterface
 
     /**
      * Specification:
-     * - TODO: Add method specification.
+     * - Returns `SpyPaymentAfterPayTransactionLogQuery` query for a given `orderReference` and `transactionType`.
      *
      * @api
      *
@@ -56,7 +56,7 @@ interface AfterPayQueryContainerInterface extends QueryContainerInterface
 
     /**
      * Specification:
-     * - TODO: Add method specification.
+     * - Returns `SpyPaymentAfterPayAuthorizationQuery` query for a given `orderReference`.
      *
      * @api
      *
@@ -68,7 +68,7 @@ interface AfterPayQueryContainerInterface extends QueryContainerInterface
 
     /**
      * Specification:
-     * - TODO: Add method specification.
+     * - Returns `SpyPaymentAfterPayTransactionLogQuery` query with `authorize` operation for a given `orderReference`.
      *
      * @api
      *
@@ -80,7 +80,7 @@ interface AfterPayQueryContainerInterface extends QueryContainerInterface
 
     /**
      * Specification:
-     * - TODO: Add method specification.
+     * - Returns `SpyPaymentAfterPayTransactionLogQuery` query with `capture` operation for a given `orderReference`.
      *
      * @api
      *
@@ -92,7 +92,7 @@ interface AfterPayQueryContainerInterface extends QueryContainerInterface
 
     /**
      * Specification:
-     * - TODO: Add method specification.
+     * - Returns `SpyPaymentAfterPayTransactionLogQuery` query with `cancel` operation for a given `orderReference`.
      *
      * @api
      *
@@ -104,7 +104,7 @@ interface AfterPayQueryContainerInterface extends QueryContainerInterface
 
     /**
      * Specification:
-     * - TODO: Add method specification.
+     * - Returns `SpySalesOrderQuery` query for a given `idSalesOrder`.
      *
      * @api
      *
@@ -116,7 +116,7 @@ interface AfterPayQueryContainerInterface extends QueryContainerInterface
 
     /**
      * Specification:
-     * - TODO: Add method specification.
+     * - Returns `SpyPaymentAfterPayTransactionLogQuery` query with `refund` operation for a given `orderReference`.
      *
      * @api
      *

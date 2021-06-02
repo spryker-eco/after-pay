@@ -35,10 +35,6 @@ class AfterPayPostCheckPlugin extends AbstractPlugin implements CheckoutPostSave
      */
     public function executeHook(QuoteTransfer $quoteTransfer, CheckoutResponseTransfer $checkoutResponse): void
     {
-        if ($quoteTransfer->getPayment()->getPaymentProvider() !== SharedAfterPayConfig::PROVIDER_NAME) {
-            return;
-        }
-
         $this->getFacade()->postSaveHook($quoteTransfer, $checkoutResponse);
     }
 }

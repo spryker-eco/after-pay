@@ -23,7 +23,10 @@ use Spryker\Zed\Oms\Dependency\Plugin\Command\CommandByOrderInterface;
 class CapturePlugin extends AbstractPlugin implements CommandByOrderInterface
 {
     /**
-     * {@inheritDoc}
+     * Specification:
+     * - Sends payment `capture` request to AfterPay gateway, to capture payment for a specific order item.
+     * - If it is the first item `capture` request for given order, captures also full expense amount.
+     * - Saves the transaction result in DB and updates payment with new total captured amount.
      *
      * @api
      *

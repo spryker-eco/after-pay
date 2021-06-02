@@ -141,7 +141,7 @@ interface AfterPayFacadeInterface
 
     /**
      * Specification:
-     * - Sends "void" request to AfterPay gateway, to cancel payment for a specific order item, before payment is captured
+     * - Sends "cancel" request to AfterPay gateway, to cancel payment for a specific order item, before payment is captured
      * - If it is the last item cancellation request for given order, cancels also full expense amount.
      * - Saves the transaction result in DB and updates payment with new total cancelled amount.
      *
@@ -156,7 +156,9 @@ interface AfterPayFacadeInterface
 
     /**
      * Specification:
-     * - Saves order payment method data according to quote and checkout response transfer data.
+     * - Checks is AfterPay payment provider selected on checkout.
+     * - Saves order payment method data according to quote and checkout response transfer data if AfterPay payment provider selected.
+     * - Sends payment `authorize` request to AfterPay gateway if AfterPay payment provider selected.
      *
      * @api
      *
@@ -169,8 +171,8 @@ interface AfterPayFacadeInterface
 
     /**
      * Specification:
-     *  - Executes a post save hook for the following payment methods:
-     *    Sofort / authorize: checks for an external redirect URL in transaction log and redirects customer to the payment system
+     *  - Checks is AfterPay payment provider selected on checkout.
+     *  - Checks for an external redirect URL in transaction log and redirects customer to the payment system if AfterPay payment provider selected.
      *
      * @api
      *

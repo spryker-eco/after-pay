@@ -32,6 +32,7 @@ class OrderToRequestTransfer implements OrderToRequestTransferInterface
 
     protected const ZERO_AMOUNT = '0';
 
+    protected const ORDER_ITEM_QUANTITY = 1;
     protected const SHIPPING_FEE_PROVIDER = 'ShippingFee';
 
     /**
@@ -201,7 +202,7 @@ class OrderToRequestTransfer implements OrderToRequestTransferInterface
                 ->setProductId(static::SHIPPING_FEE_PROVIDER)
                 ->setDescription(static::SHIPPING_FEE_PROVIDER)
                 ->setGrossUnitPrice($amount)
-                ->setQuantity(1)
+                ->setQuantity(static::ORDER_ITEM_QUANTITY)
         );
 
         return $orderRequestTransfer;
@@ -356,7 +357,7 @@ class OrderToRequestTransfer implements OrderToRequestTransferInterface
                     ->setProductId(static::GIFT_CARD_PROVIDER . $index)
                     ->setDescription(static::GIFT_CARD_PROVIDER . $index)
                     ->setGrossUnitPrice($amount)
-                    ->setQuantity(1)
+                    ->setQuantity(static::ORDER_ITEM_QUANTITY)
             );
         }
 
