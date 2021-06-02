@@ -26,6 +26,7 @@ use Generated\Shared\Transfer\QuoteTransfer;
 use Generated\Shared\Transfer\SaveOrderTransfer;
 use Spryker\Zed\Kernel\Business\AbstractFacade;
 use SprykerEco\Shared\AfterPay\AfterPayConfig as SharedAfterPayConfig;
+use SprykerEco\Zed\AfterPay\Communication\Converter\QuoteToCallConverter;
 
 /**
  * @method \SprykerEco\Zed\AfterPay\Business\AfterPayBusinessFactory getFactory()
@@ -137,8 +138,7 @@ class AfterPayFacade extends AbstractFacade implements AfterPayFacadeInterface
             ->createOrderSaver()
             ->saveOrderPayment($quoteTransfer, $saveOrderTransfer);
 
-        $afterPayCallTransfer = $this->getFactory()
-            ->createQuoteToCallConverter()
+        $afterPayCallTransfer = (new QuoteToCallConverter())
             ->convert($quoteTransfer);
         $this->authorizePayment($afterPayCallTransfer);
     }

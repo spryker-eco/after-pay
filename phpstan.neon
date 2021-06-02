@@ -9,7 +9,5 @@ parameters:
         - '#Parameter \$.+ of method .+ has invalid typehint type Orm\\.+#'
         - '#Call to method.+on an unknown class.+AutoCompletion#'
         - '#.+Transfer.+#'
-        - '#PHPDoc tag @var for variable.+contains unknown class Orm\\.+#'
-        - '#Parameter.+of anonymous function has invalid typehint type.+#'
     excludePaths:
-        - src/SprykerEco/Zed/Adyen/Persistence/Propel/Abstract*.php
+        - src/SprykerEco/Zed/AfterPay/Persistence/Propel/Abstract*.php
