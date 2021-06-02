@@ -9,5 +9,6 @@ parameters:
         - '#Parameter \$.+ of method .+ has invalid typehint type Orm\\.+#'
         - '#Call to method.+on an unknown class.+AutoCompletion#'
         - '#.+Transfer.+#'
+        - '#Instantiated class Orm\\Zed\\AfterPay\\Persistence\\.+ not found.#'
     excludePaths:
         - src/SprykerEco/Zed/AfterPay/Persistence/Propel/Abstract*.php

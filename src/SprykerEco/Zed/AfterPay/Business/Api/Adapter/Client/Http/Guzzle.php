@@ -112,21 +112,24 @@ class Guzzle implements ClientInterface
         } catch (RequestException $requestException) {
             $apiHttpRequestException = new ApiHttpRequestException($requestException->getMessage());
 
-            $content = $requestException->getResponse()->getBody()->getContents();
-            if (!empty($content)) {
-                $errorResponseData = $this->encodingService->decodeJson($content, true);
-                if (isset($errorResponseData[0])) {
-                    $errorDetails = $errorResponseData[0];
+            $response = $requestException->getResponse();
+            if ($response instanceof ResponseInterface) {
+                $content = $response->getBody()->getContents();
+                if (!empty($content)) {
+                    $errorResponseData = $this->encodingService->decodeJson($content, true);
+                    if (isset($errorResponseData[0])) {
+                        $errorDetails = $errorResponseData[0];
 
-                    $apiErrorTransfer = (new AfterPayApiResponseErrorTransfer())
-                        ->setActionCode($errorDetails['actionCode'])
-                        ->setCode($errorDetails['code'])
-                        ->setType($errorDetails['type'])
-                        ->setMessage($errorDetails['message'])
-                        ->setIsSuccess(false);
+                        $apiErrorTransfer = (new AfterPayApiResponseErrorTransfer())
+                            ->setActionCode($errorDetails['actionCode'])
+                            ->setCode($errorDetails['code'])
+                            ->setType($errorDetails['type'])
+                            ->setMessage($errorDetails['message'])
+                            ->setIsSuccess(false);
 
-                    $apiHttpRequestException->setError($apiErrorTransfer);
-                    $apiHttpRequestException->setDetailedMessage($content);
+                        $apiHttpRequestException->setError($apiErrorTransfer);
+                        $apiHttpRequestException->setDetailedMessage($content);
+                    }
                 }
             }
 
