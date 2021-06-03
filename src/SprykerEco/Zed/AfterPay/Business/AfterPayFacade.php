@@ -25,8 +25,6 @@ use Generated\Shared\Transfer\PaymentMethodsTransfer;
 use Generated\Shared\Transfer\QuoteTransfer;
 use Generated\Shared\Transfer\SaveOrderTransfer;
 use Spryker\Zed\Kernel\Business\AbstractFacade;
-use SprykerEco\Shared\AfterPay\AfterPayConfig as SharedAfterPayConfig;
-use SprykerEco\Zed\AfterPay\Communication\Converter\QuoteToCallConverter;
 
 /**
  * @method \SprykerEco\Zed\AfterPay\Business\AfterPayBusinessFactory getFactory()

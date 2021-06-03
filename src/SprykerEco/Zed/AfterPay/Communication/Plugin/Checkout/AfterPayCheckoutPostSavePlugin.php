@@ -9,7 +9,6 @@ namespace SprykerEco\Zed\AfterPay\Communication\Plugin\Checkout;
 
 use Generated\Shared\Transfer\CheckoutResponseTransfer;
 use Generated\Shared\Transfer\QuoteTransfer;
-use Spryker\Zed\Checkout\Dependency\Plugin\CheckoutPreSaveHookInterface;
 use Spryker\Zed\CheckoutExtension\Dependency\Plugin\CheckoutPostSaveInterface;
 use Spryker\Zed\Kernel\Communication\AbstractPlugin;
 
@@ -21,7 +20,6 @@ use Spryker\Zed\Kernel\Communication\AbstractPlugin;
  */
 class AfterPayCheckoutPostSavePlugin extends AbstractPlugin implements CheckoutPostSaveInterface
 {
-
     /**
      * {@inheritDoc}
      * - Proceed with Authorize Payment process if AfterPay payment provider selected on checkout.
@@ -37,5 +35,4 @@ class AfterPayCheckoutPostSavePlugin extends AbstractPlugin implements CheckoutP
     {
         $this->getFacade()->authorizePaymentForQuote($quoteTransfer);
     }
-
 }

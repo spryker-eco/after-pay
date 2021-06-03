@@ -22,8 +22,6 @@ use SprykerEco\Zed\AfterPay\Business\Api\Adapter\AdapterFactory;
 use SprykerEco\Zed\AfterPay\Business\Api\Adapter\AdapterFactoryInterface;
 use SprykerEco\Zed\AfterPay\Business\Api\Adapter\AdapterInterface;
 use SprykerEco\Zed\AfterPay\Business\Api\Adapter\AfterPayApiAdapter;
-use SprykerEco\Zed\AfterPay\Business\Converter\QuoteToCallConverter;
-use SprykerEco\Zed\AfterPay\Business\Converter\QuoteToCallConverterInterface;
 use SprykerEco\Zed\AfterPay\Business\Exception\InvalidAfterPayAuthorizeRequestBuilderException;
 use SprykerEco\Zed\AfterPay\Business\Exception\InvalidAfterPayPaymentMethodsFilterException;
 use SprykerEco\Zed\AfterPay\Business\Hook\PostSaveHook;
