@@ -111,7 +111,7 @@ class Saver implements SaverInterface
             ->setGrandTotal($this->getPaymentPriceToPay($quoteTransfer));
 
         $quoteTransfer->setOrderReference($saveOrderTransfer->getOrderReference());
-        $quoteTransfer->getPayment()->setIdSalesPayment($saveOrderTransfer->getIdSalesOrder());
+        $quoteTransfer->getPayment()->setIdSalesOrder($saveOrderTransfer->getIdSalesOrder());
 
         return $paymentEntity;
     }

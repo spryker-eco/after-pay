@@ -105,8 +105,6 @@ interface AfterPayFacadeInterface
      *
      * @api
      *
-     * @deprecated Use {@link authorizePaymentForQuote()} instead.
-     *
      * @param \Generated\Shared\Transfer\AfterPayCallTransfer $afterPayCallTransfer
      *
      * @return \Generated\Shared\Transfer\AfterPayApiResponseTransfer

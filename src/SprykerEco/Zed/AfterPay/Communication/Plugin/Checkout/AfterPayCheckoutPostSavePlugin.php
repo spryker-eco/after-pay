@@ -22,7 +22,9 @@ class AfterPayCheckoutPostSavePlugin extends AbstractPlugin implements CheckoutP
 {
     /**
      * {@inheritDoc}
-     * - Proceed with Authorize Payment process if AfterPay payment provider selected on checkout.
+     * - Checks is AfterPay payment provider selected on checkout.
+     * - Sends payment authorize request to AfterPay gateway if AfterPay payment provider selected.
+     * - Saves the AfterPay transaction result.
      *
      * @api
      *

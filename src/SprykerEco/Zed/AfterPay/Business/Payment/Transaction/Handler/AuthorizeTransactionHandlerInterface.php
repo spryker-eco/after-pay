@@ -25,5 +25,5 @@ interface AuthorizeTransactionHandlerInterface
      *
      * @return void
      */
-    public function authorizeForQuote(QuoteTransfer $quoteTransfer): void;
+    public function authorizePaymentForQuote(QuoteTransfer $quoteTransfer): void;
 }

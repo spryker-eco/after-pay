@@ -91,7 +91,7 @@ class AuthorizeTransactionHandler implements AuthorizeTransactionHandlerInterfac
      *
      * @return void
      */
-    public function authorizeForQuote(QuoteTransfer $quoteTransfer): void
+    public function authorizePaymentForQuote(QuoteTransfer $quoteTransfer): void
     {
         if ($quoteTransfer->getPayment()->getPaymentProvider() !== SharedAfterPayConfig::PROVIDER_NAME) {
             return;

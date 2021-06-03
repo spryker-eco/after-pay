@@ -13,7 +13,7 @@ use Spryker\Zed\Checkout\Dependency\Plugin\CheckoutPreSaveHookInterface;
 use Spryker\Zed\Kernel\Communication\AbstractPlugin;
 
 /**
- * @deprecated Use {@link \SprykerEco\Zed\AfterPay\Communication\Plugin\Checkout\AfterPayPostSavePlugin} instead.
+ * @deprecated Use {@link \SprykerEco\Zed\AfterPay\Communication\Plugin\Checkout\AfterPayCheckoutPostSavePlugin} instead.
  *
  * @method \SprykerEco\Zed\AfterPay\Communication\AfterPayCommunicationFactory getFactory()
  * @method \SprykerEco\Zed\AfterPay\Business\AfterPayFacadeInterface getFacade()

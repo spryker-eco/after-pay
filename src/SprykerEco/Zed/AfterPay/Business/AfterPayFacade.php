@@ -179,7 +179,7 @@ class AfterPayFacade extends AbstractFacade implements AfterPayFacadeInterface
     {
         $this->getFactory()
             ->createAuthorizeTransactionHandler()
-            ->authorizeForQuote($quoteTransfer);
+            ->authorizePaymentForQuote($quoteTransfer);
     }
 
     /**

@@ -21,7 +21,7 @@ class AfterPayMapper implements AfterPayMapperInterface
     {
         return (new AfterPayCallTransfer())
             ->setOrderReference($quoteTransfer->getOrderReference())
-            ->setIdSalesOrder($quoteTransfer->getPayment()->getIdSalesPayment())
+            ->setIdSalesOrder($quoteTransfer->getPayment()->getIdSalesOrder())
             ->setEmail($quoteTransfer->getCustomer()->getEmail())
             ->setItems($quoteTransfer->getItems())
             ->setBillingAddress($quoteTransfer->getBillingAddress())
