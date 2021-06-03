@@ -10,36 +10,32 @@ namespace SprykerEco\Zed\AfterPay\Communication\Plugin\Checkout;
 use Generated\Shared\Transfer\CheckoutResponseTransfer;
 use Generated\Shared\Transfer\QuoteTransfer;
 use Spryker\Zed\Checkout\Dependency\Plugin\CheckoutPreSaveHookInterface;
+use Spryker\Zed\CheckoutExtension\Dependency\Plugin\CheckoutPostSaveInterface;
 use Spryker\Zed\Kernel\Communication\AbstractPlugin;
 
 /**
- * @deprecated Use {@link \SprykerEco\Zed\AfterPay\Communication\Plugin\Checkout\AfterPayPostSavePlugin} instead.
- *
- * @method \SprykerEco\Zed\AfterPay\Communication\AfterPayCommunicationFactory getFactory()
  * @method \SprykerEco\Zed\AfterPay\Business\AfterPayFacadeInterface getFacade()
+ * @method \SprykerEco\Zed\AfterPay\Communication\AfterPayCommunicationFactory getFactory()
  * @method \SprykerEco\Zed\AfterPay\AfterPayConfig getConfig()
  * @method \SprykerEco\Zed\AfterPay\Persistence\AfterPayQueryContainerInterface getQueryContainer()
  */
-class AfterPayPreCheckPlugin extends AbstractPlugin implements CheckoutPreSaveHookInterface
+class AfterPayCheckoutPostSavePlugin extends AbstractPlugin implements CheckoutPostSaveInterface
 {
+
     /**
      * {@inheritDoc}
-     * - Proceed with Authorize Payment process.
+     * - Proceed with Authorize Payment process if AfterPay payment provider selected on checkout.
      *
      * @api
      *
      * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
      * @param \Generated\Shared\Transfer\CheckoutResponseTransfer $checkoutResponseTransfer
      *
-     * @return \Generated\Shared\Transfer\QuoteTransfer
+     * @return void
      */
-    public function preSave(QuoteTransfer $quoteTransfer, CheckoutResponseTransfer $checkoutResponseTransfer): QuoteTransfer
+    public function executeHook(QuoteTransfer $quoteTransfer, CheckoutResponseTransfer $checkoutResponseTransfer): void
     {
-        $afterPayCallTransfer = $this->getFactory()
-            ->createQuoteToCallConverter()
-            ->convert($quoteTransfer);
-        $this->getFacade()->authorizePayment($afterPayCallTransfer);
-
-        return $quoteTransfer;
+        $this->getFacade()->authorizePaymentForQuote($quoteTransfer);
     }
+
 }

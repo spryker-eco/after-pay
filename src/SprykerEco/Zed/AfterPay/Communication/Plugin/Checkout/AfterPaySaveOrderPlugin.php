@@ -23,7 +23,6 @@ class AfterPaySaveOrderPlugin extends AbstractPlugin implements CheckoutDoSaveOr
     /**
      * {@inheritDoc}
      * - Retrieves (its) data from the quote object and saves it to the database.
-     * - Proceed with Authorize Payment process.
      * - These plugins are already enveloped into a transaction.
      *
      * @api

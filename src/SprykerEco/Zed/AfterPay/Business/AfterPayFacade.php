@@ -130,17 +130,9 @@ class AfterPayFacade extends AbstractFacade implements AfterPayFacadeInterface
      */
     public function saveOrderPayment(QuoteTransfer $quoteTransfer, SaveOrderTransfer $saveOrderTransfer): void
     {
-        if ($quoteTransfer->getPayment()->getPaymentProvider() !== SharedAfterPayConfig::PROVIDER_NAME) {
-            return;
-        }
-
         $this->getFactory()
             ->createOrderSaver()
             ->saveOrderPayment($quoteTransfer, $saveOrderTransfer);
-
-        $afterPayCallTransfer = (new QuoteToCallConverter())
-            ->convert($quoteTransfer);
-        $this->authorizePayment($afterPayCallTransfer);
     }
 
     /**
@@ -174,6 +166,22 @@ class AfterPayFacade extends AbstractFacade implements AfterPayFacadeInterface
         return $this->getFactory()
             ->createAuthorizeTransactionHandler()
             ->authorize($afterPayCallTransfer);
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @api
+     *
+     * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
+     *
+     * @return void
+     */
+    public function authorizePaymentForQuote(QuoteTransfer $quoteTransfer): void
+    {
+        $this->getFactory()
+            ->createAuthorizeTransactionHandler()
+            ->authorizeForQuote($quoteTransfer);
     }
 
     /**

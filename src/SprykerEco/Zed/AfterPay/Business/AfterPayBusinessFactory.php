@@ -22,10 +22,14 @@ use SprykerEco\Zed\AfterPay\Business\Api\Adapter\AdapterFactory;
 use SprykerEco\Zed\AfterPay\Business\Api\Adapter\AdapterFactoryInterface;
 use SprykerEco\Zed\AfterPay\Business\Api\Adapter\AdapterInterface;
 use SprykerEco\Zed\AfterPay\Business\Api\Adapter\AfterPayApiAdapter;
+use SprykerEco\Zed\AfterPay\Business\Converter\QuoteToCallConverter;
+use SprykerEco\Zed\AfterPay\Business\Converter\QuoteToCallConverterInterface;
 use SprykerEco\Zed\AfterPay\Business\Exception\InvalidAfterPayAuthorizeRequestBuilderException;
 use SprykerEco\Zed\AfterPay\Business\Exception\InvalidAfterPayPaymentMethodsFilterException;
 use SprykerEco\Zed\AfterPay\Business\Hook\PostSaveHook;
 use SprykerEco\Zed\AfterPay\Business\Hook\PostSaveHookInterface;
+use SprykerEco\Zed\AfterPay\Business\Mapper\AfterPayMapper;
+use SprykerEco\Zed\AfterPay\Business\Mapper\AfterPayMapperInterface;
 use SprykerEco\Zed\AfterPay\Business\Order\Saver;
 use SprykerEco\Zed\AfterPay\Business\Order\SaverInterface;
 use SprykerEco\Zed\AfterPay\Business\Payment\Filter\AfterPayPaymentMethodsFilterInterface;
@@ -104,7 +108,8 @@ class AfterPayBusinessFactory extends AbstractBusinessFactory
             $this->createAuthorizeTransaction(),
             $this->getAuthorizeRequestBuilder(),
             $this->createPaymentWriter(),
-            $this->createPriceToPayProvider()
+            $this->createPriceToPayProvider(),
+            $this->createAfterPayMapper()
         );
     }
 
@@ -402,6 +407,14 @@ class AfterPayBusinessFactory extends AbstractBusinessFactory
     public function createPriceToPayProvider(): PriceToPayProviderInterface
     {
         return new PriceToPayProvider($this->getPaymentFacade());
+    }
+
+    /**
+     * @return \SprykerEco\Zed\AfterPay\Business\Mapper\AfterPayMapperInterface
+     */
+    public function createAfterPayMapper(): AfterPayMapperInterface
+    {
+        return new AfterPayMapper();
     }
 
     /**

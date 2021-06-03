@@ -105,11 +105,27 @@ interface AfterPayFacadeInterface
      *
      * @api
      *
+     * @deprecated Use {@link authorizePaymentForQuote()} instead.
+     *
      * @param \Generated\Shared\Transfer\AfterPayCallTransfer $afterPayCallTransfer
      *
      * @return \Generated\Shared\Transfer\AfterPayApiResponseTransfer
      */
     public function authorizePayment(AfterPayCallTransfer $afterPayCallTransfer): AfterPayApiResponseTransfer;
+
+    /**
+     * Specification:
+     * - Checks is AfterPay payment provider selected on checkout.
+     * - Sends payment authorize request to AfterPay gateway if AfterPay payment provider selected.
+     * - Saves the AfterPay transaction result.
+     *
+     * @api
+     *
+     * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
+     *
+     * @return void
+     */
+    public function authorizePaymentForQuote(QuoteTransfer $quoteTransfer): void;
 
     /**
      * Specification:

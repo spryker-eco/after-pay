@@ -18,4 +18,11 @@ interface AuthorizeTransactionHandlerInterface
      * @return \Generated\Shared\Transfer\AfterPayApiResponseTransfer
      */
     public function authorize(AfterPayCallTransfer $orderTransfer): AfterPayApiResponseTransfer;
+
+    /**
+     * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
+     *
+     * @return void
+     */
+    public function authorizeForQuote(QuoteTransfer $quoteTransfer): void;
 }
