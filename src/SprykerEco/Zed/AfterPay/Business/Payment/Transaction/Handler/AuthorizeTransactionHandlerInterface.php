@@ -9,6 +9,7 @@ namespace SprykerEco\Zed\AfterPay\Business\Payment\Transaction\Handler;
 
 use Generated\Shared\Transfer\AfterPayApiResponseTransfer;
 use Generated\Shared\Transfer\AfterPayCallTransfer;
+use Generated\Shared\Transfer\QuoteTransfer;
 
 interface AuthorizeTransactionHandlerInterface
 {

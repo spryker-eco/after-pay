@@ -10,6 +10,7 @@ namespace SprykerEco\Zed\AfterPay\Business\Payment\Transaction\Handler;
 use Generated\Shared\Transfer\AfterPayApiResponseTransfer;
 use Generated\Shared\Transfer\AfterPayAuthorizeRequestTransfer;
 use Generated\Shared\Transfer\AfterPayCallTransfer;
+use Generated\Shared\Transfer\QuoteTransfer;
 use SprykerEco\Shared\AfterPay\AfterPayConfig as SharedAfterPayConfig;
 use SprykerEco\Zed\AfterPay\Business\Mapper\AfterPayMapperInterface;
 use SprykerEco\Zed\AfterPay\Business\Payment\PaymentWriterInterface;
