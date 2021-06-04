@@ -196,7 +196,7 @@ class OrderToRequestTransfer implements OrderToRequestTransferInterface
         $amount = (string)$this->moneyFacade
             ->convertIntegerToDecimal($afterPayCallTransfer->getTotals()->getShipmentTotal());
 
-        $shippingTax =$afterPayCallTransfer->getTotals()->getTaxTotal()->getAmount() -
+        $shippingTax = $afterPayCallTransfer->getTotals()->getTaxTotal()->getAmount() -
             $afterPayCallTransfer->getTotals()->getTaxTotal()->getItemsTotalTax();
 
         $shippingNet = $afterPayCallTransfer->getTotals()->getShipmentTotal() - $shippingTax;
