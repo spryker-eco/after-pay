@@ -35,6 +35,13 @@ class OrderToRequestTransfer implements OrderToRequestTransferInterface
     protected const ORDER_ITEM_QUANTITY = 1;
     protected const SHIPPING_FEE_PROVIDER = 'ShippingFee';
 
+    protected const SALUTATION_MAP = [
+        'Mr' => 'Mr',
+        'Ms' => 'Miss',
+        'Mrs' => 'Mrs',
+        'Dr' => 'Mr',
+    ];
+
     /**
      * @var \SprykerEco\Zed\AfterPay\Dependency\Facade\AfterPayToMoneyFacadeInterface
      */
@@ -149,7 +156,7 @@ class OrderToRequestTransfer implements OrderToRequestTransferInterface
             ->setLastName($billingAddressTransfer->getLastName())
             ->setConversationalLanguage($this->getStoreCountryIso2())
             ->setCustomerCategory(AfterPayConfig::API_CUSTOMER_CATEGORY_PERSON)
-            ->setSalutation($billingAddressTransfer->getSalutation())
+            ->setSalutation(static::SALUTATION_MAP[$billingAddressTransfer->getSalutation()] ?? 'Mr')
             ->setEmail($afterPayCallTransfer->getEmail())
             ->setAddress($this->buildCustomerBillingAddressRequestTransfer($afterPayCallTransfer));
     }
@@ -189,11 +196,20 @@ class OrderToRequestTransfer implements OrderToRequestTransferInterface
         $amount = (string)$this->moneyFacade
             ->convertIntegerToDecimal($afterPayCallTransfer->getTotals()->getShipmentTotal());
 
+        $shippingTax =$afterPayCallTransfer->getTotals()->getTaxTotal()->getAmount() -
+            $afterPayCallTransfer->getTotals()->getTaxTotal()->getItemsTotalTax();
+
+        $shippingNet = $afterPayCallTransfer->getTotals()->getShipmentTotal() - $shippingTax;
+        $shippingNetPercent = (int)round($shippingTax * 100 / $shippingNet);
+
         $orderRequestTransfer->addItem(
             (new AfterPayRequestOrderItemTransfer())
                 ->setProductId(static::SHIPPING_FEE_PROVIDER)
                 ->setDescription(static::SHIPPING_FEE_PROVIDER)
                 ->setGrossUnitPrice($amount)
+                ->setNetUnitPrice((string)$this->moneyFacade->convertIntegerToDecimal((int)$shippingNet))
+                ->setVatAmount((string)$this->moneyFacade->convertIntegerToDecimal((int)$shippingTax))
+                ->setVatPercent($shippingNetPercent)
                 ->setQuantity(static::ORDER_ITEM_QUANTITY)
         );
 
@@ -209,6 +225,7 @@ class OrderToRequestTransfer implements OrderToRequestTransferInterface
     {
         return (new AfterPayRequestOrderTransfer())
             ->setNumber($afterPayCallTransfer->getOrderReference())
+            ->setTotalNetAmount($this->getStringDecimalOrderNetTotal($afterPayCallTransfer))
             ->setTotalGrossAmount($this->getStringDecimalOrderGrossTotal($afterPayCallTransfer))
             ->setCurrency($afterPayCallTransfer->getCurrency());
     }
@@ -236,6 +253,7 @@ class OrderToRequestTransfer implements OrderToRequestTransferInterface
             ->setDescription($itemTransfer->getName())
             ->setGrossUnitPrice($this->getStringDecimalItemGrossUnitPrice($itemTransfer))
             ->setQuantity($itemTransfer->getQuantity())
+            ->setNetUnitPrice($this->getStringDecimalItemNetUnitPrice($itemTransfer))
             ->setVatAmount($this->getStringDecimalItemVatAmountPrice($itemTransfer))
             ->setVatPercent($itemTransfer->getTaxRate())
             ->setGroupId($itemTransfer->getGroupKey());
