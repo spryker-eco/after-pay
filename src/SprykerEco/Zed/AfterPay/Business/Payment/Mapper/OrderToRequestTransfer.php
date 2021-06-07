@@ -178,40 +178,6 @@ class OrderToRequestTransfer implements OrderToRequestTransferInterface
 
         $orderRequestTransfer = $this->addExpensesToOrderRequestTransfer($orderRequestTransfer, $afterPayCallTransfer);
         $orderRequestTransfer = $this->addGiftcardItems($orderRequestTransfer, $afterPayCallTransfer);
-        $orderRequestTransfer = $this->addShippingFeeToOrderRequestTransfer($orderRequestTransfer, $afterPayCallTransfer);
-
-        return $orderRequestTransfer;
-    }
-
-    /**
-     * @param \Generated\Shared\Transfer\AfterPayRequestOrderTransfer $orderRequestTransfer
-     * @param \Generated\Shared\Transfer\AfterPayCallTransfer $afterPayCallTransfer
-     *
-     * @return \Generated\Shared\Transfer\AfterPayRequestOrderTransfer
-     */
-    protected function addShippingFeeToOrderRequestTransfer(
-        AfterPayRequestOrderTransfer $orderRequestTransfer,
-        AfterPayCallTransfer $afterPayCallTransfer
-    ): AfterPayRequestOrderTransfer {
-        $amount = (string)$this->moneyFacade
-            ->convertIntegerToDecimal($afterPayCallTransfer->getTotals()->getShipmentTotal());
-
-        $shippingTax = $afterPayCallTransfer->getTotals()->getTaxTotal()->getAmount() -
-            $afterPayCallTransfer->getTotals()->getTaxTotal()->getItemsTotalTax();
-
-        $shippingNet = $afterPayCallTransfer->getTotals()->getShipmentTotal() - $shippingTax;
-        $shippingNetPercent = (int)round($shippingTax * 100 / $shippingNet);
-
-        $orderRequestTransfer->addItem(
-            (new AfterPayRequestOrderItemTransfer())
-                ->setProductId(static::SHIPPING_FEE_PROVIDER)
-                ->setDescription(static::SHIPPING_FEE_PROVIDER)
-                ->setGrossUnitPrice($amount)
-                ->setNetUnitPrice((string)$this->moneyFacade->convertIntegerToDecimal((int)$shippingNet))
-                ->setVatAmount((string)$this->moneyFacade->convertIntegerToDecimal((int)$shippingTax))
-                ->setVatPercent($shippingNetPercent)
-                ->setQuantity(static::ORDER_ITEM_QUANTITY)
-        );
 
         return $orderRequestTransfer;
     }
@@ -426,6 +392,8 @@ class OrderToRequestTransfer implements OrderToRequestTransferInterface
             ->setDescription($expenseTransfer->getName())
             ->setGrossUnitPrice($this->getStringDecimalExpenseGrossUnitPrice($expenseTransfer))
             ->setNetUnitPrice($this->getStringDecimalExpenseNetUnitPrice($expenseTransfer))
+            ->setVatAmount((string)$this->moneyFacade->convertIntegerToDecimal($expenseTransfer->getSumTaxAmount()))
+            ->setVatPercent($expenseTransfer->getTaxRate())
             ->setQuantity($expenseTransfer->getQuantity());
 
         return $item;
