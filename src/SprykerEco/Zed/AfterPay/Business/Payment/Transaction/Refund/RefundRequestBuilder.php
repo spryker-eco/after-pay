@@ -17,6 +17,8 @@ use SprykerEco\Zed\AfterPay\Dependency\Facade\AfterPayToMoneyFacadeInterface;
 
 class RefundRequestBuilder implements RefundRequestBuilderInterface
 {
+    protected const ZERO_AMOUNT = 0;
+
     /**
      * @var \SprykerEco\Zed\AfterPay\Business\Payment\Mapper\OrderToRequestTransferInterface
      */
@@ -110,7 +112,8 @@ class RefundRequestBuilder implements RefundRequestBuilderInterface
             ->setName(AfterPayConfig::REFUND_EXPENSE_DECRIPTION)
             ->setUnitGrossPrice($expenseAmount)
             ->setUnitPriceToPayAggregation($expenseAmount)
-            ->setUnitTaxAmountFullAggregation(0)
+            ->setUnitTaxAmountFullAggregation(static::ZERO_AMOUNT)
+            ->setTaxRate(static::ZERO_AMOUNT)
             ->setQuantity(1);
     }
 

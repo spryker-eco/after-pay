@@ -258,7 +258,7 @@
         <property name="netUnitPrice" type="string"/>
         <property name="quantity" type="int"/>
         <property name="vatPercent" type="int"/>
-        <property name="vatAmount" type="string"/>
+        <property name="vatAmount" type="int"/>
         <property name="imageUrl" type="string"/>
         <property name="productUrl" type="string"/>
         <property name="groupId" type="string"/>

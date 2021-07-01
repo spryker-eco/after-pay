@@ -35,13 +35,6 @@ class OrderToRequestTransfer implements OrderToRequestTransferInterface
     protected const ORDER_ITEM_QUANTITY = 1;
     protected const SHIPPING_FEE_PROVIDER = 'ShippingFee';
 
-    protected const SALUTATION_MAP = [
-        'Mr' => 'Mr',
-        'Ms' => 'Miss',
-        'Mrs' => 'Mrs',
-        'Dr' => 'Mr',
-    ];
-
     /**
      * @var \SprykerEco\Zed\AfterPay\Dependency\Facade\AfterPayToMoneyFacadeInterface
      */
@@ -65,6 +58,11 @@ class OrderToRequestTransfer implements OrderToRequestTransferInterface
     protected $priceToPayProvider;
 
     /**
+     * @var \SprykerEco\Zed\AfterPay\AfterPayConfig
+     */
+    protected $config;
+
+    /**
      * @param \SprykerEco\Zed\AfterPay\Dependency\Facade\AfterPayToMoneyFacadeInterface $moneyFacade
      * @param \SprykerEco\Zed\AfterPay\Dependency\Facade\AfterPayToStoreFacadeInterface $storeFacade
      * @param \SprykerEco\Zed\AfterPay\Business\Payment\Transaction\PriceToPayProviderInterface $priceToPayProvider
@@ -72,11 +70,13 @@ class OrderToRequestTransfer implements OrderToRequestTransferInterface
     public function __construct(
         AfterPayToMoneyFacadeInterface $moneyFacade,
         AfterPayToStoreFacadeInterface $storeFacade,
-        PriceToPayProviderInterface $priceToPayProvider
+        PriceToPayProviderInterface $priceToPayProvider,
+        AfterPayConfig $config
     ) {
         $this->moneyFacade = $moneyFacade;
         $this->storeFacade = $storeFacade;
         $this->priceToPayProvider = $priceToPayProvider;
+        $this->config = $config;
     }
 
     /**
@@ -100,7 +100,8 @@ class OrderToRequestTransfer implements OrderToRequestTransferInterface
     public function orderToBaseCaptureRequest(AfterPayCallTransfer $afterPayCallTransfer): AfterPayCaptureRequestTransfer
     {
         $orderRequestTransfer = $this->buildOrderRequestTransfer($afterPayCallTransfer)
-            ->setTotalGrossAmount(static::ZERO_AMOUNT);
+            ->setTotalGrossAmount(static::ZERO_AMOUNT)
+            ->setTotalNetAmount(static::ZERO_AMOUNT);
 
         return (new AfterPayCaptureRequestTransfer())
             ->setOrderDetails($orderRequestTransfer);
@@ -156,7 +157,7 @@ class OrderToRequestTransfer implements OrderToRequestTransferInterface
             ->setLastName($billingAddressTransfer->getLastName())
             ->setConversationalLanguage($this->getStoreCountryIso2())
             ->setCustomerCategory(AfterPayConfig::API_CUSTOMER_CATEGORY_PERSON)
-            ->setSalutation(static::SALUTATION_MAP[$billingAddressTransfer->getSalutation()] ?? 'Mr')
+            ->setSalutation($this->config->getSalutationMapping($billingAddressTransfer->getSalutation()))
             ->setEmail($afterPayCallTransfer->getEmail())
             ->setAddress($this->buildCustomerBillingAddressRequestTransfer($afterPayCallTransfer));
     }
@@ -392,7 +393,7 @@ class OrderToRequestTransfer implements OrderToRequestTransferInterface
             ->setDescription($expenseTransfer->getName())
             ->setGrossUnitPrice($this->getStringDecimalExpenseGrossUnitPrice($expenseTransfer))
             ->setNetUnitPrice($this->getStringDecimalExpenseNetUnitPrice($expenseTransfer))
-            ->setVatAmount((string)$this->moneyFacade->convertIntegerToDecimal($expenseTransfer->getSumTaxAmount()))
+            ->setVatAmount($this->getStringDecimalExpenseVatAmount($expenseTransfer))
             ->setVatPercent($expenseTransfer->getTaxRate())
             ->setQuantity($expenseTransfer->getQuantity());
 
@@ -423,5 +424,17 @@ class OrderToRequestTransfer implements OrderToRequestTransferInterface
         $expenseUnitNetAmount = $expenseUnitGrossPriceAmount - $expenseUnitTaxAmount;
 
         return (string)$this->moneyFacade->convertIntegerToDecimal($expenseUnitNetAmount);
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\ExpenseTransfer $expenseTransfer
+     *
+     * @return string
+     */
+    protected function getStringDecimalExpenseVatAmount(ExpenseTransfer $expenseTransfer): string
+    {
+        $expenseVatAmount = $expenseTransfer->getSumTaxAmount();
+
+        return (string)$this->moneyFacade->convertIntegerToDecimal($expenseVatAmount);
     }
 }
