@@ -204,6 +204,7 @@ class AfterPayConfig extends AbstractBundleConfig
      */
     protected function getApiEndpointUrl(string $endpointPath): string
     {
-        return $this->get(AfterPayConstants::API_ENDPOINT_BASE_URL) . $endpointPath;
+        $endpointBaseUrl = $this->get(AfterPayConstants::API_ENDPOINT_BASE_URL);
+        return $endpointBaseUrl . $endpointPath;
     }
 }

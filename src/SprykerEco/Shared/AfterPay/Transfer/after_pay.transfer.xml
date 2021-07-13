@@ -426,7 +426,9 @@
     <transfer name="Expense">
         <property name="type" type="string"/>
         <property name="name" type="string"/>
+        <property name="taxRate" type="float"/>
         <property name="unitTaxAmount" type="int"/>
+        <property name="sumTaxAmount" type="int"/>
         <property name="quantity" type="int"/>
         <property name="unitPriceToPayAggregation" type="int"/>
         <property name="sumPriceToPayAggregation" type="int"/>

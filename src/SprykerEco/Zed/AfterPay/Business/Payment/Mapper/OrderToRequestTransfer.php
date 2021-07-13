@@ -68,6 +68,7 @@ class OrderToRequestTransfer implements OrderToRequestTransferInterface
      * @param \SprykerEco\Zed\AfterPay\Dependency\Facade\AfterPayToMoneyFacadeInterface $moneyFacade
      * @param \SprykerEco\Zed\AfterPay\Dependency\Facade\AfterPayToStoreFacadeInterface $storeFacade
      * @param \SprykerEco\Zed\AfterPay\Business\Payment\Transaction\PriceToPayProviderInterface $priceToPayProvider
+     * @param \SprykerEco\Shared\AfterPay\AfterPayConfig $config
      */
     public function __construct(
         AfterPayToMoneyFacadeInterface $moneyFacade,
