@@ -379,7 +379,8 @@ class AfterPayBusinessFactory extends AbstractBusinessFactory
         return new OrderToRequestTransfer(
             $this->getMoneyFacade(),
             $this->getStoreFacade(),
-            $this->createPriceToPayProvider()
+            $this->createPriceToPayProvider(),
+            $this->getConfig()
         );
     }
 

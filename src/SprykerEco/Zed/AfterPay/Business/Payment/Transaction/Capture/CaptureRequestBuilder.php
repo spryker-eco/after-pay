@@ -17,6 +17,8 @@ use SprykerEco\Zed\AfterPay\Dependency\Facade\AfterPayToMoneyFacadeInterface;
 
 class CaptureRequestBuilder implements CaptureRequestBuilderInterface
 {
+    protected const ZERO_AMOUNT = 0;
+
     /**
      * @var \SprykerEco\Zed\AfterPay\Business\Payment\Mapper\OrderToRequestTransferInterface
      */
@@ -66,6 +68,7 @@ class CaptureRequestBuilder implements CaptureRequestBuilderInterface
 
         $captureRequestTransfer->getOrderDetails()->addItem($orderItemRequestTransfer);
         $this->increaseTotalGrossAmount($orderItemRequestTransfer, $captureRequestTransfer);
+        $this->increaseTotalNetAmount($orderItemRequestTransfer, $captureRequestTransfer);
 
         return $this;
     }
@@ -98,7 +101,8 @@ class CaptureRequestBuilder implements CaptureRequestBuilderInterface
             ->setName(AfterPayConfig::CAPTURE_EXPENSE_DESCRIPTION)
             ->setUnitGrossPrice($expenseAmount)
             ->setUnitPriceToPayAggregation($expenseAmount)
-            ->setUnitTaxAmountFullAggregation(0)
+            ->setUnitTaxAmountFullAggregation(static::ZERO_AMOUNT)
+            ->setTaxRate(static::ZERO_AMOUNT)
             ->setQuantity(1);
     }
 
