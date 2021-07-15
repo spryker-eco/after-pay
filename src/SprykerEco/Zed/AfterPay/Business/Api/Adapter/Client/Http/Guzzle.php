@@ -149,8 +149,8 @@ class Guzzle implements ClientInterface
             static::REQUEST_METHOD_POST,
             $endPointUrl,
             [
-                static::REQUEST_HEADER_CONTENT_TYPE => static::HEADER_CONTENT_TYPE_JSON,
-                static::REQUEST_HEADER_X_AUTH_KEY => $this->config->getApiCredentialsAuthKey(),
+                (string)static::REQUEST_HEADER_CONTENT_TYPE => (string)static::HEADER_CONTENT_TYPE_JSON,
+                (string)static::REQUEST_HEADER_X_AUTH_KEY => (string)$this->config->getApiCredentialsAuthKey(),
             ],
             $jsonBody
         );
@@ -167,8 +167,8 @@ class Guzzle implements ClientInterface
             static::REQUEST_METHOD_GET,
             $endPointUrl,
             [
-                static::REQUEST_HEADER_CONTENT_TYPE => static::HEADER_CONTENT_TYPE_JSON,
-                static::REQUEST_HEADER_X_AUTH_KEY => $this->config->getApiCredentialsAuthKey(),
+                (string)static::REQUEST_HEADER_CONTENT_TYPE => (string)static::HEADER_CONTENT_TYPE_JSON,
+                (string)static::REQUEST_HEADER_X_AUTH_KEY => (string)$this->config->getApiCredentialsAuthKey(),
             ]
         );
     }
