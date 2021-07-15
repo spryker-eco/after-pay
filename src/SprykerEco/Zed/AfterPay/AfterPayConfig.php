@@ -207,6 +207,7 @@ class AfterPayConfig extends AbstractBundleConfig
     public function getSalutationMapping(string $salutation): string
     {
         $salutationMap = $this->get(AfterPayConstants::SALUTATION_MAP);
+
         return $salutationMap[$salutation] ?? $this->get(AfterPayConstants::SALUTATION_DEFAULT);
     }
 
@@ -218,6 +219,7 @@ class AfterPayConfig extends AbstractBundleConfig
     protected function getApiEndpointUrl(string $endpointPath): string
     {
         $endpointBaseUrl = $this->get(AfterPayConstants::API_ENDPOINT_BASE_URL);
+
         return $endpointBaseUrl . $endpointPath;
     }
 }

@@ -7,9 +7,6 @@
 
 namespace SprykerEcoTest\Zed\AfterPay\Business;
 
-use Generated\Shared\Transfer\AfterPayApiResponseTransfer;
-use Generated\Shared\Transfer\AfterPayCallTransfer;
-use Generated\Shared\Transfer\CheckoutResponseTransfer;
 use Generated\Shared\Transfer\PaymentTransfer;
 use Orm\Zed\AfterPay\Persistence\SpyPaymentAfterPay;
 use Orm\Zed\AfterPay\Persistence\SpyPaymentAfterPayOrderItem;
@@ -20,7 +17,6 @@ use Spryker\Shared\Oms\OmsConstants;
 use SprykerEco\Shared\AfterPay\AfterPayConfig;
 use SprykerEco\Shared\AfterPay\AfterPayConstants;
 use SprykerEco\Zed\AfterPay\Communication\AfterPayCommunicationFactory;
-use SprykerEco\Zed\AfterPay\Communication\Plugin\Checkout\AfterPayPreCheckPlugin;
 
 class AfterPayPreCheckPluginTest extends AfterPayFacadeAbstractTest
 {

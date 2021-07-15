@@ -127,7 +127,7 @@ class LookupInstallmentPlansCall extends AbstractApiCall implements LookupInstal
      */
     protected function convertIntegerFieldsToDecimal(AfterPayInstallmentPlansRequestTransfer $installmentPlansRequestTransfer): void
     {
-        $amount = (int)$this->money->convertIntegerToDecimal($installmentPlansRequestTransfer->getAmount());
+        $amount = $this->money->convertIntegerToDecimal((int)$installmentPlansRequestTransfer->getAmount());
         $installmentPlansRequestTransfer->setAmount($amount);
     }
 
