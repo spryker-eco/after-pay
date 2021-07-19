@@ -7,7 +7,6 @@
 
 namespace SprykerEco\Zed\AfterPay;
 
-use Orm\Zed\Sales\Persistence\Map\SpySalesOrderTableMap;
 use Spryker\Zed\Kernel\AbstractBundleConfig;
 use SprykerEco\Shared\AfterPay\AfterPayConfig as SharedAfterPayConfig;
 use SprykerEco\Shared\AfterPay\AfterPayConstants;
@@ -16,12 +15,14 @@ class AfterPayConfig extends AbstractBundleConfig
 {
     protected const SALUTATION_DEFAULT = 'Mr';
     protected const SALUTATION_MAP = [
-        SpySalesOrderTableMap::COL_SALUTATION_MR => 'Mr',
-        SpySalesOrderTableMap::COL_SALUTATION_MS => 'Miss',
-        SpySalesOrderTableMap::COL_SALUTATION_MRS => 'Mrs',
-        SpySalesOrderTableMap::COL_SALUTATION_DR => 'Mr',
+        'Mr' => 'Mr',
+        'Ms' => 'Miss',
+        'Miss' => 'Miss',
+        'Mrs' => 'Mrs',
+        'Missis' => 'Mrs',
+        'Dr' => 'Mr',
     ];
-    
+
     /**
      * @api
      *

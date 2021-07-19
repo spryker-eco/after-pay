@@ -125,13 +125,19 @@ class Guzzle implements ClientInterface
         }
     }
 
+    /**
+     * @param array|null $errorsResponseData
+     *
+     * @return \Spryker\Shared\Kernel\Transfer\AbstractTransfer\AfterPayApiResponseErrorTransfer|null
+     */
     protected function createAfterPayApiResponseErrorTransfer(?array $errorsResponseData): ?AfterPayApiResponseErrorTransfer
     {
-        if (empty($errorResponseData[0])) {
+        if (empty($errorsResponseData[0])) {
             return null;
         }
 
-        $errorDetails = $errorResponseData[0];
+        $errorDetails = $errorsResponseData[0];
+
         return (new AfterPayApiResponseErrorTransfer())
             ->setActionCode($errorDetails['actionCode'])
             ->setCode($errorDetails['code'])
@@ -140,9 +146,15 @@ class Guzzle implements ClientInterface
             ->setIsSuccess(false);
     }
 
+    /**
+     * @param \GuzzleHttp\Exception\RequestException $requestException
+     *
+     * @return string
+     */
     protected function getExceptionResponseContent(RequestException $requestException): string
     {
         $response = $requestException->getResponse();
+
         return $response instanceof ResponseInterface ? $response->getBody()->getContents() : '';
     }
 
