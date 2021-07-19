@@ -204,7 +204,7 @@ class AfterPayConfig extends AbstractBundleConfig
      *
      * @return string
      */
-    public function getSalutationMapping(string $salutation): string
+    public function getSalutation(string $salutation): string
     {
         $salutationMap = $this->get(AfterPayConstants::SALUTATION_MAP);
 

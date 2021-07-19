@@ -114,7 +114,7 @@ interface AfterPayFacadeInterface
     /**
      * Specification:
      * - Checks is AfterPay payment provider selected on checkout.
-     * - Sends payment authorize request to AfterPay gateway if AfterPay payment provider selected.
+     * - Sends payment `authorize` request to AfterPay gateway if AfterPay payment provider selected.
      * - Saves the AfterPay transaction result.
      *
      * @api

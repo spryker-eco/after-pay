@@ -158,7 +158,7 @@ class OrderToRequestTransfer implements OrderToRequestTransferInterface
             ->setLastName($billingAddressTransfer->getLastName())
             ->setConversationalLanguage($this->getStoreCountryIso2())
             ->setCustomerCategory(AfterPayConfig::API_CUSTOMER_CATEGORY_PERSON)
-            ->setSalutation($this->config->getSalutationMapping($billingAddressTransfer->getSalutation()))
+            ->setSalutation($this->config->getSalutation($billingAddressTransfer->getSalutation()))
             ->setEmail($afterPayCallTransfer->getEmail())
             ->setAddress($this->buildCustomerBillingAddressRequestTransfer($afterPayCallTransfer));
     }

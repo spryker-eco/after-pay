@@ -7,7 +7,10 @@
 
 namespace SprykerEcoTest\Zed\AfterPay\Business;
 
+use Generated\Shared\Transfer\ItemTransfer;
 use Generated\Shared\Transfer\PaymentTransfer;
+use Generated\Shared\Transfer\QuoteTransfer;
+use Generated\Shared\Transfer\SaveOrderTransfer;
 use Orm\Zed\AfterPay\Persistence\SpyPaymentAfterPay;
 use Orm\Zed\AfterPay\Persistence\SpyPaymentAfterPayOrderItem;
 use Orm\Zed\Payment\Persistence\SpySalesPayment;
@@ -43,30 +46,82 @@ class AfterPayPreCheckPluginTest extends AfterPayFacadeAbstractTest
             $activeProcessName
         );
 
-        (new SpyPaymentAfterPay())
-            ->setFkSalesOrder($savedOrderTransfer->getIdSalesOrder())
-            ->setPaymentMethod(AfterPayConfig::PAYMENT_TYPE_INVOICE)
-            ->save();
+        $quoteTransfer = $this->createQuoteFromSavedOrder($savedOrderTransfer);
 
-        $afterPayPaymentEntity = $this->afterPayQueryContainer
-            ->queryPaymentByIdSalesOrder($savedOrderTransfer->getIdSalesOrder())
-            ->findOne();
+        $this->savePaymentAfterPay($savedOrderTransfer);
+        $this->saveSalesPaymentMethodType($quoteTransfer);
+        $this->saveSalesPayment($savedOrderTransfer, $quoteTransfer);
+        $this->savePaymentAfterPayOrderItems($savedOrderTransfer);
 
+        // Act
+        $afterPayCallTransfer = (new AfterPayCommunicationFactory())
+            ->createQuoteToCallConverter()
+            ->convert($quoteTransfer);
+        $afterPayApiResponseTransfer = $this->facade->authorizePayment($afterPayCallTransfer);
+
+        // Assert
+        $this->assertNotNull($afterPayApiResponseTransfer->getOutcome());
+        $this->assertEquals($afterPayApiResponseTransfer->getOutcome(), AfterPayConfig::API_TRANSACTION_OUTCOME_ACCEPTED);
+        $this->assertNotNull($afterPayApiResponseTransfer->getCheckoutId());
+        $this->assertNotNull($afterPayApiResponseTransfer->getReservationId());
+        $this->assertNotNull($afterPayApiResponseTransfer->getResponsePayload());
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\SaveOrderTransfer $savedOrderTransfer
+     *
+     * @return \Generated\Shared\Transfer\QuoteTransfer
+     */
+    protected function createQuoteFromSavedOrder($savedOrderTransfer): QuoteTransfer
+    {
         $afterPayPaymentTransfer = (new PaymentTransfer())
             ->setIdSalesOrder($savedOrderTransfer->getIdSalesOrder())
             ->setPaymentSelection('afterPayInvoice');
 
-        $input = $this->createQuoteTransfer()
+        return $this->createQuoteTransfer()
             ->setPayment($afterPayPaymentTransfer)
-            ->setOrderReference($savedOrderTransfer->getOrderReference());
+            ->setOrderReference($savedOrderTransfer->getOrderReference())
+            ->setItems($savedOrderTransfer->getOrderItems());
+    }
 
+    /**
+     * @param \Generated\Shared\Transfer\SaveOrderTransfer $savedOrderTransfer
+     *
+     * @return void
+     */
+    protected function savePaymentAfterPay(SaveOrderTransfer $savedOrderTransfer): void
+    {
+        (new SpyPaymentAfterPay())
+            ->setFkSalesOrder($savedOrderTransfer->getIdSalesOrder())
+            ->setPaymentMethod(AfterPayConfig::PAYMENT_TYPE_INVOICE)
+            ->save();
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
+     *
+     * @return void
+     */
+    protected function saveSalesPaymentMethodType(QuoteTransfer $quoteTransfer): void
+    {
         (new SpySalesPaymentMethodType())
             ->setPaymentProvider(AfterPayConfig::PROVIDER_NAME)
-            ->setPaymentMethod($input->getPayment()->getPaymentSelection())
+            ->setPaymentMethod($quoteTransfer->getPayment()->getPaymentSelection())
             ->save();
+    }
 
+    /**
+     * @param \Generated\Shared\Transfer\SaveOrderTransfer $savedOrderTransfer
+     * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
+     *
+     * @return void
+     */
+    protected function saveSalesPayment(
+        SaveOrderTransfer $savedOrderTransfer,
+        QuoteTransfer $quoteTransfer
+    ): void {
         $afterPayPaymentMethod = (new SpySalesPaymentMethodTypeQuery())
-            ->filterByPaymentMethod($input->getPayment()->getPaymentSelection())
+            ->filterByPaymentMethod($quoteTransfer->getPayment()->getPaymentSelection())
             ->filterByPaymentProvider(AfterPayConfig::PROVIDER_NAME)
             ->findOne();
 
@@ -75,31 +130,41 @@ class AfterPayPreCheckPluginTest extends AfterPayFacadeAbstractTest
             ->setFkSalesOrder($savedOrderTransfer->getIdSalesOrder())
             ->setFkSalesPaymentMethodType($afterPayPaymentMethod->getIdSalesPaymentMethodType())
             ->save();
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\SaveOrderTransfer $savedOrderTransfer
+     *
+     * @return void
+     */
+    protected function savePaymentAfterPayOrderItems(SaveOrderTransfer $savedOrderTransfer): void
+    {
+        $afterPayPaymentEntity = $this->afterPayQueryContainer
+            ->queryPaymentByIdSalesOrder($savedOrderTransfer->getIdSalesOrder())
+            ->findOne();
 
         foreach ($savedOrderTransfer->getOrderItems() as $item) {
             $item->setUnitPriceToPayAggregation((int)$item->getUnitPriceToPayAggregation());
             $item->setUnitTaxAmountFullAggregation((int)$item->getUnitTaxAmountFullAggregation());
 
-            (new SpyPaymentAfterPayOrderItem())
-                ->setFkPaymentAfterPay($afterPayPaymentEntity->getIdPaymentAfterPay())
-                ->setFkSalesOrderItem($item->getIdSalesOrderItem())
-                ->setCaptureNumber('testCaptureNumber')
-                ->save();
+            $this->savePaymentAfterPayOrderItem($item, $afterPayPaymentEntity);
         }
-        $input->setItems($savedOrderTransfer->getOrderItems());
+    }
 
-        // Act
-        //$output = (new AfterPayPreCheckPlugin())->preSave($input, new CheckoutResponseTransfer());
-        $afterPayCallTransfer = (new AfterPayCommunicationFactory())
-            ->createQuoteToCallConverter()
-            ->convert($input);
-        $output = $this->facade->authorizePayment($afterPayCallTransfer);
-
-        // Assert
-        $this->assertNotNull($output->getOutcome());
-        $this->assertEquals($output->getOutcome(), AfterPayConfig::API_TRANSACTION_OUTCOME_ACCEPTED);
-        $this->assertNotNull($output->getCheckoutId());
-        $this->assertNotNull($output->getReservationId());
-        $this->assertNotNull($output->getResponsePayload());
+    /**
+     * @param \Generated\Shared\Transfer\ItemTransfer $orderItemTransfer
+     * @param \Orm\Zed\AfterPay\Persistence\SpyPaymentAfterPay $afterPayPaymentEntity
+     *
+     * @return void
+     */
+    protected function savePaymentAfterPayOrderItem(
+        ItemTransfer $orderItemTransfer,
+        SpyPaymentAfterPay $afterPayPaymentEntity
+    ): void {
+        (new SpyPaymentAfterPayOrderItem())
+            ->setFkPaymentAfterPay($afterPayPaymentEntity->getIdPaymentAfterPay())
+            ->setFkSalesOrderItem($orderItemTransfer->getIdSalesOrderItem())
+            ->setCaptureNumber('testCaptureNumber')
+            ->save();
     }
 }

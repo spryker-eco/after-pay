@@ -112,29 +112,38 @@ class Guzzle implements ClientInterface
         } catch (RequestException $requestException) {
             $apiHttpRequestException = new ApiHttpRequestException($requestException->getMessage());
 
-            $response = $requestException->getResponse();
-            if ($response instanceof ResponseInterface) {
-                $content = $response->getBody()->getContents();
-                if (!empty($content)) {
-                    $errorResponseData = $this->encodingService->decodeJson($content, true);
-                    if (isset($errorResponseData[0])) {
-                        $errorDetails = $errorResponseData[0];
+            $responseContent = $this->getExceptionResponseContent($requestException);
+            $errorsResponseData = $this->encodingService->decodeJson($responseContent, true);
+            $afterPayApiResponseErrorTransfer = $this->createAfterPayApiResponseErrorTransfer($errorsResponseData);
 
-                        $apiErrorTransfer = (new AfterPayApiResponseErrorTransfer())
-                            ->setActionCode($errorDetails['actionCode'])
-                            ->setCode($errorDetails['code'])
-                            ->setType($errorDetails['type'])
-                            ->setMessage($errorDetails['message'])
-                            ->setIsSuccess(false);
-
-                        $apiHttpRequestException->setError($apiErrorTransfer);
-                        $apiHttpRequestException->setDetailedMessage($content);
-                    }
-                }
+            if (!empty($afterPayApiResponseErrorTransfer)) {
+                $apiHttpRequestException->setError($afterPayApiResponseErrorTransfer);
+                $apiHttpRequestException->setDetailedMessage($responseContent);
             }
 
             throw $apiHttpRequestException;
         }
+    }
+
+    protected function createAfterPayApiResponseErrorTransfer(?array $errorsResponseData): ?AfterPayApiResponseErrorTransfer
+    {
+        if (empty($errorResponseData[0])) {
+            return null;
+        }
+
+        $errorDetails = $errorResponseData[0];
+        return (new AfterPayApiResponseErrorTransfer())
+            ->setActionCode($errorDetails['actionCode'])
+            ->setCode($errorDetails['code'])
+            ->setType($errorDetails['type'])
+            ->setMessage($errorDetails['message'])
+            ->setIsSuccess(false);
+    }
+
+    protected function getExceptionResponseContent(RequestException $requestException): string
+    {
+        $response = $requestException->getResponse();
+        return $response instanceof ResponseInterface ? $response->getBody()->getContents() : '';
     }
 
     /**

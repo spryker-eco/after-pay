@@ -353,8 +353,6 @@
         <property name="currencyIsoCode" type="string"/>
     </transfer>
 
-    <!--Facade related transfers start-->
-
     <transfer name="AfterPayAuthorizeFacadeCall">
         <property name="email" type="string"/>
         <property name="orderReference" type="string"/>
@@ -364,8 +362,6 @@
         <property name="billingAddress" type="Address"/>
         <property name="shippingAddress" type="Address"/>
     </transfer>
-
-    <!--Facade related transfers end -->
 
     <transfer name="TaxTotal">
         <property name="taxRate" type="float"/>
@@ -455,7 +451,5 @@
     <transfer name="Currency">
         <property name="code" type="string"/>
     </transfer>
-
-    <!--Facade related transfers end -->
 
 </transfers>
