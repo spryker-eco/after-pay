@@ -8,7 +8,6 @@
  * Copy over the following configs to your config
  */
 
-use Orm\Zed\Sales\Persistence\Map\SpySalesOrderTableMap;
 use Spryker\Shared\Application\ApplicationConstants;
 use Spryker\Shared\Oms\OmsConstants;
 use Spryker\Shared\Sales\SalesConstants;
@@ -47,12 +46,4 @@ $config[AfterPayConstants::AFTERPAY_AUTHORIZE_WORKFLOW] = AfterPayConfig::AFTERP
 
 $config[AfterPayConstants::AFTERPAY_RISK_CHECK_CONFIGURATION] = [
     AfterPayConfig::PAYMENT_METHOD_INVOICE => AfterPayConfig::RISK_CHECK_METHOD_INVOICE,
-];
-
-$config[AfterPayConstants::SALUTATION_DEFAULT] = 'Mr';
-$config[AfterPayConstants::SALUTATION_MAP] = [
-    SpySalesOrderTableMap::COL_SALUTATION_MR => 'Mr',
-    SpySalesOrderTableMap::COL_SALUTATION_MS => 'Miss',
-    SpySalesOrderTableMap::COL_SALUTATION_MRS => 'Mrs',
-    SpySalesOrderTableMap::COL_SALUTATION_DR => 'Mr',
 ];
