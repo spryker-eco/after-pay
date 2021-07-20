@@ -216,7 +216,7 @@ class AfterPayConfig extends AbstractBundleConfig
      */
     public function getSalutation(string $salutation): string
     {
-        return self::SALUTATION_MAP[$salutation] ?? self::SALUTATION_DEFAULT;
+        return static::SALUTATION_MAP[$salutation] ?? static::SALUTATION_DEFAULT;
     }
 
     /**

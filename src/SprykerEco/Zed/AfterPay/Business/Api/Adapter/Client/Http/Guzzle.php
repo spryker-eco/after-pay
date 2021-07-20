@@ -29,6 +29,11 @@ class Guzzle implements ClientInterface
 
     public const HEADER_CONTENT_TYPE_JSON = 'application/json';
 
+    protected const ERROR_KEY_ACTION_CODE = 'actionCode';
+    protected const ERROR_KEY_CODE = 'code';
+    protected const ERROR_KEY_TYPE = 'type';
+    protected const ERROR_KEY_MESSAGE = 'message';
+
     /**
      * @var \SprykerEco\Zed\AfterPay\Dependency\Service\AfterPayToUtilEncodingServiceInterface
      */
@@ -114,9 +119,10 @@ class Guzzle implements ClientInterface
 
             $responseContent = $this->getExceptionResponseContent($requestException);
             $errorsResponseData = $this->encodingService->decodeJson($responseContent, true);
-            $afterPayApiResponseErrorTransfer = $this->createAfterPayApiResponseErrorTransfer($errorsResponseData);
 
-            if (!empty($afterPayApiResponseErrorTransfer)) {
+            if (isset($errorsResponseData[0])) {
+                $afterPayApiResponseErrorTransfer = $this->createAfterPayApiResponseErrorTransfer($errorsResponseData[0]);
+
                 $apiHttpRequestException->setError($afterPayApiResponseErrorTransfer);
                 $apiHttpRequestException->setDetailedMessage($responseContent);
             }
@@ -126,23 +132,17 @@ class Guzzle implements ClientInterface
     }
 
     /**
-     * @param array|null $errorsResponseData
+     * @param array $errorDetails
      *
-     * @return \Spryker\Shared\Kernel\Transfer\AbstractTransfer\AfterPayApiResponseErrorTransfer|null
+     * @return \Spryker\Shared\Kernel\Transfer\AbstractTransfer\AfterPayApiResponseErrorTransfer
      */
-    protected function createAfterPayApiResponseErrorTransfer(?array $errorsResponseData): ?AfterPayApiResponseErrorTransfer
+    protected function createAfterPayApiResponseErrorTransfer(array $errorDetails): AfterPayApiResponseErrorTransfer
     {
-        if (empty($errorsResponseData[0])) {
-            return null;
-        }
-
-        $errorDetails = $errorsResponseData[0];
-
         return (new AfterPayApiResponseErrorTransfer())
-            ->setActionCode($errorDetails['actionCode'])
-            ->setCode($errorDetails['code'])
-            ->setType($errorDetails['type'])
-            ->setMessage($errorDetails['message'])
+            ->setActionCode($errorDetails[static::ERROR_KEY_ACTION_CODE])
+            ->setCode($errorDetails[static::ERROR_KEY_CODE])
+            ->setType($errorDetails[static::ERROR_KEY_TYPE])
+            ->setMessage($errorDetails[static::ERROR_KEY_MESSAGE])
             ->setIsSuccess(false);
     }
 

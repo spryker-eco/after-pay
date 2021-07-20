@@ -23,6 +23,8 @@ use SprykerEco\Zed\AfterPay\Communication\AfterPayCommunicationFactory;
 
 class AfterPayPreCheckPluginTest extends AfterPayFacadeAbstractTest
 {
+    protected const OMS_PROCESS_INVOICE = 'AfterPayInvoice01';
+
     /**
      * @var \SprykerEcoTest\Zed\AfterPay\AfterPayZedTester
      */
@@ -31,19 +33,18 @@ class AfterPayPreCheckPluginTest extends AfterPayFacadeAbstractTest
     /**
      * @return void
      */
-    public function testAuthorize(): void
+    public function testAuthorizePaymentMustSendAuthorizeRequest(): void
     {
         // Assign
-        $activeProcessName = 'AfterPayInvoice01';
-        $this->tester->setConfig(OmsConstants::ACTIVE_PROCESSES, [$activeProcessName]);
+        $this->tester->setConfig(OmsConstants::ACTIVE_PROCESSES, [static::OMS_PROCESS_INVOICE]);
         $this->tester->setConfig(AfterPayConstants::AFTERPAY_AUTHORIZE_WORKFLOW, AfterPayConfig::AFTERPAY_AUTHORIZE_WORKFLOW_ONE_STEP);
 
         $savedOrderTransfer = $this->tester->haveOrder(
             [
-                'unitPrice' => 100,
-                'sumPrice' => 100,
+                ItemTransfer::UNIT_PRICE => 100,
+                ItemTransfer::SUM_PRICE => 100,
             ],
-            $activeProcessName
+            static::OMS_PROCESS_INVOICE
         );
 
         $quoteTransfer = $this->createQuoteFromSavedOrder($savedOrderTransfer);
@@ -72,14 +73,14 @@ class AfterPayPreCheckPluginTest extends AfterPayFacadeAbstractTest
      *
      * @return \Generated\Shared\Transfer\QuoteTransfer
      */
-    protected function createQuoteFromSavedOrder($savedOrderTransfer): QuoteTransfer
+    protected function createQuoteFromSavedOrder(SaveOrderTransfer $savedOrderTransfer): QuoteTransfer
     {
-        $afterPayPaymentTransfer = (new PaymentTransfer())
+        $paymentTransfer = (new PaymentTransfer())
             ->setIdSalesOrder($savedOrderTransfer->getIdSalesOrder())
-            ->setPaymentSelection('afterPayInvoice');
+            ->setPaymentSelection(AfterPayConfig::PAYMENT_METHOD_INVOICE);
 
         return $this->createQuoteTransfer()
-            ->setPayment($afterPayPaymentTransfer)
+            ->setPayment($paymentTransfer)
             ->setOrderReference($savedOrderTransfer->getOrderReference())
             ->setItems($savedOrderTransfer->getOrderItems());
     }
@@ -120,7 +121,7 @@ class AfterPayPreCheckPluginTest extends AfterPayFacadeAbstractTest
         SaveOrderTransfer $savedOrderTransfer,
         QuoteTransfer $quoteTransfer
     ): void {
-        $afterPayPaymentMethod = (new SpySalesPaymentMethodTypeQuery())
+        $salesPaymentMethodTypeQuery = (new SpySalesPaymentMethodTypeQuery())
             ->filterByPaymentMethod($quoteTransfer->getPayment()->getPaymentSelection())
             ->filterByPaymentProvider(AfterPayConfig::PROVIDER_NAME)
             ->findOne();
@@ -128,7 +129,7 @@ class AfterPayPreCheckPluginTest extends AfterPayFacadeAbstractTest
         (new SpySalesPayment())
             ->setAmount(100)
             ->setFkSalesOrder($savedOrderTransfer->getIdSalesOrder())
-            ->setFkSalesPaymentMethodType($afterPayPaymentMethod->getIdSalesPaymentMethodType())
+            ->setFkSalesPaymentMethodType($salesPaymentMethodTypeQuery->getIdSalesPaymentMethodType())
             ->save();
     }
 
