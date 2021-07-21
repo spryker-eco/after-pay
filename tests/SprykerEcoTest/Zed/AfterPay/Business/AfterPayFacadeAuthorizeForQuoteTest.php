@@ -19,9 +19,8 @@ use Orm\Zed\Payment\Persistence\SpySalesPaymentMethodTypeQuery;
 use Spryker\Shared\Oms\OmsConstants;
 use SprykerEco\Shared\AfterPay\AfterPayConfig;
 use SprykerEco\Shared\AfterPay\AfterPayConstants;
-use SprykerEco\Zed\AfterPay\Communication\AfterPayCommunicationFactory;
 
-class AfterPayPreCheckPluginTest extends AfterPayFacadeAbstractTest
+class AfterPayFacadeAuthorizeForQuoteTest extends AfterPayFacadeAbstractTest
 {
     protected const OMS_PROCESS_INVOICE = 'AfterPayInvoice01';
 
@@ -55,10 +54,7 @@ class AfterPayPreCheckPluginTest extends AfterPayFacadeAbstractTest
         $this->savePaymentAfterPayOrderItems($savedOrderTransfer);
 
         // Act
-        $afterPayCallTransfer = (new AfterPayCommunicationFactory())
-            ->createQuoteToCallConverter()
-            ->convert($quoteTransfer);
-        $afterPayApiResponseTransfer = $this->facade->authorizePayment($afterPayCallTransfer);
+        $afterPayApiResponseTransfer = $this->facade->authorizePaymentForQuote($quoteTransfer);
 
         // Assert
         $this->assertNotNull($afterPayApiResponseTransfer->getOutcome());
