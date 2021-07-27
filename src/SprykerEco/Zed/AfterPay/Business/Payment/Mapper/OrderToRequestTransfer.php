@@ -20,7 +20,8 @@ use Generated\Shared\Transfer\AfterPayRequestPaymentTransfer;
 use Generated\Shared\Transfer\ExpenseTransfer;
 use Generated\Shared\Transfer\ItemTransfer;
 use Generated\Shared\Transfer\OrderTransfer;
-use SprykerEco\Shared\AfterPay\AfterPayConfig;
+use SprykerEco\Shared\AfterPay\AfterPayConfig as AfterPayConfigShared;
+use SprykerEco\Zed\AfterPay\AfterPayConfig as AfterPayConfigZed;
 use SprykerEco\Zed\AfterPay\Business\Payment\Transaction\PriceToPayProviderInterface;
 use SprykerEco\Zed\AfterPay\Dependency\Facade\AfterPayToMoneyFacadeInterface;
 use SprykerEco\Zed\AfterPay\Dependency\Facade\AfterPayToStoreFacadeInterface;
@@ -49,7 +50,7 @@ class OrderToRequestTransfer implements OrderToRequestTransferInterface
      * @var array
      */
     protected static $paymentMethods = [
-        AfterPayConfig::PAYMENT_METHOD_INVOICE => AfterPayConfig::PAYMENT_TYPE_INVOICE,
+        AfterPayConfigShared::PAYMENT_METHOD_INVOICE => AfterPayConfigShared::PAYMENT_TYPE_INVOICE,
     ];
 
     /**
@@ -72,7 +73,7 @@ class OrderToRequestTransfer implements OrderToRequestTransferInterface
         AfterPayToMoneyFacadeInterface $moneyFacade,
         AfterPayToStoreFacadeInterface $storeFacade,
         PriceToPayProviderInterface $priceToPayProvider,
-        AfterPayConfig $config
+        AfterPayConfigZed $config
     ) {
         $this->moneyFacade = $moneyFacade;
         $this->storeFacade = $storeFacade;
@@ -157,7 +158,7 @@ class OrderToRequestTransfer implements OrderToRequestTransferInterface
             ->setFirstName($billingAddressTransfer->getFirstName())
             ->setLastName($billingAddressTransfer->getLastName())
             ->setConversationalLanguage($this->getStoreCountryIso2())
-            ->setCustomerCategory(AfterPayConfig::API_CUSTOMER_CATEGORY_PERSON)
+            ->setCustomerCategory(AfterPayConfigShared::API_CUSTOMER_CATEGORY_PERSON)
             ->setSalutation($this->config->getSalutation($billingAddressTransfer->getSalutation()))
             ->setEmail($afterPayCallTransfer->getEmail())
             ->setAddress($this->buildCustomerBillingAddressRequestTransfer($afterPayCallTransfer));
