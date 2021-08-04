@@ -1,7 +1,7 @@
 {
   "include": {
     "spryker/checkout": "Checkout is needed to create Checkout specific classes.",
-    "spryker/oms": "Oms is needed to create Oms specific classes.",
+    "spryker/oms": "Oms is needed to create Oms specific classes."
   },
   "include-dev": {
   },
