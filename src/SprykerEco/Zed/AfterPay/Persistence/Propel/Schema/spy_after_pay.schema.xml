@@ -12,12 +12,12 @@
         <column name="fk_sales_order" required="true" type="INTEGER"/>
         <column name="fk_sales_payment" required="false" type="INTEGER"/>
 
-        <column name="id_checkout" required="false" type="VARCHAR"/>
-        <column name="id_reservation" required="false" type="VARCHAR"/>
-        <column name="id_channel" required="false" type="VARCHAR"/>
-        <column name="infoscore_customer_number" required="false" type="VARCHAR"/>
+        <column name="id_checkout" required="false" type="VARCHAR" size="36"/>
+        <column name="id_reservation" required="false" type="VARCHAR" size="255"/>
+        <column name="id_channel" required="false" type="VARCHAR" size="255"/>
+        <column name="infoscore_customer_number" required="false" type="VARCHAR" size="255"/>
 
-        <column name="payment_method" required="true" type="VARCHAR"/>
+        <column name="payment_method" required="true" type="VARCHAR" size="255"/>
 
         <column name="grand_total" required="false" type="INTEGER"/>
         <column name="expense_total" required="false" type="INTEGER"/>
@@ -26,7 +26,7 @@
         <column name="cancelled_total" required="false" type="INTEGER"/>
         <column name="refunded_total" required="false" type="INTEGER" />
 
-        <column name="expenses_capture_number" required="false" type="VARCHAR" />
+        <column name="expenses_capture_number" required="false" type="VARCHAR" size="255"/>
 
         <foreign-key name="spy_payment_after_pay-fk_sales_order" foreignTable="spy_sales_order" phpName="SpySalesOrder">
             <reference foreign="id_sales_order" local="fk_sales_order"/>
@@ -43,7 +43,7 @@
     <table name="spy_payment_after_pay_order_item">
         <column name="fk_payment_after_pay" type="INTEGER" primaryKey="true"/>
         <column name="fk_sales_order_item" type="INTEGER" primaryKey="true"/>
-        <column name="capture_number" required="false" type="VARCHAR" />
+        <column name="capture_number" required="false" type="VARCHAR" size="255"/>
         <behavior name="timestampable">
             <parameter name="disable_updated_at" value="true"/>
         </behavior>
@@ -57,9 +57,9 @@
 
     <table name="spy_payment_after_pay_transaction_log">
         <column name="id_payment_after_pay_transaction_log" type="INTEGER" primaryKey="true" autoIncrement="true"/>
-        <column name="order_reference" required="true" type="VARCHAR"/>
-        <column name="transaction_type" required="false" type="VARCHAR"/>
-        <column name="outcome" required="true" type="VARCHAR"/>
+        <column name="order_reference" required="true" type="VARCHAR" size="45"/>
+        <column name="transaction_type" required="false" type="VARCHAR" size="255"/>
+        <column name="outcome" required="true" type="VARCHAR" size="255"/>
         <column name="request_payload" required="false" type="LONGVARCHAR"/>
         <column name="response_payload" required="true" type="LONGVARCHAR"/>
 
@@ -72,9 +72,9 @@
 
     <table name="spy_payment_after_pay_authorization">
         <column name="id_payment_after_pay_authorization" type="INTEGER" primaryKey="true" autoIncrement="true" />
-        <column name="order_reference" required="true" type="VARCHAR" />
-        <column name="id_checkout" required="false" type="VARCHAR"/>
-        <column name="id_reservation" required="false" type="VARCHAR"/>
+        <column name="order_reference" required="true" type="VARCHAR" size="45"/>
+        <column name="id_checkout" required="false" type="VARCHAR" size="36"/>
+        <column name="id_reservation" required="false" type="VARCHAR" size="255"/>
         <unique name="spy_payment_after_pay_authorization-order_reference">
             <unique-column name="order_reference"/>
         </unique>
