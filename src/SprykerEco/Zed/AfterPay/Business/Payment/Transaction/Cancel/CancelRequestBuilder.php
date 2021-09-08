@@ -17,6 +17,8 @@ use SprykerEco\Zed\AfterPay\Dependency\Facade\AfterPayToMoneyFacadeInterface;
 
 class CancelRequestBuilder implements CancelRequestBuilderInterface
 {
+    protected const ZERO_AMOUNT = 0;
+
     /**
      * @var \SprykerEco\Zed\AfterPay\Business\Payment\Mapper\OrderToRequestTransferInterface
      */
@@ -107,6 +109,7 @@ class CancelRequestBuilder implements CancelRequestBuilderInterface
         AfterPayCancelRequestTransfer $cancelRequestTransfer
     ): void {
         $this->increaseTotalGrossAmount($orderItemRequestTransfer, $cancelRequestTransfer);
+        $this->increaseTotalNetAmount($orderItemRequestTransfer, $cancelRequestTransfer);
     }
 
     /**
@@ -121,7 +124,8 @@ class CancelRequestBuilder implements CancelRequestBuilderInterface
             ->setName(AfterPayConfig::CANCEL_EXPENSE_DESCRIPTION)
             ->setUnitGrossPrice($expenseAmount)
             ->setUnitPriceToPayAggregation($expenseAmount)
-            ->setUnitTaxAmountFullAggregation(0)
+            ->setUnitTaxAmountFullAggregation(static::ZERO_AMOUNT)
+            ->setTaxRate(static::ZERO_AMOUNT)
             ->setQuantity(1);
     }
 
