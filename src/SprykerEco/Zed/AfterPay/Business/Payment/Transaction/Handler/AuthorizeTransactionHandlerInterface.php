@@ -9,6 +9,7 @@ namespace SprykerEco\Zed\AfterPay\Business\Payment\Transaction\Handler;
 
 use Generated\Shared\Transfer\AfterPayApiResponseTransfer;
 use Generated\Shared\Transfer\AfterPayCallTransfer;
+use Generated\Shared\Transfer\QuoteTransfer;
 
 interface AuthorizeTransactionHandlerInterface
 {
@@ -18,4 +19,11 @@ interface AuthorizeTransactionHandlerInterface
      * @return \Generated\Shared\Transfer\AfterPayApiResponseTransfer
      */
     public function authorize(AfterPayCallTransfer $orderTransfer): AfterPayApiResponseTransfer;
+
+    /**
+     * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
+     *
+     * @return void
+     */
+    public function authorizePaymentForQuote(QuoteTransfer $quoteTransfer): void;
 }

@@ -10,6 +10,9 @@ namespace SprykerEco\Zed\AfterPay\Business\Payment\Transaction\Handler;
 use Generated\Shared\Transfer\AfterPayApiResponseTransfer;
 use Generated\Shared\Transfer\AfterPayAuthorizeRequestTransfer;
 use Generated\Shared\Transfer\AfterPayCallTransfer;
+use Generated\Shared\Transfer\QuoteTransfer;
+use SprykerEco\Shared\AfterPay\AfterPayConfig as SharedAfterPayConfig;
+use SprykerEco\Zed\AfterPay\Business\Mapper\AfterPayMapperInterface;
 use SprykerEco\Zed\AfterPay\Business\Payment\PaymentWriterInterface;
 use SprykerEco\Zed\AfterPay\Business\Payment\Transaction\Authorize\RequestBuilder\AuthorizeRequestBuilderInterface;
 use SprykerEco\Zed\AfterPay\Business\Payment\Transaction\AuthorizeTransactionInterface;
@@ -38,21 +41,29 @@ class AuthorizeTransactionHandler implements AuthorizeTransactionHandlerInterfac
     protected $priceToPayProvider;
 
     /**
+     * @var \SprykerEco\Zed\AfterPay\Business\Mapper\AfterPayMapperInterface
+     */
+    protected $afterPayMapper;
+
+    /**
      * @param \SprykerEco\Zed\AfterPay\Business\Payment\Transaction\AuthorizeTransactionInterface $transaction
      * @param \SprykerEco\Zed\AfterPay\Business\Payment\Transaction\Authorize\RequestBuilder\AuthorizeRequestBuilderInterface $requestBuilder
      * @param \SprykerEco\Zed\AfterPay\Business\Payment\PaymentWriterInterface $paymentWriter
      * @param \SprykerEco\Zed\AfterPay\Business\Payment\Transaction\PriceToPayProviderInterface $priceToPayProvider
+     * @param \SprykerEco\Zed\AfterPay\Business\Mapper\AfterPayMapperInterface $afterPayMapper
      */
     public function __construct(
         AuthorizeTransactionInterface $transaction,
         AuthorizeRequestBuilderInterface $requestBuilder,
         PaymentWriterInterface $paymentWriter,
-        PriceToPayProviderInterface $priceToPayProvider
+        PriceToPayProviderInterface $priceToPayProvider,
+        AfterPayMapperInterface $afterPayMapper
     ) {
         $this->transaction = $transaction;
         $this->requestBuilder = $requestBuilder;
         $this->paymentWriter = $paymentWriter;
         $this->priceToPayProvider = $priceToPayProvider;
+        $this->afterPayMapper = $afterPayMapper;
     }
 
     /**
@@ -73,6 +84,21 @@ class AuthorizeTransactionHandler implements AuthorizeTransactionHandlerInterfac
         }
 
         return $authorizeResponseTransfer;
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
+     *
+     * @return void
+     */
+    public function authorizePaymentForQuote(QuoteTransfer $quoteTransfer): void
+    {
+        if ($quoteTransfer->getPayment()->getPaymentProvider() !== SharedAfterPayConfig::PROVIDER_NAME) {
+            return;
+        }
+
+        $afterPayCallTransfer = $this->afterPayMapper->mapQuoteTransferToAfterPayCallTransfer($quoteTransfer);
+        $this->authorize($afterPayCallTransfer);
     }
 
     /**

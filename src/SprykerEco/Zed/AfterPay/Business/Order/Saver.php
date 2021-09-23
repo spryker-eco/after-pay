@@ -41,6 +41,10 @@ class Saver implements SaverInterface
      */
     public function saveOrderPayment(QuoteTransfer $quoteTransfer, SaveOrderTransfer $saveOrderTransfer): void
     {
+        if ($quoteTransfer->getPayment()->getPaymentProvider() !== SharedAfterPayConfig::PROVIDER_NAME) {
+            return;
+        }
+
         $this->getTransactionHandler()->handleTransaction(function () use ($quoteTransfer, $saveOrderTransfer) {
             $this->executeSavePaymentForOrderAndItemsTransaction($quoteTransfer, $saveOrderTransfer);
         });
@@ -105,6 +109,9 @@ class Saver implements SaverInterface
             ->setInfoscoreCustomerNumber($paymentTransfer->getAfterPayCustomerNumber())
             ->setExpenseTotal($quoteTransfer->getTotals()->getExpenseTotal())
             ->setGrandTotal($this->getPaymentPriceToPay($quoteTransfer));
+
+        $quoteTransfer->setOrderReference($saveOrderTransfer->getOrderReference());
+        $quoteTransfer->getPayment()->setIdSalesOrder($saveOrderTransfer->getIdSalesOrder());
 
         return $paymentEntity;
     }

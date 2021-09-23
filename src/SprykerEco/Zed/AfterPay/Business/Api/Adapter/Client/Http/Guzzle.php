@@ -29,6 +29,11 @@ class Guzzle implements ClientInterface
 
     public const HEADER_CONTENT_TYPE_JSON = 'application/json';
 
+    protected const ERROR_KEY_ACTION_CODE = 'actionCode';
+    protected const ERROR_KEY_CODE = 'code';
+    protected const ERROR_KEY_TYPE = 'type';
+    protected const ERROR_KEY_MESSAGE = 'message';
+
     /**
      * @var \SprykerEco\Zed\AfterPay\Dependency\Service\AfterPayToUtilEncodingServiceInterface
      */
@@ -112,26 +117,45 @@ class Guzzle implements ClientInterface
         } catch (RequestException $requestException) {
             $apiHttpRequestException = new ApiHttpRequestException($requestException->getMessage());
 
-            $content = $requestException->getResponse()->getBody()->getContents();
-            if (!empty($content)) {
-                $errorResponseData = $this->encodingService->decodeJson($content, true);
-                if (isset($errorResponseData[0])) {
-                    $errorDetails = $errorResponseData[0];
+            $responseContent = $this->getExceptionResponseContent($requestException);
+            $errorsResponseData = $this->encodingService->decodeJson($responseContent, true);
 
-                    $apiErrorTransfer = (new AfterPayApiResponseErrorTransfer())
-                        ->setActionCode($errorDetails['actionCode'])
-                        ->setCode($errorDetails['code'])
-                        ->setType($errorDetails['type'])
-                        ->setMessage($errorDetails['message'])
-                        ->setIsSuccess(false);
+            if (isset($errorsResponseData[0])) {
+                $afterPayApiResponseErrorTransfer = $this->createAfterPayApiResponseErrorTransfer($errorsResponseData[0]);
 
-                    $apiHttpRequestException->setError($apiErrorTransfer);
-                    $apiHttpRequestException->setDetailedMessage($content);
-                }
+                $apiHttpRequestException->setError($afterPayApiResponseErrorTransfer);
+                $apiHttpRequestException->setDetailedMessage($responseContent);
             }
 
             throw $apiHttpRequestException;
         }
+    }
+
+    /**
+     * @param array $errorDetails
+     *
+     * @return \Spryker\Shared\Kernel\Transfer\AbstractTransfer\AfterPayApiResponseErrorTransfer
+     */
+    protected function createAfterPayApiResponseErrorTransfer(array $errorDetails): AfterPayApiResponseErrorTransfer
+    {
+        return (new AfterPayApiResponseErrorTransfer())
+            ->setActionCode($errorDetails[static::ERROR_KEY_ACTION_CODE])
+            ->setCode($errorDetails[static::ERROR_KEY_CODE])
+            ->setType($errorDetails[static::ERROR_KEY_TYPE])
+            ->setMessage($errorDetails[static::ERROR_KEY_MESSAGE])
+            ->setIsSuccess(false);
+    }
+
+    /**
+     * @param \GuzzleHttp\Exception\RequestException $requestException
+     *
+     * @return string
+     */
+    protected function getExceptionResponseContent(RequestException $requestException): string
+    {
+        $response = $requestException->getResponse();
+
+        return $response instanceof ResponseInterface ? $response->getBody()->getContents() : '';
     }
 
     /**
@@ -146,8 +170,8 @@ class Guzzle implements ClientInterface
             static::REQUEST_METHOD_POST,
             $endPointUrl,
             [
-                static::REQUEST_HEADER_CONTENT_TYPE => static::HEADER_CONTENT_TYPE_JSON,
-                static::REQUEST_HEADER_X_AUTH_KEY => $this->config->getApiCredentialsAuthKey(),
+                (string)static::REQUEST_HEADER_CONTENT_TYPE => (string)static::HEADER_CONTENT_TYPE_JSON,
+                (string)static::REQUEST_HEADER_X_AUTH_KEY => (string)$this->config->getApiCredentialsAuthKey(),
             ],
             $jsonBody
         );
@@ -164,8 +188,8 @@ class Guzzle implements ClientInterface
             static::REQUEST_METHOD_GET,
             $endPointUrl,
             [
-                static::REQUEST_HEADER_CONTENT_TYPE => static::HEADER_CONTENT_TYPE_JSON,
-                static::REQUEST_HEADER_X_AUTH_KEY => $this->config->getApiCredentialsAuthKey(),
+                (string)static::REQUEST_HEADER_CONTENT_TYPE => (string)static::HEADER_CONTENT_TYPE_JSON,
+                (string)static::REQUEST_HEADER_X_AUTH_KEY => (string)$this->config->getApiCredentialsAuthKey(),
             ]
         );
     }

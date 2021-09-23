@@ -13,6 +13,8 @@ use Spryker\Zed\Checkout\Dependency\Plugin\CheckoutPreSaveHookInterface;
 use Spryker\Zed\Kernel\Communication\AbstractPlugin;
 
 /**
+ * @deprecated Use {@link \SprykerEco\Zed\AfterPay\Communication\Plugin\Checkout\AfterPayCheckoutPostSavePlugin} instead.
+ *
  * @method \SprykerEco\Zed\AfterPay\Communication\AfterPayCommunicationFactory getFactory()
  * @method \SprykerEco\Zed\AfterPay\Business\AfterPayFacadeInterface getFacade()
  * @method \SprykerEco\Zed\AfterPay\AfterPayConfig getConfig()
@@ -21,8 +23,8 @@ use Spryker\Zed\Kernel\Communication\AbstractPlugin;
 class AfterPayPreCheckPlugin extends AbstractPlugin implements CheckoutPreSaveHookInterface
 {
     /**
-     * Specification:
-     * - Do something before orderTransfer save
+     * {@inheritDoc}
+     * - Proceed with Authorize Payment process.
      *
      * @api
      *

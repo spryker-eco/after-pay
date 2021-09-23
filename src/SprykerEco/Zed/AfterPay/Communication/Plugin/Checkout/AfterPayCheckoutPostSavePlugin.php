@@ -9,7 +9,7 @@ namespace SprykerEco\Zed\AfterPay\Communication\Plugin\Checkout;
 
 use Generated\Shared\Transfer\CheckoutResponseTransfer;
 use Generated\Shared\Transfer\QuoteTransfer;
-use Spryker\Zed\Checkout\Dependency\Plugin\CheckoutPostSaveHookInterface;
+use Spryker\Zed\CheckoutExtension\Dependency\Plugin\CheckoutPostSaveInterface;
 use Spryker\Zed\Kernel\Communication\AbstractPlugin;
 
 /**
@@ -18,22 +18,23 @@ use Spryker\Zed\Kernel\Communication\AbstractPlugin;
  * @method \SprykerEco\Zed\AfterPay\AfterPayConfig getConfig()
  * @method \SprykerEco\Zed\AfterPay\Persistence\AfterPayQueryContainerInterface getQueryContainer()
  */
-class AfterPayPostCheckPlugin extends AbstractPlugin implements CheckoutPostSaveHookInterface
+class AfterPayCheckoutPostSavePlugin extends AbstractPlugin implements CheckoutPostSaveInterface
 {
     /**
      * {@inheritDoc}
-     * - This plugin is called after the order is placed.
-     * - Set the success flag to false, if redirect should be headed to an error page afterwords.
+     * - Checks is AfterPay payment provider selected on checkout.
+     * - Sends payment authorize request to AfterPay gateway if AfterPay payment provider selected.
+     * - Saves the AfterPay transaction result.
      *
      * @api
      *
      * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
-     * @param \Generated\Shared\Transfer\CheckoutResponseTransfer $checkoutResponse
+     * @param \Generated\Shared\Transfer\CheckoutResponseTransfer $checkoutResponseTransfer
      *
      * @return void
      */
-    public function executeHook(QuoteTransfer $quoteTransfer, CheckoutResponseTransfer $checkoutResponse): void
+    public function executeHook(QuoteTransfer $quoteTransfer, CheckoutResponseTransfer $checkoutResponseTransfer): void
     {
-        $this->getFacade()->postSaveHook($quoteTransfer, $checkoutResponse);
+        $this->getFacade()->authorizePaymentForQuote($quoteTransfer);
     }
 }

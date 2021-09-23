@@ -69,9 +69,9 @@ class AfterPayDependencyProvider extends AbstractBundleDependencyProvider
      */
     protected function addMoneyFacade(Container $container): Container
     {
-        $container[static::FACADE_MONEY] = function (Container $container) {
+        $container->set(static::FACADE_MONEY, function (Container $container) {
             return new AfterPayToMoneyFacadeBridge($container->getLocator()->money()->facade());
-        };
+        });
 
         return $container;
     }
@@ -83,9 +83,9 @@ class AfterPayDependencyProvider extends AbstractBundleDependencyProvider
      */
     protected function addSalesFacade(Container $container): Container
     {
-        $container[static::FACADE_SALES] = function (Container $container) {
+        $container->set(static::FACADE_SALES, function (Container $container) {
             return new AfterPayToSalesFacadeBridge($container->getLocator()->sales()->facade());
-        };
+        });
 
         return $container;
     }
@@ -97,9 +97,9 @@ class AfterPayDependencyProvider extends AbstractBundleDependencyProvider
      */
     protected function addStoreFacade(Container $container): Container
     {
-        $container[static::FACADE_STORE] = function (Container $container) {
+        $container->set(static::FACADE_STORE, function (Container $container) {
             return new AfterPayToStoreFacadeBridge($container->getLocator()->store()->facade());
-        };
+        });
 
         return $container;
     }
@@ -111,9 +111,9 @@ class AfterPayDependencyProvider extends AbstractBundleDependencyProvider
      */
     protected function addCustomerFacade(Container $container): Container
     {
-        $container[static::FACADE_CUSTOMER] = function (Container $container) {
+        $container->set(static::FACADE_CUSTOMER, function (Container $container) {
             return new AfterPayToCustomerFacadeBridge($container->getLocator()->customer()->facade());
-        };
+        });
 
         return $container;
     }
@@ -125,9 +125,9 @@ class AfterPayDependencyProvider extends AbstractBundleDependencyProvider
      */
     protected function addPaymentFacade(Container $container): Container
     {
-        $container[static::FACADE_PAYMENT] = function (Container $container) {
+        $container->set(static::FACADE_PAYMENT, function (Container $container) {
             return new AfterPayToPaymentFacadeBridge($container->getLocator()->payment()->facade());
-        };
+        });
 
         return $container;
     }
@@ -139,9 +139,9 @@ class AfterPayDependencyProvider extends AbstractBundleDependencyProvider
      */
     protected function addRefundFacade(Container $container): Container
     {
-        $container[static::FACADE_REFUND] = function (Container $container) {
+        $container->set(static::FACADE_REFUND, function (Container $container) {
             return new AfterPayToRefundFacadeBridge($container->getLocator()->refund()->facade());
-        };
+        });
 
         return $container;
     }
@@ -153,9 +153,9 @@ class AfterPayDependencyProvider extends AbstractBundleDependencyProvider
      */
     protected function addUtilEncodingService(Container $container): Container
     {
-        $container[static::SERVICE_UTIL_ENCODING] = function (Container $container) {
+        $container->set(static::SERVICE_UTIL_ENCODING, function (Container $container) {
             return new AfterPayToUtilEncodingServiceBridge($container->getLocator()->utilEncoding()->service());
-        };
+        });
 
         return $container;
     }
@@ -167,9 +167,9 @@ class AfterPayDependencyProvider extends AbstractBundleDependencyProvider
      */
     protected function addUtilTextService(Container $container): Container
     {
-        $container[static::SERVICE_UTIL_TEXT] = function (Container $container) {
+        $container->set(static::SERVICE_UTIL_TEXT, function (Container $container) {
             return new AfterPayToUtilTextServiceBridge($container->getLocator()->utilText()->service());
-        };
+        });
 
         return $container;
     }

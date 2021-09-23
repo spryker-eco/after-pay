@@ -76,6 +76,7 @@ class RefundCall extends AbstractApiCall implements RefundCallInterface
             );
         } catch (ApiHttpRequestException $apiHttpRequestException) {
             $this->logApiException($apiHttpRequestException);
+
             throw $apiHttpRequestException;
         }
 

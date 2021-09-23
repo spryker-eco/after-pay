@@ -24,6 +24,9 @@ class IsAuthorizationCompletedPlugin extends AbstractPlugin implements Condition
     public const AUTHORIZE_TRANSACTION_ACCEPTED = AfterPayConfig::API_TRANSACTION_OUTCOME_ACCEPTED;
 
     /**
+     * {@inheritDoc}
+     * - Checks if the `authorization` operation was successfully accepted for the order.
+     *
      * @api
      *
      * @param \Orm\Zed\Sales\Persistence\SpySalesOrderItem $orderItem

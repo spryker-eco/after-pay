@@ -76,8 +76,9 @@ class AfterPayFacade extends AbstractFacade implements AfterPayFacadeInterface
      *
      * @return \Generated\Shared\Transfer\AfterPayValidateBankAccountResponseTransfer
      */
-    public function validateBankAccount(AfterPayValidateBankAccountRequestTransfer $validateBankAccountRequestTransfer): AfterPayValidateBankAccountResponseTransfer
-    {
+    public function validateBankAccount(
+        AfterPayValidateBankAccountRequestTransfer $validateBankAccountRequestTransfer
+    ): AfterPayValidateBankAccountResponseTransfer {
         return $this->getFactory()
             ->createValidateBankAccountHandler()
             ->validateBankAccount($validateBankAccountRequestTransfer);
@@ -163,6 +164,22 @@ class AfterPayFacade extends AbstractFacade implements AfterPayFacadeInterface
         return $this->getFactory()
             ->createAuthorizeTransactionHandler()
             ->authorize($afterPayCallTransfer);
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @api
+     *
+     * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
+     *
+     * @return void
+     */
+    public function authorizePaymentForQuote(QuoteTransfer $quoteTransfer): void
+    {
+        $this->getFactory()
+            ->createAuthorizeTransactionHandler()
+            ->authorizePaymentForQuote($quoteTransfer);
     }
 
     /**

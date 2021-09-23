@@ -39,14 +39,18 @@ interface AfterPayStubInterface
      *
      * @return \Generated\Shared\Transfer\AfterPayInstallmentPlansResponseTransfer
      */
-    public function getAvailableInstallmentPlans(AfterPayInstallmentPlansRequestTransfer $installmentPlansRequestTransfer): AfterPayInstallmentPlansResponseTransfer;
+    public function getAvailableInstallmentPlans(
+        AfterPayInstallmentPlansRequestTransfer $installmentPlansRequestTransfer
+    ): AfterPayInstallmentPlansResponseTransfer;
 
     /**
      * @param \Generated\Shared\Transfer\AfterPayValidateBankAccountRequestTransfer $bankAccountValidationRequestTransfer
      *
      * @return \Generated\Shared\Transfer\AfterPayValidateBankAccountResponseTransfer
      */
-    public function validateBankAccount(AfterPayValidateBankAccountRequestTransfer $bankAccountValidationRequestTransfer): AfterPayValidateBankAccountResponseTransfer;
+    public function validateBankAccount(
+        AfterPayValidateBankAccountRequestTransfer $bankAccountValidationRequestTransfer
+    ): AfterPayValidateBankAccountResponseTransfer;
 
     /**
      * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer

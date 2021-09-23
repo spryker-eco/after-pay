@@ -68,7 +68,9 @@ interface AfterPayFacadeInterface
      *
      * @return \Generated\Shared\Transfer\AfterPayValidateBankAccountResponseTransfer
      */
-    public function validateBankAccount(AfterPayValidateBankAccountRequestTransfer $validateBankAccountRequestTransfer): AfterPayValidateBankAccountResponseTransfer;
+    public function validateBankAccount(
+        AfterPayValidateBankAccountRequestTransfer $validateBankAccountRequestTransfer
+    ): AfterPayValidateBankAccountResponseTransfer;
 
     /**
      * Specification:
@@ -99,7 +101,7 @@ interface AfterPayFacadeInterface
     /**
      * Specification:
      * - Sends payment authorize request to AfterPay gateway.
-     * - Saves the transaction result in Quote for future recognition
+     * - Saves the transaction result in Quote for future recognition.
      *
      * @api
      *
@@ -108,6 +110,20 @@ interface AfterPayFacadeInterface
      * @return \Generated\Shared\Transfer\AfterPayApiResponseTransfer
      */
     public function authorizePayment(AfterPayCallTransfer $afterPayCallTransfer): AfterPayApiResponseTransfer;
+
+    /**
+     * Specification:
+     * - Checks is AfterPay payment provider selected on checkout.
+     * - Sends payment `authorize` request to AfterPay gateway if AfterPay payment provider selected.
+     * - Saves the AfterPay transaction result.
+     *
+     * @api
+     *
+     * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
+     *
+     * @return void
+     */
+    public function authorizePaymentForQuote(QuoteTransfer $quoteTransfer): void;
 
     /**
      * Specification:
@@ -139,7 +155,7 @@ interface AfterPayFacadeInterface
 
     /**
      * Specification:
-     * - Sends "void" request to AfterPay gateway, to cancel payment for a specific order item, before payment is captured
+     * - Sends "cancel" request to AfterPay gateway, to cancel payment for a specific order item, before payment is captured
      * - If it is the last item cancellation request for given order, cancels also full expense amount.
      * - Saves the transaction result in DB and updates payment with new total cancelled amount.
      *
@@ -154,7 +170,9 @@ interface AfterPayFacadeInterface
 
     /**
      * Specification:
-     * - Saves order payment method data according to quote and checkout response transfer data.
+     * - Checks is AfterPay payment provider selected on checkout.
+     * - Saves order payment method data according to quote and checkout response transfer data if AfterPay payment provider selected.
+     * - Sends payment `authorize` request to AfterPay gateway if AfterPay payment provider selected.
      *
      * @api
      *
@@ -167,8 +185,8 @@ interface AfterPayFacadeInterface
 
     /**
      * Specification:
-     *  - Executes a post save hook for the following payment methods:
-     *    Sofort / authorize: checks for an external redirect URL in transaction log and redirects customer to the payment system
+     *  - Checks is AfterPay payment provider selected on checkout.
+     *  - Checks for an external redirect URL in transaction log and redirects customer to the payment system if AfterPay payment provider selected.
      *
      * @api
      *
@@ -180,7 +198,8 @@ interface AfterPayFacadeInterface
     public function postSaveHook(QuoteTransfer $quoteTransfer, CheckoutResponseTransfer $checkoutResponseTransfer): CheckoutResponseTransfer;
 
     /**
-     * {@inheritDoc}
+     * Specification:
+     * - Retrieves payment by `idSalesOrder` from Persistence.
      *
      * @api
      *

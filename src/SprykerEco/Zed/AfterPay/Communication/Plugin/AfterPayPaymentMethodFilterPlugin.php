@@ -21,8 +21,8 @@ use Spryker\Zed\Payment\Dependency\Plugin\Payment\PaymentMethodFilterPluginInter
 class AfterPayPaymentMethodFilterPlugin extends AbstractPlugin implements PaymentMethodFilterPluginInterface
 {
     /**
-     * Specification:
-     * - Returns filtered by set of plugins array object of payments
+     * {@inheritDoc}
+     * - Returns filtered by set of plugins array object of payments.
      *
      * @api
      *

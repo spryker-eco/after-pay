@@ -80,28 +80,6 @@
         <property name="countryCode" dataBuilderRule="=DE" />
     </transfer>
 
-    <transfer name="Address">
-        <property name="firstName" dataBuilderRule="firstName" />
-        <property name="lastName" dataBuilderRule="lastName" />
-        <property name="address1" dataBuilderRule="address" />
-        <property name="company" dataBuilderRule="company" />
-        <property name="city" dataBuilderRule="city" />
-        <property name="zipCode" dataBuilderRule="postcode" />
-        <property name="state" dataBuilderRule="country" />
-        <property name="iso2Code" dataBuilderRule="=DE" />
-    </transfer>
-
-    <transfer name="Totals">
-        <property name="subtotal" dataBuilderRule="randomNumber(5)" />
-        <property name="expenseTotal" dataBuilderRule="=1000" />
-        <property name="discountTotal" dataBuilderRule="=1000" />
-        <property name="taxTotal" type="TaxTotal" />
-        <property name="grandTotal" dataBuilderRule="=10000" />
-        <property name="netTotal" dataBuilderRule="=10000"/>
-        <property name="canceledTotal" dataBuilderRule="=0" />
-        <property name="hash" dataBuilderRule="unique()->sentence(10)"/>
-    </transfer>
-
     <transfer name="TaxTotal">
         <property name="taxRate" dataBuilderRule="randomNumber(5)" />
         <property name="amount" dataBuilderRule="=1000" />

@@ -20,7 +20,8 @@ use Generated\Shared\Transfer\AfterPayRequestPaymentTransfer;
 use Generated\Shared\Transfer\ExpenseTransfer;
 use Generated\Shared\Transfer\ItemTransfer;
 use Generated\Shared\Transfer\OrderTransfer;
-use SprykerEco\Shared\AfterPay\AfterPayConfig;
+use SprykerEco\Shared\AfterPay\AfterPayConfig as AfterPayConfigShared;
+use SprykerEco\Zed\AfterPay\AfterPayConfig as AfterPayConfigZed;
 use SprykerEco\Zed\AfterPay\Business\Payment\Transaction\PriceToPayProviderInterface;
 use SprykerEco\Zed\AfterPay\Dependency\Facade\AfterPayToMoneyFacadeInterface;
 use SprykerEco\Zed\AfterPay\Dependency\Facade\AfterPayToStoreFacadeInterface;
@@ -31,6 +32,9 @@ class OrderToRequestTransfer implements OrderToRequestTransferInterface
     public const GIFT_CARD_PROVIDER = 'GiftCard';
 
     protected const ZERO_AMOUNT = '0';
+
+    protected const ORDER_ITEM_QUANTITY = 1;
+    protected const SHIPPING_FEE_PROVIDER = 'ShippingFee';
 
     /**
      * @var \SprykerEco\Zed\AfterPay\Dependency\Facade\AfterPayToMoneyFacadeInterface
@@ -46,7 +50,7 @@ class OrderToRequestTransfer implements OrderToRequestTransferInterface
      * @var array
      */
     protected static $paymentMethods = [
-        AfterPayConfig::PAYMENT_METHOD_INVOICE => AfterPayConfig::PAYMENT_TYPE_INVOICE,
+        AfterPayConfigShared::PAYMENT_METHOD_INVOICE => AfterPayConfigShared::PAYMENT_TYPE_INVOICE,
     ];
 
     /**
@@ -55,18 +59,26 @@ class OrderToRequestTransfer implements OrderToRequestTransferInterface
     protected $priceToPayProvider;
 
     /**
+     * @var \SprykerEco\Zed\AfterPay\AfterPayConfig
+     */
+    protected $config;
+
+    /**
      * @param \SprykerEco\Zed\AfterPay\Dependency\Facade\AfterPayToMoneyFacadeInterface $moneyFacade
      * @param \SprykerEco\Zed\AfterPay\Dependency\Facade\AfterPayToStoreFacadeInterface $storeFacade
      * @param \SprykerEco\Zed\AfterPay\Business\Payment\Transaction\PriceToPayProviderInterface $priceToPayProvider
+     * @param \SprykerEco\Zed\AfterPay\AfterPayConfig $config
      */
     public function __construct(
         AfterPayToMoneyFacadeInterface $moneyFacade,
         AfterPayToStoreFacadeInterface $storeFacade,
-        PriceToPayProviderInterface $priceToPayProvider
+        PriceToPayProviderInterface $priceToPayProvider,
+        AfterPayConfigZed $config
     ) {
         $this->moneyFacade = $moneyFacade;
         $this->storeFacade = $storeFacade;
         $this->priceToPayProvider = $priceToPayProvider;
+        $this->config = $config;
     }
 
     /**
@@ -90,7 +102,8 @@ class OrderToRequestTransfer implements OrderToRequestTransferInterface
     public function orderToBaseCaptureRequest(AfterPayCallTransfer $afterPayCallTransfer): AfterPayCaptureRequestTransfer
     {
         $orderRequestTransfer = $this->buildOrderRequestTransfer($afterPayCallTransfer)
-            ->setTotalGrossAmount(static::ZERO_AMOUNT);
+            ->setTotalGrossAmount(static::ZERO_AMOUNT)
+            ->setTotalNetAmount(static::ZERO_AMOUNT);
 
         return (new AfterPayCaptureRequestTransfer())
             ->setOrderDetails($orderRequestTransfer);
@@ -104,7 +117,8 @@ class OrderToRequestTransfer implements OrderToRequestTransferInterface
     public function orderToBaseCancelRequest(AfterPayCallTransfer $afterPayCallTransfer): AfterPayCancelRequestTransfer
     {
         $orderRequestTransfer = $this->buildOrderRequestTransfer($afterPayCallTransfer)
-            ->setTotalGrossAmount(static::ZERO_AMOUNT);
+            ->setTotalGrossAmount(static::ZERO_AMOUNT)
+            ->setTotalNetAmount(static::ZERO_AMOUNT);
 
         return (new AfterPayCancelRequestTransfer())
             ->setCancellationDetails($orderRequestTransfer);
@@ -145,8 +159,8 @@ class OrderToRequestTransfer implements OrderToRequestTransferInterface
             ->setFirstName($billingAddressTransfer->getFirstName())
             ->setLastName($billingAddressTransfer->getLastName())
             ->setConversationalLanguage($this->getStoreCountryIso2())
-            ->setCustomerCategory(AfterPayConfig::API_CUSTOMER_CATEGORY_PERSON)
-            ->setSalutation($billingAddressTransfer->getSalutation())
+            ->setCustomerCategory(AfterPayConfigShared::API_CUSTOMER_CATEGORY_PERSON)
+            ->setSalutation($this->config->getSalutation($billingAddressTransfer->getSalutation()))
             ->setEmail($afterPayCallTransfer->getEmail())
             ->setAddress($this->buildCustomerBillingAddressRequestTransfer($afterPayCallTransfer));
     }
@@ -181,6 +195,7 @@ class OrderToRequestTransfer implements OrderToRequestTransferInterface
     {
         return (new AfterPayRequestOrderTransfer())
             ->setNumber($afterPayCallTransfer->getOrderReference())
+            ->setTotalNetAmount($this->getStringDecimalOrderNetTotal($afterPayCallTransfer))
             ->setTotalGrossAmount($this->getStringDecimalOrderGrossTotal($afterPayCallTransfer))
             ->setCurrency($afterPayCallTransfer->getCurrency());
     }
@@ -193,7 +208,7 @@ class OrderToRequestTransfer implements OrderToRequestTransferInterface
     protected function buildPaymentRequestTransfer(AfterPayCallTransfer $afterPayCallTransfer): AfterPayRequestPaymentTransfer
     {
         return (new AfterPayRequestPaymentTransfer())
-            ->setType(static::$paymentMethods[$afterPayCallTransfer->getPaymentMethod()]);
+            ->setType(static::$paymentMethods[$afterPayCallTransfer->getPaymentMethod()] ?? null);
     }
 
     /**
@@ -208,6 +223,7 @@ class OrderToRequestTransfer implements OrderToRequestTransferInterface
             ->setDescription($itemTransfer->getName())
             ->setGrossUnitPrice($this->getStringDecimalItemGrossUnitPrice($itemTransfer))
             ->setQuantity($itemTransfer->getQuantity())
+            ->setNetUnitPrice($this->getStringDecimalItemNetUnitPrice($itemTransfer))
             ->setVatAmount($this->getStringDecimalItemVatAmountPrice($itemTransfer))
             ->setVatPercent($itemTransfer->getTaxRate())
             ->setGroupId($itemTransfer->getGroupKey());
@@ -321,7 +337,7 @@ class OrderToRequestTransfer implements OrderToRequestTransferInterface
                     ->setProductId(static::GIFT_CARD_PROVIDER . $index)
                     ->setDescription(static::GIFT_CARD_PROVIDER . $index)
                     ->setGrossUnitPrice($amount)
-                    ->setQuantity(1)
+                    ->setQuantity(static::ORDER_ITEM_QUANTITY)
             );
         }
 
@@ -380,6 +396,8 @@ class OrderToRequestTransfer implements OrderToRequestTransferInterface
             ->setDescription($expenseTransfer->getName())
             ->setGrossUnitPrice($this->getStringDecimalExpenseGrossUnitPrice($expenseTransfer))
             ->setNetUnitPrice($this->getStringDecimalExpenseNetUnitPrice($expenseTransfer))
+            ->setVatAmount($this->getStringDecimalExpenseVatAmount($expenseTransfer))
+            ->setVatPercent($expenseTransfer->getTaxRate())
             ->setQuantity($expenseTransfer->getQuantity());
 
         return $item;
@@ -409,5 +427,17 @@ class OrderToRequestTransfer implements OrderToRequestTransferInterface
         $expenseUnitNetAmount = $expenseUnitGrossPriceAmount - $expenseUnitTaxAmount;
 
         return (string)$this->moneyFacade->convertIntegerToDecimal($expenseUnitNetAmount);
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\ExpenseTransfer $expenseTransfer
+     *
+     * @return string
+     */
+    protected function getStringDecimalExpenseVatAmount(ExpenseTransfer $expenseTransfer): string
+    {
+        $expenseVatAmount = $expenseTransfer->getSumTaxAmount();
+
+        return (string)$this->moneyFacade->convertIntegerToDecimal($expenseVatAmount);
     }
 }

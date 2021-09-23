@@ -23,6 +23,10 @@ use Spryker\Zed\Oms\Dependency\Plugin\Command\CommandByOrderInterface;
 class AuthorizePlugin extends AbstractPlugin implements CommandByOrderInterface
 {
     /**
+     * {@inheritDoc}
+     * - Sends payment `authorize` request to AfterPay gateway.
+     * - Saves the transaction result in Quote for future recognition.
+     *
      * @api
      *
      * @param \Orm\Zed\Sales\Persistence\SpySalesOrderItem[] $orderItems

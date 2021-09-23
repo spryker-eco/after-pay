@@ -13,7 +13,19 @@ use SprykerEco\Shared\AfterPay\AfterPayConstants;
 
 class AfterPayConfig extends AbstractBundleConfig
 {
+    protected const SALUTATION_DEFAULT = 'Mr';
+    protected const SALUTATION_MAP = [
+        'Mr' => 'Mr',
+        'Ms' => 'Miss',
+        'Miss' => 'Miss',
+        'Mrs' => 'Mrs',
+        'Missis' => 'Mrs',
+        'Dr' => 'Mr',
+    ];
+
     /**
+     * @api
+     *
      * @param string $orderNumber
      *
      * @return string
@@ -26,6 +38,8 @@ class AfterPayConfig extends AbstractBundleConfig
     }
 
     /**
+     * @api
+     *
      * @param string $orderNumber
      *
      * @return string
@@ -38,6 +52,8 @@ class AfterPayConfig extends AbstractBundleConfig
     }
 
     /**
+     * @api
+     *
      * @param string $orderNumber
      *
      * @return string
@@ -50,6 +66,8 @@ class AfterPayConfig extends AbstractBundleConfig
     }
 
     /**
+     * @api
+     *
      * @return string
      */
     public function getAuthorizeApiEndpointUrl(): string
@@ -60,6 +78,8 @@ class AfterPayConfig extends AbstractBundleConfig
     }
 
     /**
+     * @api
+     *
      * @return string
      */
     public function getValidateAddressApiEndpointUrl(): string
@@ -70,6 +90,8 @@ class AfterPayConfig extends AbstractBundleConfig
     }
 
     /**
+     * @api
+     *
      * @return string
      */
     public function getLookupCustomerApiEndpointUrl(): string
@@ -80,6 +102,8 @@ class AfterPayConfig extends AbstractBundleConfig
     }
 
     /**
+     * @api
+     *
      * @return string
      */
     public function getLookupInstallmentPlansApiEndpointUrl(): string
@@ -90,6 +114,8 @@ class AfterPayConfig extends AbstractBundleConfig
     }
 
     /**
+     * @api
+     *
      * @return string
      */
     public function getValidateBankAccountApiEndpointUrl(): string
@@ -100,6 +126,8 @@ class AfterPayConfig extends AbstractBundleConfig
     }
 
     /**
+     * @api
+     *
      * @return string
      */
     public function getStatusApiEndpointUrl(): string
@@ -110,6 +138,8 @@ class AfterPayConfig extends AbstractBundleConfig
     }
 
     /**
+     * @api
+     *
      * @return string
      */
     public function getVersionApiEndpointUrl(): string
@@ -120,6 +150,8 @@ class AfterPayConfig extends AbstractBundleConfig
     }
 
     /**
+     * @api
+     *
      * @return string
      */
     public function getAvailablePaymentMethodsApiEndpointUrl(): string
@@ -130,6 +162,8 @@ class AfterPayConfig extends AbstractBundleConfig
     }
 
     /**
+     * @api
+     *
      * @return string
      */
     public function getApiCredentialsAuthKey(): string
@@ -138,6 +172,8 @@ class AfterPayConfig extends AbstractBundleConfig
     }
 
     /**
+     * @api
+     *
      * @return string
      */
     public function getAfterPayAuthorizeWorkflow(): string
@@ -146,6 +182,8 @@ class AfterPayConfig extends AbstractBundleConfig
     }
 
     /**
+     * @api
+     *
      * @param string $paymentMethod
      *
      * @return string
@@ -160,11 +198,25 @@ class AfterPayConfig extends AbstractBundleConfig
     }
 
     /**
+     * @api
+     *
      * @return string
      */
     public function getPaymentAuthorizationFailedUrl(): string
     {
         return $this->get(AfterPayConstants::AFTERPAY_YVES_AUTHORIZE_PAYMENT_FAILED_URL);
+    }
+
+    /**
+     * @api
+     *
+     * @param string $salutation
+     *
+     * @return string
+     */
+    public function getSalutation(string $salutation): string
+    {
+        return static::SALUTATION_MAP[$salutation] ?? static::SALUTATION_DEFAULT;
     }
 
     /**
@@ -174,6 +226,8 @@ class AfterPayConfig extends AbstractBundleConfig
      */
     protected function getApiEndpointUrl(string $endpointPath): string
     {
-        return $this->get(AfterPayConstants::API_ENDPOINT_BASE_URL) . $endpointPath;
+        $endpointBaseUrl = $this->get(AfterPayConstants::API_ENDPOINT_BASE_URL);
+
+        return $endpointBaseUrl . $endpointPath;
     }
 }

@@ -26,6 +26,8 @@ use SprykerEco\Zed\AfterPay\Business\Exception\InvalidAfterPayAuthorizeRequestBu
 use SprykerEco\Zed\AfterPay\Business\Exception\InvalidAfterPayPaymentMethodsFilterException;
 use SprykerEco\Zed\AfterPay\Business\Hook\PostSaveHook;
 use SprykerEco\Zed\AfterPay\Business\Hook\PostSaveHookInterface;
+use SprykerEco\Zed\AfterPay\Business\Mapper\AfterPayMapper;
+use SprykerEco\Zed\AfterPay\Business\Mapper\AfterPayMapperInterface;
 use SprykerEco\Zed\AfterPay\Business\Order\Saver;
 use SprykerEco\Zed\AfterPay\Business\Order\SaverInterface;
 use SprykerEco\Zed\AfterPay\Business\Payment\Filter\AfterPayPaymentMethodsFilterInterface;
@@ -104,7 +106,8 @@ class AfterPayBusinessFactory extends AbstractBusinessFactory
             $this->createAuthorizeTransaction(),
             $this->getAuthorizeRequestBuilder(),
             $this->createPaymentWriter(),
-            $this->createPriceToPayProvider()
+            $this->createPriceToPayProvider(),
+            $this->createAfterPayMapper()
         );
     }
 
@@ -318,7 +321,10 @@ class AfterPayBusinessFactory extends AbstractBusinessFactory
         $authorizeRequestBuilderStack = $this->getAuthorizeRequestBuilderStack();
 
         if (!isset($authorizeRequestBuilderStack[$authorizeWorkflow])) {
-            throw new InvalidAfterPayAuthorizeRequestBuilderException($authorizeWorkflow . " is not a valid AfterPay authorize request builder.");
+            throw new InvalidAfterPayAuthorizeRequestBuilderException(sprintf(
+                '%s is not a valid AfterPay authorize request builder.',
+                $authorizeWorkflow
+            ));
         }
 
         return $authorizeRequestBuilderStack[$authorizeWorkflow];
@@ -373,7 +379,8 @@ class AfterPayBusinessFactory extends AbstractBusinessFactory
         return new OrderToRequestTransfer(
             $this->getMoneyFacade(),
             $this->getStoreFacade(),
-            $this->createPriceToPayProvider()
+            $this->createPriceToPayProvider(),
+            $this->getConfig()
         );
     }
 
@@ -402,6 +409,14 @@ class AfterPayBusinessFactory extends AbstractBusinessFactory
     }
 
     /**
+     * @return \SprykerEco\Zed\AfterPay\Business\Mapper\AfterPayMapperInterface
+     */
+    public function createAfterPayMapper(): AfterPayMapperInterface
+    {
+        return new AfterPayMapper();
+    }
+
+    /**
      * @return \SprykerEco\Zed\AfterPay\Business\Payment\Mapper\QuoteToRequestTransferInterface
      */
     public function createQuoteToRequestMapper(): QuoteToRequestTransferInterface
@@ -423,7 +438,10 @@ class AfterPayBusinessFactory extends AbstractBusinessFactory
         $paymentMethodsFilterStack = $this->getPaymentMethodsFilterStack();
 
         if (!isset($paymentMethodsFilterStack[$authorizeWorkflow])) {
-            throw new InvalidAfterPayPaymentMethodsFilterException($authorizeWorkflow . " is not a valid AfterPay payment methods filter.");
+            throw new InvalidAfterPayPaymentMethodsFilterException(sprintf(
+                '%s is not a valid AfterPay payment methods filter.',
+                $authorizeWorkflow
+            ));
         }
 
         return $paymentMethodsFilterStack[$authorizeWorkflow];

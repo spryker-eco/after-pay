@@ -23,6 +23,11 @@ use Spryker\Zed\Oms\Dependency\Plugin\Command\CommandByOrderInterface;
 class CancelPlugin extends AbstractPlugin implements CommandByOrderInterface
 {
     /**
+     * {@inheritDoc}
+     * - Sends `cancel` request to AfterPay gateway, to cancel payment for a specific order item, before payment is captured
+     * - If it is the last item cancellation request for given order, cancels also full expense amount.
+     * - Saves the transaction result in DB and updates payment with new total cancelled amount.
+     *
      * @api
      *
      * @param \Orm\Zed\Sales\Persistence\SpySalesOrderItem[] $orderItems

@@ -45,7 +45,7 @@ class PostSaveHook implements PostSaveHookInterface
      */
     public function execute(QuoteTransfer $quoteTransfer, CheckoutResponseTransfer $checkoutResponseTransfer): CheckoutResponseTransfer
     {
-        if ($this->isPaymentAuthorizationSuccessful($quoteTransfer->getOrderReference())) {
+        if (!$this->isAfterPayPaymentProvider($quoteTransfer) || $this->isPaymentAuthorizationSuccessful($quoteTransfer->getOrderReference())) {
             return $checkoutResponseTransfer;
         }
 
@@ -83,5 +83,15 @@ class PostSaveHook implements PostSaveHookInterface
         $checkoutResponseTransfer
             ->setIsExternalRedirect(true)
             ->setRedirectUrl($paymentFailedUrl);
+    }
+
+    /**
+     * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
+     *
+     * @return bool
+     */
+    protected function isAfterPayPaymentProvider(QuoteTransfer $quoteTransfer): bool
+    {
+        return $quoteTransfer->getPayment()->getPaymentProvider() === SharedAfterPayConfig::PROVIDER_NAME;
     }
 }
