@@ -29,11 +29,25 @@ use SprykerEco\Zed\AfterPay\Dependency\Facade\AfterPayToStoreFacadeInterface;
 class OrderToRequestTransfer implements OrderToRequestTransferInterface
 {
     public const NEGATIVE_MULTIPLIER = -1;
+
+    /**
+     * @var string
+     */
     public const GIFT_CARD_PROVIDER = 'GiftCard';
 
+    /**
+     * @var string
+     */
     protected const ZERO_AMOUNT = '0';
 
+    /**
+     * @var int
+     */
     protected const ORDER_ITEM_QUANTITY = 1;
+
+    /**
+     * @var string
+     */
     protected const SHIPPING_FEE_PROVIDER = 'ShippingFee';
 
     /**
@@ -176,7 +190,7 @@ class OrderToRequestTransfer implements OrderToRequestTransferInterface
 
         foreach ($afterPayCallTransfer->getItems() as $itemTransfer) {
             $orderRequestTransfer->addItem(
-                $this->buildOrderItemRequestTransfer($itemTransfer)
+                $this->buildOrderItemRequestTransfer($itemTransfer),
             );
         }
 
@@ -337,7 +351,7 @@ class OrderToRequestTransfer implements OrderToRequestTransferInterface
                     ->setProductId(static::GIFT_CARD_PROVIDER . $index)
                     ->setDescription(static::GIFT_CARD_PROVIDER . $index)
                     ->setGrossUnitPrice($amount)
-                    ->setQuantity(static::ORDER_ITEM_QUANTITY)
+                    ->setQuantity(static::ORDER_ITEM_QUANTITY),
             );
         }
 
@@ -347,7 +361,7 @@ class OrderToRequestTransfer implements OrderToRequestTransferInterface
     /**
      * @param \Generated\Shared\Transfer\AfterPayCallTransfer $afterPayCallTransfer
      *
-     * @return \Generated\Shared\Transfer\PaymentTransfer[]
+     * @return array<\Generated\Shared\Transfer\PaymentTransfer>
      */
     protected function getGiftcards(AfterPayCallTransfer $afterPayCallTransfer): array
     {
@@ -376,7 +390,7 @@ class OrderToRequestTransfer implements OrderToRequestTransferInterface
         foreach ($afterPayCallTransfer->getExpenses() as $expenseTransfer) {
             if ($expenseTransfer->getSumPriceToPayAggregation() > 0) {
                 $orderRequestTransfer->addItem(
-                    $this->buildOrderExpenseRequestTransfer($expenseTransfer)
+                    $this->buildOrderExpenseRequestTransfer($expenseTransfer),
                 );
             }
         }

@@ -17,6 +17,9 @@ use SprykerEco\Zed\AfterPay\Dependency\Facade\AfterPayToMoneyFacadeInterface;
 
 class CancelRequestBuilder implements CancelRequestBuilderInterface
 {
+    /**
+     * @var int
+     */
     protected const ZERO_AMOUNT = 0;
 
     /**

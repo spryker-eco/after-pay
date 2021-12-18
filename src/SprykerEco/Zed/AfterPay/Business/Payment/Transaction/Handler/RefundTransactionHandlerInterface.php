@@ -12,7 +12,7 @@ use Generated\Shared\Transfer\OrderTransfer;
 interface RefundTransactionHandlerInterface
 {
     /**
-     * @param \Generated\Shared\Transfer\ItemTransfer[] $items
+     * @param array<\Generated\Shared\Transfer\ItemTransfer> $items
      * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
      *
      * @return void

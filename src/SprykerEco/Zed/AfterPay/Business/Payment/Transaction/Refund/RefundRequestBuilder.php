@@ -17,6 +17,9 @@ use SprykerEco\Zed\AfterPay\Dependency\Facade\AfterPayToMoneyFacadeInterface;
 
 class RefundRequestBuilder implements RefundRequestBuilderInterface
 {
+    /**
+     * @var int
+     */
     protected const ZERO_AMOUNT = 0;
 
     /**

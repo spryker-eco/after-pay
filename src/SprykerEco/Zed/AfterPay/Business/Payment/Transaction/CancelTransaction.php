@@ -66,7 +66,7 @@ class CancelTransaction implements CancelTransactionInterface
             static::TRANSACTION_TYPE,
             $cancelRequestTransfer->getCancellationDetails()->getNumber(),
             $cancelRequestTransfer,
-            $cancelResponseTransfer->getApiResponse()
+            $cancelResponseTransfer->getApiResponse(),
         );
     }
 }

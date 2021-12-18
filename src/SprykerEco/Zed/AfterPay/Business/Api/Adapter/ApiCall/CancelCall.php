@@ -72,7 +72,7 @@ class CancelCall extends AbstractApiCall implements CancelCallInterface
         try {
             $jsonResponse = $this->client->sendPost(
                 $this->getCancelEndpointUrl($requestTransfer),
-                $jsonRequest
+                $jsonRequest,
             );
         } catch (ApiHttpRequestException $apiHttpRequestException) {
             $this->logApiException($apiHttpRequestException);
@@ -91,7 +91,7 @@ class CancelCall extends AbstractApiCall implements CancelCallInterface
     protected function getCancelEndpointUrl(AfterPayCancelRequestTransfer $requestTransfer): string
     {
         return $this->config->getCancelApiEndpointUrl(
-            $requestTransfer->getCancellationDetails()->getNumber()
+            $requestTransfer->getCancellationDetails()->getNumber(),
         );
     }
 
@@ -122,13 +122,13 @@ class CancelCall extends AbstractApiCall implements CancelCallInterface
         return (new AfterPayCancelResponseTransfer())
             ->setTotalCapturedAmount(
                 $this->money->convertDecimalToInteger(
-                    $jsonResponseArray[AfterPayApiRequestConfig::CANCEL_CAPTURED_AMOUNT]
-                )
+                    $jsonResponseArray[AfterPayApiRequestConfig::CANCEL_CAPTURED_AMOUNT],
+                ),
             )
             ->setTotalAuthorizedAmount(
                 $this->money->convertDecimalToInteger(
-                    $jsonResponseArray[AfterPayApiRequestConfig::CANCEL_AUTHORIZED_AMOUNT]
-                )
+                    $jsonResponseArray[AfterPayApiRequestConfig::CANCEL_AUTHORIZED_AMOUNT],
+                ),
             );
     }
 

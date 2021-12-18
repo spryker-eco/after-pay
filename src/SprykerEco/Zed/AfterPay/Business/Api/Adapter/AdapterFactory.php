@@ -53,7 +53,7 @@ class AdapterFactory extends AbstractBusinessFactory implements AdapterFactoryIn
             $this->createHttpClient(),
             $this->createTransferToCamelCaseArrayConverter(),
             $this->getUtilEncodingService(),
-            $this->getConfig()
+            $this->getConfig(),
         );
     }
 
@@ -66,7 +66,7 @@ class AdapterFactory extends AbstractBusinessFactory implements AdapterFactoryIn
             $this->createHttpClient(),
             $this->createTransferToCamelCaseArrayConverter(),
             $this->getUtilEncodingService(),
-            $this->getConfig()
+            $this->getConfig(),
         );
     }
 
@@ -80,7 +80,7 @@ class AdapterFactory extends AbstractBusinessFactory implements AdapterFactoryIn
             $this->createTransferToCamelCaseArrayConverter(),
             $this->getUtilEncodingService(),
             $this->getUtilTextService(),
-            $this->getConfig()
+            $this->getConfig(),
         );
     }
 
@@ -93,7 +93,7 @@ class AdapterFactory extends AbstractBusinessFactory implements AdapterFactoryIn
             $this->createHttpClient(),
             $this->createTransferToCamelCaseArrayConverter(),
             $this->getUtilEncodingService(),
-            $this->getConfig()
+            $this->getConfig(),
         );
     }
 
@@ -106,7 +106,7 @@ class AdapterFactory extends AbstractBusinessFactory implements AdapterFactoryIn
             $this->createHttpClient(),
             $this->createTransferToCamelCaseArrayConverter(),
             $this->getUtilEncodingService(),
-            $this->getConfig()
+            $this->getConfig(),
         );
     }
 
@@ -120,7 +120,7 @@ class AdapterFactory extends AbstractBusinessFactory implements AdapterFactoryIn
             $this->createTransferToCamelCaseArrayConverter(),
             $this->getUtilEncodingService(),
             $this->getMoneyFacade(),
-            $this->getConfig()
+            $this->getConfig(),
         );
     }
 
@@ -134,7 +134,7 @@ class AdapterFactory extends AbstractBusinessFactory implements AdapterFactoryIn
             $this->createTransferToCamelCaseArrayConverter(),
             $this->getUtilEncodingService(),
             $this->getMoneyFacade(),
-            $this->getConfig()
+            $this->getConfig(),
         );
     }
 
@@ -148,7 +148,7 @@ class AdapterFactory extends AbstractBusinessFactory implements AdapterFactoryIn
             $this->createTransferToCamelCaseArrayConverter(),
             $this->getUtilEncodingService(),
             $this->getMoneyFacade(),
-            $this->getConfig()
+            $this->getConfig(),
         );
     }
 
@@ -162,7 +162,7 @@ class AdapterFactory extends AbstractBusinessFactory implements AdapterFactoryIn
             $this->createTransferToCamelCaseArrayConverter(),
             $this->getUtilEncodingService(),
             $this->getMoneyFacade(),
-            $this->getConfig()
+            $this->getConfig(),
         );
     }
 
@@ -174,7 +174,7 @@ class AdapterFactory extends AbstractBusinessFactory implements AdapterFactoryIn
         return new ApiVersionCall(
             $this->createHttpClient(),
             $this->getConfig(),
-            $this->getUtilEncodingService()
+            $this->getUtilEncodingService(),
         );
     }
 
@@ -185,7 +185,7 @@ class AdapterFactory extends AbstractBusinessFactory implements AdapterFactoryIn
     {
         return new ApiStatusCall(
             $this->createHttpClient(),
-            $this->getConfig()
+            $this->getConfig(),
         );
     }
 
@@ -196,7 +196,7 @@ class AdapterFactory extends AbstractBusinessFactory implements AdapterFactoryIn
     {
         return new Guzzle(
             $this->getUtilEncodingService(),
-            $this->getConfig()
+            $this->getConfig(),
         );
     }
 

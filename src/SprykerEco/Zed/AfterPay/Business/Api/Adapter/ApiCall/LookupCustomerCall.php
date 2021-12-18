@@ -65,7 +65,7 @@ class LookupCustomerCall extends AbstractApiCall implements LookupCustomerCallIn
         try {
             $jsonResponse = $this->client->sendPost(
                 $this->config->getLookupCustomerApiEndpointUrl(),
-                $jsonRequest
+                $jsonRequest,
             );
         } catch (ApiHttpRequestException $apiHttpRequestException) {
             $this->logApiException($apiHttpRequestException);
@@ -92,7 +92,7 @@ class LookupCustomerCall extends AbstractApiCall implements LookupCustomerCallIn
 
         foreach ($jsonResponseArray[AfterPayApiRequestConfig::USER_PROFILES] as $userProfile) {
             $responseTransfer->addUserProfile(
-                $this->buildUserProfileTransfer($userProfile)
+                $this->buildUserProfileTransfer($userProfile),
             );
         }
 
@@ -119,7 +119,7 @@ class LookupCustomerCall extends AbstractApiCall implements LookupCustomerCallIn
 
         foreach ($userProfile[AfterPayApiRequestConfig::USER_PROFILE_ADDRESS_LIST] as $userAddress) {
             $userProfileTransfer->addLookupAddress(
-                $this->buildLookupAddressTransfer($userAddress)
+                $this->buildLookupAddressTransfer($userAddress),
             );
         }
 

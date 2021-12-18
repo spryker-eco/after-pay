@@ -55,7 +55,7 @@ class ApiVersionCall implements ApiVersionCallInterface
     {
         try {
             $jsonResponse = $this->client->sendGet(
-                $this->config->getVersionApiEndpointUrl()
+                $this->config->getVersionApiEndpointUrl(),
             );
         } catch (ApiHttpRequestException $apiHttpRequestException) {
             $this->logApiException($apiHttpRequestException);
@@ -90,7 +90,7 @@ class ApiVersionCall implements ApiVersionCallInterface
     {
         $this->getLogger()->error(
             $apiHttpRequestException->getMessage(),
-            ['exception' => $apiHttpRequestException]
+            ['exception' => $apiHttpRequestException],
         );
     }
 }

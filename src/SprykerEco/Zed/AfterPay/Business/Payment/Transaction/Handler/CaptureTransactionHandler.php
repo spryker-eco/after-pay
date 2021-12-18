@@ -58,7 +58,7 @@ class CaptureTransactionHandler implements CaptureTransactionHandlerInterface
     }
 
     /**
-     * @param \Generated\Shared\Transfer\ItemTransfer[] $items
+     * @param array<\Generated\Shared\Transfer\ItemTransfer> $items
      * @param \Generated\Shared\Transfer\AfterPayCallTransfer $afterPayCallTransfer
      *
      * @return void
@@ -115,7 +115,7 @@ class CaptureTransactionHandler implements CaptureTransactionHandlerInterface
     }
 
     /**
-     * @param \Generated\Shared\Transfer\ItemTransfer[] $items
+     * @param array<\Generated\Shared\Transfer\ItemTransfer> $items
      * @param \Generated\Shared\Transfer\AfterPayCallTransfer $afterPayCallTransfer
      *
      * @return \Generated\Shared\Transfer\AfterPayCaptureRequestTransfer
@@ -182,7 +182,7 @@ class CaptureTransactionHandler implements CaptureTransactionHandlerInterface
 
         $this->paymentWriter->increaseTotalCapturedAmountByIdSalesOrder(
             $capturedResponseTransfer->getCapturedAmount(),
-            $idSalesOrder
+            $idSalesOrder,
         );
     }
 
@@ -202,7 +202,7 @@ class CaptureTransactionHandler implements CaptureTransactionHandlerInterface
 
         $this->paymentWriter->updateExpensesCaptureNumber(
             $capturedResponseTransfer->getCaptureNumber(),
-            $idSalesOrder
+            $idSalesOrder,
         );
     }
 
@@ -221,7 +221,7 @@ class CaptureTransactionHandler implements CaptureTransactionHandlerInterface
         $this->paymentWriter->setCaptureNumberByIdSalesOrderItemAndIdPayment(
             $captureResponseTransfer->getCaptureNumber(),
             $itemTransfer->getIdSalesOrderItem(),
-            $paymentTransfer->getIdPaymentAfterPay()
+            $paymentTransfer->getIdPaymentAfterPay(),
         );
     }
 }

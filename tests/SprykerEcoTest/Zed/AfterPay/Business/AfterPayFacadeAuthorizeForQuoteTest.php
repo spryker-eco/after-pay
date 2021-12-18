@@ -22,6 +22,9 @@ use SprykerEco\Shared\AfterPay\AfterPayConstants;
 
 class AfterPayFacadeAuthorizeForQuoteTest extends AfterPayFacadeAbstractTest
 {
+    /**
+     * @var string
+     */
     protected const OMS_PROCESS_INVOICE = 'AfterPayInvoice01';
 
     /**
@@ -43,7 +46,7 @@ class AfterPayFacadeAuthorizeForQuoteTest extends AfterPayFacadeAbstractTest
                 ItemTransfer::UNIT_PRICE => 100,
                 ItemTransfer::SUM_PRICE => 100,
             ],
-            static::OMS_PROCESS_INVOICE
+            static::OMS_PROCESS_INVOICE,
         );
 
         $quoteTransfer = $this->createQuoteFromSavedOrder($savedOrderTransfer);

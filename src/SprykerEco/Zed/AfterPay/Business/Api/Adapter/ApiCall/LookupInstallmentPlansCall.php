@@ -74,7 +74,7 @@ class LookupInstallmentPlansCall extends AbstractApiCall implements LookupInstal
         try {
             $jsonResponse = $this->client->sendPost(
                 $this->config->getLookupInstallmentPlansApiEndpointUrl(),
-                $jsonRequest
+                $jsonRequest,
             );
         } catch (ApiHttpRequestException $apiHttpRequestException) {
             $this->logApiException($apiHttpRequestException);
@@ -113,7 +113,7 @@ class LookupInstallmentPlansCall extends AbstractApiCall implements LookupInstal
 
         foreach ($jsonResponseArray[AfterPayApiRequestConfig::AVAILABLE_PLANS] as $planArray) {
             $responseTransfer->addInstallmentPlan(
-                $this->buildInstallmentPlanTransfer($planArray)
+                $this->buildInstallmentPlanTransfer($planArray),
             );
         }
 
@@ -141,55 +141,55 @@ class LookupInstallmentPlansCall extends AbstractApiCall implements LookupInstal
         return (new AfterPayInstallmentPlanTransfer())
             ->setBasketAmount(
                 $this->money->convertDecimalToInteger(
-                    $installmentPlanArray[AfterPayApiRequestConfig::BASKET_AMOUNT]
-                )
+                    $installmentPlanArray[AfterPayApiRequestConfig::BASKET_AMOUNT],
+                ),
             )
             ->setInstallmentAmount(
                 $this->money->convertDecimalToInteger(
-                    $installmentPlanArray[AfterPayApiRequestConfig::INSTALLMENT_AMOUNT]
-                )
+                    $installmentPlanArray[AfterPayApiRequestConfig::INSTALLMENT_AMOUNT],
+                ),
             )
             ->setFirstInstallmentAmount(
                 $this->money->convertDecimalToInteger(
-                    $installmentPlanArray[AfterPayApiRequestConfig::FIRST_INSTALLMENT_AMOUNT]
-                )
+                    $installmentPlanArray[AfterPayApiRequestConfig::FIRST_INSTALLMENT_AMOUNT],
+                ),
             )
             ->setLastInstallmentAmount(
                 $this->money->convertDecimalToInteger(
-                    $installmentPlanArray[AfterPayApiRequestConfig::LAST_INSTALLMENT_AMOUNT]
-                )
+                    $installmentPlanArray[AfterPayApiRequestConfig::LAST_INSTALLMENT_AMOUNT],
+                ),
             )
             ->setTotalAmount(
                 $this->money->convertDecimalToInteger(
-                    $installmentPlanArray[AfterPayApiRequestConfig::TOTAL_AMOUNT]
-                )
+                    $installmentPlanArray[AfterPayApiRequestConfig::TOTAL_AMOUNT],
+                ),
             )
             ->setNumberOfInstallments(
-                $installmentPlanArray[AfterPayApiRequestConfig::NUMBER_OF_INSTALLMENTS]
+                $installmentPlanArray[AfterPayApiRequestConfig::NUMBER_OF_INSTALLMENTS],
             )
             ->setInterestRate(
-                $installmentPlanArray[AfterPayApiRequestConfig::INTEREST_RATE]
+                $installmentPlanArray[AfterPayApiRequestConfig::INTEREST_RATE],
             )
             ->setEffectiveInterestRate(
-                $installmentPlanArray[AfterPayApiRequestConfig::EFFECTIVE_INTEREST_RATE]
+                $installmentPlanArray[AfterPayApiRequestConfig::EFFECTIVE_INTEREST_RATE],
             )
             ->setEffectiveAnnualPercentageRate(
-                $installmentPlanArray[AfterPayApiRequestConfig::EFFECTIVE_ANNUAL_PERCENTAGE_RATE]
+                $installmentPlanArray[AfterPayApiRequestConfig::EFFECTIVE_ANNUAL_PERCENTAGE_RATE],
             )
             ->setTotalInterestAmount(
-                $installmentPlanArray[AfterPayApiRequestConfig::TOTAL_INTEREST_AMOUNT]
+                $installmentPlanArray[AfterPayApiRequestConfig::TOTAL_INTEREST_AMOUNT],
             )
             ->setStartupFee(
-                $installmentPlanArray[AfterPayApiRequestConfig::STARTUP_FEE]
+                $installmentPlanArray[AfterPayApiRequestConfig::STARTUP_FEE],
             )
             ->setMonthlyFee(
-                $installmentPlanArray[AfterPayApiRequestConfig::MONTHLY_FEE]
+                $installmentPlanArray[AfterPayApiRequestConfig::MONTHLY_FEE],
             )
             ->setInstallmentProfileNumber(
-                $installmentPlanArray[AfterPayApiRequestConfig::INSTALLMENT_PROFILE_NUMBER]
+                $installmentPlanArray[AfterPayApiRequestConfig::INSTALLMENT_PROFILE_NUMBER],
             )
             ->setReadMore(
-                $installmentPlanArray[AfterPayApiRequestConfig::READ_MORE]
+                $installmentPlanArray[AfterPayApiRequestConfig::READ_MORE],
             );
     }
 }

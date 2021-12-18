@@ -17,6 +17,9 @@ use SprykerEco\Zed\AfterPay\Dependency\Facade\AfterPayToMoneyFacadeInterface;
 
 class CaptureRequestBuilder implements CaptureRequestBuilderInterface
 {
+    /**
+     * @var int
+     */
     protected const ZERO_AMOUNT = 0;
 
     /**
@@ -121,7 +124,7 @@ class CaptureRequestBuilder implements CaptureRequestBuilderInterface
 
         $newNetAmountDecimal = $oldNetAmountDecimal + $itemNetAmountDecimal;
         $captureRequestTransfer->getOrderDetails()->setTotalNetAmount(
-            $this->intToDecimalString($newNetAmountDecimal)
+            $this->intToDecimalString($newNetAmountDecimal),
         );
     }
 
@@ -140,7 +143,7 @@ class CaptureRequestBuilder implements CaptureRequestBuilderInterface
 
         $newGrossAmountDecimal = $oldGrossAmountDecimal + $itemGrossAmountDecimal;
         $captureRequestTransfer->getOrderDetails()->setTotalGrossAmount(
-            $this->intToDecimalString($newGrossAmountDecimal)
+            $this->intToDecimalString($newGrossAmountDecimal),
         );
     }
 

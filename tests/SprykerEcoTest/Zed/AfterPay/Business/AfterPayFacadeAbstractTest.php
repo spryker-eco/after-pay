@@ -52,7 +52,7 @@ class AfterPayFacadeAbstractTest extends Test
             ->build();
 
         $call->getTotals()->setTaxTotal(
-            $this->createTaxTotalTransfer()
+            $this->createTaxTotalTransfer(),
         );
 
         $totals = $call->getTotals();
@@ -85,7 +85,7 @@ class AfterPayFacadeAbstractTest extends Test
             ->build();
 
         $quote->getTotals()->setTaxTotal(
-            $this->createTaxTotalTransfer()
+            $this->createTaxTotalTransfer(),
         );
 
         return $quote;

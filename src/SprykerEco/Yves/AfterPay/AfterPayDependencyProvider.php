@@ -10,6 +10,9 @@ namespace SprykerEco\Yves\AfterPay;
 use Spryker\Yves\Kernel\AbstractBundleDependencyProvider;
 use Spryker\Yves\Kernel\Container;
 
+/**
+ * @method \SprykerEco\Yves\AfterPay\AfterPayConfig getConfig()
+ */
 class AfterPayDependencyProvider extends AbstractBundleDependencyProvider
 {
     /**

@@ -51,7 +51,7 @@ class PaymentReader implements PaymentReaderInterface
     {
         $afterPayPaymentOrderItemEntity = $this->getPaymentOrderItemEntityByIdSalesOrderItemAndIdPayment(
             $idSalesOrderItem,
-            $idPayment
+            $idPayment,
         );
 
         return (new AfterPayPaymentOrderItemTransfer())

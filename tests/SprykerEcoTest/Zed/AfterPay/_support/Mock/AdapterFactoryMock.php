@@ -34,7 +34,7 @@ class AdapterFactoryMock extends AdapterFactory
             $this->createHttpClient(),
             $this->createTransferToCamelCaseArrayConverter(),
             $this->getUtilEncodingService(),
-            $this->getConfig()
+            $this->getConfig(),
         );
     }
 
@@ -47,7 +47,7 @@ class AdapterFactoryMock extends AdapterFactory
             $this->createHttpClient(),
             $this->createTransferToCamelCaseArrayConverter(),
             $this->getUtilEncodingService(),
-            $this->getConfig()
+            $this->getConfig(),
         );
     }
 
@@ -61,7 +61,7 @@ class AdapterFactoryMock extends AdapterFactory
             $this->createTransferToCamelCaseArrayConverter(),
             $this->getUtilEncodingService(),
             $this->getMoneyFacade(),
-            $this->getConfig()
+            $this->getConfig(),
         );
     }
 
@@ -73,7 +73,7 @@ class AdapterFactoryMock extends AdapterFactory
         return new ApiVersionCallMock(
             $this->createHttpClient(),
             $this->getConfig(),
-            $this->getUtilEncodingService()
+            $this->getUtilEncodingService(),
         );
     }
 
@@ -86,7 +86,7 @@ class AdapterFactoryMock extends AdapterFactory
             $this->createHttpClient(),
             $this->createTransferToCamelCaseArrayConverter(),
             $this->getUtilEncodingService(),
-            $this->getConfig()
+            $this->getConfig(),
         );
     }
 
@@ -97,7 +97,7 @@ class AdapterFactoryMock extends AdapterFactory
     {
         return new ApiStatusCallMock(
             $this->createHttpClient(),
-            $this->getConfig()
+            $this->getConfig(),
         );
     }
 
@@ -111,7 +111,7 @@ class AdapterFactoryMock extends AdapterFactory
             $this->createTransferToCamelCaseArrayConverter(),
             $this->getUtilEncodingService(),
             $this->getMoneyFacade(),
-            $this->getConfig()
+            $this->getConfig(),
         );
     }
 }

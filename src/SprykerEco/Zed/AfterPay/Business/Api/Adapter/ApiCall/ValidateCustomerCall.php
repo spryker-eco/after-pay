@@ -68,7 +68,7 @@ class ValidateCustomerCall extends AbstractApiCall implements ValidateCustomerCa
         try {
             $jsonResponse = $this->client->sendPost(
                 $this->config->getValidateAddressApiEndpointUrl(),
-                $jsonRequest
+                $jsonRequest,
             );
         } catch (ApiHttpRequestException $apiHttpRequestException) {
             $this->logApiException($apiHttpRequestException);
@@ -90,7 +90,7 @@ class ValidateCustomerCall extends AbstractApiCall implements ValidateCustomerCa
         return (new AfterPayValidateCustomerResponseTransfer())
             ->setIsValid($jsonResponseArray[AfterPayApiRequestConfig::VALIDATE_ADDRESS_IS_VALID] ?? false)
             ->setCorrectedAddress(
-                $this->parseCorrectedAddress($jsonResponseArray)
+                $this->parseCorrectedAddress($jsonResponseArray),
             )
             ->setResponsePayload($jsonResponse);
     }

@@ -13,7 +13,14 @@ use SprykerEco\Shared\AfterPay\AfterPayConstants;
 
 class AfterPayConfig extends AbstractBundleConfig
 {
+    /**
+     * @var string
+     */
     protected const SALUTATION_DEFAULT = 'Mr';
+
+    /**
+     * @var array
+     */
     protected const SALUTATION_MAP = [
         'Mr' => 'Mr',
         'Ms' => 'Miss',
@@ -33,7 +40,7 @@ class AfterPayConfig extends AbstractBundleConfig
     public function getCaptureApiEndpointUrl(string $orderNumber): string
     {
         return $this->getApiEndpointUrl(
-            sprintf(SharedAfterPayConfig::API_ENDPOINT_CAPTURE_PATH, $orderNumber)
+            sprintf(SharedAfterPayConfig::API_ENDPOINT_CAPTURE_PATH, $orderNumber),
         );
     }
 
@@ -47,7 +54,7 @@ class AfterPayConfig extends AbstractBundleConfig
     public function getRefundApiEndpointUrl(string $orderNumber): string
     {
         return $this->getApiEndpointUrl(
-            sprintf(SharedAfterPayConfig::API_ENDPOINT_REFUND_PATH, $orderNumber)
+            sprintf(SharedAfterPayConfig::API_ENDPOINT_REFUND_PATH, $orderNumber),
         );
     }
 
@@ -61,7 +68,7 @@ class AfterPayConfig extends AbstractBundleConfig
     public function getCancelApiEndpointUrl(string $orderNumber): string
     {
         return $this->getApiEndpointUrl(
-            sprintf(SharedAfterPayConfig::API_ENDPOINT_CANCEL_PATH, $orderNumber)
+            sprintf(SharedAfterPayConfig::API_ENDPOINT_CANCEL_PATH, $orderNumber),
         );
     }
 
@@ -73,7 +80,7 @@ class AfterPayConfig extends AbstractBundleConfig
     public function getAuthorizeApiEndpointUrl(): string
     {
         return $this->getApiEndpointUrl(
-            SharedAfterPayConfig::API_ENDPOINT_AUTHORIZE_PATH
+            SharedAfterPayConfig::API_ENDPOINT_AUTHORIZE_PATH,
         );
     }
 
@@ -85,7 +92,7 @@ class AfterPayConfig extends AbstractBundleConfig
     public function getValidateAddressApiEndpointUrl(): string
     {
         return $this->getApiEndpointUrl(
-            SharedAfterPayConfig::API_ENDPOINT_VALIDATE_ADDRESS_PATH
+            SharedAfterPayConfig::API_ENDPOINT_VALIDATE_ADDRESS_PATH,
         );
     }
 
@@ -97,7 +104,7 @@ class AfterPayConfig extends AbstractBundleConfig
     public function getLookupCustomerApiEndpointUrl(): string
     {
         return $this->getApiEndpointUrl(
-            SharedAfterPayConfig::API_ENDPOINT_LOOKUP_CUSTOMER_PATH
+            SharedAfterPayConfig::API_ENDPOINT_LOOKUP_CUSTOMER_PATH,
         );
     }
 
@@ -109,7 +116,7 @@ class AfterPayConfig extends AbstractBundleConfig
     public function getLookupInstallmentPlansApiEndpointUrl(): string
     {
         return $this->getApiEndpointUrl(
-            SharedAfterPayConfig::API_ENDPOINT_LOOKUP_INSTALLMENT_PLANS_PATH
+            SharedAfterPayConfig::API_ENDPOINT_LOOKUP_INSTALLMENT_PLANS_PATH,
         );
     }
 
@@ -121,7 +128,7 @@ class AfterPayConfig extends AbstractBundleConfig
     public function getValidateBankAccountApiEndpointUrl(): string
     {
         return $this->getApiEndpointUrl(
-            SharedAfterPayConfig::API_ENDPOINT_VALIDATE_BANK_ACCOUNT_PATH
+            SharedAfterPayConfig::API_ENDPOINT_VALIDATE_BANK_ACCOUNT_PATH,
         );
     }
 
@@ -133,7 +140,7 @@ class AfterPayConfig extends AbstractBundleConfig
     public function getStatusApiEndpointUrl(): string
     {
         return $this->getApiEndpointUrl(
-            SharedAfterPayConfig::API_ENDPOINT_API_STATUS_PATH
+            SharedAfterPayConfig::API_ENDPOINT_API_STATUS_PATH,
         );
     }
 
@@ -145,7 +152,7 @@ class AfterPayConfig extends AbstractBundleConfig
     public function getVersionApiEndpointUrl(): string
     {
         return $this->getApiEndpointUrl(
-            SharedAfterPayConfig::API_ENDPOINT_API_VERSION_PATH
+            SharedAfterPayConfig::API_ENDPOINT_API_VERSION_PATH,
         );
     }
 
@@ -157,7 +164,7 @@ class AfterPayConfig extends AbstractBundleConfig
     public function getAvailablePaymentMethodsApiEndpointUrl(): string
     {
         return $this->getApiEndpointUrl(
-            SharedAfterPayConfig::API_ENDPOINT_AVAILABLE_PAYMENT_METHODS_PATH
+            SharedAfterPayConfig::API_ENDPOINT_AVAILABLE_PAYMENT_METHODS_PATH,
         );
     }
 

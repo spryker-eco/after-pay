@@ -68,7 +68,7 @@ class RefundTransactionHandler implements RefundTransactionHandlerInterface
     }
 
     /**
-     * @param \Generated\Shared\Transfer\ItemTransfer[] $items
+     * @param array<\Generated\Shared\Transfer\ItemTransfer> $items
      * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
      *
      * @return void
@@ -88,7 +88,7 @@ class RefundTransactionHandler implements RefundTransactionHandlerInterface
     }
 
     /**
-     * @param \Generated\Shared\Transfer\ItemTransfer[] $items
+     * @param array<\Generated\Shared\Transfer\ItemTransfer> $items
      * @param \Generated\Shared\Transfer\AfterPayPaymentTransfer $paymentTransfer
      * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
      *
@@ -112,7 +112,7 @@ class RefundTransactionHandler implements RefundTransactionHandlerInterface
     }
 
     /**
-     * @param \Generated\Shared\Transfer\ItemTransfer[] $items
+     * @param array<\Generated\Shared\Transfer\ItemTransfer> $items
      * @param \Generated\Shared\Transfer\OrderTransfer $orderTransfer
      *
      * @return \Generated\Shared\Transfer\AfterPayRefundRequestTransfer
@@ -169,7 +169,7 @@ class RefundTransactionHandler implements RefundTransactionHandlerInterface
         return $this->paymentReader
             ->getPaymentOrderItemByIdSalesOrderItemAndIdPayment(
                 $itemTransfer->getIdSalesOrderItem(),
-                $paymentTransfer->getIdPaymentAfterPay()
+                $paymentTransfer->getIdPaymentAfterPay(),
             );
     }
 
@@ -197,12 +197,12 @@ class RefundTransactionHandler implements RefundTransactionHandlerInterface
 
         $this->paymentWriter->increaseRefundedTotalByIdSalesOrder(
             $refundedAmountInt,
-            $refundRequestTransfer->getIdSalesOrder()
+            $refundRequestTransfer->getIdSalesOrder(),
         );
     }
 
     /**
-     * @param \Generated\Shared\Transfer\ItemTransfer[] $items
+     * @param array<\Generated\Shared\Transfer\ItemTransfer> $items
      * @param \Generated\Shared\Transfer\AfterPayPaymentTransfer $paymentTransfer
      *
      * @return bool

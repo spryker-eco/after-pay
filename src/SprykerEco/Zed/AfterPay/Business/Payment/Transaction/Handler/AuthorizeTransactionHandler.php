@@ -125,7 +125,7 @@ class AuthorizeTransactionHandler implements AuthorizeTransactionHandlerInterfac
     ): void {
         $this->paymentWriter->setIdReservationByIdSalesOrder(
             $afterPayCallTransfer->getIdSalesOrder(),
-            $authorizeResponseTransfer->getReservationId()
+            $authorizeResponseTransfer->getReservationId(),
         );
     }
 
@@ -141,7 +141,7 @@ class AuthorizeTransactionHandler implements AuthorizeTransactionHandlerInterfac
     ): void {
         $this->paymentWriter->setCustomerNumberByIdSalesOrder(
             $authorizeResponseTransfer->getCustomerNumber(),
-            $afterPayCallTransfer->getIdSalesOrder()
+            $afterPayCallTransfer->getIdSalesOrder(),
         );
     }
 
@@ -154,7 +154,7 @@ class AuthorizeTransactionHandler implements AuthorizeTransactionHandlerInterfac
     {
         $this->paymentWriter->setAuthorizedTotalByIdSalesOrder(
             $this->priceToPayProvider->getPriceToPayForOrder($afterPayCallTransfer),
-            $afterPayCallTransfer->getIdSalesOrder()
+            $afterPayCallTransfer->getIdSalesOrder(),
         );
     }
 }
