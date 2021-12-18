@@ -60,7 +60,7 @@ class AvailablePaymentMethodsCall extends AbstractApiCall implements AvailablePa
         try {
             $jsonResponse = $this->client->sendPost(
                 $this->config->getAvailablePaymentMethodsApiEndpointUrl(),
-                $jsonRequest
+                $jsonRequest,
             );
         } catch (ApiHttpRequestException $apiHttpRequestException) {
             $this->logApiException($apiHttpRequestException);
@@ -122,7 +122,7 @@ class AvailablePaymentMethodsCall extends AbstractApiCall implements AvailablePa
     /**
      * @param array $jsonResponseArray
      *
-     * @return \ArrayObject|\Generated\Shared\Transfer\AfterPayRiskCheckMessageTransfer[]
+     * @return \Generated\Shared\Transfer\AfterPayRiskCheckMessageTransfer[]|\ArrayObject
      */
     protected function extractRiskCheckMessages(array $jsonResponseArray): ArrayObject
     {

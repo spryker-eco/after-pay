@@ -72,7 +72,7 @@ class RefundCall extends AbstractApiCall implements RefundCallInterface
         try {
             $jsonResponse = $this->client->sendPost(
                 $this->getRefundEndpointUrl($requestTransfer),
-                $jsonRequest
+                $jsonRequest,
             );
         } catch (ApiHttpRequestException $apiHttpRequestException) {
             $this->logApiException($apiHttpRequestException);
@@ -120,13 +120,13 @@ class RefundCall extends AbstractApiCall implements RefundCallInterface
         return (new AfterPayRefundResponseTransfer())
             ->setTotalCapturedAmount(
                 $this->money->convertDecimalToInteger(
-                    $jsonResponseArray[AfterPayApiRequestConfig::REFUND_TOTAL_CAPTURED_AMOUNT]
-                )
+                    $jsonResponseArray[AfterPayApiRequestConfig::REFUND_TOTAL_CAPTURED_AMOUNT],
+                ),
             )
             ->setTotalAuthorizedAmount(
                 $this->money->convertDecimalToInteger(
-                    $jsonResponseArray[AfterPayApiRequestConfig::REFUND_TOTAL_AUTHORIZE_AMOUNT]
-                )
+                    $jsonResponseArray[AfterPayApiRequestConfig::REFUND_TOTAL_AUTHORIZE_AMOUNT],
+                ),
             );
     }
 

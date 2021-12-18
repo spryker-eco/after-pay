@@ -59,7 +59,7 @@ class AuthorizePaymentCall extends AbstractApiCall implements AuthorizePaymentCa
         try {
             $jsonResponse = $this->client->sendPost(
                 $this->config->getAuthorizeApiEndpointUrl(),
-                $jsonRequest
+                $jsonRequest,
             );
         } catch (ApiHttpRequestException $apiHttpRequestException) {
             $this->logApiException($apiHttpRequestException);

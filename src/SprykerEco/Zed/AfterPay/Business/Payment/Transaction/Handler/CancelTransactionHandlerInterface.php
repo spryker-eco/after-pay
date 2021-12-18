@@ -12,7 +12,7 @@ use Generated\Shared\Transfer\AfterPayCallTransfer;
 interface CancelTransactionHandlerInterface
 {
     /**
-     * @param \Generated\Shared\Transfer\ItemTransfer[] $items
+     * @param array<\Generated\Shared\Transfer\ItemTransfer> $items
      * @param \Generated\Shared\Transfer\AfterPayCallTransfer $afterPayCallTransfer
      *
      * @return void

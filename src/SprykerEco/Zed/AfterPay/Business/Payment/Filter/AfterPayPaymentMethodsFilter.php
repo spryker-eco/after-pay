@@ -70,7 +70,7 @@ class AfterPayPaymentMethodsFilter implements AfterPayPaymentMethodsFilterInterf
     {
         return in_array(
             $paymentMethodTransfer->getMethodName(),
-            $this->availablePaymentMethods->getAvailablePaymentMethodNames()
+            $this->availablePaymentMethods->getAvailablePaymentMethodNames(),
         );
     }
 

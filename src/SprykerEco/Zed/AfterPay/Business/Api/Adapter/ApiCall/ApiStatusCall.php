@@ -16,6 +16,9 @@ class ApiStatusCall implements ApiStatusCallInterface
 {
     use LoggerTrait;
 
+    /**
+     * @var int
+     */
     public const RESPONSE_STATUS_NOT_AVAILABLE = 503;
 
     /**
@@ -47,7 +50,7 @@ class ApiStatusCall implements ApiStatusCallInterface
     {
         try {
             $jsonResponse = $this->client->getStatus(
-                $this->config->getStatusApiEndpointUrl()
+                $this->config->getStatusApiEndpointUrl(),
             );
         } catch (ApiHttpRequestException $apiHttpRequestException) {
             $this->logApiException($apiHttpRequestException);
@@ -66,7 +69,7 @@ class ApiStatusCall implements ApiStatusCallInterface
     {
         $this->getLogger()->error(
             $apiHttpRequestException->getMessage(),
-            ['exception' => $apiHttpRequestException]
+            ['exception' => $apiHttpRequestException],
         );
     }
 }

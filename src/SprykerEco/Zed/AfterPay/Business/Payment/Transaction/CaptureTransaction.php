@@ -66,7 +66,7 @@ class CaptureTransaction implements CaptureTransactionInterface
             static::TRANSACTION_TYPE,
             $captureRequestTransfer->getOrderDetails()->getNumber(),
             $captureRequestTransfer,
-            $captureResponseTransfer->getApiResponse()
+            $captureResponseTransfer->getApiResponse(),
         );
     }
 }

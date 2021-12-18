@@ -107,7 +107,7 @@ class AfterPayBusinessFactory extends AbstractBusinessFactory
             $this->getAuthorizeRequestBuilder(),
             $this->createPaymentWriter(),
             $this->createPriceToPayProvider(),
-            $this->createAfterPayMapper()
+            $this->createAfterPayMapper(),
         );
     }
 
@@ -120,7 +120,7 @@ class AfterPayBusinessFactory extends AbstractBusinessFactory
             $this->createCaptureTransaction(),
             $this->createPaymentReader(),
             $this->createPaymentWriter(),
-            $this->createCaptureRequestBuilder()
+            $this->createCaptureRequestBuilder(),
         );
     }
 
@@ -134,7 +134,7 @@ class AfterPayBusinessFactory extends AbstractBusinessFactory
             $this->createPaymentReader(),
             $this->createPaymentWriter(),
             $this->getMoneyFacade(),
-            $this->createRefundRequestBuilder()
+            $this->createRefundRequestBuilder(),
         );
     }
 
@@ -148,7 +148,7 @@ class AfterPayBusinessFactory extends AbstractBusinessFactory
             $this->createPaymentReader(),
             $this->createPaymentWriter(),
             $this->getMoneyFacade(),
-            $this->createCancelRequestBuilder()
+            $this->createCancelRequestBuilder(),
         );
     }
 
@@ -167,7 +167,7 @@ class AfterPayBusinessFactory extends AbstractBusinessFactory
     {
         return new PostSaveHook(
             $this->createTransactionLogReader(),
-            $this->getConfig()
+            $this->getConfig(),
         );
     }
 
@@ -178,7 +178,7 @@ class AfterPayBusinessFactory extends AbstractBusinessFactory
     {
         return new CaptureRequestBuilder(
             $this->createOrderToRequestMapper(),
-            $this->getMoneyFacade()
+            $this->getMoneyFacade(),
         );
     }
 
@@ -189,7 +189,7 @@ class AfterPayBusinessFactory extends AbstractBusinessFactory
     {
         return new CaptureTransaction(
             $this->createTransactionLogger(),
-            $this->createApiAdapter()
+            $this->createApiAdapter(),
         );
     }
 
@@ -200,7 +200,7 @@ class AfterPayBusinessFactory extends AbstractBusinessFactory
     {
         return new RefundTransaction(
             $this->createTransactionLogger(),
-            $this->createApiAdapter()
+            $this->createApiAdapter(),
         );
     }
 
@@ -211,7 +211,7 @@ class AfterPayBusinessFactory extends AbstractBusinessFactory
     {
         return new ValidateCustomerHandler(
             $this->createApiAdapter(),
-            $this->getAfterPayToCustomerBridge()
+            $this->getAfterPayToCustomerBridge(),
         );
     }
 
@@ -255,7 +255,7 @@ class AfterPayBusinessFactory extends AbstractBusinessFactory
         return new AuthorizeTransaction(
             $this->createTransactionLogger(),
             $this->createApiAdapter(),
-            $this->createPaymentAuthorizeWriter()
+            $this->createPaymentAuthorizeWriter(),
         );
     }
 
@@ -266,7 +266,7 @@ class AfterPayBusinessFactory extends AbstractBusinessFactory
     {
         return new CancelTransaction(
             $this->createTransactionLogger(),
-            $this->createApiAdapter()
+            $this->createApiAdapter(),
         );
     }
 
@@ -323,7 +323,7 @@ class AfterPayBusinessFactory extends AbstractBusinessFactory
         if (!isset($authorizeRequestBuilderStack[$authorizeWorkflow])) {
             throw new InvalidAfterPayAuthorizeRequestBuilderException(sprintf(
                 '%s is not a valid AfterPay authorize request builder.',
-                $authorizeWorkflow
+                $authorizeWorkflow,
             ));
         }
 
@@ -331,7 +331,7 @@ class AfterPayBusinessFactory extends AbstractBusinessFactory
     }
 
     /**
-     * @return \SprykerEco\Zed\AfterPay\Business\Payment\Transaction\Authorize\RequestBuilder\AuthorizeRequestBuilderInterface[]
+     * @return array<\SprykerEco\Zed\AfterPay\Business\Payment\Transaction\Authorize\RequestBuilder\AuthorizeRequestBuilderInterface>
      */
     public function getAuthorizeRequestBuilderStack(): array
     {
@@ -348,7 +348,7 @@ class AfterPayBusinessFactory extends AbstractBusinessFactory
     {
         return new CancelRequestBuilder(
             $this->createOrderToRequestMapper(),
-            $this->getMoneyFacade()
+            $this->getMoneyFacade(),
         );
     }
 
@@ -359,7 +359,7 @@ class AfterPayBusinessFactory extends AbstractBusinessFactory
     {
         return new RefundRequestBuilder(
             $this->createOrderToRequestMapper(),
-            $this->getMoneyFacade()
+            $this->getMoneyFacade(),
         );
     }
 
@@ -380,7 +380,7 @@ class AfterPayBusinessFactory extends AbstractBusinessFactory
             $this->getMoneyFacade(),
             $this->getStoreFacade(),
             $this->createPriceToPayProvider(),
-            $this->getConfig()
+            $this->getConfig(),
         );
     }
 
@@ -423,7 +423,7 @@ class AfterPayBusinessFactory extends AbstractBusinessFactory
     {
         return new QuoteToRequestTransfer(
             $this->getMoneyFacade(),
-            $this->getStoreFacade()
+            $this->getStoreFacade(),
         );
     }
 
@@ -440,7 +440,7 @@ class AfterPayBusinessFactory extends AbstractBusinessFactory
         if (!isset($paymentMethodsFilterStack[$authorizeWorkflow])) {
             throw new InvalidAfterPayPaymentMethodsFilterException(sprintf(
                 '%s is not a valid AfterPay payment methods filter.',
-                $authorizeWorkflow
+                $authorizeWorkflow,
             ));
         }
 
@@ -448,7 +448,7 @@ class AfterPayBusinessFactory extends AbstractBusinessFactory
     }
 
     /**
-     * @return \SprykerEco\Zed\AfterPay\Business\Payment\Filter\AfterPayPaymentMethodsFilterInterface[]
+     * @return array<\SprykerEco\Zed\AfterPay\Business\Payment\Filter\AfterPayPaymentMethodsFilterInterface>
      */
     public function getPaymentMethodsFilterStack(): array
     {
@@ -481,7 +481,7 @@ class AfterPayBusinessFactory extends AbstractBusinessFactory
     {
         return new AfterPayPaymentMethodsProvider(
             $this->createApiAdapter(),
-            $this->createQuoteToRequestMapper()
+            $this->createQuoteToRequestMapper(),
         );
     }
 

@@ -13,6 +13,9 @@ use SprykerEco\Client\AfterPay\Dependency\Client\AfterPayToZedRequestClientBridg
 
 class AfterPayDependencyProvider extends AbstractDependencyProvider
 {
+    /**
+     * @var string
+     */
     public const CLIENT_ZED_REQUEST = 'CLIENT_ZED_REQUEST';
 
     /**

@@ -21,17 +21,49 @@ use SprykerEco\Zed\AfterPay\Dependency\Service\AfterPayToUtilEncodingServiceInte
 
 class Guzzle implements ClientInterface
 {
+    /**
+     * @var string
+     */
     public const REQUEST_METHOD_POST = 'POST';
+
+    /**
+     * @var string
+     */
     public const REQUEST_METHOD_GET = 'GET';
 
+    /**
+     * @var string
+     */
     public const REQUEST_HEADER_X_AUTH_KEY = 'X-Auth-Key';
+
+    /**
+     * @var string
+     */
     public const REQUEST_HEADER_CONTENT_TYPE = 'Content-Type';
 
+    /**
+     * @var string
+     */
     public const HEADER_CONTENT_TYPE_JSON = 'application/json';
 
+    /**
+     * @var string
+     */
     protected const ERROR_KEY_ACTION_CODE = 'actionCode';
+
+    /**
+     * @var string
+     */
     protected const ERROR_KEY_CODE = 'code';
+
+    /**
+     * @var string
+     */
     protected const ERROR_KEY_TYPE = 'type';
+
+    /**
+     * @var string
+     */
     protected const ERROR_KEY_MESSAGE = 'message';
 
     /**
@@ -173,7 +205,7 @@ class Guzzle implements ClientInterface
                 (string)static::REQUEST_HEADER_CONTENT_TYPE => (string)static::HEADER_CONTENT_TYPE_JSON,
                 (string)static::REQUEST_HEADER_X_AUTH_KEY => (string)$this->config->getApiCredentialsAuthKey(),
             ],
-            $jsonBody
+            $jsonBody,
         );
     }
 
@@ -190,7 +222,7 @@ class Guzzle implements ClientInterface
             [
                 (string)static::REQUEST_HEADER_CONTENT_TYPE => (string)static::HEADER_CONTENT_TYPE_JSON,
                 (string)static::REQUEST_HEADER_X_AUTH_KEY => (string)$this->config->getApiCredentialsAuthKey(),
-            ]
+            ],
         );
     }
 }

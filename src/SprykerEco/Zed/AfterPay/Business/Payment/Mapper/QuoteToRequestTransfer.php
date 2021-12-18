@@ -22,6 +22,10 @@ use SprykerEco\Zed\AfterPay\Dependency\Facade\AfterPayToStoreFacadeInterface;
 class QuoteToRequestTransfer implements QuoteToRequestTransferInterface
 {
     public const NEGATIVE_MULTIPLIER = -1;
+
+    /**
+     * @var string
+     */
     public const GIFT_CARD_PROVIDER = 'GiftCard';
 
     /**
@@ -55,10 +59,10 @@ class QuoteToRequestTransfer implements QuoteToRequestTransferInterface
     {
         return (new AfterPayAvailablePaymentMethodsRequestTransfer())
             ->setCustomer(
-                $this->buildCustomerRequestTransfer($quoteTransfer)
+                $this->buildCustomerRequestTransfer($quoteTransfer),
             )
             ->setOrder(
-                $this->buildOrderRequestTransfer($quoteTransfer)
+                $this->buildOrderRequestTransfer($quoteTransfer),
             );
     }
 
@@ -79,7 +83,7 @@ class QuoteToRequestTransfer implements QuoteToRequestTransferInterface
             ->setSalutation($quoteBillingAddressTransfer->getSalutation())
             ->setEmail($quoteTransfer->getCustomer()->getEmail())
             ->setAddress(
-                $this->buildCustomerBillingAddressRequestTransfer($quoteTransfer)
+                $this->buildCustomerBillingAddressRequestTransfer($quoteTransfer),
             );
     }
 
@@ -96,7 +100,7 @@ class QuoteToRequestTransfer implements QuoteToRequestTransferInterface
 
         foreach ($quoteTransfer->getItems() as $itemTransfer) {
             $orderRequestTransfer->addItem(
-                $this->buildOrderItemRequestTransfer($itemTransfer)
+                $this->buildOrderItemRequestTransfer($itemTransfer),
             );
         }
 
@@ -242,7 +246,7 @@ class QuoteToRequestTransfer implements QuoteToRequestTransferInterface
     /**
      * @param \Generated\Shared\Transfer\QuoteTransfer $quoteTransfer
      *
-     * @return \Generated\Shared\Transfer\PaymentTransfer[]
+     * @return array<\Generated\Shared\Transfer\PaymentTransfer>
      */
     protected function getGiftcards(QuoteTransfer $quoteTransfer): array
     {
@@ -271,7 +275,7 @@ class QuoteToRequestTransfer implements QuoteToRequestTransferInterface
         foreach ($quoteTransfer->getExpenses() as $expenseTransfer) {
             if ($expenseTransfer->getSumPriceToPayAggregation() > 0) {
                 $orderRequestTransfer->addItem(
-                    $this->buildOrderExpenseRequestTransfer($expenseTransfer)
+                    $this->buildOrderExpenseRequestTransfer($expenseTransfer),
                 );
             }
         }

@@ -28,6 +28,9 @@ use Generated\Shared\Transfer\AfterPayValidateCustomerResponseTransfer;
 
 interface AdapterInterface
 {
+    /**
+     * @var string
+     */
     public const API_ENDPOINT_AVAILABLE_PAYMENT_METHODS = 'checkout/payment-methods';
 
     /**

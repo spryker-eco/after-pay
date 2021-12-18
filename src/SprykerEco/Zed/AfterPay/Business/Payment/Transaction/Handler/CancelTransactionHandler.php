@@ -66,7 +66,7 @@ class CancelTransactionHandler implements CancelTransactionHandlerInterface
     }
 
     /**
-     * @param \Generated\Shared\Transfer\ItemTransfer[] $items
+     * @param array<\Generated\Shared\Transfer\ItemTransfer> $items
      * @param \Generated\Shared\Transfer\AfterPayCallTransfer $afterPayCallTransfer
      *
      * @return void
@@ -85,7 +85,7 @@ class CancelTransactionHandler implements CancelTransactionHandlerInterface
     }
 
     /**
-     * @param \Generated\Shared\Transfer\ItemTransfer[] $items
+     * @param array<\Generated\Shared\Transfer\ItemTransfer> $items
      * @param \Generated\Shared\Transfer\AfterPayCallTransfer $afterPayCallTransfer
      *
      * @return \Generated\Shared\Transfer\AfterPayCancelRequestTransfer
@@ -118,7 +118,7 @@ class CancelTransactionHandler implements CancelTransactionHandlerInterface
         $amountAuthorized = $paymentTransfer->getAuthorizedTotal();
 
         $amountToCancel = $this->money->convertDecimalToInteger(
-            (float)$cancelRequestTransfer->getCancellationDetails()->getTotalGrossAmount()
+            (float)$cancelRequestTransfer->getCancellationDetails()->getTotalGrossAmount(),
         );
         $amountCancelled = $paymentTransfer->getCancelledTotal();
         $expenseTotal = $paymentTransfer->getExpenseTotal();

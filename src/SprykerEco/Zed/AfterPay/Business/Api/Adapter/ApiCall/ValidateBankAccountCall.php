@@ -63,7 +63,7 @@ class ValidateBankAccountCall extends AbstractApiCall implements ValidateBankAcc
         try {
             $jsonResponse = $this->client->sendPost(
                 $this->config->getValidateBankAccountApiEndpointUrl(),
-                $jsonRequest
+                $jsonRequest,
             );
         } catch (ApiHttpRequestException $apiHttpRequestException) {
             $this->logApiException($apiHttpRequestException);

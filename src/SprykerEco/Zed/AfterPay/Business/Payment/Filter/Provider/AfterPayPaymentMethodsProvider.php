@@ -51,7 +51,7 @@ class AfterPayPaymentMethodsProvider implements AfterPayPaymentMethodsProviderIn
         $availablePaymentMethodsTransfer = $this->parseResponseTransfer($responseTransfer);
 
         $availablePaymentMethodsTransfer->setQuoteHash(
-            $quoteTransfer->getTotals()->getHash()
+            $quoteTransfer->getTotals()->getHash(),
         );
 
         return $availablePaymentMethodsTransfer;

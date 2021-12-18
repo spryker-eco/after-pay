@@ -38,7 +38,7 @@ class AfterPayFacadeCaptureTest extends AfterPayFacadeAbstractTest
     }
 
     /**
-     * @param \Generated\Shared\Transfer\ItemTransfer[] $item
+     * @param array<\Generated\Shared\Transfer\ItemTransfer> $item
      * @param \Generated\Shared\Transfer\AfterPayCallTransfer $call
      *
      * @return void
@@ -62,7 +62,7 @@ class AfterPayFacadeCaptureTest extends AfterPayFacadeAbstractTest
 
         $this->assertNotEquals(
             $afterPayPaymentTransferBeforeCapture->getCapturedTotal(),
-            $afterPayPaymentTransferAfterCapture->getCapturedTotal()
+            $afterPayPaymentTransferAfterCapture->getCapturedTotal(),
         );
     }
 

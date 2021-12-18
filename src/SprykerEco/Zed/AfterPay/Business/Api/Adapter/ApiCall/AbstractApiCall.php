@@ -46,7 +46,7 @@ class AbstractApiCall
     {
         $this->getLogger()->error(
             $apiHttpRequestException->getDetailedMessage(),
-            ['exception' => $apiHttpRequestException]
+            ['exception' => $apiHttpRequestException],
         );
     }
 }

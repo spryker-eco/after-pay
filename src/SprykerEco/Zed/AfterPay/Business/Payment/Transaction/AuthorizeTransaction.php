@@ -76,7 +76,7 @@ class AuthorizeTransaction implements AuthorizeTransactionInterface
             static::TRANSACTION_TYPE,
             $authorizeRequestTransfer->getOrder()->getNumber(),
             $authorizeRequestTransfer,
-            $authorizeResponseTransfer
+            $authorizeResponseTransfer,
         );
     }
 
@@ -93,7 +93,7 @@ class AuthorizeTransaction implements AuthorizeTransactionInterface
         $this->paymentAuthorizeWriter->save(
             $authorizeRequestTransfer->getOrder()->getNumber(),
             $authorizeResponseTransfer->getReservationId(),
-            $authorizeResponseTransfer->getCheckoutId()
+            $authorizeResponseTransfer->getCheckoutId(),
         );
     }
 }

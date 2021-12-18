@@ -18,16 +18,49 @@ use SprykerEco\Zed\AfterPay\Dependency\Facade\AfterPayToStoreFacadeBridge;
 use SprykerEco\Zed\AfterPay\Dependency\Service\AfterPayToUtilEncodingServiceBridge;
 use SprykerEco\Zed\AfterPay\Dependency\Service\AfterPayToUtilTextServiceBridge;
 
+/**
+ * @method \SprykerEco\Zed\AfterPay\AfterPayConfig getConfig()
+ */
 class AfterPayDependencyProvider extends AbstractBundleDependencyProvider
 {
+    /**
+     * @var string
+     */
     public const FACADE_MONEY = 'FACADE_MONEY';
+
+    /**
+     * @var string
+     */
     public const FACADE_SALES = 'FACADE_SALES';
+
+    /**
+     * @var string
+     */
     public const FACADE_CUSTOMER = 'FACADE_CUSTOMER';
+
+    /**
+     * @var string
+     */
     public const FACADE_PAYMENT = 'FACADE_PAYMENT';
+
+    /**
+     * @var string
+     */
     public const FACADE_REFUND = 'FACADE_REFUND';
+
+    /**
+     * @var string
+     */
     public const FACADE_STORE = 'FACADE_STORE';
 
+    /**
+     * @var string
+     */
     public const SERVICE_UTIL_ENCODING = 'SERVICE_UTIL_ENCODING';
+
+    /**
+     * @var string
+     */
     public const SERVICE_UTIL_TEXT = 'SERVICE_UTIL_TEXT';
 
     /**

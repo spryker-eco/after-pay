@@ -66,7 +66,7 @@ class RefundTransaction implements RefundTransactionInterface
             static::TRANSACTION_TYPE,
             $refundRequestTransfer->getOrderNumber(),
             $refundRequestTransfer,
-            $refundResponseTransfer->getApiResponse()
+            $refundResponseTransfer->getApiResponse(),
         );
     }
 }

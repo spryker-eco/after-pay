@@ -72,7 +72,7 @@ class CaptureCall extends AbstractApiCall implements CaptureCallInterface
         try {
             $jsonResponse = $this->client->sendPost(
                 $this->getCaptureEndpointUrl($requestTransfer),
-                $jsonRequest
+                $jsonRequest,
             );
         } catch (ApiHttpRequestException $apiHttpRequestException) {
             $this->logApiException($apiHttpRequestException);
@@ -91,7 +91,7 @@ class CaptureCall extends AbstractApiCall implements CaptureCallInterface
     protected function getCaptureEndpointUrl(AfterPayCaptureRequestTransfer $requestTransfer): string
     {
         return $this->config->getCaptureApiEndpointUrl(
-            $requestTransfer->getOrderDetails()->getNumber()
+            $requestTransfer->getOrderDetails()->getNumber(),
         );
     }
 
@@ -122,21 +122,21 @@ class CaptureCall extends AbstractApiCall implements CaptureCallInterface
         return (new AfterPayCaptureResponseTransfer())
             ->setCapturedAmount(
                 $this->money->convertDecimalToInteger(
-                    $jsonResponseArray[AfterPayApiRequestConfig::CAPTURE_CAPTURED_AMOUNT]
-                )
+                    $jsonResponseArray[AfterPayApiRequestConfig::CAPTURE_CAPTURED_AMOUNT],
+                ),
             )
             ->setAuthorizedAmount(
                 $this->money->convertDecimalToInteger(
-                    $jsonResponseArray[AfterPayApiRequestConfig::CAPTURE_AUTHORIZED_AMOUNT]
-                )
+                    $jsonResponseArray[AfterPayApiRequestConfig::CAPTURE_AUTHORIZED_AMOUNT],
+                ),
             )
             ->setRemainingAuthorizedAmount(
                 $this->money->convertDecimalToInteger(
-                    $jsonResponseArray[AfterPayApiRequestConfig::CAPTURE_REMAINING_AUTHORIZED_AMOUNT]
-                )
+                    $jsonResponseArray[AfterPayApiRequestConfig::CAPTURE_REMAINING_AUTHORIZED_AMOUNT],
+                ),
             )
             ->setCaptureNumber(
-                $jsonResponseArray[AfterPayApiRequestConfig::CAPTURE_CAPTURE_NUMBER]
+                $jsonResponseArray[AfterPayApiRequestConfig::CAPTURE_CAPTURE_NUMBER],
             );
     }
 

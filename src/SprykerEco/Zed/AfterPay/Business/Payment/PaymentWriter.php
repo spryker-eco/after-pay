@@ -132,7 +132,7 @@ class PaymentWriter implements PaymentWriterInterface
     ): void {
         $afterPayPaymentOrderItemEntity = $this->getPaymentOrderItemEntityByIdSalesOrderItemAndIdPayment(
             $idSalesOrderItem,
-            $idPayment
+            $idPayment,
         );
         $afterPayPaymentOrderItemEntity
             ->setCaptureNumber($captureNumber)
